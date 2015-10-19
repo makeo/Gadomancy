@@ -1,0 +1,46 @@
+item.ItemGolemPlacer.silverwood.name=Silverwood Golem
+item.ItemTransformationFocus.name=[WIP] Wand Focus: Transformation
+
+itemGroup.gadomancy=Gadomancy
+tc.research_category.gadomancy=Gadomancy
+
+tc.research_name.GADOMANCY.GOLEMSILVERWOOD=Silverwood Golems
+tc.research_text.GADOMANCY.GOLEMSILVERWOOD=Not a part of golemancy...
+gadomancy.research_page.GOLEMSILVERWOOD.1=Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
+
+tc.research_name.GADOMANCY.GOLEMRUNICSHIELD=Golemic Shielding
+tc.research_text.GADOMANCY.GOLEMRUNICSHIELD=Now available to your tiny friends!
+gadomancy.research_page.GOLEMRUNICSHIELD.1=Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
+
+tc.research_name.GADOMANCY.STICKYJAR=Sticky Jars
+tc.research_text.GADOMANCY.STICKYJAR=Why not rotate your jars?
+gadomancy.research_page.STICKYJAR.1=Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
+
+tc.research_name.GADOMANCY.ARCANEDROPPER=Arcane Dropper
+tc.research_text.GADOMANCY.ARCANEDROPPER=Steves ripoff
+gadomancy.research_page.ARCANEDROPPER.1=Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
+
+tc.research_name.GADOMANCY.GOLEMCOREBREAK=Golem Core: Break
+tc.research_text.GADOMANCY.GOLEMCOREBREAK=Bone-breaking news!
+gadomancy.research_page.GOLEMCOREBREAK.1=Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
+
+tc.research_name.GADOMANCY.INFUSIONCLAW=Automated Infusion
+tc.research_text.GADOMANCY.INFUSIONCLAW=Floating stuff!
+gadomancy.research_page.INFUSIONCLAW.1=Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
+
+gadomancy.golemblurb.default=??
+gadomancy.golemblurb.breakcore=Master, should I break everything, or something specific?
+gadomancy.golem.breakcore=Break
+
+gadomancy.upgrades.runicshield=Runic Shield
+
+gadomancy.lore.stickyjar=Sticky
+
+tile.BlockStickyJar.name=Sticky Jar
+tile.BlockArcaneDropper.name=Arcane Dropper
+tile.BlockInfusionClaw.name=Infusion Claw
+tile.BlockRemoteJar.name=[WIP] Mirrored Jar
+
+gadomancy.info.InfusionClaw.owner=You are now the owner.
+gadomancy.info.InfusionClaw.waila=§8Owner:
+gadomancy.info.InfusionClaw.lock=Keep useable wand
