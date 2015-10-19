@@ -1,2 +1,5 @@
 # Gadomancy
-An ad-on for Thaumcraft
+An adon for Thaumcraft
+
+TODO:
+- Add Thaumonomicon text
