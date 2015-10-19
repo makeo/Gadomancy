@@ -38,6 +38,7 @@ hs_err_pid*
 /manifest.mf
 /run
 /libs
+/eclipse
 
 # Mac filesystem dust
 /.DS_Store
