@@ -10,3 +10,40 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# Eclipse stuff
+/.classpath
+/.project
+/.settings
+
+# netbeans
+/nbproject
+
+#gradle stuff
+/gradlew
+/gradlew.bat
+/gradle
+
+# maven
+/build.xml
+/target
+
+# vim
+.*.sw[a-p]
+
+# various other potential build files
+/build
+/bin
+/dist
+/manifest.mf
+/run
+/libs
+
+# Mac filesystem dust
+/.DS_Store
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea/
