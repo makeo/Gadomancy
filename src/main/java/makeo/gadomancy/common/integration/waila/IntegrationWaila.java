@@ -1,6 +1,7 @@
 package makeo.gadomancy.common.integration.waila;
 
 import makeo.gadomancy.common.blocks.BlockInfusionClaw;
+import makeo.gadomancy.common.blocks.BlockRemoteJar;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
 import makeo.gadomancy.common.integration.IntegrationMod;
 import mcp.mobius.waila.api.impl.ModuleRegistrar;
@@ -33,5 +34,6 @@ public class IntegrationWaila extends IntegrationMod {
         registrar.registerTailProvider(new AdvancedGolemProvider(), EntityGolemBase.class);
 
         registrar.registerBodyProvider(new InfusionClawProvider(), BlockInfusionClaw.class);
+        registrar.registerBodyProvider(new RemoteJarProvider(), BlockRemoteJar.class);
     }
 }

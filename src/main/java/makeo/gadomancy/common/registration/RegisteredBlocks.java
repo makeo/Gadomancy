@@ -11,6 +11,7 @@ import makeo.gadomancy.common.blocks.tiles.TileArcaneDropper;
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
 import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
+import makeo.gadomancy.common.items.ItemBlockRemoteJar;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
@@ -54,7 +55,7 @@ public class RegisteredBlocks {
         blockStickyJar = registerBlock(new BlockStickyJar());
         blockArcaneDropper = registerBlock(new BlockArcaneDropper());
         blockInfusionClaw = registerBlock(new BlockInfusionClaw());
-        blockRemoteJar = registerBlock(new BlockRemoteJar());
+        blockRemoteJar = registerBlock(new BlockRemoteJar(), ItemBlockRemoteJar.class);
     }
 
     private static <T extends Block> T registerBlock(String name, T block) {
@@ -100,6 +101,8 @@ public class RegisteredBlocks {
     private static void registerDefaultStickyJars() {
         registerStickyJar(ConfigBlocks.blockJar, 0, true, true);
         registerStickyJar(ConfigBlocks.blockJar, 3, true, true);
+
+        //registerStickyJar(RegisteredBlocks.blockRemoteJar, 0, false, false);
     }
 
     private static List<StickyJarInfo> stickyJars = new ArrayList<StickyJarInfo>();

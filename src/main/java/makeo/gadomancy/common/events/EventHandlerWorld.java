@@ -103,7 +103,7 @@ public class EventHandlerWorld {
     public void on(ItemTooltipEvent e) {
         if(e.toolTip.size() > 0 && e.itemStack.hasTagCompound()) {
             if(e.itemStack.stackTagCompound.getBoolean("isStickyJar")) {
-                e.toolTip.add(1, "§a" + StatCollector.translateToLocal("gadomancy.lore.stickyjar"));
+                e.toolTip.add(1, "\u00a7a" + StatCollector.translateToLocal("gadomancy.lore.stickyjar"));
             }
         }
     }

@@ -25,7 +25,7 @@ public class RegisteredResearches {
     private RegisteredResearches() {}
 
     private static final ResourceLocation CATEGORY_BACKGROUND = new SimpleResourceLocation("/gui/gui_researchback.png");
-    private static final ResourceLocation CATEGORY_ICON = new SimpleResourceLocation("/misc/category_icon.png");
+    private static final ResourceLocation CATEGORY_ICON = new SimpleResourceLocation("/itemscategory_icon.png");
 
     public static ResearchItem researchGolemSilverwood;
     public static ResearchItem researchGolemRunicShield;
