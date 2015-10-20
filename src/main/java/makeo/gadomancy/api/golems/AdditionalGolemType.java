@@ -45,13 +45,13 @@ public abstract class AdditionalGolemType {
     public abstract void registerIcons(IIconRegister ir);
     public abstract IIcon getIcon(ItemStack stack, int pass);
 
-    public void setupGolem() {
-
-    }
-
     public int getRenderPasses() { return 1; }
 
     public abstract ResourceLocation getEntityTexture();
+
+    /**
+     * @return resource location for the golem inventory slot texture
+     */
     public abstract ResourceLocation getInvSlotTexture();
 
     public EnumGolemType getEnumEntry() {

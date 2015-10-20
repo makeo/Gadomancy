@@ -26,6 +26,9 @@ public abstract class ClickBehavior {
         this(false);
     }
 
+    /**
+     * This method is called by me to init all variables
+     */
     @Deprecated
     public void init(World world, Block block, int x, int y, int z, int metadata) {
         this.world = world;
@@ -36,6 +39,9 @@ public abstract class ClickBehavior {
         this.metadata = metadata;
     }
 
+    /**
+     * @return if this class needs to handle the given block
+     */
     public abstract boolean isValidForBlock();
 
     public boolean hasVisCost() {

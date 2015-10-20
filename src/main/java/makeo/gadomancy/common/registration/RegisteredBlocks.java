@@ -2,6 +2,7 @@ package makeo.gadomancy.common.registration;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.api.ClickBehavior;
+import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.common.blocks.BlockArcaneDropper;
 import makeo.gadomancy.common.blocks.BlockInfusionClaw;
 import makeo.gadomancy.common.blocks.BlockRemoteJar;
