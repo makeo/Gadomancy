@@ -143,6 +143,7 @@ public class BlockStickyJar extends BlockJar implements IBlockTransparent {
         if (tile instanceof TileStickyJar) {
             ItemStack stack = ((TileStickyJar) tile).getParentBlock().getPickBlock(target, world, x, y, z, player);
             NBTHelper.getData(stack).setBoolean("isStickyJar", true);
+            return stack;
         }
         return null;
     }
