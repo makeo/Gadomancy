@@ -19,7 +19,7 @@ public class BlockNode extends thaumcraft.common.blocks.BlockAiry {
 
     public BlockNode() {
         super();
-        setCreativeTab(RegisteredItems.creativeTab);
+        setCreativeTab(null);
     }
 
     @Override
