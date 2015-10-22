@@ -35,12 +35,14 @@ gadomancy.golem.breakcore=Break
 gadomancy.upgrades.runicshield=Runic Shield
 
 gadomancy.lore.stickyjar=Sticky
+gadomancy.lore.remotejar=§7Network: %s
 
 tile.BlockStickyJar.name=Sticky Jar
 tile.BlockArcaneDropper.name=Arcane Dropper
 tile.BlockInfusionClaw.name=Infusion Claw
 tile.BlockRemoteJar.name=[WIP] Mirrored Jar
+tile.BlockNode.name=Aura Node
 
 gadomancy.info.InfusionClaw.owner=You are now the owner.
-gadomancy.info.InfusionClaw.waila=§8Owner:
+gadomancy.info.InfusionClaw.waila=§7Owner:
 gadomancy.info.InfusionClaw.lock=Keep useable wand
