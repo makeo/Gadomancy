@@ -24,6 +24,7 @@ import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
 import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
+import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
@@ -37,6 +38,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import sun.reflect.generics.visitor.Reifier;
+import thaumcraft.api.nodes.INode;
 import thaumcraft.client.gui.GuiGolem;
 import thaumcraft.client.renderers.entity.RenderGolemBase;
 import thaumcraft.common.entities.golems.EntityGolemBase;
@@ -59,6 +62,8 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void initalize() {
+        super.initalize();
+
         injectGolemTextures();
 
         //Tiles
@@ -83,14 +88,12 @@ public class ClientProxy extends CommonProxy {
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockInfusionClaw), new ItemRenderTileEntity(renderTileInfusionClaw, new TileInfusionClaw()));
 
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockNode), new ItemExNodeRenderer());
+        MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemBlockAiryCopy, new ItemExNodeRenderer());
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockRemoteJar), new ItemRenderRemoteJar(renderTileRemoteJar));
 
         //Blocks
         RegisteredBlocks.rendererTransparentBlock = registerBlockRenderer(new RenderBlockTransparent());
-
-        super.initalize();
     }
 
     @Override

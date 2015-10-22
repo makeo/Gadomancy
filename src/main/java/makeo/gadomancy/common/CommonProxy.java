@@ -3,6 +3,7 @@ package makeo.gadomancy.common;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import makeo.gadomancy.common.containers.ContainerInfusionClaw;
 import makeo.gadomancy.common.events.EventHandlerGolem;
@@ -13,8 +14,11 @@ import makeo.gadomancy.common.registration.*;
 import makeo.gadomancy.client.ClientProxy;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import thaumcraft.common.blocks.BlockAiryItem;
+import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.golems.ContainerGolem;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
@@ -42,6 +46,15 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void initalize() {
+        try {
+            RegisteredItems.itemBlockAiryCopy = new BlockAiryItem(RegisteredBlocks.blockNode);
+            GameRegistry.addSubstitutionAlias("Thaumcraft:blockAiry", GameRegistry.Type.BLOCK, RegisteredBlocks.blockNode);
+            GameRegistry.addSubstitutionAlias("Thaumcraft:blockAiry", GameRegistry.Type.ITEM, RegisteredItems.itemBlockAiryCopy);
+            ConfigBlocks.blockAiry = RegisteredBlocks.blockNode;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         NetworkRegistry.INSTANCE.registerGuiHandler(Gadomancy.instance, this);
 
         MinecraftForge.EVENT_BUS.register(EVENT_HANDLER_GOLEM);

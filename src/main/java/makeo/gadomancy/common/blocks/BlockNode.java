@@ -1,7 +1,6 @@
 package makeo.gadomancy.common.blocks;
 
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
-import makeo.gadomancy.common.registration.RegisteredItems;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -14,16 +13,15 @@ import net.minecraft.world.World;
  * Created by HellFirePvP @ 22.10.2015 19:47
  */
 public class BlockNode extends thaumcraft.common.blocks.BlockAiry {
-    //We overwrite and use the TC class for visual effects and world interact handling.
-    //This way our node behaves like TC ones.
 
-    public BlockNode() {
-        super();
-        setCreativeTab(RegisteredItems.creativeTab);
+    @Override
+    public String getUnlocalizedName() {
+        return super.getUnlocalizedName();
     }
 
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
-        return new TileExtendedNode();
+        if(metadata == 0) return new TileExtendedNode();
+        return super.createTileEntity(world, metadata);
     }
 }

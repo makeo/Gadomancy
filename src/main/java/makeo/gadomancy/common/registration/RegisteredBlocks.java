@@ -1,5 +1,7 @@
 package makeo.gadomancy.common.registration;
 
+import cpw.mods.fml.common.registry.ExistingSubstitutionException;
+import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.api.ClickBehavior;
 import makeo.gadomancy.common.blocks.BlockArcaneDropper;
@@ -58,7 +60,7 @@ public class RegisteredBlocks {
         blockArcaneDropper = registerBlock(new BlockArcaneDropper());
         blockInfusionClaw = registerBlock(new BlockInfusionClaw());
         blockRemoteJar = registerBlock(new BlockRemoteJar(), ItemBlockRemoteJar.class);
-        blockNode = registerBlock(new BlockNode());
+        blockNode = (BlockNode) new BlockNode().setBlockName("blockAiry");
     }
 
     private static <T extends Block> T registerBlock(String name, T block) {

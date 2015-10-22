@@ -9,15 +9,10 @@ import thaumcraft.client.renderers.tile.ItemNodeRenderer;
  * Gadomancy is Open Source and distributed under the
  * GNU LESSER GENERAL PUBLIC LICENSE
  * for more read the LICENSE file
- * <p/>
+ *
  * Created by HellFirePvP @ 22.10.2015 20:11
  */
 public class ItemExNodeRenderer extends ItemNodeRenderer {
-
-    public ItemExNodeRenderer() {
-        //AspectList list = new AspectList().add(Aspect.FIRE, 100).add(Aspect.ENTROPY, 100).add(Aspect.WATER, 50);
-        //new Injector(this).setField("aspects", list);
-    }
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {

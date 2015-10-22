@@ -32,6 +32,8 @@ public class RegisteredItems {
     public static Item itemTransformationFocus;
     public static Item itemGolemCoreBreak;
 
+    public static Item itemBlockAiryCopy; //!!!!!!!!!!DO NOT TOUCH THIS OR USE THIS ANYWHERE!!!!!!!!!!
+
     public static void preInit() {
         creativeTab = new CreativeTabs(Gadomancy.MODID) {
             @Override
