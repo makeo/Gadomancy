@@ -41,6 +41,7 @@ tile.BlockStickyJar.name=Sticky Jar
 tile.BlockArcaneDropper.name=Arcane Dropper
 tile.BlockInfusionClaw.name=Infusion Claw
 tile.BlockRemoteJar.name=[WIP] Mirrored Jar
+tile.BlockNode.name=Aura Node
 
 gadomancy.info.InfusionClaw.owner=You are now the owner.
 gadomancy.info.InfusionClaw.waila=§7Owner:
