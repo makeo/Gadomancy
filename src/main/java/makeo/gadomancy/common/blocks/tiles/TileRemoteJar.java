@@ -1,5 +1,8 @@
 package makeo.gadomancy.common.blocks.tiles;
 
+import makeo.gadomancy.common.utils.NBTHelper;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import thaumcraft.common.tiles.TileJarFillable;
 
 import java.util.*;
@@ -20,54 +23,84 @@ public class TileRemoteJar extends TileJarFillable {
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if (count % 5 == 0 && !getWorldObj().isRemote && networkId != null && amount < maxAmount) {
+        if (count % 3 == 0 && !getWorldObj().isRemote && networkId != null && amount < maxAmount) {
             count = 0;
 
-            boolean containsThis = false;
+            JarNetwork network = getNetwork(networkId);
 
-            List<TileRemoteJar> network = getNetwork(networkId);
-
-            Collections.sort(network, new Comparator<TileRemoteJar>() {
-                @Override
-                public int compare(TileRemoteJar o1, TileRemoteJar o2) {
-                    return o2.amount - o1.amount;
-                }
-            });
-
-            for(int i = 0; i < network.size(); i++) {
-                TileRemoteJar jar = network.get(i);
-
-                if(jar == this) {
-                    containsThis = true;
-                    continue;
-                }
-
-                if(jar.isInvalid()) {
-                    network.remove(i);
-                    i--;
-                    continue;
-                }
-
-                if((amount+1) < jar.amount && this.addToContainer(jar.aspect, 1) == 0) {
-                    jar.takeFromContainer(jar.aspect, 1);
-                    break;
-                }
+            if(!network.jars.contains(this)) {
+                network.jars.add(this);
             }
 
-            if(!containsThis) {
-                network.add(this);
-            }
+            network.update();
         }
         count++;
     }
 
-    private static Map<UUID, List<TileRemoteJar>> networks = new HashMap<UUID, List<TileRemoteJar>>();
+    @Override
+    public void readCustomNBT(NBTTagCompound compound) {
+        super.readCustomNBT(compound);
 
-    private static List<TileRemoteJar> getNetwork(UUID id) {
-        List<TileRemoteJar> network = networks.get(id);
+        networkId = NBTHelper.getUUID(compound, "networkId");
+    }
+
+    @Override
+    public void writeCustomNBT(NBTTagCompound compound) {
+        super.writeCustomNBT(compound);
+
+        if(networkId != null) {
+            NBTHelper.setUUID(compound, "networkId", networkId);
+        }
+    }
+
+    private static Map<UUID, JarNetwork> networks = new HashMap<UUID, JarNetwork>();
+
+    private static class JarNetwork {
+        private long lastTime = 0;
+        private List<TileRemoteJar> jars = new ArrayList<TileRemoteJar>();
+
+        private void update() {
+            long time = MinecraftServer.getServer().getEntityWorld().getTotalWorldTime();
+            if(time > lastTime) {
+                if(jars.size() > 1) {
+                    Collections.sort(jars, new Comparator<TileRemoteJar>() {
+                        @Override
+                        public int compare(TileRemoteJar o1, TileRemoteJar o2) {
+                            return o2.amount - o1.amount;
+                        }
+                    });
+
+                    TileRemoteJar jar1 = jars.get(0);
+                    if(!isValid(jar1)) {
+                        jars.remove(0);
+                        return;
+                    }
+
+                    TileRemoteJar jar2 = jars.get(jars.size() - 1);
+                    if(!isValid(jar2)) {
+                        jars.remove(jars.size() - 1);
+                        return;
+                    }
+
+                    if((jar2.amount+1) < jar1.amount && jar2.addToContainer(jar1.aspect, 1) == 0) {
+                        jar1.takeFromContainer(jar1.aspect, 1);
+                    }
+                }
+                lastTime = time + 3;
+            }
+        }
+
+        private static boolean isValid(TileRemoteJar jar) {
+            return jar != null && jar.getWorldObj() != null && !jar.isInvalid()
+                    && jar.getWorldObj().blockExists(jar.xCoord, jar.yCoord, jar.zCoord);
+        }
+    }
+
+    private static JarNetwork getNetwork(UUID id) {
+        JarNetwork network = networks.get(id);
 
         if(network == null) {
-            network = new ArrayList<TileRemoteJar>();
+            network = new JarNetwork();
             networks.put(id, network);
         }
         return network;

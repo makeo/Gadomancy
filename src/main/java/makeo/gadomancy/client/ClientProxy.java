@@ -9,14 +9,17 @@ import makeo.gadomancy.client.events.ResourceReloadListener;
 import makeo.gadomancy.client.gui.InfusionClawGui;
 import makeo.gadomancy.client.renderers.block.RenderBlockTransparent;
 import makeo.gadomancy.client.renderers.entity.RenderAdditionalGolemBase;
+import makeo.gadomancy.client.renderers.item.ItemExNodeRenderer;
 import makeo.gadomancy.client.renderers.item.ItemRenderRemoteJar;
 import makeo.gadomancy.client.renderers.item.ItemRenderTileEntity;
 import makeo.gadomancy.client.renderers.tile.RenderTileArcaneDropper;
+import makeo.gadomancy.client.renderers.tile.RenderTileExtendedNode;
 import makeo.gadomancy.client.renderers.tile.RenderTileInfusionClaw;
 import makeo.gadomancy.client.renderers.tile.RenderTileRemoteJar;
 import makeo.gadomancy.client.renderers.tile.RenderTileStickyJar;
 import makeo.gadomancy.common.CommonProxy;
 import makeo.gadomancy.common.blocks.tiles.TileArcaneDropper;
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
 import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
@@ -70,12 +73,17 @@ public class ClientProxy extends CommonProxy {
         RenderTileInfusionClaw renderTileInfusionClaw = new RenderTileInfusionClaw();
         ClientRegistry.bindTileEntitySpecialRenderer(TileInfusionClaw.class, renderTileInfusionClaw);
 
+        RenderTileExtendedNode nodeRenderer = new RenderTileExtendedNode();
+        ClientRegistry.bindTileEntitySpecialRenderer(TileExtendedNode.class, nodeRenderer);
+
         //Items
         TileArcaneDropper fakeTile = new TileArcaneDropper();
         fakeTile.blockMetadata = 8 | ForgeDirection.SOUTH.ordinal();
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockArcaneDropper), new ItemRenderTileEntity(renderTileArcaneDropper, fakeTile));
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockInfusionClaw), new ItemRenderTileEntity(renderTileInfusionClaw, new TileInfusionClaw()));
+
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockNode), new ItemExNodeRenderer());
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockRemoteJar), new ItemRenderRemoteJar(renderTileRemoteJar));
 

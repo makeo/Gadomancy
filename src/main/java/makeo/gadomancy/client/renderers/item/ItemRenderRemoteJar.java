@@ -8,6 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.src.FMLRenderAccessLibrary;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.common.blocks.ItemJarFilled;
+import thaumcraft.common.config.ConfigItems;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -25,6 +28,15 @@ public class ItemRenderRemoteJar extends ItemRenderTileEntity<TileRemoteJar> {
     @Override
     public void renderItem(IItemRenderer.ItemRenderType type, ItemStack stack, Object... data) {
         GL11.glEnable(GL11.GL_ALPHA_TEST);
+
+        AspectList aspects = ((ItemJarFilled)ConfigItems.itemJarFilled).getAspects(stack);
+        if(aspects != null) {
+            tile.aspect = aspects.getAspects()[0];
+            tile.amount = aspects.getAmount(tile.aspect);
+        } else {
+            tile.aspect = null;
+            tile.amount = 0;
+        }
 
         super.renderItem(type, stack, data);
 

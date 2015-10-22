@@ -4,12 +4,15 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.api.ClickBehavior;
 import makeo.gadomancy.common.blocks.BlockArcaneDropper;
 import makeo.gadomancy.common.blocks.BlockInfusionClaw;
+import makeo.gadomancy.common.blocks.BlockNode;
 import makeo.gadomancy.common.blocks.BlockRemoteJar;
 import makeo.gadomancy.common.blocks.BlockStickyJar;
 import makeo.gadomancy.common.blocks.tiles.TileArcaneDropper;
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
 import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
+import makeo.gadomancy.common.items.ItemBlockRemoteJar;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
@@ -38,6 +41,7 @@ public class RegisteredBlocks {
     public static BlockArcaneDropper blockArcaneDropper;
     public static BlockInfusionClaw blockInfusionClaw;
     public static BlockRemoteJar blockRemoteJar;
+    public static BlockNode blockNode;
 
     public static void init() {
         registerBlocks();
@@ -53,7 +57,8 @@ public class RegisteredBlocks {
         blockStickyJar = registerBlock(new BlockStickyJar());
         blockArcaneDropper = registerBlock(new BlockArcaneDropper());
         blockInfusionClaw = registerBlock(new BlockInfusionClaw());
-        blockRemoteJar = registerBlock(new BlockRemoteJar());
+        blockRemoteJar = registerBlock(new BlockRemoteJar(), ItemBlockRemoteJar.class);
+        blockNode = registerBlock(new BlockNode());
     }
 
     private static <T extends Block> T registerBlock(String name, T block) {
@@ -84,6 +89,7 @@ public class RegisteredBlocks {
         registerTile(TileArcaneDropper.class);
         registerTile(TileInfusionClaw.class);
         registerTile(TileRemoteJar.class);
+        registerTile(TileExtendedNode.class);
     }
 
     private static void registerTile(Class<? extends TileEntity> tile, String name) {
@@ -99,6 +105,8 @@ public class RegisteredBlocks {
     private static void registerDefaultStickyJars() {
         registerStickyJar(ConfigBlocks.blockJar, 0, true, true);
         registerStickyJar(ConfigBlocks.blockJar, 3, true, true);
+
+        //registerStickyJar(RegisteredBlocks.blockRemoteJar, 0, false, false);
     }
 
     private static List<StickyJarInfo> stickyJars = new ArrayList<StickyJarInfo>();

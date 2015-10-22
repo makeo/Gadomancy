@@ -128,7 +128,6 @@ public class ExtendedGolemProperties implements IExtendedEntityProperties {
             golem.targetTasks.taskEntries.clear();
 
             core.setupGolem(golem);
-            core.setupGolemInventory(golem);
 
             wrapper.lock();
         }

@@ -2,10 +2,7 @@ package makeo.gadomancy.common.registration;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.items.ItemFakeGolemPlacer;
-import makeo.gadomancy.common.items.ItemFakeGolemShield;
-import makeo.gadomancy.common.items.ItemGolemCoreBreak;
-import makeo.gadomancy.common.items.ItemTransformationFocus;
+import makeo.gadomancy.common.items.*;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -29,6 +26,7 @@ public class RegisteredItems {
 
     public static CreativeTabs creativeTab;
 
+    public static Item itemFakeModIcon;
     public static Item itemFakeGolemShield;
     public static Item itemFakeGolemPlacer;
     public static Item itemTransformationFocus;
@@ -38,7 +36,7 @@ public class RegisteredItems {
         creativeTab = new CreativeTabs(Gadomancy.MODID) {
             @Override
             public Item getTabIconItem() {
-                return Items.boat;
+                return itemFakeModIcon;
             }
         };
     }
@@ -51,6 +49,7 @@ public class RegisteredItems {
 
     //Items
     private static void registerItems() {
+        itemFakeModIcon = registerItem(new ItemFakeModIcon());
         itemFakeGolemPlacer = registerItem(new ItemFakeGolemPlacer());
         itemFakeGolemShield = registerItem(new ItemFakeGolemShield());
         itemTransformationFocus = registerItem(new ItemTransformationFocus());
@@ -75,6 +74,9 @@ public class RegisteredItems {
         Item itemBlockJar = Item.getItemFromBlock(ConfigBlocks.blockJar);
         registerStickyJar(itemBlockJar, 0, new ItemStack(itemBlockJar, 1, 0));
         registerStickyJar(itemBlockJar, 3, new ItemStack(itemBlockJar, 1, 3));
+
+        //Item itemRemoteJar = Item.getItemFromBlock(RegisteredBlocks.blockRemoteJar);
+        //registerStickyJar(itemRemoteJar, 0, new ItemStack(itemRemoteJar));
     }
 
     private static List<StickyJarItemInfo> stickyJarItems = new ArrayList<StickyJarItemInfo>();

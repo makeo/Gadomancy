@@ -22,7 +22,7 @@ import java.util.Map;
  * Created by makeo @ 03.10.2015 12:09
  */
 public class ResourceReloadListener implements IResourceManagerReloadListener {
-    private Map languageList;
+    public static Map languageList;
 
     public ResourceReloadListener() {
         Injector instance = new Injector(new Injector(StringTranslate.class)

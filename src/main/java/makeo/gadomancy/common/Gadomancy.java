@@ -30,7 +30,14 @@ public class Gadomancy
     private static final String PROXY_CLIENT = "makeo.gadomancy.client.ClientProxy";
     private static final String PROXY_SERVER = "makeo.gadomancy.common.CommonProxy";
 
+    @Mod.Instance(value = Gadomancy.MODID)
+    public static Gadomancy instance;
+
+    @SidedProxy(clientSide = PROXY_CLIENT, serverSide = PROXY_SERVER)
+    public static CommonProxy proxy;
+
     private static ModData modData = null;
+
     public static ModData getModData() {
         return modData;
     }
@@ -46,12 +53,6 @@ public class Gadomancy
             modData = null;
         }
     }
-
-    @Mod.Instance(value = Gadomancy.MODID)
-    public static Gadomancy instance;
-
-    @SidedProxy(clientSide = PROXY_CLIENT, serverSide = PROXY_SERVER)
-    public static CommonProxy proxy;
 
     @Mod.EventHandler
     public void onConstruct(FMLConstructionEvent event) {
