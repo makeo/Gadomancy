@@ -20,6 +20,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileInfusionMatrix;
 
@@ -60,7 +61,7 @@ public class RegisteredBlocks {
         blockArcaneDropper = registerBlock(new BlockArcaneDropper());
         blockInfusionClaw = registerBlock(new BlockInfusionClaw());
         blockRemoteJar = registerBlock(new BlockRemoteJar(), ItemBlockRemoteJar.class);
-        blockNode = (BlockNode) new BlockNode().setBlockName("blockAiry");
+        blockNode = (BlockNode) new BlockNode().setBlockName("blockAiry").setCreativeTab(Thaumcraft.tabTC);
     }
 
     private static <T extends Block> T registerBlock(String name, T block) {

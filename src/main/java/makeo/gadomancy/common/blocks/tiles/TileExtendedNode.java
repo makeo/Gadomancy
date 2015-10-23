@@ -3,6 +3,8 @@ package makeo.gadomancy.common.blocks.tiles;
 import net.minecraft.nbt.NBTTagCompound;
 import thaumcraft.common.tiles.TileNode;
 
+import java.util.Random;
+
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
@@ -13,7 +15,15 @@ import thaumcraft.common.tiles.TileNode;
  */
 public class TileExtendedNode extends TileNode {
 
-    private boolean growing = false;
+    public boolean growing = false;
+    public double xMoved, yMoved, zMoved;
+
+    public TileExtendedNode() {
+        this.xMoved = 0.5;
+        this.yMoved = 0.5;
+        this.zMoved = 0.5;
+        this.growing = new Random().nextBoolean();
+    }
 
     @Override
     public void updateEntity() {
