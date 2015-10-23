@@ -77,8 +77,8 @@ public class RegisteredItems {
         registerStickyJar(itemBlockJar, 0, new ItemStack(itemBlockJar, 1, 0));
         registerStickyJar(itemBlockJar, 3, new ItemStack(itemBlockJar, 1, 3));
 
-        //Item itemRemoteJar = Item.getItemFromBlock(RegisteredBlocks.blockRemoteJar);
-        //registerStickyJar(itemRemoteJar, 0, new ItemStack(itemRemoteJar));
+        Item itemRemoteJar = Item.getItemFromBlock(RegisteredBlocks.blockRemoteJar);
+        registerStickyJar(itemRemoteJar, 0, new ItemStack(itemRemoteJar));
     }
 
     private static List<StickyJarItemInfo> stickyJarItems = new ArrayList<StickyJarItemInfo>();

@@ -1,5 +1,6 @@
 package makeo.gadomancy.client.renderers.tile;
 
+import makeo.gadomancy.client.models.ModelJarPot;
 import makeo.gadomancy.client.util.FakeWorld;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import net.minecraft.client.Minecraft;
@@ -21,8 +22,8 @@ import thaumcraft.common.tiles.TileMirrorEssentia;
  * Created by makeo @ 14.10.2015 16:01
  */
 public class RenderTileRemoteJar extends TileJarRenderer {
-    private static final ModelJar MODEL_JAR = new ModelJar();
-    private static final ResourceLocation OVERLAY_TEXTURE = new SimpleResourceLocation("models/jar_overlay.png");
+    private static final ModelJarPot MODEL_JAR_POT = new ModelJarPot();
+    private static final ResourceLocation OVERLAY_TEXTURE = new SimpleResourceLocation("models/jar_pot.png");
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks) {
@@ -54,7 +55,11 @@ public class RenderTileRemoteJar extends TileJarRenderer {
 
         GL11.glScalef(1.002f, 1f, 1.002f);
 
-        MODEL_JAR.renderAll();
+
+        GL11.glTranslatef(0, -1.5f, 0);
+        //GL11.glRotatef(180, 1f, 0, 0);
+
+        MODEL_JAR_POT.render(null, 0f, 0f, 0f, 0f, 0f, 0.0625f);
 
         GL11.glPopMatrix();
         GL11.glPopAttrib();

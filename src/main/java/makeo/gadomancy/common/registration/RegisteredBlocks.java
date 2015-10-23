@@ -109,7 +109,7 @@ public class RegisteredBlocks {
         registerStickyJar(ConfigBlocks.blockJar, 0, true, true);
         registerStickyJar(ConfigBlocks.blockJar, 3, true, true);
 
-        //registerStickyJar(RegisteredBlocks.blockRemoteJar, 0, false, false);
+        registerStickyJar(RegisteredBlocks.blockRemoteJar, 0, false, false);
     }
 
     private static List<StickyJarInfo> stickyJars = new ArrayList<StickyJarInfo>();

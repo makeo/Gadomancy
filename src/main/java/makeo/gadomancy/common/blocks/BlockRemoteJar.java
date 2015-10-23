@@ -30,8 +30,7 @@ import java.util.List;
  */
 public class BlockRemoteJar extends BlockJar {
     public BlockRemoteJar() {
-        //setCreativeTab(RegisteredItems.creativeTab);
-        setCreativeTab(null);
+        setCreativeTab(RegisteredItems.creativeTab);
     }
 
     @Override
