@@ -43,6 +43,8 @@ tile.BlockInfusionClaw.name=Infusion Claw
 tile.BlockRemoteJar.name=[WIP] Mirrored Jar
 tile.BlockNode.name=Aura Node
 
+gadomancy.nodes.growing=Growing
+
 gadomancy.info.InfusionClaw.owner=You are now the owner.
 gadomancy.info.InfusionClaw.waila=§7Owner:
 gadomancy.info.InfusionClaw.lock=Keep useable wand

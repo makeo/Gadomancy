@@ -5,6 +5,7 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLLog;
 import makeo.gadomancy.client.events.RenderEventHandler;
+import makeo.gadomancy.client.events.RenderWorldTickListener;
 import makeo.gadomancy.client.events.ResourceReloadListener;
 import makeo.gadomancy.client.gui.InfusionClawGui;
 import makeo.gadomancy.client.renderers.block.RenderBlockTransparent;
@@ -105,6 +106,7 @@ public class ClientProxy extends CommonProxy {
         }
 
         MinecraftForge.EVENT_BUS.register(new RenderEventHandler());
+        MinecraftForge.EVENT_BUS.register(new RenderWorldTickListener());
 
         super.postInitalize();
     }

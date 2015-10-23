@@ -1,16 +1,23 @@
 package makeo.gadomancy.client.events;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import makeo.gadomancy.client.util.GrowingDisplayManager;
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.IArchitect;
+import thaumcraft.api.nodes.INode;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.client.lib.REHWandHandler;
+import thaumcraft.common.items.relics.ItemThaumometer;
 import thaumcraft.common.items.wands.ItemWandCasting;
 
 import java.util.ArrayList;
@@ -29,7 +36,8 @@ public class RenderEventHandler {
 
     @SubscribeEvent
     public void on(DrawBlockHighlightEvent e) {
-        if(e.currentItem != null && e.currentItem.getItem() instanceof ItemWandCasting) {
+        if(e.currentItem == null) return;
+        if(e.currentItem.getItem() instanceof ItemWandCasting) {
             ItemFocusBasic focus = ((ItemWandCasting) e.currentItem.getItem()).getFocus(e.currentItem);
             if(focus == null || !(focus instanceof IArchitect)) {
                 Block block = e.player.worldObj.getBlock(e.target.blockX, e.target.blockY, e.target.blockZ);
@@ -52,6 +60,18 @@ public class RenderEventHandler {
                     WAND_HANDLER.handleArchitectOverlay(new ItemStack(ARCHITECT_ITEM), e, e.player.ticksExisted, e.target);
                     GL11.glPopAttrib();
                 }
+            }
+        } else if(e.currentItem.getItem() instanceof ItemThaumometer) {
+            if(e.target.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK) return;
+            int blockX = e.target.blockX;
+            int blockY = e.target.blockY;
+            int blockZ = e.target.blockZ;
+            if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
+                TileEntity tile = e.player.worldObj.getTileEntity(blockX, blockY, blockZ);
+                if(!(tile instanceof TileExtendedNode)) return;
+                TileExtendedNode node = (TileExtendedNode) tile;
+                if(!node.growing) return;
+                GrowingDisplayManager.notifyDisplayTick(node.getId(), node.getNodeType());
             }
         }
     }
