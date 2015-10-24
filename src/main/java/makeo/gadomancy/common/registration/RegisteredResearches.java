@@ -33,6 +33,7 @@ public class RegisteredResearches {
     public static ResearchItem researchArcaneDropper;
     public static ResearchItem researchGolemCoreBreak;
     public static ResearchItem researchInfusionClaw;
+    public static ResearchItem researchRemoteJar;
 
     public static void init() {
         ResearchCategories.registerCategory(Gadomancy.MODID, CATEGORY_ICON, CATEGORY_BACKGROUND);
@@ -79,5 +80,11 @@ public class RegisteredResearches {
                 RegisteredItems.getStickyJarStacks())
                 .setParents(researchVoidJar.key).setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.STICKYJAR.1"), new ResearchPage(RegisteredRecipes.getVisualStickyJarRecipes())).registerResearchItem();
+
+        researchRemoteJar = new SimpleResearchItem("REMOTEJAR", -2, 2, 3,
+                RegisteredRecipes.recipeRemoteJar.getRecipeOutput(),
+                new AspectList().add(Aspect.WATER, 4).add(Aspect.MECHANISM, 8).add(Aspect.EARTH, 4).add(Aspect.ORDER, 8))
+                .setParents(researchVoidJar.key).setConcealed()
+                .setPages(new ResearchPage("gadomancy.research_page.REMOTEJAR.1"), new ResearchPage(RegisteredRecipes.recipeRemoteJar)).registerResearchItem();
     }
 }

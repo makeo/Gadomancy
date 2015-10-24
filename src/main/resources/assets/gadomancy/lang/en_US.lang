@@ -28,6 +28,10 @@ tc.research_name.GADOMANCY.INFUSIONCLAW=Automated Infusion
 tc.research_text.GADOMANCY.INFUSIONCLAW=Floating stuff!
 gadomancy.research_page.INFUSIONCLAW.1=Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
 
+tc.research_name.GADOMANCY.REMOTEJAR=Mirrored Jars
+tc.research_text.GADOMANCY.REMOTEJAR=Mirrored transportation
+gadomancy.research_page.REMOTEJAR.1=Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
+
 gadomancy.golemblurb.default=??
 gadomancy.golemblurb.breakcore=Master, should I break everything, or something specific?
 gadomancy.golem.breakcore=Break
