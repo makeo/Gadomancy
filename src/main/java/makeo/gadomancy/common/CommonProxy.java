@@ -12,15 +12,23 @@ import makeo.gadomancy.common.events.EventHandlerWorld;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.registration.*;
 import makeo.gadomancy.client.ClientProxy;
+import makeo.gadomancy.common.utils.Injector;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import thaumcraft.api.wands.WandTriggerRegistry;
 import thaumcraft.common.blocks.BlockAiryItem;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.golems.ContainerGolem;
 import thaumcraft.common.entities.golems.EntityGolemBase;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -43,17 +51,11 @@ public class CommonProxy implements IGuiHandler {
         RegisteredBlocks.init();
         RegisteredItems.init();
         RegisteredGolemStuff.init();
+
+        ModSubstitutions.preInit();
     }
 
     public void initalize() {
-        try {
-            RegisteredItems.itemBlockAiryCopy = new BlockAiryItem(RegisteredBlocks.blockNode);
-            GameRegistry.addSubstitutionAlias("Thaumcraft:blockAiry", GameRegistry.Type.BLOCK, RegisteredBlocks.blockNode);
-            GameRegistry.addSubstitutionAlias("Thaumcraft:blockAiry", GameRegistry.Type.ITEM, RegisteredItems.itemBlockAiryCopy);
-            ConfigBlocks.blockAiry = RegisteredBlocks.blockNode;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         NetworkRegistry.INSTANCE.registerGuiHandler(Gadomancy.instance, this);
 
@@ -62,6 +64,8 @@ public class CommonProxy implements IGuiHandler {
         MinecraftForge.EVENT_BUS.register(new EventHandlerWorld());
 
         RegisteredRecipes.init();
+
+        ModSubstitutions.init();
     }
 
     public void postInitalize() {
@@ -69,6 +73,17 @@ public class CommonProxy implements IGuiHandler {
         RegisteredIntegrations.init();
 
         RegisteredResearches.postInit();
+
+        ModSubstitutions.postInit();
+    }
+
+    public static void unregisterWandHandler(String modid, Block block, int metadata) {
+        HashMap<String, HashMap<List, List>> triggers = new Injector(WandTriggerRegistry.class).getField("triggers");
+        HashMap<List, List> modTriggers = triggers.get(modid);
+        if(modTriggers == null) return;
+        List arrKey = Arrays.asList(block, metadata);
+        modTriggers.remove(arrKey);
+        triggers.put(modid, modTriggers);
     }
 
     @Override

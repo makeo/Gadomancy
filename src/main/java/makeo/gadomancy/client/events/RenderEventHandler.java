@@ -19,6 +19,7 @@ import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.client.lib.REHWandHandler;
 import thaumcraft.common.items.relics.ItemThaumometer;
 import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.tiles.TileJarNode;
 
 import java.util.ArrayList;
 
@@ -68,10 +69,14 @@ public class RenderEventHandler {
             int blockZ = e.target.blockZ;
             if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
                 TileEntity tile = e.player.worldObj.getTileEntity(blockX, blockY, blockZ);
-                if(!(tile instanceof TileExtendedNode)) return;
-                TileExtendedNode node = (TileExtendedNode) tile;
-                if(!node.growing) return;
-                GrowingDisplayManager.notifyDisplayTick(node.getId(), node.getNodeType());
+                if(tile instanceof TileExtendedNode) {
+                    TileExtendedNode node = (TileExtendedNode) tile;
+                    if(!node.growing) return;
+                    GrowingDisplayManager.notifyDisplayTick(node.getId(), node.getNodeType());
+                } else if(tile instanceof TileJarNode) {
+                    TileJarNode nodeJar = (TileJarNode) tile;
+
+                }
             }
         }
     }
