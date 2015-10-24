@@ -7,6 +7,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.impl.ModuleRegistrar;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,6 +17,7 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -27,7 +29,7 @@ import java.util.List;
  */
 public class StickyJarProvider implements IWailaDataProvider {
     @Override
-    public ItemStack getWailaStack(IWailaDataAccessor data, IWailaConfigHandler config) {
+    public ItemStack getWailaStack(final IWailaDataAccessor data, final IWailaConfigHandler config) {
         if(data.getTileEntity() instanceof TileStickyJar) {
             TileStickyJar stickyJar = (TileStickyJar) data.getTileEntity();
 
@@ -53,17 +55,45 @@ public class StickyJarProvider implements IWailaDataProvider {
     }
 
     @Override
-    public List<String> getWailaHead(ItemStack stack, List<String> strings, IWailaDataAccessor data, IWailaConfigHandler config) {
-        return null;
+    public List<String> getWailaHead(final ItemStack stack, final List<String> strings, final IWailaDataAccessor data, final IWailaConfigHandler config) {
+        TileStickyJar tile = (TileStickyJar) data.getTileEntity();
+        if(tile != null && tile.isValid()) {
+            callParentProviders(ModuleRegistrar.instance().getBodyProviders(tile.getParentBlock()), new Callable<IWailaDataProvider>() {
+                @Override
+                public void call(IWailaDataProvider provider) {
+                    provider.getWailaHead(stack, strings, data, config);
+                }
+            });
+        }
+        return strings;
     }
 
     @Override
-    public List<String> getWailaBody(ItemStack stack, List<String> strings, IWailaDataAccessor data, IWailaConfigHandler config) {
-        return null;
+    public List<String> getWailaBody(final ItemStack stack, final List<String> strings, final IWailaDataAccessor data, final IWailaConfigHandler config) {
+        TileStickyJar tile = (TileStickyJar) data.getTileEntity();
+        if(tile != null && tile.isValid()) {
+            callParentProviders(ModuleRegistrar.instance().getBodyProviders(tile.getParentBlock()), new Callable<IWailaDataProvider>() {
+                @Override
+                public void call(IWailaDataProvider provider) {
+                   provider.getWailaBody(stack, strings, data, config);
+                }
+            });
+        }
+        return strings;
     }
 
     @Override
-    public List<String> getWailaTail(ItemStack stack, List<String> strings, IWailaDataAccessor data, IWailaConfigHandler config) {
+    public List<String> getWailaTail(final ItemStack stack, final List<String> strings, final IWailaDataAccessor data, final IWailaConfigHandler config) {
+        TileStickyJar tile = (TileStickyJar) data.getTileEntity();
+        if(tile != null && tile.isValid()) {
+            callParentProviders(ModuleRegistrar.instance().getBodyProviders(tile.getParentBlock()), new Callable<IWailaDataProvider>() {
+                @Override
+                public void call(IWailaDataProvider provider) {
+                    provider.getWailaTail(stack, strings, data, config);
+                }
+            });
+        }
+
         if(data.getTileEntity() instanceof TileStickyJar) {
             if(strings.size() > 0) {
                 String oldMod = strings.get(strings.size() - 1);
@@ -78,5 +108,17 @@ public class StickyJarProvider implements IWailaDataProvider {
     @Override
     public NBTTagCompound getNBTData(EntityPlayerMP paramEntityPlayerMP, TileEntity paramTileEntity, NBTTagCompound paramNBTTagCompound, World paramWorld, int paramInt1, int paramInt2, int paramInt3) {
         return null;
+    }
+
+    private void callParentProviders(Map<Integer, List<IWailaDataProvider>> providers, Callable<IWailaDataProvider> callable) {
+        for(Map.Entry<Integer, List<IWailaDataProvider>> entry : providers.entrySet()) {
+            for(IWailaDataProvider provider : entry.getValue()) {
+                callable.call(provider);
+            }
+        }
+    }
+
+    private abstract static class Callable<T> {
+        public abstract void call(IWailaDataProvider provider);
     }
 }

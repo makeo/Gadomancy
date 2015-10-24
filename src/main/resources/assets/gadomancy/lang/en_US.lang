@@ -40,7 +40,7 @@ gadomancy.lore.remotejar=§7Network: %s
 tile.BlockStickyJar.name=Sticky Jar
 tile.BlockArcaneDropper.name=Arcane Dropper
 tile.BlockInfusionClaw.name=Infusion Claw
-tile.BlockRemoteJar.name=[WIP] Mirrored Jar
+tile.BlockRemoteJar.name=Mirrored Jar
 tile.BlockNode.name=Aura Node
 
 gadomancy.nodes.growing=Growing

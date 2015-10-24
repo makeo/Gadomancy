@@ -29,7 +29,7 @@ public class TileRemoteJar extends TileJarFillable {
             JarNetwork network = getNetwork(networkId);
 
             if(!network.jars.contains(this)) {
-                network.jars.add(this);
+                network.jars.add((TileJarFillable) worldObj.getTileEntity(xCoord, yCoord, zCoord));
             }
 
             network.update();
@@ -57,26 +57,26 @@ public class TileRemoteJar extends TileJarFillable {
 
     private static class JarNetwork {
         private long lastTime = 0;
-        private List<TileRemoteJar> jars = new ArrayList<TileRemoteJar>();
+        private List<TileJarFillable> jars = new ArrayList<TileJarFillable>();
 
         private void update() {
             long time = MinecraftServer.getServer().getEntityWorld().getTotalWorldTime();
             if(time > lastTime) {
                 if(jars.size() > 1) {
-                    Collections.sort(jars, new Comparator<TileRemoteJar>() {
+                    Collections.sort(jars, new Comparator<TileJarFillable>() {
                         @Override
-                        public int compare(TileRemoteJar o1, TileRemoteJar o2) {
+                        public int compare(TileJarFillable o1, TileJarFillable o2) {
                             return o2.amount - o1.amount;
                         }
                     });
 
-                    TileRemoteJar jar1 = jars.get(0);
+                    TileJarFillable jar1 = jars.get(0);
                     if(!isValid(jar1)) {
                         jars.remove(0);
                         return;
                     }
 
-                    TileRemoteJar jar2 = jars.get(jars.size() - 1);
+                    TileJarFillable jar2 = jars.get(jars.size() - 1);
                     if(!isValid(jar2)) {
                         jars.remove(jars.size() - 1);
                         return;
@@ -90,7 +90,7 @@ public class TileRemoteJar extends TileJarFillable {
             }
         }
 
-        private static boolean isValid(TileRemoteJar jar) {
+        private static boolean isValid(TileJarFillable jar) {
             return jar != null && jar.getWorldObj() != null && !jar.isInvalid()
                     && jar.getWorldObj().blockExists(jar.xCoord, jar.yCoord, jar.zCoord);
         }
