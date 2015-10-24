@@ -2,6 +2,7 @@ package makeo.gadomancy.client.renderers.tile;
 
 import makeo.gadomancy.client.models.ModelJarPot;
 import makeo.gadomancy.client.util.FakeWorld;
+import makeo.gadomancy.common.blocks.BlockRemoteJar;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,7 +42,7 @@ public class RenderTileRemoteJar extends TileJarRenderer {
         renderer.func_147497_a(this.field_147501_a);
 
         if(field_147501_a.field_147553_e != null) {
-            renderer.renderTileEntityAt(createFakeTile(tile, true), 0, 0, 0, partialTicks);
+            renderer.renderTileEntityAt(createFakeTile(tile, BlockRemoteJar.getJarTile(tile).networkId != null), 0, 0, 0, partialTicks);
         }
 
         GL11.glPopMatrix();

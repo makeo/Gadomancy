@@ -48,3 +48,7 @@ gadomancy.nodes.growing=Growing
 gadomancy.info.InfusionClaw.owner=You are now the owner.
 gadomancy.info.InfusionClaw.waila=§7Owner:
 gadomancy.info.InfusionClaw.lock=Keep useable wand
+
+gadomancy.info.RemoteJar.new=Created new jar network
+gadomancy.info.RemoteJar.clear=Disconnected from current jar network
+gadomancy.info.RemoteJar.connected=Connected to existing jar network

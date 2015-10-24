@@ -7,6 +7,7 @@ import makeo.gadomancy.common.blocks.BlockRemoteJar;
 import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
+import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.NBTHelper;
 import makeo.gadomancy.common.utils.StringHelper;
 import net.minecraft.block.Block;
@@ -16,9 +17,11 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.wands.IWandTriggerManager;
 import thaumcraft.common.blocks.ItemJarFilled;
 import thaumcraft.common.config.ConfigItems;
 
@@ -45,8 +48,23 @@ public class ItemBlockRemoteJar extends ItemBlock {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
-        return super.onItemRightClick(p_77659_1_, p_77659_2_, p_77659_3_);
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        if(!world.isRemote) {
+            if(player.isSneaking()) {
+                NBTTagCompound compound = NBTHelper.getData(stack);
+                if(compound.hasKey("networkId")) {
+                    compound.removeTag("networkId");
+
+                    if(compound.hasNoTags()) {
+                        stack.setTagCompound(null);
+                    }
+
+                    player.addChatComponentMessage(new ChatComponentTranslation("gadomancy.info.RemoteJar.clear"));
+                }
+            }
+        }
+
+        return super.onItemRightClick(stack, world, player);
     }
 
     @Override
@@ -60,21 +78,31 @@ public class ItemBlockRemoteJar extends ItemBlock {
         if (tile != null) {
             if(!world.isRemote) {
                 NBTTagCompound compound = NBTHelper.getData(stack);
+                if(!player.isSneaking()) {
+                    UUID networkId = null;
+                    if(tile.networkId == null) {
+                        player.addChatComponentMessage(new ChatComponentTranslation("gadomancy.info.RemoteJar.new"));
+                        networkId = UUID.randomUUID();
+                        tile.networkId = networkId;
+                        tile.markForUpdate();
+                    } else {
+                        UUID current = NBTHelper.getUUID(compound, "networkId");
+                        if(current == null || !current.equals(tile.networkId)) {
+                            player.addChatComponentMessage(new ChatComponentTranslation("gadomancy.info.RemoteJar.connected"));
+                            networkId = tile.networkId;
+                        }
+                    }
 
-                UUID networkId = tile.networkId;
-                if(networkId == null) {
-                    networkId = UUID.randomUUID();
-                    tile.networkId = networkId;
-                    tile.markForUpdate();
+                    if(networkId != null) {
+                        NBTHelper.setUUID(compound, "networkId", networkId);
+                    }
                 }
-
-                NBTHelper.setUUID(compound, "networkId", networkId);
                 return true;
             } else {
-                //TODO: message
-                return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+                if(player.isSneaking()) {
+                    return true;
+                }
             }
-
         }
         return false;
     }

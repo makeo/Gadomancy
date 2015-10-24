@@ -3,6 +3,7 @@ package makeo.gadomancy.client.renderers.item;
 import makeo.gadomancy.client.renderers.tile.RenderTileRemoteJar;
 import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
+import makeo.gadomancy.common.utils.NBTHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.FMLRenderAccessLibrary;
@@ -36,6 +37,10 @@ public class ItemRenderRemoteJar extends ItemRenderTileEntity<TileRemoteJar> {
         } else {
             tile.aspect = null;
             tile.amount = 0;
+        }
+
+        if(stack.hasTagCompound()) {
+            tile.networkId = NBTHelper.getUUID(stack.getTagCompound(), "networkId");
         }
 
         super.renderItem(type, stack, data);
