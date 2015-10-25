@@ -32,6 +32,7 @@ public class RegisteredItems {
     public static Item itemTransformationFocus;
     public static Item itemGolemCoreBreak;
 
+    @Deprecated
     public static Item itemBlockAiryCopy; //!!!!!!!!!!DO NOT TOUCH THIS OR USE THIS ANYWHERE!!!!!!!!!!
 
     public static void preInit() {

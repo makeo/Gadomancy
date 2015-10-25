@@ -22,6 +22,10 @@ public class RenderTileExtendedNode extends TileEntitySpecialRenderer {
         double rX = node.xCoord + 0.5;
         double rY = node.yCoord + 0.5;
         double rZ = node.zCoord + 0.5;
-        RenderTileNodeBasic.renderTileEntityAt(tile, rX, rY, rZ, partialTicks);
+        float size = 1.0F;
+        if(node.growing) {
+            size *= 1.5F;
+        }
+        RenderTileNodeBasic.renderTileEntityAt(tile, rX, rY, rZ, partialTicks, size);
     }
 }

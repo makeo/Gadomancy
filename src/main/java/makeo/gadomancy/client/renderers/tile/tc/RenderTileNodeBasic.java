@@ -23,9 +23,9 @@ import thaumcraft.common.tiles.TileNode;
 
 /**
  * This class is NOT part of the Gadomancy Mod
- * This file is copied from Azanors thaumcraft.client.renderers.models.gear.ModelWand.java and contains small modifications
+ * This file is copied from Azanors thaumcraft.client.renderers.tile.TileNodeRenderer.java and contains small modifications
  * Thaumcraft: http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1292130
- * <p/>
+ *
  * Created by Azanor
  * Modified by HellFirePvP @ 23.10.2015 20:04
  */
@@ -37,6 +37,7 @@ public class RenderTileNodeBasic {
 
     - Where a node is rendered is now defined of the parameters of renderTileEntityAt() and no longer of the node-tile itself
     - Node rendering takes doubles as params and no longer int values.
+    - Redirected renderTileEntityAt to a renderTileEntityAt where a size of the node can be specified
 
     Changes made by HellFirePvP
      */
@@ -177,11 +178,17 @@ public class RenderTileNodeBasic {
         }
     }
 
+    //Gadomancy START
     public static void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks) {
+        renderTileEntityAt(tile, x, y, z, partialTicks, 1.0F);
+    }
+    //Gadomancy END
+
+    //Gadomancy: Added dynamic size
+    public static void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks, float size) {
         if (!(tile instanceof INode)) {
             return;
         }
-        float size = 1.0F;
         INode node = (INode) tile;
         double viewDistance = 64.0D;
         EntityLivingBase viewer = Minecraft.getMinecraft().renderViewEntity;
@@ -190,7 +197,7 @@ public class RenderTileNodeBasic {
         if ((viewer instanceof EntityPlayer)) {
             if ((tile != null) && ((tile instanceof TileJarNode))) {
                 condition = true;
-                size = 0.7F;
+                size = (float) ((size * 7D) / 10D); //Gadomancy: Node size is 70% of the default size in standart TC. calculating the same here.
             } else if ((((EntityPlayer) viewer).inventory.armorItemInSlot(3) != null) && ((((EntityPlayer) viewer).inventory.armorItemInSlot(3).getItem() instanceof IRevealer)) && (((IRevealer) ((EntityPlayer) viewer).inventory.armorItemInSlot(3).getItem()).showNodes(((EntityPlayer) viewer).inventory.armorItemInSlot(3), viewer))) {
                 condition = true;
                 depthIgnore = true;

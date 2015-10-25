@@ -25,6 +25,7 @@ import java.util.Random;
 public class TileExtendedNode extends TileNode {
 
     public boolean growing = new Random().nextBoolean();
+    private GrowingNodeBehavior behavior = new GrowingNodeBehavior();
 
     @Override
     public void updateEntity() {
@@ -34,14 +35,13 @@ public class TileExtendedNode extends TileNode {
 
         needUpdate = handleGrowingNode(false);
 
-        if (needUpdate) {
+        if(!worldObj.isRemote && needUpdate) {
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             markDirty();
+            System.out.println(needUpdate);
         }
     }
 
-    //TODO add growing ai stuff
-    //TODO handle growth percentages.
     private boolean handleGrowingNode(boolean needUpdate) {
         if(!growing) return needUpdate;
         List aspectOrbs = this.worldObj.getEntitiesWithinAABB(EntityAspectOrb.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1).expand(15.0D, 15.0D, 15.0D));
@@ -52,21 +52,14 @@ public class TileExtendedNode extends TileNode {
                     double d = getDistanceTo(aspectOrb.posX, aspectOrb.posY, aspectOrb.posZ);
                     if (d < 1.0D) { //prev: 2.0D
                         Aspect aspect = aspectOrb.getAspect();
-                        int aspectValue = aspectOrb.getAspectValue();
 
                         if (getAspects().getAmount(aspect) < getNodeVisBase(aspect)) {
                             addToContainer(aspect, 1);
                             needUpdate = true;
                         } else {
                             //Adding it permanently
-                            boolean mayAdd;
-                            if(aspect.isPrimal()) {
-                                mayAdd = this.worldObj.rand.nextInt(1 + getNodeVisBase(aspect) * 2) < aspectValue;
-                            } else {
-                                mayAdd = true;
-                            }
-                            if (mayAdd) {
-                                getAspectsBase().add(aspect, 1);
+                            if(!worldObj.isRemote && behavior.doesAccept(aspect)) {
+                                behavior.addAspect(GrowingNodeBehavior.AspectType.ASPECT_ORB, getAspectsBase(), aspect, 1);
                                 needUpdate = true;
                             }
                         }
@@ -93,14 +86,8 @@ public class TileExtendedNode extends TileNode {
                                 needUpdate = true;
                             } else {
                                 //Adding it permanently
-                                boolean mayAdd;
-                                if(aspect.isPrimal()) {
-                                    mayAdd = this.worldObj.rand.nextInt(1 + getNodeVisBase(aspect) * 2) < 1;
-                                } else {
-                                    mayAdd = true;
-                                }
-                                if (mayAdd) {
-                                    getAspectsBase().add(aspect, 1);
+                                if(!worldObj.isRemote && behavior.doesAccept(aspect)) {
+                                    behavior.addAspect(GrowingNodeBehavior.AspectType.WISP_ESSENCE, getAspectsBase(), aspect, 1);
                                     needUpdate = true;
                                 }
                             }
@@ -120,20 +107,17 @@ public class TileExtendedNode extends TileNode {
                     if (d < 1.0D) { //prev: 2.0D
                         Aspect aspect = Aspect.getAspect(wisp.getType());
 
-                        if (getAspects().getAmount(aspect) < getNodeVisBase(aspect)) {
-                            addToContainer(aspect, 1);
-                            needUpdate = true;
-                        } else {
-                            //Adding it permanently
-                            boolean mayAdd;
-                            if(aspect.isPrimal()) {
-                                mayAdd = this.worldObj.rand.nextInt(1 + getNodeVisBase(aspect) * 2) < 2;
-                            } else {
-                                mayAdd = true;
-                            }
-                            if (mayAdd) {
-                                getAspectsBase().add(aspect, 1);
+                        if(aspect != null) {
+                            if (getAspects().getAmount(aspect) < getNodeVisBase(aspect)) {
+                                addToContainer(aspect, 1);
                                 needUpdate = true;
+                            } else {
+                                //Adding it permanently
+
+                                if(!worldObj.isRemote && behavior.doesAccept(aspect)) {
+                                    behavior.addAspect(GrowingNodeBehavior.AspectType.WISP, getAspectsBase(), aspect, 1);
+                                    needUpdate = true;
+                                }
                             }
                         }
                         wisp.setDead();
@@ -164,7 +148,13 @@ public class TileExtendedNode extends TileNode {
         super.readCustomNBT(nbttagcompound);
 
         NBTTagCompound compound = nbttagcompound.getCompoundTag("Gadomancy");
+
         this.growing = compound.getBoolean("growing");
+
+        if(growing) {
+            NBTTagCompound growingNodeBehavior = compound.getCompoundTag("NodeBehavior");
+            behavior.readFromNBT(growingNodeBehavior);
+        }
     }
 
     @Override
@@ -173,6 +163,12 @@ public class TileExtendedNode extends TileNode {
 
         NBTTagCompound compound = new NBTTagCompound();
         compound.setBoolean("growing", growing);
+
+        if(growing) {
+            NBTTagCompound behaviorCompound = new NBTTagCompound();
+            behavior.writeToNBT(behaviorCompound);
+            compound.setTag("NodeBehavior", behaviorCompound);
+        }
 
         nbttagcompound.setTag("Gadomancy", compound);
     }
