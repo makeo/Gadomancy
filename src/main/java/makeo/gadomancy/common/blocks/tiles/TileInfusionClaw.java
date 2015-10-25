@@ -267,7 +267,7 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements IInvento
     }
 
     private void startRunning() {
-        PacketHandler.INSTANCE.sendToAllAround(new PacketStartAnimation((byte)0, xCoord, yCoord, zCoord),
+        PacketHandler.INSTANCE.sendToAllAround(new PacketStartAnimation(PacketStartAnimation.ID_INFUSIONCLAW, xCoord, yCoord, zCoord),
                 new NetworkRegistry.TargetPoint(getWorldObj().provider.dimensionId, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 48));
         cooldown = 22*20;
     }

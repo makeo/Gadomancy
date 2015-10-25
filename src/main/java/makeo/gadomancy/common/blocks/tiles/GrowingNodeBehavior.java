@@ -3,11 +3,9 @@ package makeo.gadomancy.common.blocks.tiles;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -21,7 +19,10 @@ public class GrowingNodeBehavior {
 
     public static final double SATURATION_DIFFICULTY = 10D;
     public static final double SATURATION_CAP = 100D;
-    private static final Random rand = new Random();
+    public static final int HAPPINESS_CAP = 100;
+
+    //The node the behavior belongs to
+    private final TileExtendedNode owningNode;
 
     //The lower the 'happier'
     private double overallHappiness = 0.0D;
@@ -39,12 +40,16 @@ public class GrowingNodeBehavior {
     //If this is true, the node stops growing.
     private boolean isSaturated = false;
 
-    public void addAspect(AspectType type, AspectList nodeAspects, Aspect aspect, int value) {
+    public GrowingNodeBehavior(TileExtendedNode owningNode) {
+        this.owningNode = owningNode;
+    }
+
+    public void addAspect(AspectType type, Aspect aspect, int value) {
         if(isSaturated) return;
 
         double increasedSaturation = getSaturation(type, aspect);
         addSaturation(aspect, increasedSaturation);
-        nodeAspects.add(aspect, value);
+        owningNode.getAspectsBase().add(aspect, value);
 
         computeOverallSaturation();
     }
@@ -68,6 +73,11 @@ public class GrowingNodeBehavior {
 
         satCmp *= 8.5;
         satCmp /=  10;
+
+        if(overallHappiness > HAPPINESS_CAP) {
+            overallHappiness /= 10;
+            owningNode.triggerVortexExplosion();
+        }
 
         //If the saturation is in the upper 85%
         System.out.println(percentSaturation + " - " + overallHappiness);
@@ -103,6 +113,8 @@ public class GrowingNodeBehavior {
             case ASPECT_ORB:
                 mult -= 0.3D; //Growing node prefers aspects in their most natural form.
                 break;
+            case MANA_BEAN:
+                mult += 0.4D; //Mana beans are hard to breed but easy to multiply.. thus growing node doesn't like.
         }
         if(lastFedAspect != null) {
             if(lastFedAspect.equals(aspect)) {
@@ -123,7 +135,7 @@ public class GrowingNodeBehavior {
 
         if(aspectSaturation.containsKey(aspect)) {
             double percentageToSaturation = aspectSaturation.get(aspect) / SATURATION_CAP; // 0.0 - 1.0
-            boolean mayAdd = rand.nextFloat() > percentageToSaturation;
+            boolean mayAdd = owningNode.getWorldObj().rand.nextFloat() > percentageToSaturation;
             if(mayAdd) {
                 double inc = 1D / (1D - percentageToSaturation);
                 if(lastFedAspect != null) {
@@ -146,11 +158,10 @@ public class GrowingNodeBehavior {
     }
 
     private double evaluateFeedingDenialFunc(double i) {
-        return Math.pow(2D, (i / 6D));
+        return (Math.log(i) / 2) + 1;
     }
 
     private void handleOverfeed() {
-        System.out.println("OVERFED");
         //TODO let node collapse if overfed & still feeding...
     }
 
@@ -196,7 +207,7 @@ public class GrowingNodeBehavior {
 
     public static enum AspectType {
 
-        WISP, WISP_ESSENCE, ASPECT_ORB
+        WISP, WISP_ESSENCE, ASPECT_ORB, MANA_BEAN
 
     }
 

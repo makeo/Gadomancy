@@ -1,7 +1,7 @@
 package makeo.gadomancy.client.events;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import makeo.gadomancy.client.util.GrowingDisplayManager;
+import makeo.gadomancy.client.util.ExtendedTypeDisplayManager;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import net.minecraft.block.Block;
@@ -15,7 +15,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.IArchitect;
-import thaumcraft.api.nodes.INode;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.client.lib.REHWandHandler;
 import thaumcraft.common.items.relics.ItemThaumometer;
@@ -72,8 +71,8 @@ public class RenderEventHandler {
                 TileEntity tile = e.player.worldObj.getTileEntity(blockX, blockY, blockZ);
                 if(tile instanceof TileExtendedNode) {
                     TileExtendedNode node = (TileExtendedNode) tile;
-                    if(!node.growing) return;
-                    GrowingDisplayManager.notifyDisplayTick(node.getId(), node.getNodeType());
+                    if(node.getExtendedNodeType() == null) return;
+                    ExtendedTypeDisplayManager.notifyDisplayTick(node.getId(), node.getNodeType(), node.getExtendedNodeType());
                 } else if(tile instanceof TileJarNode) {
                     TileJarNode nodeJar = (TileJarNode) tile;
 
@@ -84,6 +83,6 @@ public class RenderEventHandler {
 
     @SubscribeEvent
     public void worldRenderEvent(RenderWorldLastEvent event) {
-        GrowingDisplayManager.notifyRenderTick();
+        ExtendedTypeDisplayManager.notifyRenderTick();
     }
 }

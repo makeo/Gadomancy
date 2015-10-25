@@ -1,6 +1,7 @@
 package makeo.gadomancy.client.util;
 
 import makeo.gadomancy.client.events.ResourceReloadListener;
+import makeo.gadomancy.common.blocks.tiles.ExtendedNodeType;
 import net.minecraft.util.StatCollector;
 import thaumcraft.api.nodes.NodeType;
 
@@ -12,7 +13,7 @@ import thaumcraft.api.nodes.NodeType;
  *
  * Created by HellFirePvP @ 23.10.2015 22:53
  */
-public class GrowingDisplayManager {
+public class ExtendedTypeDisplayManager {
 
     private static int timeout = 7;
     private static int currTime = 0;
@@ -38,7 +39,7 @@ public class GrowingDisplayManager {
         changedLanguageFile = false;
     }
 
-    public static void notifyDisplayTick(String id, NodeType nodeType) {
+    public static void notifyDisplayTick(String id, NodeType nodeType, ExtendedNodeType extendedNodeType) {
         currTime = 0;
 
         if(currentNodeId != null && !currentNodeId.equals(id)) {
@@ -49,7 +50,7 @@ public class GrowingDisplayManager {
         if(!changedLanguageFile) {
             String toChance = "nodetype." + nodeType + ".name";
             String name = StatCollector.translateToLocal(toChance);
-            String growingStr = StatCollector.translateToLocal("gadomancy.nodes.growing");
+            String growingStr = StatCollector.translateToLocal("gadomancy.nodes." + extendedNodeType.name());
             String newName = name + ", " + growingStr;
             ResourceReloadListener.languageList.put(toChance, newName);
 

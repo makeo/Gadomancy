@@ -4,8 +4,11 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
+import makeo.gadomancy.common.utils.ExplosionHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.tileentity.TileEntity;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -16,6 +19,10 @@ import net.minecraft.client.Minecraft;
  * Created by makeo @ 11.10.2015 15:19
  */
 public class PacketStartAnimation implements IMessage, IMessageHandler<PacketStartAnimation, IMessage> {
+
+    public static final byte ID_INFUSIONCLAW = 0;
+    public static final byte ID_EX_VORTEX = 1;
+
     private byte annimationId;
     private int x;
     private int y;
@@ -48,11 +55,18 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
 
     @Override
     public IMessage onMessage(PacketStartAnimation message, MessageContext ctx) {
-        if(message.annimationId == 0) {
-            TileInfusionClaw tile = (TileInfusionClaw) Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z);
-            if(tile != null) {
-                tile.animationStates[8] = 1;
-            }
+        switch (message.annimationId) {
+            case ID_INFUSIONCLAW:
+                TileInfusionClaw tile = (TileInfusionClaw) Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z);
+                if(tile != null) {
+                    tile.animationStates[8] = 1;
+                }
+                break;
+            case ID_EX_VORTEX:
+                TileEntity te = Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z);
+                if(te == null || !(te instanceof TileExtendedNode)) return null;
+                ExplosionHelper.VortexExplosion.vortexLightning((TileExtendedNode) te);
+                break;
         }
         return null;
     }

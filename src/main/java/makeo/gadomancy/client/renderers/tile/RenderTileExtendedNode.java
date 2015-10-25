@@ -1,6 +1,7 @@
 package makeo.gadomancy.client.renderers.tile;
 
 import makeo.gadomancy.client.renderers.tile.tc.RenderTileNodeBasic;
+import makeo.gadomancy.common.blocks.tiles.ExtendedNodeType;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -23,7 +24,7 @@ public class RenderTileExtendedNode extends TileEntitySpecialRenderer {
         double rY = node.yCoord + 0.5;
         double rZ = node.zCoord + 0.5;
         float size = 1.0F;
-        if(node.growing) {
+        if(node.getExtendedNodeType() != null && node.getExtendedNodeType() == ExtendedNodeType.GROWING) {
             size *= 1.5F;
         }
         RenderTileNodeBasic.renderTileEntityAt(tile, rX, rY, rZ, partialTicks, size);
