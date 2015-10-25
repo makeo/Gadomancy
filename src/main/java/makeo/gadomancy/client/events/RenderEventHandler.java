@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.BlockCoordinates;
@@ -74,5 +75,10 @@ public class RenderEventHandler {
                 GrowingDisplayManager.notifyDisplayTick(node.getId(), node.getNodeType());
             }
         }
+    }
+
+    @SubscribeEvent
+    public void worldRenderEvent(RenderWorldLastEvent event) {
+        GrowingDisplayManager.notifyRenderTick();
     }
 }
