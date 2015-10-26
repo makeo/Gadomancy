@@ -247,7 +247,7 @@ public class EventHandlerGolem {
             if(event.itemStack.getItem() instanceof ItemGolemPlacer
                     || event.itemStack.getItem() instanceof ItemAdditionalGolemPlacer) {
                 if(RegisteredGolemStuff.upgradeRunicShield.hasUpgrade(event.itemStack)) {
-                    event.toolTip.add("§6" + StatCollector.translateToLocal("item.runic.charge") + " +" + RegisteredGolemStuff.upgradeRunicShield.getChargeLimit(event.itemStack));
+                    event.toolTip.add("\u00a76" + StatCollector.translateToLocal("item.runic.charge") + " +" + RegisteredGolemStuff.upgradeRunicShield.getChargeLimit(event.itemStack));
                 }
 
                 AdditionalGolemCore core = GadomancyApi.getAdditionalGolemCore(event.itemStack);
