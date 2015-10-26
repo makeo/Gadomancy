@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.utils;
 
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.network.PacketHandler;
@@ -8,6 +9,9 @@ import makeo.gadomancy.common.network.packets.PacketStartAnimation;
 import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SoundHandler;
+import net.minecraft.client.audio.SoundRegistry;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -88,6 +92,11 @@ public class ExplosionHelper {
                     }
                 }
             }
+            if(phase < 2 && world.rand.nextInt(phase == 0 ? 8 : 4) == 0) {
+                PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_BURST, x, y, z);
+                PacketHandler.INSTANCE.sendToAllAround(packet, new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 32.0D));
+                world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "thaumcraft:ice", 0.8F, 1.0F);
+            }
             switch (phase) {
                 case 0: {
                     tick++;
@@ -123,7 +132,7 @@ public class ExplosionHelper {
                         Block b = world.getBlock(xx, yy, zz);
                         float hardness = b.getBlockHardness(world, xx, yy, zz);
                         if(b != Blocks.air && hardness > 0 && hardness <= 50 && b != RegisteredBlocks.blockNode) {
-                            PacketAnimationAbsorb absorb = new PacketAnimationAbsorb(x + 0.5D, y + 0.5D, z + 0.5D, xx, yy, zz);
+                            PacketAnimationAbsorb absorb = new PacketAnimationAbsorb(x, y, z, xx, yy, zz);
                             PacketHandler.INSTANCE.sendToAllAround(absorb, new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 32D));
                             pastTickBlocks.add(Vec3.createVectorHelper(xx, yy, zz));
                         }

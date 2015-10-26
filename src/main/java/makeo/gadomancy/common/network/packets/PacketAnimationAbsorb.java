@@ -23,12 +23,12 @@ import thaumcraft.common.Thaumcraft;
  */
 public class PacketAnimationAbsorb implements IMessage, IMessageHandler<PacketAnimationAbsorb, IMessage> {
 
-    private double x, y, z;
+    private int x, y, z;
     private int targetX, targetY, targetZ;
 
     public PacketAnimationAbsorb() {}
 
-    public PacketAnimationAbsorb(double x, double y, double z, int targetX, int targetY, int targetZ) {
+    public PacketAnimationAbsorb(int x, int y, int z, int targetX, int targetY, int targetZ) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -39,9 +39,9 @@ public class PacketAnimationAbsorb implements IMessage, IMessageHandler<PacketAn
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        this.x = buf.readDouble();
-        this.y = buf.readDouble();
-        this.z = buf.readDouble();
+        this.x = buf.readInt();
+        this.y = buf.readInt();
+        this.z = buf.readInt();
         this.targetX = buf.readInt();
         this.targetY = buf.readInt();
         this.targetZ = buf.readInt();
@@ -49,9 +49,9 @@ public class PacketAnimationAbsorb implements IMessage, IMessageHandler<PacketAn
 
     @Override
     public void toBytes(ByteBuf buf) {
-        buf.writeDouble(x);
-        buf.writeDouble(y);
-        buf.writeDouble(z);
+        buf.writeInt(x);
+        buf.writeInt(y);
+        buf.writeInt(z);
         buf.writeInt(targetX);
         buf.writeInt(targetY);
         buf.writeInt(targetZ);
@@ -63,7 +63,7 @@ public class PacketAnimationAbsorb implements IMessage, IMessageHandler<PacketAn
         Block b = Minecraft.getMinecraft().theWorld.getBlock(p.targetX, p.targetY, p.targetZ);
         int md = Minecraft.getMinecraft().theWorld.getBlockMetadata(p.targetX, p.targetY, p.targetZ);
         MultiTickEffectDispatcher.VortexDigInfo info =
-                new MultiTickEffectDispatcher.VortexDigInfo(Minecraft.getMinecraft().theWorld.provider.dimensionId, (int) p.x, (int) p.y, (int) p.z, p.targetX, p.targetY, p.targetZ, b, md);
+                new MultiTickEffectDispatcher.VortexDigInfo(Minecraft.getMinecraft().theWorld.provider.dimensionId, p.x, p.y, p.z, p.targetX, p.targetY, p.targetZ, b, md);
         MultiTickEffectDispatcher.registerVortexDig(info);
         return null;
     }

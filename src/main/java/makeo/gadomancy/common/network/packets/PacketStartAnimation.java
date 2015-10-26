@@ -9,6 +9,7 @@ import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
 import makeo.gadomancy.common.utils.ExplosionHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
+import thaumcraft.common.Thaumcraft;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -22,6 +23,7 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
 
     public static final byte ID_INFUSIONCLAW = 0;
     public static final byte ID_EX_VORTEX = 1;
+    public static final byte ID_BURST = 2;
 
     private byte annimationId;
     private int x;
@@ -66,6 +68,9 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
                 TileEntity te = Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z);
                 if(te == null || !(te instanceof TileExtendedNode)) return null;
                 ExplosionHelper.VortexExplosion.vortexLightning((TileExtendedNode) te);
+                break;
+            case ID_BURST:
+                Thaumcraft.proxy.burst(Minecraft.getMinecraft().theWorld, message.x + 0.5F, message.y + 0.5F, message.z + 0.5F, Minecraft.getMinecraft().theWorld.rand.nextInt(3) + 1);
                 break;
         }
         return null;

@@ -91,6 +91,7 @@ public class BlockExtendedNodeJar extends BlockContainer {
             ItemStack drop = new ItemStack(RegisteredItems.itemExtendedNodeJar);
             ((ItemExtendedNodeJar) drop.getItem()).setAspects(drop, ((TileExtendedNodeJar) te).getAspects().copy());
             ((ItemExtendedNodeJar) drop.getItem()).setNodeAttributes(drop, ((TileExtendedNodeJar) te).getNodeType(), ((TileExtendedNodeJar) te).getNodeModifier(), ((TileExtendedNodeJar) te).getExtendedNodeType(), ((TileExtendedNodeJar) te).getId());
+            ((ItemExtendedNodeJar) drop.getItem()).setBehaviorSnapshot(drop, ((TileExtendedNodeJar) te).getBehaviorSnapshot());
             drops.add(drop);
         }
         return drops;

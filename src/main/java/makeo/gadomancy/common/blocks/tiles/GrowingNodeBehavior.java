@@ -1,10 +1,28 @@
 package makeo.gadomancy.common.blocks.tiles;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.network.PacketHandler;
+import makeo.gadomancy.common.network.packets.PacketAnimationAbsorb;
+import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.entities.EntityAspectOrb;
+import thaumcraft.common.lib.network.playerdata.PacketResearchComplete;
+import thaumcraft.common.lib.research.ResearchManager;
+import thaumcraft.common.tiles.TileNode;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,6 +38,9 @@ public class GrowingNodeBehavior {
     public static final double SATURATION_DIFFICULTY = 10D;
     public static final double SATURATION_CAP = 200D;
     public static final int HAPPINESS_CAP = 1000;
+
+    //The node the growing node attacks.
+    private TileNode fixedNode;
 
     //The node the behavior belongs to
     private final TileExtendedNode owningNode;
@@ -50,6 +71,16 @@ public class GrowingNodeBehavior {
         double increasedSaturation = getSaturation(type, aspect);
         addSaturation(aspect, increasedSaturation);
         owningNode.getAspectsBase().add(aspect, value);
+
+        String research = Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTH";
+        List players = owningNode.getWorldObj().getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(owningNode.xCoord, owningNode.yCoord, owningNode.zCoord, owningNode.xCoord + 1, owningNode.yCoord + 1, owningNode.zCoord + 1).expand(6.0D, 6.0D, 6.0D));
+        for(Object pl : players) {
+            EntityPlayer player = (EntityPlayer) pl;
+            if(!ResearchManager.isResearchComplete(player.getCommandSenderName(), research) && ResearchManager.doesPlayerHaveRequisites(player.getCommandSenderName(), research)) {
+                thaumcraft.common.lib.network.PacketHandler.INSTANCE.sendTo(new PacketResearchComplete(research), (EntityPlayerMP)player);
+                Thaumcraft.proxy.getResearchManager().completeResearch(player, research);
+            }
+        }
 
         computeOverallSaturation();
     }
@@ -122,7 +153,8 @@ public class GrowingNodeBehavior {
                 mult -= 0.3D; //Growing node prefers aspects in their most natural form.
                 break;
             case MANA_BEAN:
-                mult += 0.4D; //Mana beans are hard to breed but easy to multiply.. thus growing node doesn't like.
+            case CRYSTAL_ESSENCE:
+                mult += 0.4D; //Mana beans are hard to breed but easy to multiply.. thus growing node doesn't like. Same goes for crystallized essentia
         }
         if(lastFedAspect != null) {
             if(lastFedAspect.equals(aspect)) {
@@ -133,6 +165,68 @@ public class GrowingNodeBehavior {
         lastFedAspect = aspect;
         double sat = aspect.isPrimal() ? 1.4D : 1D;
         return sat * mult;
+    }
+
+    public boolean updateBehavior(boolean needUpdate) {
+        if(fixedNode != null && owningNode.ticksExisted % 3 == 0) {
+            if(owningNode.getWorldObj().getBlock(fixedNode.xCoord, fixedNode.yCoord, fixedNode.zCoord) != RegisteredBlocks.blockNode ||
+                    owningNode.getWorldObj().getTileEntity(fixedNode.xCoord, fixedNode.yCoord, fixedNode.zCoord) == null ||
+                    fixedNode.isInvalid()) {
+                fixedNode = null;
+                return needUpdate;
+            }
+            AspectList currentAspects = fixedNode.getAspects();
+            AspectList baseAspects = fixedNode.getAspectsBase();
+            if(baseAspects.getAspects().length == 0) {
+                int x = fixedNode.xCoord;
+                int y = fixedNode.yCoord;
+                int z = fixedNode.zCoord;
+                owningNode.getWorldObj().setBlockToAir(x, y, z);
+                owningNode.getWorldObj().removeTileEntity(x, y, z);
+                owningNode.getWorldObj().markBlockForUpdate(x, y, z);
+                this.fixedNode = null;
+                return needUpdate;
+            }
+            Aspect a = baseAspects.getAspects()[owningNode.getWorldObj().rand.nextInt(baseAspects.getAspects().length)];
+            if(baseAspects.getAmount(a) > 0) {
+                if(baseAspects.reduce(a, 1)) {
+                    World world = owningNode.getWorldObj();
+                    int fx = fixedNode.xCoord;
+                    int fy = fixedNode.yCoord;
+                    int fz = fixedNode.zCoord;
+                    int ox = owningNode.xCoord;
+                    int oy = owningNode.yCoord;
+                    int oz = owningNode.zCoord;
+                    currentAspects.reduce(a, 1);
+
+                    EntityAspectOrb aspectOrb = new EntityAspectOrb(world, fx + 0.5D, fy + 0.5D, fz + 0.5D, a, 1);
+                    Vec3 dir = Vec3.createVectorHelper(fx + 0.5D, fy + 0.5D, fz + 0.5D).subtract(Vec3.createVectorHelper(ox + 0.5D, oy + 0.5D, oz + 0.5D)).normalize();
+                    dir.addVector(randOffset(), randOffset(), randOffset()).normalize();
+                    aspectOrb.setVelocity(dir.xCoord, dir.yCoord, dir.zCoord);
+                    fixedNode.getWorldObj().spawnEntityInWorld(aspectOrb);
+
+                    NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(world.provider.dimensionId, ox + 0.5F, oy + 0.5F, oz + 0.5F, 32);
+                    PacketTCNodeBolt bolt = new PacketTCNodeBolt(ox + 0.5F, oy + 0.5F, oz + 0.5F, fx + 0.5F, fy + 0.5F, fz + 0.5F);
+                    PacketHandler.INSTANCE.sendToAllAround(bolt, point);
+
+                    PacketAnimationAbsorb packet = new PacketAnimationAbsorb(ox, oy, oz, fx, fy, fz);
+                    PacketHandler.INSTANCE.sendToAllAround(packet, point);
+
+                    world.markBlockForUpdate(fx, fy, fz);
+                    fixedNode.markDirty();
+                    needUpdate = true;
+
+                }
+            } else {
+                baseAspects.remove(a);
+                currentAspects.remove(a);
+            }
+        }
+        return needUpdate;
+    }
+
+    private float randOffset() {
+        return owningNode.getWorldObj().rand.nextFloat() / 3;
     }
 
     public boolean doesAccept(Aspect aspect) {
@@ -213,9 +307,18 @@ public class GrowingNodeBehavior {
         nbtTagCompound.setTag("saturationValues", list);
     }
 
+    public boolean lookingForNode() {
+        return fixedNode == null;
+    }
+
+    public void lockOnTo(TileNode node) {
+        if(this.fixedNode == null)
+            this.fixedNode = node;
+    }
+
     public static enum AspectType {
 
-        WISP, WISP_ESSENCE, ASPECT_ORB, MANA_BEAN
+        WISP, WISP_ESSENCE, ASPECT_ORB, MANA_BEAN, CRYSTAL_ESSENCE
 
     }
 

@@ -7,11 +7,13 @@ import makeo.gadomancy.common.research.SimpleResearchItem;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
+import thaumcraft.common.lib.research.ResearchManager;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -34,8 +36,13 @@ public class RegisteredResearches {
     public static ResearchItem researchGolemCoreBreak;
     public static ResearchItem researchInfusionClaw;
     public static ResearchItem researchRemoteJar;
+    public static ResearchItem researchGrowingNodes;
+    public static ResearchItem researchGrowingNodeAgression;
+    public static ResearchItem researchGrowingNodeGrowth;
+    public static ResearchItem researchGrowingNodeGrowthClue;
 
     public static void init() {
+
         ResearchCategories.registerCategory(Gadomancy.MODID, CATEGORY_ICON, CATEGORY_BACKGROUND);
 
         ResearchItem researchAdvancedGolem = PseudoResearchItem.create("ADVANCEDGOLEM", 2, -2).registerResearchItem();
@@ -70,6 +77,30 @@ public class RegisteredResearches {
                 new AspectList().add(Aspect.ELDRITCH, 8).add(Aspect.MECHANISM, 8).add(Aspect.MAGIC, 8).add(Aspect.ORDER, 8).add(Aspect.DARKNESS, 4))
                 .setParents(researchFocusPrimal.key).setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.INFUSIONCLAW.1"), new ResearchPage(RegisteredRecipes.recipeInfusionClaw)).registerResearchItem();
+
+        researchGrowingNodes = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING", Gadomancy.MODID, new AspectList(), 2, 2, 5, new ResourceLocation("thaumcraft", "textures/misc/r_nodes.png"))
+                .setSpecial().setLost()
+                .setPages(new ResearchPage("gadomancy.research_page.GROWING.1"), new ResearchPage("gadomancy.research_page.GROWING.2")).registerResearchItem();
+
+        researchGrowingNodeAgression = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_AGGRESSION", Gadomancy.MODID, new AspectList(), 5, 3, 6, new ItemStack(RegisteredItems.itemBlockAiryCopy, 1, 5))
+                .setLost()
+                .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING")
+                .setPages(new ResearchPage("gadomancy.research_page.GROWING_AGGRESSION.1")).registerResearchItem();
+
+        researchGrowingNodeGrowth = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTH", Gadomancy.MODID, new AspectList(), 3, 5, 6, new ResourceLocation("thaumcraft", "textures/misc/r_nodes_2.png"))
+                .setLost()
+                .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING")
+                .setPages(new ResearchPage("gadomancy.research_page.GROWING_GROWTH.1"), new ResearchPage("gadomancy.research_page.GROWING_GROWTH.2")).registerResearchItem();
+
+        researchGrowingNodeGrowthClue = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTHCLUE", Gadomancy.MODID,
+                new AspectList().add(Aspect.AURA, 10).add(Aspect.MAGIC, 15).add(Aspect.ELDRITCH, 5).add(Aspect.VOID, 12).add(Aspect.ENERGY, 12).add(Aspect.ENTROPY, 8).add(Aspect.DEATH, 3)
+                .add(Aspect.GREED, 10).add(Aspect.HUNGER, 10).add(Aspect.MECHANISM, 12).add(Aspect.DARKNESS, 12),
+                6, 6, 2, new ItemStack(RegisteredItems.itemBlockAiryCopy, 1, 0))
+                .setSpecial().setRound().setConcealed()
+                .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING_AGGRESSION", Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTH")
+                .setPages(new ResearchPage("gadomancy.research_page.GROWING_GROWTHCLUE.1"), new ResearchPage("gadomancy.research_page.GROWING_GROWTHCLUE.2")).registerResearchItem();
+
+        ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTHCLUE", 3);
     }
 
     public static void postInit() {

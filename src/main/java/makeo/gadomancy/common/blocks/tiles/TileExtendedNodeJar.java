@@ -36,6 +36,7 @@ public class TileExtendedNodeJar extends TileJarNode {
     private NodeType nodeType = NodeType.NORMAL;
     private NodeModifier nodeModifier = null;
     private ExtendedNodeType extendedNodeType = null;
+    private NBTTagCompound behaviorSnapshot = null;
     private String id = "";
     public long animate = 0L;
 
@@ -74,6 +75,9 @@ public class TileExtendedNodeJar extends TileJarNode {
         if(mod >= 0) setNodeModifier(NodeModifier.values()[mod]); else setNodeModifier(null);
         byte exType = nbttagcompound.getByte("extendedNodeType");
         if(exType >= 0) setExtendedNodeType(ExtendedNodeType.values()[exType]); else setExtendedNodeType(null);
+        if(nbttagcompound.hasKey("Behavior")) {
+            behaviorSnapshot = nbttagcompound.getCompoundTag("Behavior");
+        }
     }
 
     public void writeCustomNBT(NBTTagCompound nbttagcompound) {
@@ -92,6 +96,9 @@ public class TileExtendedNodeJar extends TileJarNode {
         nbttagcompound.setByte("type", (byte) getNodeType().ordinal());
         nbttagcompound.setByte("modifier", getNodeModifier() == null ? -1 : (byte) getNodeModifier().ordinal());
         nbttagcompound.setByte("extendedNodeType", getExtendedNodeType() == null ? -1 : (byte) getExtendedNodeType().ordinal());
+        if(behaviorSnapshot != null) {
+            nbttagcompound.setTag("Behavior", behaviorSnapshot);
+        }
     }
 
     public AspectList getAspects() {
@@ -188,6 +195,14 @@ public class TileExtendedNodeJar extends TileJarNode {
         this.id = id;
     }
 
+    public void setBehaviorSnapshot(NBTTagCompound behaviorSnapshot) {
+        this.behaviorSnapshot = behaviorSnapshot;
+    }
+
+    public NBTTagCompound getBehaviorSnapshot() {
+        return behaviorSnapshot;
+    }
+
     public void setNodeVisBase(Aspect aspect, short nodeVisBase) {
         if (this.aspectsBase.getAmount(aspect) < nodeVisBase) {
             this.aspectsBase.merge(aspect, nodeVisBase);
@@ -226,6 +241,7 @@ public class TileExtendedNodeJar extends TileJarNode {
                 tn.setNodeType(getNodeType());
                 tn.setExtendedNodeType(getExtendedNodeType());
                 new Injector(tn, TileNode.class).setField("id", getId());
+                tn.readBehaviorSnapshot(getBehaviorSnapshot());
                 world.markBlockForUpdate(x, y, z);
                 tn.markDirty();
             }

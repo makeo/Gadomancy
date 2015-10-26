@@ -1,29 +1,34 @@
 package makeo.gadomancy.common.blocks.tiles;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
+import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
 import makeo.gadomancy.common.utils.ExplosionHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.EnumDifficulty;
+import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
+import thaumcraft.api.nodes.INode;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.entities.monster.EntityWisp;
+import thaumcraft.common.items.ItemCrystalEssence;
 import thaumcraft.common.items.ItemManaBean;
 import thaumcraft.common.items.ItemWispEssence;
-import thaumcraft.common.lib.network.fx.PacketFXZap;
+import thaumcraft.common.lib.network.playerdata.PacketResearchComplete;
+import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.TileNode;
 
 import java.util.List;
@@ -39,7 +44,7 @@ import java.util.Random;
  */
 public class TileExtendedNode extends TileNode {
 
-    private int ticksExisted = 0;
+    public int ticksExisted = 0;
     private ExtendedNodeType extendedNodeType;
     private GrowingNodeBehavior behavior;
 
@@ -52,6 +57,26 @@ public class TileExtendedNode extends TileNode {
 
         if(new Random().nextBoolean()) {
             extendedNodeType = ExtendedNodeType.GROWING;
+        }
+    }
+
+    public void addTypeSpecificAspects(ExtendedNodeType extendedNodeType) {
+        if(extendedNodeType == null) return;
+        switch (extendedNodeType) {
+            case GROWING:
+                List<Aspect> compounds = Aspect.getCompoundAspects();
+                int count = 1;
+                if(worldObj.rand.nextInt(3) == 0) count++;
+                while(count > 0) {
+                    count--;
+                    Aspect random = compounds.get(worldObj.rand.nextInt(compounds.size()));
+                    int val = getAspectsBase().getAmount(random) + worldObj.rand.nextInt(40) + 20;
+                    getAspectsBase().add(random, val);
+                    getAspects().add(random, val);
+                }
+                break;
+            case STARVING:
+                break;
         }
     }
 
@@ -98,6 +123,17 @@ public class TileExtendedNode extends TileNode {
                 if ((livingEntity.isEntityAlive()) && (!livingEntity.isEntityInvulnerable())) {
                     if(livingEntity instanceof EntityPlayer && ((EntityPlayer) livingEntity).capabilities.isCreativeMode) continue;
                     if(!behavior.mayZapNow()) continue;
+
+                    String research = Gadomancy.MODID.toUpperCase() + ".GROWING_AGGRESSION";
+                    List players = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(6.0D, 6.0D, 6.0D));
+                    for(Object pl : players) {
+                        EntityPlayer player = (EntityPlayer) pl;
+                        if(!ResearchManager.isResearchComplete(player.getCommandSenderName(), research) && ResearchManager.doesPlayerHaveRequisites(player.getCommandSenderName(), research)) {
+                            thaumcraft.common.lib.network.PacketHandler.INSTANCE.sendTo(new PacketResearchComplete(research), (EntityPlayerMP)player);
+                            Thaumcraft.proxy.getResearchManager().completeResearch(player, research);
+                        }
+                    }
+
                     livingEntity.attackEntityFrom(DamageSource.magic, behavior.getZapDamage());
                     PacketTCNodeBolt packet = new PacketTCNodeBolt(xCoord + 0.5F, yCoord + 0.5F, zCoord + 0.5F, (float) livingEntity.posX, (float) (livingEntity.posY + livingEntity.height), (float) livingEntity.posZ);
                     PacketHandler.INSTANCE.sendToAllAround(packet, new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 32.0D));
@@ -111,86 +147,62 @@ public class TileExtendedNode extends TileNode {
     private boolean handleGrowingNodeFirst(boolean needUpdate) {
         if(extendedNodeType == null || extendedNodeType != ExtendedNodeType.GROWING) return needUpdate;
 
-        List aspectOrbs = this.worldObj.getEntitiesWithinAABB(EntityAspectOrb.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1).expand(15.0D, 15.0D, 15.0D));
-        if ((aspectOrbs != null) && (aspectOrbs.size() > 0)) {
-            for (Object orb : aspectOrbs) {
-                EntityAspectOrb aspectOrb = (EntityAspectOrb) orb;
-                if ((aspectOrb.isEntityAlive()) && (!aspectOrb.isEntityInvulnerable())) {
-                    double d = getDistanceTo(aspectOrb.posX, aspectOrb.posY, aspectOrb.posZ);
-                    if (d < 0.5D) { //prev: 2.0D
-                        Aspect aspect = aspectOrb.getAspect();
-
-                        if (getAspects().getAmount(aspect) < getNodeVisBase(aspect)) {
-                            addToContainer(aspect, 1);
-                        } else {
-                            //Adding it permanently
-                            if(!worldObj.isRemote && behavior.doesAccept(aspect)) {
-                                behavior.addAspect(GrowingNodeBehavior.AspectType.ASPECT_ORB, aspect, 1);
-                            }
-                        }
-                        needUpdate = true;
-                        aspectOrb.setDead();
-                    }
-                }
-                applyMovementVectors(aspectOrb);
+        needUpdate = doVortex(EntityAspectOrb.class, needUpdate, new GrowingNodeVortexRunnable<EntityAspectOrb>() {
+            @Override
+            public Aspect getAspect(EntityAspectOrb entity) {
+                return entity.getAspect();
             }
-        }
-        List items = this.worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1).expand(15.0D, 15.0D, 15.0D));
-        if ((items != null) && (items.size() > 0)) {
-            for (Object item : items) {
-                EntityItem entityItem = (EntityItem) item;
-                Item it = entityItem.getEntityItem().getItem();
-                if(!(it instanceof ItemWispEssence || it instanceof ItemManaBean)) continue;
-                if ((entityItem.isEntityAlive()) && (!entityItem.isEntityInvulnerable())) {
-                    double d = getDistanceTo(entityItem.posX, entityItem.posY, entityItem.posZ);
-                    if (d < 0.5D) { //prev: 2.0D
-                        IEssentiaContainerItem container = (IEssentiaContainerItem) it;
-                        AspectList list = container.getAspects(entityItem.getEntityItem());
-                        if(!(list == null || list.size() == 0)) {
-                            Aspect aspect = list.getAspects()[0];
-                            if (getAspects().getAmount(aspect) < getNodeVisBase(aspect)) {
-                                addToContainer(aspect, 1);
-                            } else {
-                                //Adding it permanently
-                                if(!worldObj.isRemote && behavior.doesAccept(aspect)) {
-                                    GrowingNodeBehavior.AspectType type = it instanceof ItemWispEssence ? GrowingNodeBehavior.AspectType.WISP_ESSENCE : GrowingNodeBehavior.AspectType.MANA_BEAN;
-                                    behavior.addAspect(type, aspect, 1);
-                                }
-                            }
-                            needUpdate = true;
-                        }
-                        entityItem.setDead();
-                    }
-                }
-                applyMovementVectors(entityItem);
-            }
-        }
-        List wisps = this.worldObj.getEntitiesWithinAABB(EntityWisp.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1).expand(15.0D, 15.0D, 15.0D));
-        if ((wisps != null) && (wisps.size() > 0)) {
-            for (Object wispObj : wisps) {
-                EntityWisp wisp = (EntityWisp) wispObj;
-                if ((wisp.isEntityAlive()) && (!wisp.isEntityInvulnerable())) {
-                    double d = getDistanceTo(wisp.posX, wisp.posY, wisp.posZ);
-                    if (d < 0.5D) { //prev: 2.0D
-                        Aspect aspect = Aspect.getAspect(wisp.getType());
 
-                        if(aspect != null) {
-                            if (getAspects().getAmount(aspect) < getNodeVisBase(aspect)) {
-                                addToContainer(aspect, 1);
-                            } else {
-                                //Adding it permanently
-
-                                if(!worldObj.isRemote && behavior.doesAccept(aspect)) {
-                                    behavior.addAspect(GrowingNodeBehavior.AspectType.WISP, aspect, 1);
-                                }
-                            }
-                            needUpdate = true;
-                        }
-                        wisp.setDead();
-                    }
-                }
-                applyMovementVectors(wisp);
+            @Override
+            public GrowingNodeBehavior.AspectType getAspectType(EntityAspectOrb entity) {
+                return GrowingNodeBehavior.AspectType.ASPECT_ORB;
             }
+        });
+        needUpdate = doVortex(EntityItem.class, needUpdate, new GrowingNodeVortexRunnable<EntityItem>() {
+            @Override
+            public boolean doesVortex(EntityItem entity) {
+                return entity.getEntityItem().getItem() instanceof ItemWispEssence || entity.getEntityItem().getItem() instanceof ItemManaBean || entity.getEntityItem().getItem() instanceof ItemCrystalEssence;
+            }
+
+            @Override
+            public Aspect getAspect(EntityItem entity) {
+                IEssentiaContainerItem container = (IEssentiaContainerItem) entity.getEntityItem().getItem();
+                return container.getAspects(entity.getEntityItem()).getAspects().length > 0 ? container.getAspects(entity.getEntityItem()).getAspects()[0] : null;
+            }
+
+            @Override
+            public GrowingNodeBehavior.AspectType getAspectType(EntityItem entity) {
+                return entity.getEntityItem().getItem() instanceof ItemWispEssence ? GrowingNodeBehavior.AspectType.WISP_ESSENCE : entity.getEntityItem().getItem() instanceof ItemCrystalEssence ? GrowingNodeBehavior.AspectType.CRYSTAL_ESSENCE : GrowingNodeBehavior.AspectType.MANA_BEAN;
+            }
+        });
+        needUpdate = doVortex(EntityWisp.class, needUpdate, new GrowingNodeVortexRunnable<EntityWisp>() {
+            @Override
+            public Aspect getAspect(EntityWisp entity) {
+                return Aspect.getAspect(entity.getType());
+            }
+
+            @Override
+            public GrowingNodeBehavior.AspectType getAspectType(EntityWisp entity) {
+                return GrowingNodeBehavior.AspectType.WISP;
+            }
+        });
+        if(worldObj.isRemote) return needUpdate;
+
+        if(behavior.lookingForNode()) {
+            int xx = worldObj.rand.nextInt(8) - worldObj.rand.nextInt(8);
+            int yy = worldObj.rand.nextInt(8) - worldObj.rand.nextInt(8);
+            int zz = worldObj.rand.nextInt(8) - worldObj.rand.nextInt(8);
+            TileEntity t = worldObj.getTileEntity(xCoord + xx, yCoord + yy, zCoord + zz);
+            if(t != null && t instanceof TileNode && !(xx == 0 && yy == 0 && zz == 0)) {
+                TileNode node = (TileNode) t;
+                behavior.lockOnTo(node);
+
+                worldObj.markBlockForUpdate(xCoord + xx, yCoord + yy, zCoord + zz);
+                node.markDirty();
+                needUpdate = true;
+            }
+        } else {
+            needUpdate = behavior.updateBehavior(needUpdate);
         }
         return needUpdate;
     }
@@ -209,12 +221,57 @@ public class TileExtendedNode extends TileNode {
         }
     }
 
+    private <E extends Entity> boolean doVortex(Class<E> entityClass, boolean needUpdate, GrowingNodeVortexRunnable<E> runnable) {
+        List entities = this.worldObj.getEntitiesWithinAABB(entityClass, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1).expand(15.0D, 15.0D, 15.0D));
+        if ((entities != null) && (entities.size() > 0)) {
+            for (Object eObj : entities) {
+                E entity = (E) eObj;
+                if(!runnable.doesVortex(entity)) continue;
+                if ((entity.isEntityAlive()) && (!entity.isEntityInvulnerable())) {
+                    double d = getDistanceTo(entity.posX, entity.posY, entity.posZ);
+                    if (d < 0.5D) { //prev: 2.0D
+                        Aspect a = runnable.getAspect(entity);
+                        if(a != null) {
+                            if (getAspects().getAmount(a) < getNodeVisBase(a)) {
+                                addToContainer(a, 1);
+                            } else {
+                                //Adding it permanently
+                                if(!worldObj.isRemote && behavior.doesAccept(a)) {
+                                    behavior.addAspect(runnable.getAspectType(entity), a, 1);
+                                }
+                            }
+                        }
+                        needUpdate = true;
+                        entity.setDead();
+                    }
+                }
+                applyMovementVectors(entity);
+            }
+        }
+        return needUpdate;
+    }
+
     public ExtendedNodeType getExtendedNodeType() {
         return extendedNodeType;
     }
 
     public void setExtendedNodeType(ExtendedNodeType extendedNodeType) {
         this.extendedNodeType = extendedNodeType;
+    }
+
+    public NBTTagCompound getBehaviorSnapshot() {
+        if(extendedNodeType != null && extendedNodeType == ExtendedNodeType.GROWING) {
+            NBTTagCompound behaviorCompound = new NBTTagCompound();
+            behavior.writeToNBT(behaviorCompound);
+            return behaviorCompound;
+        }
+        return null;
+    }
+
+    public void readBehaviorSnapshot(NBTTagCompound tagCompound) {
+        if(tagCompound != null && extendedNodeType != null && extendedNodeType == ExtendedNodeType.GROWING) {
+            behavior.readFromNBT(tagCompound);
+        }
     }
 
     @Override
@@ -257,6 +314,18 @@ public class TileExtendedNode extends TileNode {
 
     public void triggerVortexExplosion() {
         doingVortexExplosion = true;
+    }
+
+    private abstract static class GrowingNodeVortexRunnable<E> {
+
+        public boolean doesVortex(E entity) {
+            return true;
+        }
+
+        public abstract Aspect getAspect(E entity);
+
+        public abstract GrowingNodeBehavior.AspectType getAspectType(E entity);
+
     }
 
 }

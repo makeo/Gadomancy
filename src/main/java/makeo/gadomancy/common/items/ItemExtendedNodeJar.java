@@ -128,7 +128,6 @@ public class ItemExtendedNodeJar extends Item implements IEssentiaContainerItem 
             if (placeBlockAt(stack, player, world, x, y, z, side, par8, par9, par10, var14)) {
                 TileEntity te = world.getTileEntity(x, y, z);
 
-
                 if ((te != null) && ((te instanceof TileExtendedNodeJar))) {
                     if (stack.hasTagCompound()) {
                         AspectList aspects = getAspects(stack);
@@ -138,6 +137,7 @@ public class ItemExtendedNodeJar extends Item implements IEssentiaContainerItem 
                             ((TileExtendedNodeJar) te).setNodeModifier(getNodeModifier(stack));
                             ((TileExtendedNodeJar) te).setExtendedNodeType(getExtendedNodeType(stack));
                             ((TileExtendedNodeJar) te).setId(getNodeId(stack));
+                            ((TileExtendedNodeJar) te).setBehaviorSnapshot(getBehaviorSnapshot(stack));
                         }
                     }
                 }
@@ -192,6 +192,21 @@ public class ItemExtendedNodeJar extends Item implements IEssentiaContainerItem 
             itemstack.setTagInfo("nodeExMod", new NBTTagInt(extendedNodeType.ordinal()));
         }
         itemstack.setTagInfo("nodeid", new NBTTagString(id));
+    }
+
+    public void setBehaviorSnapshot(ItemStack itemstack, NBTTagCompound tagCompound) {
+        if(tagCompound == null) return;
+        if (!itemstack.hasTagCompound()) {
+            itemstack.setTagCompound(new NBTTagCompound());
+        }
+        itemstack.setTagInfo("Behavior", tagCompound);
+    }
+
+    public NBTTagCompound getBehaviorSnapshot(ItemStack itemstack) {
+        if (!itemstack.hasTagCompound() || (!itemstack.getTagCompound().hasKey("Behavior"))) {
+            return null;
+        }
+        return itemstack.getTagCompound().getCompoundTag("Behavior");
     }
 
     public ExtendedNodeType getExtendedNodeType(ItemStack itemStack) {

@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
@@ -18,6 +19,7 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.INode;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
+import thaumcraft.common.blocks.BlockJar;
 import thaumcraft.common.blocks.BlockMagicalLog;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.research.ResearchManager;
@@ -205,11 +207,13 @@ public class JarMultiblockHandler {
         int nt = node.getNodeType().ordinal();
         int nm = -1;
         int exNt = -1;
+        NBTTagCompound behaviorSnapshot = null;
         if (node.getNodeModifier() != null) {
             nm = node.getNodeModifier().ordinal();
         }
         if(tile instanceof TileExtendedNode && ((TileExtendedNode) tile).getExtendedNodeType() != null) {
             exNt = ((TileExtendedNode) tile).getExtendedNodeType().ordinal();
+            behaviorSnapshot = ((TileExtendedNode) tile).getBehaviorSnapshot();
         }
         if(degrade) {
             if (world.rand.nextFloat() < 0.75F) {
@@ -235,7 +239,11 @@ public class JarMultiblockHandler {
             }
             exJar.setNodeType(NodeType.values()[nt]);
             exJar.setExtendedNodeType(ExtendedNodeType.values()[exNt]);
+            if(behaviorSnapshot != null) {
+                exJar.setBehaviorSnapshot(behaviorSnapshot);
+            }
             exJar.setId(nid);
+            world.addBlockEvent(x + xx, y - yy + 2, z + zz, RegisteredBlocks.blockExtendedNodeJar, 9, 0);
         } else {
             world.setBlock(x + xx, y - yy + 2, z + zz, ConfigBlocks.blockJar, 2, 3);
             tile = world.getTileEntity(x + xx, y - yy + 2, z + zz);
@@ -246,10 +254,8 @@ public class JarMultiblockHandler {
             }
             jar.setNodeType(NodeType.values()[nt]);
             jar.setId(nid);
+            world.addBlockEvent(x + xx, y - yy + 2, z + zz, ConfigBlocks.blockJar, 9, 0);
         }
-
-        //TC does nothing here tho...
-        world.addBlockEvent(x + xx, y - yy + 2, z + zz, ConfigBlocks.blockJar, 9, 0);
     }
 
     public abstract static class JarPieceEvaluationRunnable {

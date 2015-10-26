@@ -33,6 +33,25 @@ tc.research_name.GADOMANCY.REMOTEJAR=Mirrored Jars
 tc.research_text.GADOMANCY.REMOTEJAR=Mirrored transportation
 gadomancy.research_page.REMOTEJAR.1=Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
 
+tc.research_name.GADOMANCY.GROWING=Growing Nodes
+tc.research_text.GADOMANCY.GROWING=Hungry Nodes v2.0
+gadomancy.research_page.GROWING.1=This node is something... different. <BR>You did expect an Energized Node to be the only stable connection between us and the source of all Vis, but this Aura Node seems very stable too. Energizing an Aura Node channels Vis from its source to our end and breaks it down to the purest primal Aspects. <BR>But... this node behaves so different from the other nodes. It seems to search for something... It seems... restless...
+gadomancy.research_page.GROWING.2=What is it searching for? Judging from my knowledge so far it can be compared to a hungry Aura Node, but still... You should keep an Eye on this.
+
+tc.research_name.GADOMANCY.GROWING_AGGRESSION=Aggressive Behavior
+tc.research_text.GADOMANCY.GROWING_AGGRESSION=Taking a step back
+gadomancy.research_page.GROWING_AGGRESSION.1=Interesting... This node just released a lightning.. Why does this happen? <BR>It may be a large amount of Vis flowing through the Aura Node and erupting as huge amount of energy in form of a lightning. It seems to be attracted by living things. <BR>Maybe i should keep a safe distance from the node while researching.
+
+tc.research_name.GADOMANCY.GROWING_GROWTH=Growing Behavior
+tc.research_text.GADOMANCY.GROWING_GROWTH=A picky one.
+gadomancy.research_page.GROWING_GROWTH.1=I was right! The node has similarities to a hungry node! It grew bigger than before! <BR>But it looks light the node only attracts things that contains Vis in its purest form. So the node should attract things like Wisps or Ethereal Essence. <LINE>Hmm... As far as my research goes, it seems that the more pure the aspect is, the more likely it will fuse with the node. It seems that the node attracts Aspect Orbs and Wisps the most as they are the most pure.
+gadomancy.research_page.GROWING_GROWTH.2=Materialized or solid vis in forms of essentia like Mana Beans, Ethereal Essence or Crystallized Essentia may work too, but may have bad outcome in the end... <BR>Still it is by far more fascinating than a hungry node. In contrast to its hungry brother, this node seems to keep the complexity of its gained compound aspects instead of breaking them down to primal aspects. After all it does seem that this node does not like primal aspects at all..?
+
+tc.research_name.GADOMANCY.GROWING_GROWTHCLUE=Secrets of growth
+tc.research_text.GADOMANCY.GROWING_GROWTHCLUE=Growing explained
+gadomancy.research_page.GROWING_GROWTHCLUE.1=This is it! I think i solved the puzzle of the growth and dangers of a growing node! <LINE>It looks so simple: Just don't feed it the same aspects. That's what our node hates. It just wants variety and new aspects. If you feed it the same over and over it gets angry and stops growing if its too saturated. It only accepts pure aspects though. Ethereal Essence, Crystallized Essence and Mana beans are weak forms of materialized Vis. It seems the node doesn't like that...
+gadomancy.research_page.GROWING_GROWTHCLUE.2=In contrast to that it seems that it really likes Wisps or Aspect Orbs. Still one of the best and most expensive things might be offering other Aura Nodes to the growing node. <BR>But there are high risks too. The more saturated the node gets, the harder and more often the node does attack its surroundings. I wonder what happens once the node is fully saturated..?
+
 gadomancy.golemblurb.default=??
 gadomancy.golemblurb.breakcore=Master, should I break everything, or something specific?
 gadomancy.golem.breakcore=Break
