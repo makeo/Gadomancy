@@ -1,4 +1,4 @@
-package makeo.gadomancy.client.renderers.tile.tc;
+package makeo.gadomancy.client.renderers.tile;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;

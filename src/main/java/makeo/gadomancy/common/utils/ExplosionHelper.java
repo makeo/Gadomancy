@@ -5,16 +5,22 @@ import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketAnimationAbsorb;
 import makeo.gadomancy.common.network.packets.PacketStartAnimation;
+import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
-import thaumcraft.common.tiles.TileNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +30,7 @@ import java.util.List;
  * Gadomancy is Open Source and distributed under the
  * GNU LESSER GENERAL PUBLIC LICENSE
  * for more read the LICENSE file
- * <p/>
+ *
  * Created by HellFirePvP @ 25.10.2015 10:17
  */
 public class ExplosionHelper {
@@ -32,10 +38,10 @@ public class ExplosionHelper {
     public static void taintplosion(World world, int x, int y, int z, boolean taintBiome, int chanceToTaint) {
         if(chanceToTaint < 1) chanceToTaint = 1;
         world.createExplosion(null, x + 0.5D, y + 0.5D, z + 0.5D, 3.0F, false);
-        for (int a = 0; a < 50; a++) {
-            int xx = x + world.rand.nextInt(8) - world.rand.nextInt(8);
-            int yy = y + world.rand.nextInt(8) - world.rand.nextInt(8);
-            int zz = z + world.rand.nextInt(8) - world.rand.nextInt(8);
+        for (int a = 0; a < 80; a++) {
+            int xx = x + world.rand.nextInt(10) - world.rand.nextInt(10);
+            int yy = y + world.rand.nextInt(10) - world.rand.nextInt(10);
+            int zz = z + world.rand.nextInt(10) - world.rand.nextInt(10);
             if (world.isAirBlock(xx, yy, zz)) {
                 if (yy < y) {
                     world.setBlock(xx, yy, zz, ConfigBlocks.blockFluxGoo, 8, 3);
@@ -51,16 +57,15 @@ public class ExplosionHelper {
 
     public static class VortexExplosion {
 
-        //Phase 0:   Lightnings to blocks and entities around
-        //Phase 1:   Creating FallingBlocks and drawing them in
-        //Phase END: Shooting all FallingBlocks into random directories around the node + taint explosion around the node
+        private TileExtendedNode causingNode;
         private int tick;
         private int phase;
         private World world;
         private int x, y, z;
         private List<Vec3> pastTickBlocks = null;
 
-        public VortexExplosion(TileNode exNode) {
+        public VortexExplosion(TileExtendedNode exNode) {
+            this.causingNode = exNode;
             this.world = exNode.getWorldObj();
             this.x = exNode.xCoord;
             this.y = exNode.yCoord;
@@ -70,24 +75,44 @@ public class ExplosionHelper {
         }
 
         public void update() {
+            List livingEntities = world.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(6.0D, 6.0D, 6.0D));
+            if ((livingEntities != null) && (livingEntities.size() > 0)) {
+                for (Object e : livingEntities) {
+                    EntityLivingBase livingEntity = (EntityLivingBase) e;
+                    if ((livingEntity.isEntityAlive()) && (!livingEntity.isEntityInvulnerable())) {
+                        if(livingEntity instanceof EntityPlayer && ((EntityPlayer) livingEntity).capabilities.isCreativeMode) continue;
+                        if(world.rand.nextInt(16) != 0) continue;
+                        livingEntity.attackEntityFrom(DamageSource.magic, 4F);
+                        PacketTCNodeBolt packet = new PacketTCNodeBolt(x + 0.5F, y + 0.5F, z + 0.5F, (float) livingEntity.posX, (float) (livingEntity.posY + livingEntity.height), (float) livingEntity.posZ);
+                        PacketHandler.INSTANCE.sendToAllAround(packet, new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 32.0D));
+                    }
+                }
+            }
             switch (phase) {
                 case 0: {
                     tick++;
                     if(tick > 200) {
                         tick = 0;
                         phase = 1;
+                        taintplosion(world, x, y, z, false, 1);
                     }
 
-                    sendRadomVortexLightningPacket(world, x, y, z);
+                    sendRandomVortexLightningPacket(world, x, y, z);
                     break;
                 }
                 case 1: {
                     tick++;
-                    int range = tick > 100 ? tick > 200 ? 8 : 6 : 4;
+                    int range = tick > 50 ? tick > 75 ? tick > 100 ? tick > 200 ? tick > 300 ? 9 : 7 : 6 : 5 : 4 : 3;
                     if(pastTickBlocks != null) {
                         for(Vec3 v : pastTickBlocks) {
+                            sendRandomVortexLightningPacket(world, x, y, z);
                             world.setBlockToAir((int) v.xCoord, (int) v.yCoord, (int) v.zCoord);
                         }
+                    }
+                    int ct = world.rand.nextInt(4);
+                    while(ct > 0) {
+                        ct--;
+                        sendRandomVortexLightningPacket(world, x, y, z);
                     }
                     pastTickBlocks = new ArrayList<Vec3>();
                     int cnt = 10;
@@ -105,16 +130,47 @@ public class ExplosionHelper {
                         cnt--;
                     } while (cnt > 0);
 
-                    if(tick > 300) {
+                    if(tick == 200) {
+                        taintplosion(world, x, y, z, false, 1);
+                    }
+
+                    if(tick == 300) {
+                        taintplosion(world, x, y, z, false, 1);
+                    }
+
+                    if(tick > 400) {
                         phase = 2;
-                        taintplosion(world, x, y, z, true, 5);
+                        reduceAspects(causingNode);
+                        taintplosion(world, x, y, z, true, 3);
                     }
                     break;
                 }
             }
         }
 
-        private void sendRadomVortexLightningPacket(World world, int x, int y, int z) {
+        private void reduceAspects(TileExtendedNode node) {
+            List<Aspect> lostAspects = new ArrayList<Aspect>();
+            AspectList list = node.getAspectsBase();
+            for(Aspect a : list.getAspects()) {
+                if(world.rand.nextInt(4) == 0) {
+                    lostAspects.add(a);
+                } else {
+                    list.reduce(a, list.getAmount(a) / 2);
+                }
+            }
+            for(Aspect lost : lostAspects) {
+                node.getAspectsBase().remove(lost);
+                node.getAspects().remove(lost);
+            }
+            list = node.getAspects();
+            for(Aspect a : list.getAspects()) {
+                list.reduce(a, list.getAmount(a) / 2);
+            }
+            node.getWorldObj().markBlockForUpdate(node.xCoord, node.yCoord, node.zCoord);
+            node.markDirty();
+        }
+
+        private void sendRandomVortexLightningPacket(World world, int x, int y, int z) {
             PacketStartAnimation animationPacket = new PacketStartAnimation(PacketStartAnimation.ID_EX_VORTEX, x, y, z);
             NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 32.0D);
             PacketHandler.INSTANCE.sendToAllAround(animationPacket, point);

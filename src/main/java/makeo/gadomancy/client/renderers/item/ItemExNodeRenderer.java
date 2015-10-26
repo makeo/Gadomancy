@@ -27,6 +27,6 @@ public class ItemExNodeRenderer extends ItemNodeRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        makeo.gadomancy.client.renderers.item.tc.ItemNodeRenderer.renderNodeItem(type, item, data);
+        makeo.gadomancy.client.renderers.item.ItemNodeRenderer.renderNodeItem(type, item, data);
     }
 }

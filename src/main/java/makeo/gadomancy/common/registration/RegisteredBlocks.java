@@ -1,16 +1,16 @@
 package makeo.gadomancy.common.registration;
 
-import cpw.mods.fml.common.registry.ExistingSubstitutionException;
-import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.api.ClickBehavior;
 import makeo.gadomancy.common.blocks.BlockArcaneDropper;
+import makeo.gadomancy.common.blocks.BlockExtendedNodeJar;
 import makeo.gadomancy.common.blocks.BlockInfusionClaw;
 import makeo.gadomancy.common.blocks.BlockNode;
 import makeo.gadomancy.common.blocks.BlockRemoteJar;
 import makeo.gadomancy.common.blocks.BlockStickyJar;
 import makeo.gadomancy.common.blocks.tiles.TileArcaneDropper;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
 import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
@@ -39,12 +39,14 @@ public class RegisteredBlocks {
     private RegisteredBlocks() {}
 
     public static int rendererTransparentBlock;
+    public static int rendererExtendedNodeJarBlock;
 
     public static BlockStickyJar blockStickyJar;
     public static BlockArcaneDropper blockArcaneDropper;
     public static BlockInfusionClaw blockInfusionClaw;
     public static BlockRemoteJar blockRemoteJar;
     public static BlockNode blockNode;
+    public static BlockExtendedNodeJar blockExtendedNodeJar;
 
     public static void init() {
         registerBlocks();
@@ -61,7 +63,8 @@ public class RegisteredBlocks {
         blockArcaneDropper = registerBlock(new BlockArcaneDropper());
         blockInfusionClaw = registerBlock(new BlockInfusionClaw());
         blockRemoteJar = registerBlock(new BlockRemoteJar(), ItemBlockRemoteJar.class);
-        blockNode = (BlockNode) new BlockNode().setBlockName("blockAiry").setCreativeTab(Thaumcraft.tabTC);
+        blockNode = (BlockNode) new BlockNode().setBlockName("blockAiry");
+        blockExtendedNodeJar = registerBlock(new BlockExtendedNodeJar());
     }
 
     private static <T extends Block> T registerBlock(String name, T block) {
@@ -93,6 +96,7 @@ public class RegisteredBlocks {
         registerTile(TileInfusionClaw.class);
         registerTile(TileRemoteJar.class);
         registerTile(TileExtendedNode.class);
+        registerTile(TileExtendedNodeJar.class);
     }
 
     private static void registerTile(Class<? extends TileEntity> tile, String name) {

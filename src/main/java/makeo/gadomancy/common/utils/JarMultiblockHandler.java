@@ -1,5 +1,9 @@
 package makeo.gadomancy.common.utils;
 
+import makeo.gadomancy.common.blocks.tiles.ExtendedNodeType;
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredIntegrations;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -82,7 +86,7 @@ public class JarMultiblockHandler {
             return;
 
         if(world.isRemote) return;
-        JarMultiblockHandler.replaceTCJar(world, result[0], result[1], result[2]);
+        replaceJar(world, result[0], result[1], result[2], true);
     }
 
     private static void tryAutomagyJarNodeCreation(ItemStack wandStack, EntityPlayer player, World world, int x, int y, int z) {
@@ -130,7 +134,7 @@ public class JarMultiblockHandler {
         if(!RegisteredIntegrations.automagy.handleNodeJarVisCost(wandStack, player)) return;
 
         if(world.isRemote) return;
-        JarMultiblockHandler.replaceAutomagyJar(world, result[0], result[1], result[2]);
+        replaceJar(world, result[0], result[1], result[2], false);
     }
 
     private static boolean containsMatch(boolean strict, List<ItemStack> inputs, ItemStack... targets) {
@@ -178,87 +182,74 @@ public class JarMultiblockHandler {
         return true;
     }
 
-    //TODO spawn growingNodeJar and handle renders and such nasty stuff...
-
-    private static void replaceTCJar(World world, int x, int y, int z) {
+    private static void replaceJar(World world, int x, int y, int z, boolean isThaumcraft) {
         int[][][] blueprint = {{{1, 1, 1}, {1, 1, 1}, {1, 1, 1}}, {{2, 2, 2}, {2, 2, 2}, {2, 2, 2}}, {{2, 2, 2}, {2, 3, 2}, {2, 2, 2}}, {{2, 2, 2}, {2, 2, 2}, {2, 2, 2}}};
         for (int yy = 0; yy < 4; yy++) {
             for (int xx = 0; xx < 3; xx++) {
                 for (int zz = 0; zz < 3; zz++) {
                     if (blueprint[yy][xx][zz] == 3) {
-                        TileEntity tile = world.getTileEntity(x + xx, y - yy + 2, z + zz);
-                        INode node = (INode) tile;
-                        AspectList na = node.getAspects().copy();
-                        int nt = node.getNodeType().ordinal();
-                        int nm = -1;
-                        if (node.getNodeModifier() != null) {
-                            nm = node.getNodeModifier().ordinal();
-                        }
-                        if (world.rand.nextFloat() < 0.75F) {
-                            if (node.getNodeModifier() == null) {
-                                nm = NodeModifier.PALE.ordinal();
-                            } else if (node.getNodeModifier() == NodeModifier.BRIGHT) {
-                                nm = -1;
-                            } else if (node.getNodeModifier() == NodeModifier.PALE) {
-                                nm = NodeModifier.FADING.ordinal();
-                            }
-                        }
-                        String nid = node.getId();
-                        node.setAspects(new AspectList());
-                        world.removeTileEntity(x + xx, y - yy + 2, z + zz);
-                        world.setBlock(x + xx, y - yy + 2, z + zz, ConfigBlocks.blockJar, 2, 3);
-                        tile = world.getTileEntity(x + xx, y - yy + 2, z + zz);
-                        TileJarNode jar = (TileJarNode) tile;
-                        jar.setAspects(na);
-                        if (nm >= 0) {
-                            jar.setNodeModifier(NodeModifier.values()[nm]);
-                        }
-                        jar.setNodeType(NodeType.values()[nt]);
-                        jar.setId(nid);
-                        world.addBlockEvent(x + xx, y - yy + 2, z + zz, ConfigBlocks.blockJar, 9, 0);
+                        handleJarForming(world, x, y, z, xx, yy, zz, isThaumcraft);
                     } else {
                         world.setBlockToAir(x + xx, y - yy + 2, z + zz);
                     }
                 }
             }
         }
-        world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "thaumcraft:wand", 1.0F, 1.0F);
+        if(isThaumcraft) world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "thaumcraft:wand", 1.0F, 1.0F);
     }
 
-    private static void replaceAutomagyJar(World world, int x, int y, int z) {
-        int[][][] blueprint = {{{1, 1, 1}, {1, 1, 1}, {1, 1, 1}}, {{2, 2, 2}, {2, 2, 2}, {2, 2, 2}}, {{2, 2, 2}, {2, 3, 2}, {2, 2, 2}}, {{2, 2, 2}, {2, 2, 2}, {2, 2, 2}}};
-        for (int yy = 0; yy < 4; yy++) {
-            for (int xx = 0; xx < 3; xx++) {
-                for (int zz = 0; zz < 3; zz++) {
-                    int index = blueprint[yy][xx][zz];
-                    if (index == 3) {
-                        TileEntity tile = world.getTileEntity(x + xx, y - yy + 2, z + zz);
-                        INode node = (INode) tile;
-                        AspectList na = node.getAspects().copy();
-                        int nt = node.getNodeType().ordinal();
-                        int nm = -1;
-                        if (node.getNodeModifier() != null) {
-                            nm = node.getNodeModifier().ordinal();
-                        }
-                        String nid = node.getId();
-                        node.setAspects(new AspectList());
-                        world.removeTileEntity(x + xx, y - yy + 2, z + zz);
-                        world.setBlock(x + xx, y - yy + 2, z + zz, ConfigBlocks.blockJar, 2, 3);
-                        tile = world.getTileEntity(x + xx, y - yy + 2, z + zz);
-                        TileJarNode jar = (TileJarNode) tile;
-                        jar.setAspects(na);
-                        if (nm >= 0) {
-                            jar.setNodeModifier(NodeModifier.values()[nm]);
-                        }
-                        jar.setNodeType(NodeType.values()[nt]);
-                        jar.setId(nid);
-                        world.addBlockEvent(x + xx, y - yy + 2, z + zz, ConfigBlocks.blockJar, 9, 0);
-                    } else {
-                        world.setBlockToAir(x + xx, y - yy + 2, z + zz);
-                    }
+    private static void handleJarForming(World world, int x, int y, int z, int xx, int yy, int zz, boolean degrade) {
+        TileEntity tile = world.getTileEntity(x + xx, y - yy + 2, z + zz);
+        INode node = (INode) tile;
+        AspectList na = node.getAspects().copy();
+        int nt = node.getNodeType().ordinal();
+        int nm = -1;
+        int exNt = -1;
+        if (node.getNodeModifier() != null) {
+            nm = node.getNodeModifier().ordinal();
+        }
+        if(tile instanceof TileExtendedNode && ((TileExtendedNode) tile).getExtendedNodeType() != null) {
+            exNt = ((TileExtendedNode) tile).getExtendedNodeType().ordinal();
+        }
+        if(degrade) {
+            if (world.rand.nextFloat() < 0.75F) {
+                if (node.getNodeModifier() == null) {
+                    nm = NodeModifier.PALE.ordinal();
+                } else if (node.getNodeModifier() == NodeModifier.BRIGHT) {
+                    nm = -1;
+                } else if (node.getNodeModifier() == NodeModifier.PALE) {
+                    nm = NodeModifier.FADING.ordinal();
                 }
             }
         }
+        String nid = node.getId();
+        node.setAspects(new AspectList());
+        world.removeTileEntity(x + xx, y - yy + 2, z + zz);
+        if(exNt != -1) {
+            world.setBlock(x + xx, y - yy + 2, z + zz, RegisteredBlocks.blockExtendedNodeJar, 0, 3);
+            tile = world.getTileEntity(x + xx, y - yy + 2, z + zz);
+            TileExtendedNodeJar exJar = (TileExtendedNodeJar) tile;
+            exJar.setAspects(na);
+            if (nm >= 0) {
+                exJar.setNodeModifier(NodeModifier.values()[nm]);
+            }
+            exJar.setNodeType(NodeType.values()[nt]);
+            exJar.setExtendedNodeType(ExtendedNodeType.values()[exNt]);
+            exJar.setId(nid);
+        } else {
+            world.setBlock(x + xx, y - yy + 2, z + zz, ConfigBlocks.blockJar, 2, 3);
+            tile = world.getTileEntity(x + xx, y - yy + 2, z + zz);
+            TileJarNode jar = (TileJarNode) tile;
+            jar.setAspects(na);
+            if (nm >= 0) {
+                jar.setNodeModifier(NodeModifier.values()[nm]);
+            }
+            jar.setNodeType(NodeType.values()[nt]);
+            jar.setId(nid);
+        }
+
+        //TC does nothing here tho...
+        world.addBlockEvent(x + xx, y - yy + 2, z + zz, ConfigBlocks.blockJar, 9, 0);
     }
 
     public abstract static class JarPieceEvaluationRunnable {

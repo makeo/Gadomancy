@@ -1,5 +1,6 @@
 item.ItemGolemPlacer.silverwood.name=Silverwood Golem
 item.ItemTransformationFocus.name=[WIP] Wand Focus: Transformation
+item.ItemExtendedNodeJar.name=Node in a Jar
 
 itemGroup.gadomancy=Gadomancy
 tc.research_category.gadomancy=Gadomancy
@@ -46,6 +47,7 @@ tile.BlockArcaneDropper.name=Arcane Dropper
 tile.BlockInfusionClaw.name=Infusion Claw
 tile.BlockRemoteJar.name=Mirrored Jar
 tile.BlockNode.name=Aura Node
+tile.BlockExtendedNodeJar.name=Node in a Jar
 
 gadomancy.nodes.GROWING=Growing
 gadomancy.nodes.STARVING=Starving
