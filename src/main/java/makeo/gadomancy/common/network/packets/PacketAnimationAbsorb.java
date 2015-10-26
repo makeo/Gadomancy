@@ -6,6 +6,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
+import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
@@ -61,7 +62,9 @@ public class PacketAnimationAbsorb implements IMessage, IMessageHandler<PacketAn
     public IMessage onMessage(PacketAnimationAbsorb p, MessageContext ctx) {
         Block b = Minecraft.getMinecraft().theWorld.getBlock(p.targetX, p.targetY, p.targetZ);
         int md = Minecraft.getMinecraft().theWorld.getBlockMetadata(p.targetX, p.targetY, p.targetZ);
-        Thaumcraft.proxy.boreDigFx(Minecraft.getMinecraft().theWorld, (int) p.x, (int) p.y, (int) p.z, p.targetX, p.targetY, p.targetZ, b, md);
+        MultiTickEffectDispatcher.VortexDigInfo info =
+                new MultiTickEffectDispatcher.VortexDigInfo(Minecraft.getMinecraft().theWorld.provider.dimensionId, (int) p.x, (int) p.y, (int) p.z, p.targetX, p.targetY, p.targetZ, b, md);
+        MultiTickEffectDispatcher.registerVortexDig(info);
         return null;
     }
 }

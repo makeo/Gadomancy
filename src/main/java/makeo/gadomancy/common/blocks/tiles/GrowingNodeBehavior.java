@@ -18,8 +18,8 @@ import java.util.Map;
 public class GrowingNodeBehavior {
 
     public static final double SATURATION_DIFFICULTY = 10D;
-    public static final double SATURATION_CAP = 100D;
-    public static final int HAPPINESS_CAP = 100;
+    public static final double SATURATION_CAP = 200D;
+    public static final int HAPPINESS_CAP = 1000;
 
     //The node the behavior belongs to
     private final TileExtendedNode owningNode;
@@ -80,10 +80,18 @@ public class GrowingNodeBehavior {
         }
 
         //If the saturation is in the upper 85%
-        System.out.println(percentSaturation + " - " + overallHappiness);
         if(percentSaturation > satCmp) {
             this.isSaturated = true;
         }
+    }
+
+    public boolean mayZapNow() {
+        return overallHappiness > owningNode.getWorldObj().rand.nextInt(HAPPINESS_CAP * HAPPINESS_CAP);
+    }
+
+    public float getZapDamage() {
+        float happinessPerc = ((float) overallHappiness) / ((float) HAPPINESS_CAP);
+        return happinessPerc > 0.3 ? happinessPerc > 0.6 ? happinessPerc > 0.9 ? 12 : 8 : 5 : 2;
     }
 
     private void addSaturation(Aspect aspect, double increasedSaturation) {
@@ -158,7 +166,7 @@ public class GrowingNodeBehavior {
     }
 
     private double evaluateFeedingDenialFunc(double i) {
-        return (Math.log(i) / 2) + 1;
+        return (Math.log(i) / 6) + 1;
     }
 
     private void handleOverfeed() {

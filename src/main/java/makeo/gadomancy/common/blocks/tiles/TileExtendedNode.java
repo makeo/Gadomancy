@@ -1,18 +1,29 @@
 package makeo.gadomancy.common.blocks.tiles;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
+import makeo.gadomancy.common.network.PacketHandler;
+import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
 import makeo.gadomancy.common.utils.ExplosionHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.EnumDifficulty;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
+import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.entities.monster.EntityWisp;
 import thaumcraft.common.items.ItemManaBean;
 import thaumcraft.common.items.ItemWispEssence;
+import thaumcraft.common.lib.network.fx.PacketFXZap;
 import thaumcraft.common.tiles.TileNode;
 
 import java.util.List;
@@ -28,6 +39,7 @@ import java.util.Random;
  */
 public class TileExtendedNode extends TileNode {
 
+    private int ticksExisted = 0;
     private ExtendedNodeType extendedNodeType;
     private GrowingNodeBehavior behavior;
 
@@ -39,13 +51,15 @@ public class TileExtendedNode extends TileNode {
         this.behavior = new GrowingNodeBehavior(this);
 
         if(new Random().nextBoolean()) {
-            this.extendedNodeType = ExtendedNodeType.GROWING;
+            extendedNodeType = ExtendedNodeType.GROWING;
         }
     }
 
     @Override
     public void updateEntity() {
         super.updateEntity();
+
+        ticksExisted++;
 
         if(this.doingVortexExplosion) {
             if(this.vortexExplosion == null) {
@@ -61,7 +75,8 @@ public class TileExtendedNode extends TileNode {
 
         boolean needUpdate;
 
-        needUpdate = handleGrowingNode(false);
+        needUpdate = handleGrowingNodeFirst(false);
+        needUpdate = handleGrowingNodeSecond(needUpdate);
 
         if(!worldObj.isRemote && needUpdate) {
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -69,7 +84,31 @@ public class TileExtendedNode extends TileNode {
         }
     }
 
-    private boolean handleGrowingNode(boolean needUpdate) {
+    private boolean handleGrowingNodeSecond(boolean needUpdate) {
+        if(extendedNodeType == null || extendedNodeType != ExtendedNodeType.GROWING) return needUpdate;
+
+        if(worldObj.difficultySetting == EnumDifficulty.PEACEFUL) return needUpdate;
+        if(worldObj.isRemote) return needUpdate;
+        if(ticksExisted % 8 != 0) return needUpdate;
+
+        List livingEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(6.0D, 6.0D, 6.0D));
+        if ((livingEntities != null) && (livingEntities.size() > 0)) {
+            for (Object e : livingEntities) {
+                EntityLivingBase livingEntity = (EntityLivingBase) e;
+                if ((livingEntity.isEntityAlive()) && (!livingEntity.isEntityInvulnerable())) {
+                    if(livingEntity instanceof EntityPlayer && ((EntityPlayer) livingEntity).capabilities.isCreativeMode) continue;
+                    if(!behavior.mayZapNow()) continue;
+                    livingEntity.attackEntityFrom(DamageSource.magic, behavior.getZapDamage());
+                    PacketTCNodeBolt packet = new PacketTCNodeBolt(xCoord + 0.5F, yCoord + 0.5F, zCoord + 0.5F, (float) livingEntity.posX, (float) (livingEntity.posY + livingEntity.height), (float) livingEntity.posZ);
+                    PacketHandler.INSTANCE.sendToAllAround(packet, new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 32.0D));
+                }
+            }
+        }
+
+        return needUpdate;
+    }
+
+    private boolean handleGrowingNodeFirst(boolean needUpdate) {
         if(extendedNodeType == null || extendedNodeType != ExtendedNodeType.GROWING) return needUpdate;
 
         List aspectOrbs = this.worldObj.getEntitiesWithinAABB(EntityAspectOrb.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1).expand(15.0D, 15.0D, 15.0D));
@@ -172,6 +211,10 @@ public class TileExtendedNode extends TileNode {
 
     public ExtendedNodeType getExtendedNodeType() {
         return extendedNodeType;
+    }
+
+    public void setExtendedNodeType(ExtendedNodeType extendedNodeType) {
+        this.extendedNodeType = extendedNodeType;
     }
 
     @Override

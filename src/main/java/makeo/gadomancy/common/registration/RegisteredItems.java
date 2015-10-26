@@ -4,7 +4,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.items.*;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import thaumcraft.common.config.ConfigBlocks;
@@ -31,6 +30,7 @@ public class RegisteredItems {
     public static Item itemFakeGolemPlacer;
     public static Item itemTransformationFocus;
     public static Item itemGolemCoreBreak;
+    public static Item itemExtendedNodeJar;
 
     @Deprecated
     public static Item itemBlockAiryCopy; //!!!!!!!!!!DO NOT TOUCH THIS OR USE THIS ANYWHERE!!!!!!!!!!
@@ -57,6 +57,7 @@ public class RegisteredItems {
         itemFakeGolemShield = registerItem(new ItemFakeGolemShield());
         itemTransformationFocus = registerItem(new ItemTransformationFocus());
         itemGolemCoreBreak = registerItem(new ItemGolemCoreBreak());
+        itemExtendedNodeJar = registerItem(new ItemExtendedNodeJar());
     }
 
     private static <T extends Item> T registerItem(T item, String name) {

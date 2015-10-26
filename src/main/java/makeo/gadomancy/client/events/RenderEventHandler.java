@@ -2,7 +2,9 @@ package makeo.gadomancy.client.events;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import makeo.gadomancy.client.util.ExtendedTypeDisplayManager;
+import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -73,9 +75,10 @@ public class RenderEventHandler {
                     TileExtendedNode node = (TileExtendedNode) tile;
                     if(node.getExtendedNodeType() == null) return;
                     ExtendedTypeDisplayManager.notifyDisplayTick(node.getId(), node.getNodeType(), node.getExtendedNodeType());
-                } else if(tile instanceof TileJarNode) {
-                    TileJarNode nodeJar = (TileJarNode) tile;
-
+                } else if(tile instanceof TileExtendedNodeJar) {
+                    TileExtendedNodeJar nodeJar = (TileExtendedNodeJar) tile;
+                    if(nodeJar.getExtendedNodeType() == null) return;
+                    ExtendedTypeDisplayManager.notifyDisplayTick(nodeJar.getId(), nodeJar.getNodeType(), nodeJar.getExtendedNodeType());
                 }
             }
         }
@@ -84,5 +87,6 @@ public class RenderEventHandler {
     @SubscribeEvent
     public void worldRenderEvent(RenderWorldLastEvent event) {
         ExtendedTypeDisplayManager.notifyRenderTick();
+        MultiTickEffectDispatcher.notifyRenderTick(Minecraft.getMinecraft().theWorld);
     }
 }

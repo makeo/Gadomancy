@@ -7,19 +7,23 @@ import cpw.mods.fml.common.FMLLog;
 import makeo.gadomancy.client.events.RenderEventHandler;
 import makeo.gadomancy.client.events.ResourceReloadListener;
 import makeo.gadomancy.client.gui.InfusionClawGui;
+import makeo.gadomancy.client.renderers.block.BlockExtendedNodeJarRenderer;
 import makeo.gadomancy.client.renderers.block.RenderBlockTransparent;
 import makeo.gadomancy.client.renderers.entity.RenderAdditionalGolemBase;
 import makeo.gadomancy.client.renderers.item.ItemExNodeRenderer;
+import makeo.gadomancy.client.renderers.item.ItemJarExtendedNodeRenderer;
 import makeo.gadomancy.client.renderers.item.ItemRenderRemoteJar;
 import makeo.gadomancy.client.renderers.item.ItemRenderTileEntity;
 import makeo.gadomancy.client.renderers.tile.RenderTileArcaneDropper;
 import makeo.gadomancy.client.renderers.tile.RenderTileExtendedNode;
+import makeo.gadomancy.client.renderers.tile.RenderTileExtendedNodeJar;
 import makeo.gadomancy.client.renderers.tile.RenderTileInfusionClaw;
 import makeo.gadomancy.client.renderers.tile.RenderTileRemoteJar;
 import makeo.gadomancy.client.renderers.tile.RenderTileStickyJar;
 import makeo.gadomancy.common.CommonProxy;
 import makeo.gadomancy.common.blocks.tiles.TileArcaneDropper;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
 import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
@@ -43,6 +47,7 @@ import sun.reflect.generics.visitor.Reifier;
 import thaumcraft.api.nodes.INode;
 import thaumcraft.client.gui.GuiGolem;
 import thaumcraft.client.renderers.entity.RenderGolemBase;
+import thaumcraft.client.renderers.tile.ItemJarNodeRenderer;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
 import java.util.List;
@@ -82,6 +87,9 @@ public class ClientProxy extends CommonProxy {
         RenderTileExtendedNode nodeRenderer = new RenderTileExtendedNode();
         ClientRegistry.bindTileEntitySpecialRenderer(TileExtendedNode.class, nodeRenderer);
 
+        RenderTileExtendedNodeJar nodeJarRenderer = new RenderTileExtendedNodeJar();
+        ClientRegistry.bindTileEntitySpecialRenderer(TileExtendedNodeJar.class, nodeJarRenderer);
+
         //Items
         TileArcaneDropper fakeTile = new TileArcaneDropper();
         fakeTile.blockMetadata = 8 | ForgeDirection.SOUTH.ordinal();
@@ -91,10 +99,12 @@ public class ClientProxy extends CommonProxy {
 
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemBlockAiryCopy, new ItemExNodeRenderer());
 
+        MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemExtendedNodeJar, new ItemJarExtendedNodeRenderer());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockRemoteJar), new ItemRenderRemoteJar(renderTileRemoteJar));
 
         //Blocks
         RegisteredBlocks.rendererTransparentBlock = registerBlockRenderer(new RenderBlockTransparent());
+        RegisteredBlocks.rendererExtendedNodeJarBlock = registerBlockRenderer(new BlockExtendedNodeJarRenderer());
     }
 
     @Override

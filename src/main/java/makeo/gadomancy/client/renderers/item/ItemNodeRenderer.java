@@ -1,4 +1,4 @@
-package makeo.gadomancy.client.renderers.item.tc;
+package makeo.gadomancy.client.renderers.item;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,7 +21,7 @@ import thaumcraft.common.tiles.TileNode;
  * This class is NOT part of the Gadomancy Mod
  * This file is copied from Azanors thaumcraft.client.renderers.tile.ItemNodeRenderer.java and contains small modifications
  * Thaumcraft: http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1292130
- * <p/>
+ *
  * Created by Azanor
  * Modified by HellFirePvP @ 24.10.2015 17:19
  */

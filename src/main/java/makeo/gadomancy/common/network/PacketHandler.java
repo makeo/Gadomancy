@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.network.packets.PacketAnimationAbsorb;
 import makeo.gadomancy.common.network.packets.PacketStartAnimation;
+import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
 import makeo.gadomancy.common.network.packets.PacketUpdateGolemTypeOrder;
 
 /**
@@ -25,5 +26,6 @@ public class PacketHandler {
         INSTANCE.registerMessage(PacketUpdateGolemTypeOrder.class, PacketUpdateGolemTypeOrder.class, id++, Side.CLIENT);
         INSTANCE.registerMessage(PacketStartAnimation.class, PacketStartAnimation.class, id++, Side.CLIENT);
         INSTANCE.registerMessage(PacketAnimationAbsorb.class, PacketAnimationAbsorb.class, id++, Side.CLIENT);
+        INSTANCE.registerMessage(PacketTCNodeBolt.class, PacketTCNodeBolt.class, id++, Side.CLIENT);
     }
 }
