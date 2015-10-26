@@ -8,6 +8,7 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.IArcaneRecipe;
@@ -24,7 +25,7 @@ public class RecipeStickyJar implements IArcaneRecipe {
 
     @Override
     public boolean matches(IInventory inv, World world, EntityPlayer player) {
-        return getJarItem(inv) != null;
+        return ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), SimpleResearchItem.getFullName("STICKYJAR")) && getJarItem(inv) != null;
     }
 
     @Override
