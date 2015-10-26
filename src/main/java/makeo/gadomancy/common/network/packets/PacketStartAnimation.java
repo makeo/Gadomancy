@@ -3,6 +3,8 @@ package makeo.gadomancy.common.network.packets;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
@@ -56,6 +58,7 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IMessage onMessage(PacketStartAnimation message, MessageContext ctx) {
         switch (message.annimationId) {
             case ID_INFUSIONCLAW:

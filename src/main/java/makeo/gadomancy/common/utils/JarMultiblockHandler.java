@@ -136,6 +136,7 @@ public class JarMultiblockHandler {
         if(!RegisteredIntegrations.automagy.handleNodeJarVisCost(wandStack, player)) return;
 
         if(world.isRemote) return;
+        if(!RegisteredIntegrations.automagy.isPresent()) return;
         replaceJar(world, result[0], result[1], result[2], false);
     }
 

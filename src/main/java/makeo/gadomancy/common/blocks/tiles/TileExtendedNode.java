@@ -54,10 +54,6 @@ public class TileExtendedNode extends TileNode {
 
     public TileExtendedNode() {
         this.behavior = new GrowingNodeBehavior(this);
-
-        if(new Random().nextBoolean()) {
-            extendedNodeType = ExtendedNodeType.GROWING;
-        }
     }
 
     public void addTypeSpecificAspects(ExtendedNodeType extendedNodeType) {
