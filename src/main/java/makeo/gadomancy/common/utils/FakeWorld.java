@@ -1,4 +1,4 @@
-package makeo.gadomancy.client.util;
+package makeo.gadomancy.common.utils;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;

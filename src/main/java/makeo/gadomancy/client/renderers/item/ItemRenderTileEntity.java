@@ -1,6 +1,6 @@
 package makeo.gadomancy.client.renderers.item;
 
-import makeo.gadomancy.client.util.FakeWorld;
+import makeo.gadomancy.common.utils.FakeWorld;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;

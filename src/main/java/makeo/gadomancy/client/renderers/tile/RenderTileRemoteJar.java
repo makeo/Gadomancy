@@ -1,7 +1,7 @@
 package makeo.gadomancy.client.renderers.tile;
 
 import makeo.gadomancy.client.models.ModelJarPot;
-import makeo.gadomancy.client.util.FakeWorld;
+import makeo.gadomancy.common.utils.FakeWorld;
 import makeo.gadomancy.common.blocks.BlockRemoteJar;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import net.minecraft.client.Minecraft;
@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.client.renderers.models.ModelJar;
 import thaumcraft.client.renderers.tile.TileJarRenderer;
 import thaumcraft.client.renderers.tile.TileMirrorRenderer;
 import thaumcraft.common.tiles.TileMirrorEssentia;
