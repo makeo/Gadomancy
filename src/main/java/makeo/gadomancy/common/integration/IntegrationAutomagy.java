@@ -39,8 +39,6 @@ public class IntegrationAutomagy extends IntegrationMod {
             RegisteredItems.registerStickyJar(Item.getItemFromBlock(infinityJar), 3);
         }
         CommonProxy.unregisterWandHandler("Automagy", ConfigBlocks.blockWarded, -1);
-
-        ModSubstitutions.replaceAutomagyResearch();
     }
 
     public boolean handleNodeJarVisCost(ItemStack wandStack, EntityPlayer player) {

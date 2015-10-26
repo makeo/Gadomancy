@@ -13,6 +13,7 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
+import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.research.ResearchManager;
 
 /**
@@ -82,7 +83,7 @@ public class RegisteredResearches {
                 .setSpecial().setLost()
                 .setPages(new ResearchPage("gadomancy.research_page.GROWING.1"), new ResearchPage("gadomancy.research_page.GROWING.2")).registerResearchItem();
 
-        researchGrowingNodeAgression = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_AGGRESSION", Gadomancy.MODID, new AspectList(), 5, 3, 6, new ItemStack(RegisteredItems.itemBlockAiryCopy, 1, 5))
+        researchGrowingNodeAgression = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_AGGRESSION", Gadomancy.MODID, new AspectList(), 5, 3, 6, new ItemStack(ConfigBlocks.blockAiry, 1, 5))
                 .setLost()
                 .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING")
                 .setPages(new ResearchPage("gadomancy.research_page.GROWING_AGGRESSION.1")).registerResearchItem();
@@ -95,7 +96,7 @@ public class RegisteredResearches {
         researchGrowingNodeGrowthClue = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTHCLUE", Gadomancy.MODID,
                 new AspectList().add(Aspect.AURA, 10).add(Aspect.MAGIC, 15).add(Aspect.ELDRITCH, 5).add(Aspect.VOID, 12).add(Aspect.ENERGY, 12).add(Aspect.ENTROPY, 8).add(Aspect.DEATH, 3)
                 .add(Aspect.GREED, 10).add(Aspect.HUNGER, 10).add(Aspect.MECHANISM, 12).add(Aspect.DARKNESS, 12),
-                6, 6, 2, new ItemStack(RegisteredItems.itemBlockAiryCopy, 1, 0))
+                6, 6, 2, new ItemStack(ConfigBlocks.blockAiry, 1, 0))
                 .setSpecial().setRound().setConcealed()
                 .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING_AGGRESSION", Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTH")
                 .setPages(new ResearchPage("gadomancy.research_page.GROWING_GROWTHCLUE.1"), new ResearchPage("gadomancy.research_page.GROWING_GROWTHCLUE.2")).registerResearchItem();

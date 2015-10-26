@@ -48,6 +48,7 @@ import thaumcraft.api.nodes.INode;
 import thaumcraft.client.gui.GuiGolem;
 import thaumcraft.client.renderers.entity.RenderGolemBase;
 import thaumcraft.client.renderers.tile.ItemJarNodeRenderer;
+import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
 import java.util.List;
@@ -97,7 +98,7 @@ public class ClientProxy extends CommonProxy {
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockInfusionClaw), new ItemRenderTileEntity(renderTileInfusionClaw, new TileInfusionClaw()));
 
-        MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemBlockAiryCopy, new ItemExNodeRenderer());
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ConfigBlocks.blockAiry), new ItemExNodeRenderer());
 
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemExtendedNodeJar, new ItemJarExtendedNodeRenderer());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockRemoteJar), new ItemRenderRemoteJar(renderTileRemoteJar));

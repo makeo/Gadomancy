@@ -32,8 +32,8 @@ public class RegisteredItems {
     public static Item itemGolemCoreBreak;
     public static Item itemExtendedNodeJar;
 
-    @Deprecated
-    public static Item itemBlockAiryCopy; //!!!!!!!!!!DO NOT TOUCH THIS OR USE THIS ANYWHERE!!!!!!!!!!
+    //@Deprecated
+    //public static Item itemBlockAiryCopy; //!!!!!!!!!!DO NOT TOUCH THIS OR USE THIS ANYWHERE!!!!!!!!!!
 
     public static void preInit() {
         creativeTab = new CreativeTabs(Gadomancy.MODID) {
