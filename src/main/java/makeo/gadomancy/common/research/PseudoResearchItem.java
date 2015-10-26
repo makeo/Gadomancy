@@ -1,5 +1,7 @@
 package makeo.gadomancy.common.research;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -53,6 +55,7 @@ public class PseudoResearchItem extends SimpleResearchItem {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public boolean isHidden() {
         EntityPlayer p = Minecraft.getMinecraft().thePlayer;
         if(p != null) {

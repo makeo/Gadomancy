@@ -40,7 +40,7 @@ public class RegisteredIntegrations {
         Object integration;
         try {
             integration = Injector.getClass(clazz).newInstance();
-        } catch (Exception e) {//InstantiationException | IllegalAccessException
+        } catch (Throwable e) {//InstantiationException | IllegalAccessException
             return;
         }
 
