@@ -2,21 +2,10 @@ package makeo.gadomancy.common.registration;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.api.ClickBehavior;
-import makeo.gadomancy.common.blocks.BlockArcaneDropper;
-import makeo.gadomancy.common.blocks.BlockExtendedNodeJar;
-import makeo.gadomancy.common.blocks.BlockInfusionClaw;
-import makeo.gadomancy.common.blocks.BlockNode;
-import makeo.gadomancy.common.blocks.BlockNodeManipulator;
-import makeo.gadomancy.common.blocks.BlockRemoteJar;
-import makeo.gadomancy.common.blocks.BlockStickyJar;
-import makeo.gadomancy.common.blocks.tiles.TileArcaneDropper;
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
-import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
-import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
-import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
-import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
+import makeo.gadomancy.common.blocks.*;
+import makeo.gadomancy.common.blocks.tiles.*;
 import makeo.gadomancy.common.items.ItemBlockRemoteJar;
+import makeo.gadomancy.common.items.ItemBlockStoneMachine;
 import makeo.gadomancy.common.items.ItemNodeManipulator;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -43,6 +32,7 @@ public class RegisteredBlocks {
 
     public static int rendererTransparentBlock;
     public static int rendererExtendedNodeJarBlock;
+    public static int rendererNodeManipulator;
 
     public static BlockStickyJar blockStickyJar;
     public static BlockArcaneDropper blockArcaneDropper;
@@ -51,6 +41,7 @@ public class RegisteredBlocks {
     public static BlockNode blockNode;
     public static BlockExtendedNodeJar blockExtendedNodeJar;
     public static BlockNodeManipulator blockNodeManipulator;
+    public static BlockStoneMachine blockStoneMachine;
 
     public static void init() {
         registerBlocks();
@@ -70,6 +61,7 @@ public class RegisteredBlocks {
         blockNode = (BlockNode) new BlockNode().setBlockName("blockAiry");
         blockExtendedNodeJar = registerBlock(new BlockExtendedNodeJar());
         blockNodeManipulator = registerBlock(new BlockNodeManipulator(), ItemNodeManipulator.class);
+        blockStoneMachine = registerBlock(new BlockStoneMachine(), ItemBlockStoneMachine.class);
     }
 
     private static <T extends Block> T registerBlock(String name, T block) {
@@ -103,6 +95,7 @@ public class RegisteredBlocks {
         registerTile(TileExtendedNode.class);
         registerTile(TileExtendedNodeJar.class);
         registerTile(TileNodeManipulator.class);
+        registerTile(TileManipulatorPillar.class);
     }
 
     private static void registerTile(Class<? extends TileEntity> tile, String name) {

@@ -5,9 +5,12 @@ import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
- * User: makeo
- * Date: 09.07.2015
- * Time: 02:34
+ * This class is part of the Gadomancy Mod
+ * Gadomancy is Open Source and distributed under the
+ * GNU LESSER GENERAL PUBLIC LICENSE
+ * for more read the LICENSE file
+ * <p/>
+ * Created by makeo @ 09.07.2015 02:34
  */
 public class PlayerCameraRenderer extends EntityRenderer {
     private final Minecraft minecraft;

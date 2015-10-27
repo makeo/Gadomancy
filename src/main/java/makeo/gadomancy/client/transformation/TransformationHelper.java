@@ -17,9 +17,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * User: makeo
- * Date: 04.07.2015
- * Time: 02:38
+ * This class is part of the Gadomancy Mod
+ * Gadomancy is Open Source and distributed under the
+ * GNU LESSER GENERAL PUBLIC LICENSE
+ * for more read the LICENSE file
+ * <p/>
+ * Created by makeo @ 04.07.2015 02:38
  */
 @SideOnly(Side.CLIENT)
 public class TransformationHelper {

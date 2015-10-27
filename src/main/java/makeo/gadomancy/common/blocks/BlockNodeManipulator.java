@@ -1,6 +1,8 @@
 package makeo.gadomancy.common.blocks;
 
+import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -32,9 +34,14 @@ public class BlockNodeManipulator extends BlockStoneDevice {
     @Override
     public void registerBlockIcons(IIconRegister ir) {
         super.registerBlockIcons(ir);
-        //iconPedestal[0]
-        //iconWandPedestal[0]
-        //iconWandPedestal[1]
+
+        iconPedestal[1] = ir.registerIcon(Gadomancy.MODID + ":manipulator_bot");
+        iconWandPedestal[0] = ir.registerIcon(Gadomancy.MODID + ":manipulator_side");
+        iconWandPedestal[1] = ir.registerIcon(Gadomancy.MODID + ":manipulator_top");
+
+        iconWandPedestalFocus[0] = ir.registerIcon(Gadomancy.MODID + ":manipulator_focus_side");
+        iconWandPedestalFocus[1] = ir.registerIcon(Gadomancy.MODID + ":manipulator_focus_top");
+        iconWandPedestalFocus[2] = ir.registerIcon(Gadomancy.MODID + ":manipulator_focus_bot");
     }
 
     @Override
@@ -70,5 +77,10 @@ public class BlockNodeManipulator extends BlockStoneDevice {
         TileEntity te = world.getTileEntity(x, y, z);
         //TODO DO!
         return super.onBlockActivated(world, x, y, z, player, side, par7, par8, par9);
+    }
+
+    @Override
+    public int getRenderType() {
+        return RegisteredBlocks.rendererNodeManipulator;
     }
 }
