@@ -6,10 +6,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
@@ -121,6 +123,16 @@ public class BlockStoneMachine extends Block {
             setBlockBounds(0.0F, -1.0F, 0.0F, 1.0F, -0.5F, 1.0F);
         }
         super.setBlockBoundsBasedOnState(world, x, y, z);
+    }
+
+    @Override
+    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List list, Entity entity) {
+        int metadata = world.getBlockMetadata(x, y, z);
+        if(metadata == 11 || metadata == 15) {
+            setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        }
+
+        super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
     }
 
     public boolean isOpaqueCube()
