@@ -4,9 +4,9 @@ import makeo.gadomancy.client.renderers.block.BlockNodeManipulatorRenderer;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
+import thaumcraft.client.renderers.tile.TileWandPedestalRenderer;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -16,9 +16,11 @@ import org.lwjgl.opengl.GL11;
  * <p/>
  * Created by makeo @ 27.10.2015 15:19
  */
-public class RenderTileNodeManipulator extends TileEntitySpecialRenderer {
+public class RenderTileNodeManipulator extends TileWandPedestalRenderer {
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partitalTicks) {
+        super.renderTileEntityAt(tile, x, y, z, partitalTicks);
+
         GL11.glPushMatrix();
 
         GL11.glTranslated(x, y, z);

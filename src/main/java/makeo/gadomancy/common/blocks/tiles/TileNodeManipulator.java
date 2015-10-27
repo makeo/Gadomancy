@@ -1,13 +1,20 @@
 package makeo.gadomancy.common.blocks.tiles;
 
+import makeo.gadomancy.common.registration.RegisteredBlocks;
+import makeo.gadomancy.common.registration.RegisteredMultiblocks;
+import makeo.gadomancy.common.utils.MultiblockHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.wands.IWandable;
+import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.tiles.TileWandPedestal;
 
 /**
@@ -20,13 +27,57 @@ import thaumcraft.common.tiles.TileWandPedestal;
  */
 public class TileNodeManipulator extends TileWandPedestal implements IAspectContainer, IWandable {
 
-    public TileNodeManipulator() {
+    private int ticksExisted = 0;
+    private boolean multiblockStructurePresent = false;
+    private boolean isMultiblock = false;
 
+    public TileNodeManipulator() {
+        System.out.println("created..");
     }
 
     @Override
     public void updateEntity() {
+        ticksExisted++;
 
+        if(isInMultiblock() && ticksExisted % 8 == 0 && !worldObj.isRemote) {
+            System.out.println("check: " + checkMultiblock());
+            if(!isMultiblockStructurePresent()) {
+                breakMultiblock();
+            }
+        }
+
+    }
+
+    public void breakMultiblock() {
+
+        //bb wand
+        if(getStackInSlot(0) != null)
+            InventoryUtils.dropItems(worldObj, xCoord, yCoord, zCoord);
+    }
+
+    public void formMultiblock() {
+        MultiblockHelper.MultiblockPattern toBuild = RegisteredMultiblocks.completeNodeManipulatorMultiblock;
+        for(Vec3 v : toBuild.keySet()) {
+            MultiblockHelper.BlockInfo info = toBuild.get(v);
+            if(info.block == RegisteredBlocks.blockNode || info.block == Blocks.air) continue;
+            int absX = (int) (v.xCoord + xCoord);
+            int absY = (int) (v.yCoord + yCoord);
+            int absZ = (int) (v.zCoord + zCoord);
+            worldObj.setBlock(absX, absY, absZ, Blocks.air, 0, 0);
+            worldObj.setBlock(absX, absY, absZ, info.block, info.meta, 0);
+            worldObj.markBlockForUpdate(absX, absY, absZ);
+        }
+        TileManipulatorPillar pillar = (TileManipulatorPillar) worldObj.getTileEntity(xCoord + 1, yCoord, zCoord + 1);
+        pillar.orientation = 1;
+        pillar.markDirty();
+        pillar = (TileManipulatorPillar) worldObj.getTileEntity(xCoord - 1, yCoord, zCoord + 1);
+        pillar.orientation = 2;
+        pillar.markDirty();
+        pillar = (TileManipulatorPillar) worldObj.getTileEntity(xCoord - 1, yCoord, zCoord - 1);
+        pillar.orientation = 3;
+        pillar.markDirty();
+        markDirty();
+        this.isMultiblock = true;
     }
 
     @Override
@@ -42,6 +93,33 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
 
 
     }
+
+    public boolean isInMultiblock() {
+        return isMultiblock;
+    }
+
+    public boolean isMultiblockStructurePresent() {
+        return multiblockStructurePresent;
+    }
+
+    public boolean checkMultiblock() {
+        boolean prevState = isMultiblockStructurePresent();
+        MultiblockHelper.MultiblockPattern patternToCheck;
+        if(prevState) { //If there is already a multiblock formed...
+            if(isInMultiblock()) { //If we were actually in multiblock before
+                patternToCheck = RegisteredMultiblocks.completeNodeManipulatorMultiblock;
+            } else { //If we were'nt in multiblock eventhough it would be possible.
+                patternToCheck = RegisteredMultiblocks.incompleteNodeManipulatorMultiblock;
+            }
+            this.multiblockStructurePresent = MultiblockHelper.isMultiblockPresent(worldObj, xCoord, yCoord, zCoord, patternToCheck);
+        } else { //If there was no multiblock formed before..
+            patternToCheck = RegisteredMultiblocks.incompleteNodeManipulatorMultiblock;
+            this.multiblockStructurePresent = MultiblockHelper.isMultiblockPresent(worldObj, xCoord, yCoord, zCoord, patternToCheck);
+        }
+        return isMultiblockStructurePresent();
+    }
+
+
 
     @Override
     public AspectList getAspects() {
