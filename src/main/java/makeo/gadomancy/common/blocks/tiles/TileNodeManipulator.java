@@ -31,16 +31,12 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
     private boolean multiblockStructurePresent = false;
     private boolean isMultiblock = false;
 
-    public TileNodeManipulator() {
-        System.out.println("created..");
-    }
-
     @Override
     public void updateEntity() {
         ticksExisted++;
 
         if(isInMultiblock() && ticksExisted % 8 == 0 && !worldObj.isRemote) {
-            System.out.println("check: " + checkMultiblock());
+            checkMultiblock();
             if(!isMultiblockStructurePresent()) {
                 breakMultiblock();
             }
@@ -59,7 +55,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
         MultiblockHelper.MultiblockPattern toBuild = RegisteredMultiblocks.completeNodeManipulatorMultiblock;
         for(Vec3 v : toBuild.keySet()) {
             MultiblockHelper.BlockInfo info = toBuild.get(v);
-            if(info.block == RegisteredBlocks.blockNode || info.block == Blocks.air) continue;
+            if(info.block == RegisteredBlocks.blockNode || info.block == Blocks.air || info.block == RegisteredBlocks.blockNodeManipulator) continue;
             int absX = (int) (v.xCoord + xCoord);
             int absY = (int) (v.yCoord + yCoord);
             int absZ = (int) (v.zCoord + zCoord);
@@ -67,15 +63,18 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
             worldObj.setBlock(absX, absY, absZ, info.block, info.meta, 0);
             worldObj.markBlockForUpdate(absX, absY, absZ);
         }
-        TileManipulatorPillar pillar = (TileManipulatorPillar) worldObj.getTileEntity(xCoord + 1, yCoord, zCoord + 1);
-        pillar.orientation = 1;
+        TileManipulatorPillar pillar = (TileManipulatorPillar) worldObj.getTileEntity(xCoord + 1, yCoord, zCoord + 1); //wrong
+        pillar.orientation = 5;
+        worldObj.markBlockForUpdate(pillar.xCoord, pillar.yCoord, pillar.zCoord);
         pillar.markDirty();
-        pillar = (TileManipulatorPillar) worldObj.getTileEntity(xCoord - 1, yCoord, zCoord + 1);
-        pillar.orientation = 2;
-        pillar.markDirty();
-        pillar = (TileManipulatorPillar) worldObj.getTileEntity(xCoord - 1, yCoord, zCoord - 1);
-        pillar.orientation = 3;
-        pillar.markDirty();
+        TileManipulatorPillar pillar2 = (TileManipulatorPillar) worldObj.getTileEntity(xCoord - 1, yCoord, zCoord + 1);
+        pillar2.orientation = 3; //correct
+        worldObj.markBlockForUpdate(pillar2.xCoord, pillar2.yCoord, pillar2.zCoord);
+        pillar2.markDirty();
+        TileManipulatorPillar pillar3 = (TileManipulatorPillar) worldObj.getTileEntity(xCoord + 1, yCoord, zCoord - 1); //wrong
+        pillar3.orientation = 4;
+        worldObj.markBlockForUpdate(pillar3.xCoord, pillar3.yCoord, pillar3.zCoord);
+        pillar3.markDirty();
         markDirty();
         this.isMultiblock = true;
     }
@@ -116,6 +115,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
             patternToCheck = RegisteredMultiblocks.incompleteNodeManipulatorMultiblock;
             this.multiblockStructurePresent = MultiblockHelper.isMultiblockPresent(worldObj, xCoord, yCoord, zCoord, patternToCheck);
         }
+        markDirty();
         return isMultiblockStructurePresent();
     }
 
