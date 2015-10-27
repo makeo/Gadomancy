@@ -25,16 +25,18 @@ public class PacketAnimationAbsorb implements IMessage, IMessageHandler<PacketAn
 
     private int x, y, z;
     private int targetX, targetY, targetZ;
+    private int tickCap;
 
     public PacketAnimationAbsorb() {}
 
-    public PacketAnimationAbsorb(int x, int y, int z, int targetX, int targetY, int targetZ) {
+    public PacketAnimationAbsorb(int x, int y, int z, int targetX, int targetY, int targetZ, int tickCap) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.targetX = targetX;
         this.targetY = targetY;
         this.targetZ = targetZ;
+        this.tickCap = tickCap;
     }
 
     @Override
@@ -45,6 +47,7 @@ public class PacketAnimationAbsorb implements IMessage, IMessageHandler<PacketAn
         this.targetX = buf.readInt();
         this.targetY = buf.readInt();
         this.targetZ = buf.readInt();
+        this.tickCap = buf.readInt();
     }
 
     @Override
@@ -55,6 +58,7 @@ public class PacketAnimationAbsorb implements IMessage, IMessageHandler<PacketAn
         buf.writeInt(targetX);
         buf.writeInt(targetY);
         buf.writeInt(targetZ);
+        buf.writeInt(tickCap);
     }
 
     @Override
@@ -63,7 +67,7 @@ public class PacketAnimationAbsorb implements IMessage, IMessageHandler<PacketAn
         Block b = Minecraft.getMinecraft().theWorld.getBlock(p.targetX, p.targetY, p.targetZ);
         int md = Minecraft.getMinecraft().theWorld.getBlockMetadata(p.targetX, p.targetY, p.targetZ);
         MultiTickEffectDispatcher.VortexDigInfo info =
-                new MultiTickEffectDispatcher.VortexDigInfo(Minecraft.getMinecraft().theWorld.provider.dimensionId, p.x, p.y, p.z, p.targetX, p.targetY, p.targetZ, b, md);
+                new MultiTickEffectDispatcher.VortexDigInfo(Minecraft.getMinecraft().theWorld.provider.dimensionId, p.x, p.y, p.z, p.targetX, p.targetY, p.targetZ, b, md, p.tickCap);
         MultiTickEffectDispatcher.registerVortexDig(info);
         return null;
     }

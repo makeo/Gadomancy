@@ -37,7 +37,7 @@ public class MultiTickEffectDispatcher {
             VortexDigInfo info = it.next();
             if(info.dimId != currentRenderWorld.provider.dimensionId) it.remove();
             info.renderTicks++;
-            if(info.renderTicks > 7) it.remove();
+            if(info.renderTicks > info.tickCap) it.remove();
 
             Thaumcraft.proxy.boreDigFx(currentRenderWorld, info.tX, info.tY, info.tZ, info.oX, info.oY, info.oZ, info.blockInstance, info.meta);
         }
@@ -60,8 +60,9 @@ public class MultiTickEffectDispatcher {
         private Block blockInstance;
         private int meta;
         private int renderTicks = 0;
+        private int tickCap;
 
-        public VortexDigInfo(int dimId, int oX, int oY, int oZ, int tX, int tY, int tZ, Block blockInstance, int meta) {
+        public VortexDigInfo(int dimId, int oX, int oY, int oZ, int tX, int tY, int tZ, Block blockInstance, int meta, int tickDuration) {
             this.dimId = dimId;
             this.oX = oX;
             this.oY = oY;
@@ -71,6 +72,7 @@ public class MultiTickEffectDispatcher {
             this.tZ = tZ;
             this.blockInstance = blockInstance;
             this.meta = meta;
+            this.tickCap = tickDuration;
         }
     }
 

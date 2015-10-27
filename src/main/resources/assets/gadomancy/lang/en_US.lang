@@ -67,6 +67,7 @@ tile.BlockInfusionClaw.name=Infusion Claw
 tile.BlockRemoteJar.name=Mirrored Jar
 tile.BlockNode.name=Aura Node
 tile.BlockExtendedNodeJar.name=Node in a Jar
+tile.BlockNodeManipulator.5.name=Node Manipulator
 
 gadomancy.nodes.GROWING=Growing
 gadomancy.nodes.STARVING=Starving

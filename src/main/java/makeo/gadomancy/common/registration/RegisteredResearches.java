@@ -81,17 +81,17 @@ public class RegisteredResearches {
 
         researchGrowingNodes = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING", Gadomancy.MODID, new AspectList(), 2, 2, 5, new ResourceLocation("thaumcraft", "textures/misc/r_nodes.png"))
                 .setSpecial().setLost()
-                .setPages(new ResearchPage("gadomancy.research_page.GROWING.1"), new ResearchPage("gadomancy.research_page.GROWING.2"));//.registerResearchItem();
+                .setPages(new ResearchPage("gadomancy.research_page.GROWING.1"), new ResearchPage("gadomancy.research_page.GROWING.2")).registerResearchItem();
 
         researchGrowingNodeAgression = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_AGGRESSION", Gadomancy.MODID, new AspectList(), 5, 3, 6, new ItemStack(ConfigBlocks.blockAiry, 1, 5))
                 .setLost()
                 .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING")
-                .setPages(new ResearchPage("gadomancy.research_page.GROWING_AGGRESSION.1"));//.registerResearchItem();
+                .setPages(new ResearchPage("gadomancy.research_page.GROWING_AGGRESSION.1")).registerResearchItem();
 
         researchGrowingNodeGrowth = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTH", Gadomancy.MODID, new AspectList(), 3, 5, 6, new ResourceLocation("thaumcraft", "textures/misc/r_nodes_2.png"))
                 .setLost()
                 .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING")
-                .setPages(new ResearchPage("gadomancy.research_page.GROWING_GROWTH.1"), new ResearchPage("gadomancy.research_page.GROWING_GROWTH.2"));//.registerResearchItem();
+                .setPages(new ResearchPage("gadomancy.research_page.GROWING_GROWTH.1"), new ResearchPage("gadomancy.research_page.GROWING_GROWTH.2")).registerResearchItem();
 
         researchGrowingNodeGrowthClue = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTHCLUE", Gadomancy.MODID,
                 new AspectList().add(Aspect.AURA, 10).add(Aspect.MAGIC, 15).add(Aspect.ELDRITCH, 5).add(Aspect.VOID, 12).add(Aspect.ENERGY, 12).add(Aspect.ENTROPY, 8).add(Aspect.DEATH, 3)
@@ -99,9 +99,9 @@ public class RegisteredResearches {
                 6, 6, 2, new ItemStack(ConfigBlocks.blockAiry, 1, 0))
                 .setSpecial().setRound().setConcealed()
                 .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING_AGGRESSION", Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTH")
-                .setPages(new ResearchPage("gadomancy.research_page.GROWING_GROWTHCLUE.1"), new ResearchPage("gadomancy.research_page.GROWING_GROWTHCLUE.2"));//.registerResearchItem();
+                .setPages(new ResearchPage("gadomancy.research_page.GROWING_GROWTHCLUE.1"), new ResearchPage("gadomancy.research_page.GROWING_GROWTHCLUE.2")).registerResearchItem();
 
-        //ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTHCLUE", 3);
+        ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTHCLUE", 3);
     }
 
     public static void postInit() {

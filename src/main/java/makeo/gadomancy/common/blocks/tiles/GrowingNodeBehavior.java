@@ -168,6 +168,7 @@ public class GrowingNodeBehavior {
     }
 
     public boolean updateBehavior(boolean needUpdate) {
+        //TODO fix empty nodes...
         if(fixedNode != null && owningNode.ticksExisted % 3 == 0) {
             if(owningNode.getWorldObj().getBlock(fixedNode.xCoord, fixedNode.yCoord, fixedNode.zCoord) != RegisteredBlocks.blockNode ||
                     owningNode.getWorldObj().getTileEntity(fixedNode.xCoord, fixedNode.yCoord, fixedNode.zCoord) == null ||
@@ -209,7 +210,7 @@ public class GrowingNodeBehavior {
                     PacketTCNodeBolt bolt = new PacketTCNodeBolt(ox + 0.5F, oy + 0.5F, oz + 0.5F, fx + 0.5F, fy + 0.5F, fz + 0.5F);
                     PacketHandler.INSTANCE.sendToAllAround(bolt, point);
 
-                    PacketAnimationAbsorb packet = new PacketAnimationAbsorb(ox, oy, oz, fx, fy, fz);
+                    PacketAnimationAbsorb packet = new PacketAnimationAbsorb(ox, oy, oz, fx, fy, fz, 7);
                     PacketHandler.INSTANCE.sendToAllAround(packet, point);
 
                     world.markBlockForUpdate(fx, fy, fz);

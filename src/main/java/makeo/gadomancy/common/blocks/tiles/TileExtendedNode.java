@@ -42,7 +42,7 @@ import java.util.Random;
  *
  * Created by HellFirePvP @ 21.10.2015 23:39
  */
-public class TileExtendedNode extends TileNode {
+public class TileExtendedNode extends TileNode implements INode {
 
     public int ticksExisted = 0;
     private ExtendedNodeType extendedNodeType;
