@@ -1,5 +1,8 @@
 package makeo.gadomancy.common.blocks.tiles;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
+import makeo.gadomancy.common.network.PacketHandler;
+import makeo.gadomancy.common.network.packets.PacketStartAnimation;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredMultiblocks;
 import makeo.gadomancy.common.utils.MultiblockHelper;
@@ -39,14 +42,19 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
             checkMultiblock();
             if(!isMultiblockStructurePresent()) {
                 breakMultiblock();
+                isMultiblock = false;
             }
         }
+    }
 
+    @Override
+    public boolean receiveClientEvent(int p_145842_1_, int p_145842_2_) {
+        return super.receiveClientEvent(p_145842_1_, p_145842_2_);
     }
 
     public void breakMultiblock() {
+        //TODO break pillars.
 
-        //bb wand
         if(getStackInSlot(0) != null)
             InventoryUtils.dropItems(worldObj, xCoord, yCoord, zCoord);
     }
@@ -63,17 +71,26 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
             worldObj.setBlock(absX, absY, absZ, info.block, info.meta, 0);
             worldObj.markBlockForUpdate(absX, absY, absZ);
         }
+        NetworkRegistry.TargetPoint target = new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 32);
         TileManipulatorPillar pillar = (TileManipulatorPillar) worldObj.getTileEntity(xCoord + 1, yCoord, zCoord + 1); //wrong
         pillar.orientation = 5;
         worldObj.markBlockForUpdate(pillar.xCoord, pillar.yCoord, pillar.zCoord);
+        PacketStartAnimation animation = new PacketStartAnimation(PacketStartAnimation.ID_PILLAR_RUNES, pillar.xCoord, pillar.yCoord, pillar.zCoord);
+        PacketHandler.INSTANCE.sendToAllAround(animation, target);
         pillar.markDirty();
         TileManipulatorPillar pillar2 = (TileManipulatorPillar) worldObj.getTileEntity(xCoord - 1, yCoord, zCoord + 1);
         pillar2.orientation = 3; //correct
         worldObj.markBlockForUpdate(pillar2.xCoord, pillar2.yCoord, pillar2.zCoord);
+        animation = new PacketStartAnimation(PacketStartAnimation.ID_PILLAR_RUNES, pillar2.xCoord, pillar2.yCoord, pillar2.zCoord);
+        PacketHandler.INSTANCE.sendToAllAround(animation, target);
         pillar2.markDirty();
         TileManipulatorPillar pillar3 = (TileManipulatorPillar) worldObj.getTileEntity(xCoord + 1, yCoord, zCoord - 1); //wrong
         pillar3.orientation = 4;
         worldObj.markBlockForUpdate(pillar3.xCoord, pillar3.yCoord, pillar3.zCoord);
+        animation = new PacketStartAnimation(PacketStartAnimation.ID_PILLAR_RUNES, pillar3.xCoord, pillar3.yCoord, pillar3.zCoord);
+        PacketHandler.INSTANCE.sendToAllAround(animation, target);
+        animation = new PacketStartAnimation(PacketStartAnimation.ID_PILLAR_RUNES, xCoord - 1, yCoord, zCoord - 1);
+        PacketHandler.INSTANCE.sendToAllAround(animation, target);
         pillar3.markDirty();
         markDirty();
         this.isMultiblock = true;
@@ -83,14 +100,19 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
     public void readCustomNBT(NBTTagCompound compound) {
         super.readCustomNBT(compound);
 
-
+        NBTTagCompound tag = compound.getCompoundTag("Gadomancy");
+        this.multiblockStructurePresent = tag.getBoolean("mBlockPresent");
+        this.isMultiblock = tag.getBoolean("mBlockState");
     }
 
     @Override
     public void writeCustomNBT(NBTTagCompound compound) {
         super.writeCustomNBT(compound);
 
-
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("mBlockPresent", this.multiblockStructurePresent);
+        tag.setBoolean("mBlockState", this.isMultiblock);
+        compound.setTag("Gadomancy", tag);
     }
 
     public boolean isInMultiblock() {
@@ -115,15 +137,17 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
             patternToCheck = RegisteredMultiblocks.incompleteNodeManipulatorMultiblock;
             this.multiblockStructurePresent = MultiblockHelper.isMultiblockPresent(worldObj, xCoord, yCoord, zCoord, patternToCheck);
         }
-        markDirty();
         return isMultiblockStructurePresent();
     }
 
-
+    @Override
+    public boolean canInsertItem(int par1, ItemStack par2ItemStack, int par3) {
+        return isInMultiblock() && super.canInsertItem(par1, par2ItemStack, par3);
+    }
 
     @Override
     public AspectList getAspects() {
-        return null;
+        return new AspectList();
     }
 
     @Override

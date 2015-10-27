@@ -8,6 +8,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
+import makeo.gadomancy.common.blocks.tiles.TileManipulatorPillar;
+import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
 import makeo.gadomancy.common.utils.ExplosionHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
@@ -26,6 +28,7 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
     public static final byte ID_INFUSIONCLAW = 0;
     public static final byte ID_EX_VORTEX = 1;
     public static final byte ID_BURST = 2;
+    public static final byte ID_PILLAR_RUNES = 3;
 
     private byte annimationId;
     private int x;
@@ -74,6 +77,9 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
                 break;
             case ID_BURST:
                 Thaumcraft.proxy.burst(Minecraft.getMinecraft().theWorld, message.x + 0.5F, message.y + 0.5F, message.z + 0.5F, Minecraft.getMinecraft().theWorld.rand.nextInt(3) + 1);
+                break;
+            case ID_PILLAR_RUNES:
+                TileManipulatorPillar.doRuneEffects(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z);
                 break;
         }
         return null;

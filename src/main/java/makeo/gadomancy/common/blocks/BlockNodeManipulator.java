@@ -95,22 +95,26 @@ public class BlockNodeManipulator extends BlockStoneDevice {
         if(world.isRemote) return true;
 
         TileEntity te = world.getTileEntity(x, y, z);
-        if (te != null && te instanceof TileNodeManipulator && player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemWandCasting) {
+        if (te != null && te instanceof TileNodeManipulator) {
             TileNodeManipulator manipulator = (TileNodeManipulator) te;
-            manipulator.checkMultiblock();
-            if (manipulator.isMultiblockStructurePresent()) {
-                if (manipulator.isInMultiblock()) {
-                    return tryAddWand(manipulator, x, y, z, player);
-                } else if (ThaumcraftApiHelper.consumeVisFromWandCrafting(player.getCurrentEquippedItem(), player, RegisteredRecipes.costsNodeManipulatorMultiblock, true)) {
-                    manipulator.formMultiblock();
-                    return true;
+            if(player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemWandCasting) {
+                manipulator.checkMultiblock();
+                if (manipulator.isMultiblockStructurePresent()) {
+                    if (manipulator.isInMultiblock()) {
+                        return tryAddWandOrRemove(manipulator, x, y, z, player);
+                    } else if (ThaumcraftApiHelper.consumeVisFromWandCrafting(player.getCurrentEquippedItem(), player, RegisteredRecipes.costsNodeManipulatorMultiblock, true)) {
+                        manipulator.formMultiblock();
+                        return true;
+                    }
                 }
+            } else {
+                tryAddWandOrRemove(manipulator, x, y, z, player);
             }
         }
         return true;
     }
 
-    private boolean tryAddWand(TileNodeManipulator manipulator, int x, int y, int z, EntityPlayer player) {
+    private boolean tryAddWandOrRemove(TileNodeManipulator manipulator, int x, int y, int z, EntityPlayer player) {
         World world = manipulator.getWorldObj();
         if (manipulator.getStackInSlot(0) != null) {
             InventoryUtils.dropItemsAtEntity(world, x, y, z, player);
