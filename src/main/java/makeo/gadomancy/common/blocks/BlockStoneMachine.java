@@ -100,12 +100,12 @@ public class BlockStoneMachine extends Block {
     public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
         int metadata = world.getBlockMetadata(x, y, z);
         if(metadata == 15) {
-            if(world.getBlock(x, y + 1, z) != this || world.getBlockMetadata(x, y, z) != 1) {
+            if(world.getBlock(x, y + 1, z) != this || world.getBlockMetadata(x, y, z) != 11) {
                 dropBlockAsItem(world, x, y, z, metadata, 0);
                 world.setBlockToAir(x, y, z);
             }
         } else if(metadata == 11) {
-            if(world.getBlock(x, y - 1, z) != this || world.getBlockMetadata(x, y, z) != 0) {
+            if(world.getBlock(x, y - 1, z) != this || world.getBlockMetadata(x, y, z) != 15) {
                 dropBlockAsItem(world, x, y, z, metadata, 0);
                 world.setBlockToAir(x, y, z);
             }
