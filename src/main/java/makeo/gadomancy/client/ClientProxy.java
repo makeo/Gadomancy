@@ -11,10 +11,7 @@ import makeo.gadomancy.client.renderers.block.BlockExtendedNodeJarRenderer;
 import makeo.gadomancy.client.renderers.block.BlockNodeManipulatorRenderer;
 import makeo.gadomancy.client.renderers.block.RenderBlockTransparent;
 import makeo.gadomancy.client.renderers.entity.RenderAdditionalGolemBase;
-import makeo.gadomancy.client.renderers.item.ItemExNodeRenderer;
-import makeo.gadomancy.client.renderers.item.ItemJarExtendedNodeRenderer;
-import makeo.gadomancy.client.renderers.item.ItemRenderRemoteJar;
-import makeo.gadomancy.client.renderers.item.ItemRenderTileEntity;
+import makeo.gadomancy.client.renderers.item.*;
 import makeo.gadomancy.client.renderers.tile.*;
 import makeo.gadomancy.common.CommonProxy;
 import makeo.gadomancy.common.blocks.tiles.*;
@@ -79,7 +76,10 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileExtendedNodeJar.class, nodeJarRenderer);
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileNodeManipulator.class, new RenderTileNodeManipulator());
+
         ClientRegistry.bindTileEntitySpecialRenderer(TileManipulatorPillar.class, new RenderTileManipulatorPillar());
+        RenderTileManipulationFocus renderTileManipulationFocus = new RenderTileManipulationFocus();
+        ClientRegistry.bindTileEntitySpecialRenderer(TileManipulationFocus.class, renderTileManipulationFocus);
 
         //Items
         TileArcaneDropper fakeTile = new TileArcaneDropper();
@@ -92,6 +92,10 @@ public class ClientProxy extends CommonProxy {
 
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemExtendedNodeJar, new ItemJarExtendedNodeRenderer());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockRemoteJar), new ItemRenderRemoteJar(renderTileRemoteJar));
+
+        ItemRenderStoneMachine itemRenderStoneMachine = new ItemRenderStoneMachine();
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockStoneMachine), itemRenderStoneMachine);
+        itemRenderStoneMachine.registerRenderer(0, new TileManipulationFocus(), renderTileManipulationFocus);
 
         //Blocks
         RegisteredBlocks.rendererTransparentBlock = registerBlockRenderer(new RenderBlockTransparent());

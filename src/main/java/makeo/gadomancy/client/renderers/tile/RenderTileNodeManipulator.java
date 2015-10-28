@@ -28,26 +28,6 @@ public class RenderTileNodeManipulator extends TileWandPedestalRenderer {
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partitalTicks) {
         super.renderTileEntityAt(tile, x, y, z, partitalTicks);
-
-        GL11.glPushMatrix();
-
-        GL11.glTranslated(x, y, z);
-        GL11.glTranslatef(0.5f, 1.5f, 0.5f);
-
-        //Why don't you clean up Azanor -_-"
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        int brightness = Minecraft.getMinecraft().thePlayer.getBrightnessForRender(0.0F);
-        int k = brightness % 65536;
-        int l = brightness / 65536;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, k / 1.0F, l / 1.0F);
-
-        bindTexture(TextureMap.locationBlocksTexture);
-        BlockNodeManipulatorRenderer.renderWandPedestalFocus(RegisteredBlocks.blockNodeManipulator, RenderBlocks.getInstance());
-
-        //TODO: add color
-        renderColorCubes(1, 0.5f, 0, 1);
-
-        GL11.glPopMatrix();
     }
 
     public static void renderColorCubes(float r, float g, float b, float a) {

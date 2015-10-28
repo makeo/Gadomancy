@@ -67,6 +67,7 @@ tile.BlockRemoteJar.name=Mirrored Jar
 tile.BlockNode.name=Aura Node
 tile.BlockExtendedNodeJar.name=Node in a Jar
 tile.BlockNodeManipulator.5.name=Node Manipulator
+tile.BlockStoneMachine.0.name=Randomization Focus
 tile.BlockStoneMachine.11.name=Manipulation Pillar
 tile.BlockStoneMachine.15.name=Manipulation Pillar
 

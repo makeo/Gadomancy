@@ -96,6 +96,7 @@ public class RegisteredBlocks {
         registerTile(TileExtendedNodeJar.class);
         registerTile(TileNodeManipulator.class);
         registerTile(TileManipulatorPillar.class);
+        registerTile(TileManipulationFocus.class);
     }
 
     private static void registerTile(Class<? extends TileEntity> tile, String name) {

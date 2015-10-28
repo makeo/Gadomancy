@@ -1,6 +1,8 @@
 package makeo.gadomancy.common.blocks;
 
+import makeo.gadomancy.common.blocks.tiles.TileManipulationFocus;
 import makeo.gadomancy.common.blocks.tiles.TileManipulatorPillar;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -40,16 +42,20 @@ public class BlockStoneMachine extends Block {
     }
 
     private IIcon pillarIcon;
+    private IIcon focusIcon;
 
     @Override
     public void registerBlockIcons(IIconRegister ir) {
         pillarIcon = ir.registerIcon("thaumcraft:es_1");
+        focusIcon = ir.registerIcon("thaumcraft:thaumiumblock");
     }
 
     @Override
     public IIcon getIcon(int side, int metadata) {
         if(metadata == 11 || metadata == 15) {
             return pillarIcon;
+        } else if(metadata == 0) {
+            return focusIcon;
         }
 
         return super.getIcon(side, metadata);
@@ -57,11 +63,12 @@ public class BlockStoneMachine extends Block {
 
     @Override
     public boolean hasTileEntity(int metadata) {
-        return metadata == 15;
+        return metadata == 15 || metadata == 0;
     }
 
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+        list.add(new ItemStack(item, 1, 0));
         list.add(new ItemStack(item, 1, 15));
         list.add(new ItemStack(item, 1, 11));
     }
@@ -80,8 +87,15 @@ public class BlockStoneMachine extends Block {
     public TileEntity createTileEntity(World world, int metadata) {
         if(metadata == 15) {
             return new TileManipulatorPillar();
+        } else if(metadata == 0) {
+            return new TileManipulationFocus();
         }
         return null;
+    }
+
+    @Override
+    public int damageDropped(int metadata) {
+        return metadata;
     }
 
     @Override
@@ -94,8 +108,11 @@ public class BlockStoneMachine extends Block {
     }
 
     @Override
-    public int damageDropped(int metadata) {
-        return metadata == 0 ? 15 : metadata == 1 ? 11 : metadata;
+    public boolean canReplace(World world, int x, int y, int z, int side, ItemStack stack) {
+        if(stack.getItemDamage() == 0 && (y < 1 || world.getBlock(x, y - 1, z) != RegisteredBlocks.blockNodeManipulator)) {
+            return false;
+        }
+        return super.canReplace(world, x, y, z, side, stack);
     }
 
     @Override
@@ -111,6 +128,11 @@ public class BlockStoneMachine extends Block {
                 dropBlockAsItem(world, x, y, z, metadata, 0);
                 world.setBlockToAir(x, y, z);
             }
+        } else if(metadata == 0) {
+            if(world.getBlock(x, y - 1, z) != RegisteredBlocks.blockNodeManipulator || world.getBlockMetadata(x, y - 1, z) != 5) {
+                dropBlockAsItem(world, x, y, z, metadata, 0);
+                world.setBlockToAir(x, y, z);
+            }
         }
     }
 
@@ -121,6 +143,8 @@ public class BlockStoneMachine extends Block {
             setBlockBounds(0, 0, 0, 1, 0.5f, 1);
         } else if(metadata == 11) {
             setBlockBounds(0.0F, -1.0F, 0.0F, 1.0F, -0.5F, 1.0F);
+        } else if(metadata == 0) {
+            setBlockBounds(3/16f, 0, 3/16f, 1-(3/16f), 6/16f, 1-(3/16f));
         }
         super.setBlockBoundsBasedOnState(world, x, y, z);
     }
@@ -129,7 +153,7 @@ public class BlockStoneMachine extends Block {
     public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List list, Entity entity) {
         int metadata = world.getBlockMetadata(x, y, z);
         if(metadata == 11 || metadata == 15) {
-            setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+            setBlockBounds(0, 0, 0, 1, 1, 1);
         }
 
         super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);

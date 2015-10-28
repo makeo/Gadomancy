@@ -77,71 +77,19 @@ public class BlockNodeManipulator extends BlockStoneDevice {
     }
 
     @Override
-    public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-        return world.getBlock(x, y + 1, z) == Blocks.air && super.canPlaceBlockAt(world, x, y, z);
-    }
-
-    @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block par5) {
-        if(world.getBlock(x, y + 1, z) != Blocks.air) {
-            TileEntity te = world.getTileEntity(x, y, z);
-            if(te != null && te instanceof TileNodeManipulator) {
-                if(((TileNodeManipulator) te).isInMultiblock())
-                    ((TileNodeManipulator) te).breakMultiblock();
-            }
-            dropBlockAsItem(world, x, y, z, 5, 0);
-            world.setBlockToAir(x, y, z);
-        }
-        super.onNeighborBlockChange(world, x, y, z, par5);
-    }
-
-    @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9) {
-        if(world.isRemote) return true;
-
-        TileEntity te = world.getTileEntity(x, y, z);
-        if (te != null && te instanceof TileNodeManipulator) {
-            TileNodeManipulator manipulator = (TileNodeManipulator) te;
-            if(player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemWandCasting) {
-                manipulator.checkMultiblock();
-                if (manipulator.isMultiblockStructurePresent()) {
-                    if (manipulator.isInMultiblock()) {
-                        return tryAddWandOrRemove(manipulator, x, y, z, player);
-                    } else if (ThaumcraftApiHelper.consumeVisFromWandCrafting(player.getCurrentEquippedItem(), player, RegisteredRecipes.costsNodeManipulatorMultiblock, true)) {
-                        manipulator.formMultiblock();
-                        return true;
-                    }
+        TileNodeManipulator tile = (TileNodeManipulator) world.getTileEntity(x, y, z);
+        ItemStack heldItem = player.getHeldItem();
+        if(tile.isInMultiblock()) {
+            super.onBlockActivated(world, x, y, z, player, side, par7, par8, par9);
+        } else if(!world.isRemote && heldItem != null && heldItem.getItem() instanceof ItemWandCasting) {
+            tile.checkMultiblock();
+            if (tile.isMultiblockStructurePresent()) {
+                if (ThaumcraftApiHelper.consumeVisFromWandCrafting(player.getCurrentEquippedItem(), player, RegisteredRecipes.costsNodeManipulatorMultiblock, true)) {
+                    tile.formMultiblock();
+                    return true;
                 }
-            } else {
-                tryAddWandOrRemove(manipulator, x, y, z, player);
             }
-        }
-        return true;
-    }
-
-    private boolean tryAddWandOrRemove(TileNodeManipulator manipulator, int x, int y, int z, EntityPlayer player) {
-        World world = manipulator.getWorldObj();
-        if (manipulator.getStackInSlot(0) != null) {
-            InventoryUtils.dropItemsAtEntity(world, x, y, z, player);
-            world.markBlockForUpdate(x, y, z);
-            manipulator.markDirty();
-            world.playSoundEffect(x, y, z, "random.pop", 0.2F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 1.5F);
-            return true;
-        }
-        if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemWandCasting) {
-            ItemStack i = player.getCurrentEquippedItem().copy();
-            i.stackSize = 1;
-            manipulator.setInventorySlotContents(0, i);
-            player.getCurrentEquippedItem().stackSize -= 1;
-            if (player.getCurrentEquippedItem().stackSize == 0) {
-                player.setCurrentItemOrArmor(0, null);
-            }
-            player.inventory.markDirty();
-            world.markBlockForUpdate(x, y, z);
-            manipulator.markDirty();
-            world.playSoundEffect(x, y, z, "random.pop", 0.2F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 1.6F);
-
-            return true;
         }
         return false;
     }
