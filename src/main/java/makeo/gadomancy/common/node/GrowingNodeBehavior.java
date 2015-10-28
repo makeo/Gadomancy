@@ -1,7 +1,8 @@
-package makeo.gadomancy.common.blocks.tiles;
+package makeo.gadomancy.common.node;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketAnimationAbsorb;
 import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;

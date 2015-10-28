@@ -4,21 +4,20 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
+import makeo.gadomancy.common.node.ExtendedNodeType;
+import makeo.gadomancy.common.node.GrowingNodeBehavior;
 import makeo.gadomancy.common.utils.ExplosionHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.EnumDifficulty;
-import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.api.nodes.INode;
 import thaumcraft.common.Thaumcraft;
@@ -32,7 +31,6 @@ import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.TileNode;
 
 import java.util.List;
-import java.util.Random;
 
 /**
  * This class is part of the Gadomancy Mod

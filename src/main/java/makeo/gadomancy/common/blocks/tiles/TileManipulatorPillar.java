@@ -30,6 +30,12 @@ public class TileManipulatorPillar extends TileInfusionPillar {
         }
     }
 
+    public void setOrientation(byte orientation) {
+        this.orientation = orientation;
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        markDirty();
+    }
+
     private static float randomOffset(World worldObj) {
         return (worldObj.rand.nextFloat() * (worldObj.rand.nextBoolean() ? 1 : -1)) / 2F;
     }

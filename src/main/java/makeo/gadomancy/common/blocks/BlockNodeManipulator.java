@@ -84,6 +84,11 @@ public class BlockNodeManipulator extends BlockStoneDevice {
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block par5) {
         if(world.getBlock(x, y + 1, z) != Blocks.air) {
+            TileEntity te = world.getTileEntity(x, y, z);
+            if(te != null && te instanceof TileNodeManipulator) {
+                if(((TileNodeManipulator) te).isInMultiblock())
+                    ((TileNodeManipulator) te).breakMultiblock();
+            }
             dropBlockAsItem(world, x, y, z, 5, 0);
             world.setBlockToAir(x, y, z);
         }

@@ -5,6 +5,7 @@ import makeo.gadomancy.client.renderers.block.BlockNodeManipulatorRenderer;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.tileentity.TileEntity;
@@ -32,6 +33,13 @@ public class RenderTileNodeManipulator extends TileWandPedestalRenderer {
 
         GL11.glTranslated(x, y, z);
         GL11.glTranslatef(0.5f, 1.5f, 0.5f);
+
+        //Why don't you clean up Azanor -_-"
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        int brightness = Minecraft.getMinecraft().thePlayer.getBrightnessForRender(0.0F);
+        int k = brightness % 65536;
+        int l = brightness / 65536;
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, k / 1.0F, l / 1.0F);
 
         bindTexture(TextureMap.locationBlocksTexture);
         BlockNodeManipulatorRenderer.renderWandPedestalFocus(RegisteredBlocks.blockNodeManipulator, RenderBlocks.getInstance());

@@ -1,6 +1,6 @@
 package makeo.gadomancy.common.utils;
 
-import makeo.gadomancy.common.blocks.tiles.ExtendedNodeType;
+import makeo.gadomancy.common.node.ExtendedNodeType;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
@@ -19,7 +19,6 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.INode;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
-import thaumcraft.common.blocks.BlockJar;
 import thaumcraft.common.blocks.BlockMagicalLog;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.research.ResearchManager;

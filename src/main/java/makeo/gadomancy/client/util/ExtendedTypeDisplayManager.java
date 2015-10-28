@@ -1,7 +1,7 @@
 package makeo.gadomancy.client.util;
 
 import makeo.gadomancy.client.events.ResourceReloadListener;
-import makeo.gadomancy.common.blocks.tiles.ExtendedNodeType;
+import makeo.gadomancy.common.node.ExtendedNodeType;
 import net.minecraft.util.StatCollector;
 import thaumcraft.api.nodes.NodeType;
 

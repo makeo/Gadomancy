@@ -38,12 +38,14 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
     public void updateEntity() {
         ticksExisted++;
 
-        if(isInMultiblock() && ticksExisted % 8 == 0 && !worldObj.isRemote) {
+        if(isInMultiblock() && ticksExisted % 2 == 0 && !worldObj.isRemote) {
             checkMultiblock();
             if(!isMultiblockStructurePresent()) {
                 breakMultiblock();
                 isMultiblock = false;
             }
+
+            //TODO multiblock tick.
         }
     }
 
@@ -53,7 +55,21 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
     }
 
     public void breakMultiblock() {
-        //TODO break pillars.
+        MultiblockHelper.MultiblockPattern compareableCompleteStructure = RegisteredMultiblocks.completeNodeManipulatorMultiblock;
+        MultiblockHelper.MultiblockPattern toRestore = RegisteredMultiblocks.incompleteNodeManipulatorMultiblock;
+        for(MultiblockHelper.IntVec3 v : compareableCompleteStructure.keySet()) {
+            MultiblockHelper.BlockInfo info = compareableCompleteStructure.get(v);
+            MultiblockHelper.BlockInfo restoreInfo = toRestore.get(v);
+            if(info.block == RegisteredBlocks.blockNode || info.block == Blocks.air || info.block == RegisteredBlocks.blockNodeManipulator || restoreInfo == null) continue;
+            int absX = v.x + xCoord;
+            int absY = v.y + yCoord;
+            int absZ = v.z + zCoord;
+            if(worldObj.getBlock(absX, absY, absZ) == info.block && worldObj.getBlockMetadata(absX, absY, absZ) == info.meta) {
+                worldObj.setBlock(absX, absY, absZ, Blocks.air, 0, 0);
+                worldObj.setBlock(absX, absY, absZ, restoreInfo.block, restoreInfo.meta, 0);
+                worldObj.markBlockForUpdate(absX, absY, absZ);
+            }
+        }
 
         if(getStackInSlot(0) != null)
             InventoryUtils.dropItems(worldObj, xCoord, yCoord, zCoord);
@@ -61,37 +77,31 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
 
     public void formMultiblock() {
         MultiblockHelper.MultiblockPattern toBuild = RegisteredMultiblocks.completeNodeManipulatorMultiblock;
-        for(Vec3 v : toBuild.keySet()) {
+        for(MultiblockHelper.IntVec3 v : toBuild.keySet()) {
             MultiblockHelper.BlockInfo info = toBuild.get(v);
             if(info.block == RegisteredBlocks.blockNode || info.block == Blocks.air || info.block == RegisteredBlocks.blockNodeManipulator) continue;
-            int absX = (int) (v.xCoord + xCoord);
-            int absY = (int) (v.yCoord + yCoord);
-            int absZ = (int) (v.zCoord + zCoord);
+            int absX = v.x + xCoord;
+            int absY = v.y + yCoord;
+            int absZ = v.z + zCoord;
             worldObj.setBlock(absX, absY, absZ, Blocks.air, 0, 0);
             worldObj.setBlock(absX, absY, absZ, info.block, info.meta, 0);
             worldObj.markBlockForUpdate(absX, absY, absZ);
         }
         NetworkRegistry.TargetPoint target = new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 32);
         TileManipulatorPillar pillar = (TileManipulatorPillar) worldObj.getTileEntity(xCoord + 1, yCoord, zCoord + 1); //wrong
-        pillar.orientation = 5;
-        worldObj.markBlockForUpdate(pillar.xCoord, pillar.yCoord, pillar.zCoord);
+        pillar.setOrientation((byte) 5);
         PacketStartAnimation animation = new PacketStartAnimation(PacketStartAnimation.ID_PILLAR_RUNES, pillar.xCoord, pillar.yCoord, pillar.zCoord);
         PacketHandler.INSTANCE.sendToAllAround(animation, target);
-        pillar.markDirty();
         TileManipulatorPillar pillar2 = (TileManipulatorPillar) worldObj.getTileEntity(xCoord - 1, yCoord, zCoord + 1);
-        pillar2.orientation = 3; //correct
-        worldObj.markBlockForUpdate(pillar2.xCoord, pillar2.yCoord, pillar2.zCoord);
+        pillar2.setOrientation((byte) 3);
         animation = new PacketStartAnimation(PacketStartAnimation.ID_PILLAR_RUNES, pillar2.xCoord, pillar2.yCoord, pillar2.zCoord);
         PacketHandler.INSTANCE.sendToAllAround(animation, target);
-        pillar2.markDirty();
         TileManipulatorPillar pillar3 = (TileManipulatorPillar) worldObj.getTileEntity(xCoord + 1, yCoord, zCoord - 1); //wrong
-        pillar3.orientation = 4;
-        worldObj.markBlockForUpdate(pillar3.xCoord, pillar3.yCoord, pillar3.zCoord);
+        pillar3.setOrientation((byte) 4);
         animation = new PacketStartAnimation(PacketStartAnimation.ID_PILLAR_RUNES, pillar3.xCoord, pillar3.yCoord, pillar3.zCoord);
         PacketHandler.INSTANCE.sendToAllAround(animation, target);
         animation = new PacketStartAnimation(PacketStartAnimation.ID_PILLAR_RUNES, xCoord - 1, yCoord, zCoord - 1);
         PacketHandler.INSTANCE.sendToAllAround(animation, target);
-        pillar3.markDirty();
         markDirty();
         this.isMultiblock = true;
     }
