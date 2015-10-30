@@ -32,7 +32,6 @@ public class RegisteredBlocks {
 
     public static int rendererTransparentBlock;
     public static int rendererExtendedNodeJarBlock;
-    public static int rendererNodeManipulator;
 
     public static BlockStickyJar blockStickyJar;
     public static BlockArcaneDropper blockArcaneDropper;

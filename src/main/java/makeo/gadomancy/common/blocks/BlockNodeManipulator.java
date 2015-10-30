@@ -93,9 +93,4 @@ public class BlockNodeManipulator extends BlockStoneDevice {
         }
         return false;
     }
-
-    @Override
-    public int getRenderType() {
-        return RegisteredBlocks.rendererNodeManipulator;
-    }
 }

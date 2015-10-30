@@ -8,7 +8,6 @@ import makeo.gadomancy.client.events.RenderEventHandler;
 import makeo.gadomancy.client.events.ResourceReloadListener;
 import makeo.gadomancy.client.gui.InfusionClawGui;
 import makeo.gadomancy.client.renderers.block.BlockExtendedNodeJarRenderer;
-import makeo.gadomancy.client.renderers.block.BlockNodeManipulatorRenderer;
 import makeo.gadomancy.client.renderers.block.RenderBlockTransparent;
 import makeo.gadomancy.client.renderers.entity.RenderAdditionalGolemBase;
 import makeo.gadomancy.client.renderers.item.*;
@@ -100,7 +99,6 @@ public class ClientProxy extends CommonProxy {
         //Blocks
         RegisteredBlocks.rendererTransparentBlock = registerBlockRenderer(new RenderBlockTransparent());
         RegisteredBlocks.rendererExtendedNodeJarBlock = registerBlockRenderer(new BlockExtendedNodeJarRenderer());
-        RegisteredBlocks.rendererNodeManipulator = registerBlockRenderer(new BlockNodeManipulatorRenderer());
     }
 
     @Override
