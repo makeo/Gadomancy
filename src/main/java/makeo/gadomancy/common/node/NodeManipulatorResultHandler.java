@@ -75,6 +75,12 @@ public class NodeManipulatorResultHandler {
         //Modifier pair
         possibleResults.add(RegisteredManipulations.resultIncreaseModifier);
         possibleResults.add(RegisteredManipulations.resultDecreaseModifier);
+
+        //Switch node Type
+        possibleResults.add(RegisteredManipulations.resultSwitchType);
+
+        //Almighty Growing
+        possibleResults.add(RegisteredManipulations.resultApplyGrowing);
     }
 
 }

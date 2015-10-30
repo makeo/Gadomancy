@@ -10,7 +10,6 @@ package makeo.gadomancy.common.node;
  */
 public enum ExtendedNodeType {
 
-    GROWING,
-    STARVING
+    GROWING
 
 }

@@ -37,9 +37,13 @@ public class RegisteredResearches {
     public static ResearchItem researchGolemCoreBreak;
     public static ResearchItem researchInfusionClaw;
     public static ResearchItem researchRemoteJar;
+    public static ResearchItem researchNodeManipulator;
+
+    //Growing nodes stuff
     public static ResearchItem researchGrowingNodes;
     public static ResearchItem researchGrowingNodeAgression;
     public static ResearchItem researchGrowingNodeGrowth;
+    public static ResearchItem researchGrowingNodeAttackNodes;
     public static ResearchItem researchGrowingNodeGrowthClue;
 
     public static void init() {
@@ -74,13 +78,25 @@ public class RegisteredResearches {
 
         ResearchItem researchFocusPrimal = PseudoResearchItem.create("FOCUSPRIMAL", -2, -3).registerResearchItem();
 
+        ResearchItem researchItemVoidMetal = PseudoResearchItem.create("VOIDMETAL", -3, 4).registerResearchItem();
+        ResearchItem researchNodeStabilizer = PseudoResearchItem.create("NODESTABILIZER", -3, 6).registerResearchItem();
+        ResearchItem researchWardingStone = PseudoResearchItem.create("PAVEWARD", -1, 6).registerResearchItem();
+
         researchInfusionClaw = new SimpleResearchItem("INFUSIONCLAW", -1, -3, 5, new ItemStack(RegisteredBlocks.blockInfusionClaw),
                 new AspectList().add(Aspect.ELDRITCH, 8).add(Aspect.MECHANISM, 8).add(Aspect.MAGIC, 8).add(Aspect.ORDER, 8).add(Aspect.DARKNESS, 4))
                 .setParents(researchFocusPrimal.key).setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.INFUSIONCLAW.1"), new ResearchPage(RegisteredRecipes.recipeInfusionClaw)).registerResearchItem();
 
+        researchNodeManipulator = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR", Gadomancy.MODID,
+                new AspectList().add(Aspect.ELDRITCH, 1).add(Aspect.AURA, 1).add(Aspect.DARKNESS, 1).add(Aspect.MAGIC, 1).add(Aspect.GREED, 1).add(Aspect.VOID, 1).add(Aspect.MECHANISM, 1).add(Aspect.EXCHANGE, 1),
+                -1, 4, 2, new ItemStack(RegisteredBlocks.blockNodeManipulator, 1, 5))
+                .setConcealed().setSpecial()
+                .setParents(researchItemVoidMetal.key, researchNodeStabilizer.key, researchWardingStone.key)
+                .setPages(new ResearchPage("gadomancy.research_page.NODE_MANIPULATOR.1"), new ResearchPage(RegisteredRecipes.recipeNodeManipulator), new ResearchPage("gadomancy.research_page.NODE_MANIPULATOR.3"), new ResearchPage(RegisteredRecipes.recipeRandomizationFocus), new ResearchPage(RegisteredRecipes.multiblockNodeManipulator), new ResearchPage("gadomancy.research_page.NODE_MANIPULATOR.6")).registerResearchItem();
+
         researchGrowingNodes = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING", Gadomancy.MODID, new AspectList(), 2, 2, 5, new ResourceLocation("thaumcraft", "textures/misc/r_nodes.png"))
-                .setSpecial().setLost()
+                .setSpecial().setLost().setConcealed()
+                .setParents(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR")
                 .setPages(new ResearchPage("gadomancy.research_page.GROWING.1"), new ResearchPage("gadomancy.research_page.GROWING.2")).registerResearchItem();
 
         researchGrowingNodeAgression = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_AGGRESSION", Gadomancy.MODID, new AspectList(), 5, 3, 6, new ItemStack(ConfigBlocks.blockAiry, 1, 5))
@@ -88,19 +104,25 @@ public class RegisteredResearches {
                 .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING")
                 .setPages(new ResearchPage("gadomancy.research_page.GROWING_AGGRESSION.1")).registerResearchItem();
 
-        researchGrowingNodeGrowth = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTH", Gadomancy.MODID, new AspectList(), 3, 5, 6, new ResourceLocation("thaumcraft", "textures/misc/r_nodes_2.png"))
+        researchGrowingNodeGrowth = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTH", Gadomancy.MODID, new AspectList(), 3, 5, 6, new ResourceLocation("gadomancy", "textures/misc/r_node_star.png"))
                 .setLost()
                 .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING")
                 .setPages(new ResearchPage("gadomancy.research_page.GROWING_GROWTH.1"), new ResearchPage("gadomancy.research_page.GROWING_GROWTH.2")).registerResearchItem();
 
+        researchGrowingNodeAttackNodes = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_ATTACK", Gadomancy.MODID, new AspectList(), 4, 4, 6, new ResourceLocation("gadomancy", "textures/misc/r_node_dark.png"))
+                .setLost()
+                .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING")
+                .setPages(new ResearchPage("gadomancy.research_page.GROWING_ATTACK.1")).registerResearchItem();
+
         researchGrowingNodeGrowthClue = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTHCLUE", Gadomancy.MODID,
                 new AspectList().add(Aspect.AURA, 10).add(Aspect.MAGIC, 15).add(Aspect.ELDRITCH, 5).add(Aspect.VOID, 12).add(Aspect.ENERGY, 12).add(Aspect.ENTROPY, 8).add(Aspect.DEATH, 3)
                 .add(Aspect.GREED, 10).add(Aspect.HUNGER, 10).add(Aspect.MECHANISM, 12).add(Aspect.DARKNESS, 12),
-                6, 6, 2, new ItemStack(ConfigBlocks.blockAiry, 1, 0))
+                6, 6, 2, new ItemStack(ConfigBlocks.blockAiry, 1, 5))
                 .setSpecial().setRound().setConcealed()
-                .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING_AGGRESSION", Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTH")
+                .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING_AGGRESSION", Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTH", Gadomancy.MODID.toUpperCase() + ".GROWING_ATTACK")
                 .setPages(new ResearchPage("gadomancy.research_page.GROWING_GROWTHCLUE.1"), new ResearchPage("gadomancy.research_page.GROWING_GROWTHCLUE.2")).registerResearchItem();
 
+        ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR", 4);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTHCLUE", 3);
     }
 

@@ -39,8 +39,8 @@ import java.util.List;
  */
 public class TileNodeManipulator extends TileWandPedestal implements IAspectContainer, IWandable {
 
-    private static final int POSSIBLE_WORK_START = 50;
-    private static final int WORK_ASPECT_CAP = 250;
+    private static final int POSSIBLE_WORK_START = 70;
+    private static final int WORK_ASPECT_CAP = 150;
 
     private boolean multiblockStructurePresent = false;
     private boolean isMultiblock = false;

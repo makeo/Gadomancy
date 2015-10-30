@@ -7,6 +7,7 @@ import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
 import makeo.gadomancy.common.node.ExtendedNodeType;
 import makeo.gadomancy.common.node.GrowingNodeBehavior;
 import makeo.gadomancy.common.utils.ExplosionHelper;
+import makeo.gadomancy.common.utils.ResearchHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -31,6 +32,7 @@ import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.TileNode;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -52,26 +54,6 @@ public class TileExtendedNode extends TileNode implements INode {
 
     public TileExtendedNode() {
         this.behavior = new GrowingNodeBehavior(this);
-    }
-
-    public void addTypeSpecificAspects(ExtendedNodeType extendedNodeType) {
-        if(extendedNodeType == null) return;
-        switch (extendedNodeType) {
-            case GROWING:
-                List<Aspect> compounds = Aspect.getCompoundAspects();
-                int count = 1;
-                if(worldObj.rand.nextInt(3) == 0) count++;
-                while(count > 0) {
-                    count--;
-                    Aspect random = compounds.get(worldObj.rand.nextInt(compounds.size()));
-                    int val = getAspectsBase().getAmount(random) + worldObj.rand.nextInt(40) + 20;
-                    getAspectsBase().add(random, val);
-                    getAspects().add(random, val);
-                }
-                break;
-            case STARVING:
-                break;
-        }
     }
 
     @Override
@@ -118,15 +100,7 @@ public class TileExtendedNode extends TileNode implements INode {
                     if(livingEntity instanceof EntityPlayer && ((EntityPlayer) livingEntity).capabilities.isCreativeMode) continue;
                     if(!behavior.mayZapNow()) continue;
 
-                    String research = Gadomancy.MODID.toUpperCase() + ".GROWING_AGGRESSION";
-                    List players = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(6.0D, 6.0D, 6.0D));
-                    for(Object pl : players) {
-                        EntityPlayer player = (EntityPlayer) pl;
-                        if(!ResearchManager.isResearchComplete(player.getCommandSenderName(), research) && ResearchManager.doesPlayerHaveRequisites(player.getCommandSenderName(), research)) {
-                            thaumcraft.common.lib.network.PacketHandler.INSTANCE.sendTo(new PacketResearchComplete(research), (EntityPlayerMP)player);
-                            Thaumcraft.proxy.getResearchManager().completeResearch(player, research);
-                        }
-                    }
+                    ResearchHelper.distributeResearch(Gadomancy.MODID.toUpperCase() + ".GROWING_AGGRESSION", worldObj, xCoord, yCoord, zCoord, 6);
 
                     livingEntity.attackEntityFrom(DamageSource.magic, behavior.getZapDamage());
                     PacketTCNodeBolt packet = new PacketTCNodeBolt(xCoord + 0.5F, yCoord + 0.5F, zCoord + 0.5F, (float) livingEntity.posX, (float) (livingEntity.posY + livingEntity.height), (float) livingEntity.posZ);
@@ -189,11 +163,14 @@ public class TileExtendedNode extends TileNode implements INode {
             TileEntity t = worldObj.getTileEntity(xCoord + xx, yCoord + yy, zCoord + zz);
             if(t != null && t instanceof TileNode && !(xx == 0 && yy == 0 && zz == 0)) {
                 TileNode node = (TileNode) t;
-                behavior.lockOnTo(node);
-
-                worldObj.markBlockForUpdate(xCoord + xx, yCoord + yy, zCoord + zz);
-                node.markDirty();
-                needUpdate = true;
+                int thisSize = getAspectsBase().visSize();
+                int othersSize = node.getAspectsBase().visSize();
+                if(thisSize >= othersSize) {
+                    behavior.lockOnTo(node);
+                    worldObj.markBlockForUpdate(xCoord + xx, yCoord + yy, zCoord + zz);
+                    node.markDirty();
+                    needUpdate = true;
+                }
             }
         } else {
             needUpdate = behavior.updateBehavior(needUpdate);

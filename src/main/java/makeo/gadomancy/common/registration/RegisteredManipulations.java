@@ -1,11 +1,15 @@
 package makeo.gadomancy.common.registration;
 
+import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
+import makeo.gadomancy.common.node.ExtendedNodeType;
 import makeo.gadomancy.common.node.NodeManipulatorResult;
 import makeo.gadomancy.common.node.NodeManipulatorResultHandler;
+import makeo.gadomancy.common.utils.ResearchHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.NodeModifier;
+import thaumcraft.api.nodes.NodeType;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -39,7 +43,7 @@ public class RegisteredManipulations {
         }
     };
 
-    public static NodeManipulatorResult resultCombineAspects = new NodeManipulatorResult(4) {
+    public static NodeManipulatorResult resultCombineAspects = new NodeManipulatorResult(5) {
         @Override
         public boolean affect(TileExtendedNode node) {
             AspectList base = node.getAspectsBase();
@@ -87,7 +91,7 @@ public class RegisteredManipulations {
         }
     };
 
-    public static NodeManipulatorResult resultIncreaseModifier = new NodeManipulatorResult(1) {
+    public static NodeManipulatorResult resultIncreaseModifier = new NodeManipulatorResult(4) {
 
         @Override
         public boolean canAffect(TileExtendedNode node) {
@@ -114,7 +118,7 @@ public class RegisteredManipulations {
         }
     };
 
-    public static NodeManipulatorResult resultDecreaseModifier = new NodeManipulatorResult(1) {
+    public static NodeManipulatorResult resultDecreaseModifier = new NodeManipulatorResult(5) {
 
         @Override
         public boolean canAffect(TileExtendedNode node) {
@@ -138,6 +142,43 @@ public class RegisteredManipulations {
                     return false;
             }
             return true;
+        }
+    };
+
+    public static NodeManipulatorResult resultSwitchType = new NodeManipulatorResult(2) {
+        @Override
+        public boolean affect(TileExtendedNode node) {
+            NodeType newType = node.getNodeType();
+            int random = node.getWorldObj().rand.nextInt(40);
+            if(random > 38) {
+                newType = NodeType.HUNGRY; //1 of 40
+            } else if(random > 37) {
+                newType = NodeType.TAINTED; //1 of 40
+            } else if(random > 34) {
+                newType = NodeType.UNSTABLE; //3 of 40
+            } else if(random > 29) {
+                newType = NodeType.DARK; //5 of 40
+            } else if(random > 24) {
+                newType = NodeType.PURE; //5 of 40
+            } else if(random > 14) {
+                newType = NodeType.NORMAL; //10 of 40
+            }
+            //15 of 40 chance nothing happens
+            boolean changed = !newType.equals(node.getNodeType());
+            if(changed) node.setNodeType(newType);
+            return changed;
+        }
+    };
+
+    public static NodeManipulatorResult resultApplyGrowing = new NodeManipulatorResult(1) {
+        @Override
+        public boolean affect(TileExtendedNode node) {
+            boolean isGrowingAlready = node.getExtendedNodeType() != null && node.getExtendedNodeType().equals(ExtendedNodeType.GROWING);
+            if(!isGrowingAlready) {
+                node.setExtendedNodeType(ExtendedNodeType.GROWING);
+                ResearchHelper.distributeResearch(Gadomancy.MODID.toUpperCase() + ".GROWING", node.getWorldObj(), node.xCoord, node.yCoord, node.zCoord, 12);
+            }
+            return isGrowingAlready;
         }
     };
 
