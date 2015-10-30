@@ -1,6 +1,5 @@
 package makeo.gadomancy.common.registration;
 
-import jdk.nashorn.internal.runtime.regexp.joni.Config;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.crafting.InfusionUpgradeRecipe;
