@@ -3,6 +3,10 @@ package makeo.gadomancy.common.blocks.tiles;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketStartAnimation;
+import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
+import makeo.gadomancy.common.network.packets.PacketTCWispyLine;
+import makeo.gadomancy.common.node.NodeManipulatorResult;
+import makeo.gadomancy.common.node.NodeManipulatorResultHandler;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredMultiblocks;
 import makeo.gadomancy.common.utils.MultiblockHelper;
@@ -17,8 +21,13 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.wands.IWandable;
+import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.tiles.TileWandPedestal;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -30,28 +39,184 @@ import thaumcraft.common.tiles.TileWandPedestal;
  */
 public class TileNodeManipulator extends TileWandPedestal implements IAspectContainer, IWandable {
 
+    private static final int POSSIBLE_WORK_START = 50;
+    private static final int WORK_ASPECT_CAP = 250;
+
     private int ticksExisted = 0;
     private boolean multiblockStructurePresent = false;
     private boolean isMultiblock = false;
+
+    private int workPhase = 0;
+    private AspectList workAspectList = new AspectList();
+
+    private boolean isManipulating = true;
+    private int manipulatorTick = 0;
 
     @Override
     public void updateEntity() {
         ticksExisted++;
 
-        if(isInMultiblock() && ticksExisted % 2 == 0 && !worldObj.isRemote) {
-            checkMultiblock();
-            if(!isMultiblockStructurePresent()) {
-                breakMultiblock();
-                isMultiblock = false;
-            }
+        if(worldObj.isRemote) return;
 
-            //TODO multiblock tick.
+        if(isInMultiblock()) {
+            checkMultiblockTick();
         }
+        if(isInMultiblock()) { //If multiblock is still present
+            multiblockTick();
+        }
+    }
+
+    private void multiblockTick() {
+        if(!isManipulating) {
+            doAspectChecks();
+        } else {
+            manipulationTick();
+        }
+    }
+
+    private void manipulationTick() {
+        manipulatorTick++;
+        if(manipulatorTick < 300) {
+            if(manipulatorTick % 16 == 0) {
+                PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, xCoord, yCoord, zCoord);
+                PacketHandler.INSTANCE.sendToAllAround(packet, getTargetPoint(32));
+            }
+            if(worldObj.rand.nextInt(4) == 0) {
+                Vec3 rel = getRelPillarLoc(worldObj.rand.nextInt(4));
+                PacketTCNodeBolt bolt = new PacketTCNodeBolt(xCoord + 0.5F, yCoord + 2.5F, zCoord + 0.5F, (float) (xCoord + 0.5F + rel.xCoord), (float) (yCoord + 2.5F + rel.yCoord), (float) (zCoord + 0.5F + rel.zCoord));
+                PacketHandler.INSTANCE.sendToAllAround(bolt, getTargetPoint(32));
+            }
+        } else {
+            sheduleManipulation();
+        }
+    }
+
+    private Vec3 getRelPillarLoc(int pillarId) {
+        switch (pillarId) {
+            case 0:
+                return Vec3.createVectorHelper(0.7, -0.6, 0.7);
+            case 1:
+                return Vec3.createVectorHelper(-0.7, -0.6, 0.7);
+            case 2:
+                return Vec3.createVectorHelper(-0.7, -0.6, -0.7);
+            case 3:
+                return Vec3.createVectorHelper(0.7, -0.6, -0.7);
+        }
+        return Vec3.createVectorHelper(0, 0, 0);
+    }
+
+    private void sheduleManipulation() {
+        manipulatorTick = 0;
+        isManipulating = false;
+        workAspectList = new AspectList();
+
+        TileEntity te = worldObj.getTileEntity(xCoord, yCoord + 2, zCoord);
+        if(te == null || !(te instanceof TileExtendedNode)) return; //Multiblock broken?
+        TileExtendedNode node = (TileExtendedNode) te;
+        NodeManipulatorResult result;
+        do {
+            result = NodeManipulatorResultHandler.getRandomResult(node);
+        } while (!result.affect(node));
+        //TODO fx
+        switch (result.getEffectType()) {
+            case NEGATIVE:
+                break;
+            case POSITIVE:
+                break;
+            case NEUTRAL:
+                break;
+        }
+
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        worldObj.markBlockForUpdate(xCoord, yCoord + 2, zCoord);
+        markDirty();
+        node.markDirty();
+    }
+
+    private void doAspectChecks() {
+        if(canDrainFromWand()) {
+            Aspect a = drainAspectFromWand();
+            if(a != null) {
+                playAspectDrainFromWand(a);
+                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                markDirty();
+            }
+        } else {
+            checkIfEnoughVis();
+        }
+    }
+
+    private void checkIfEnoughVis() {
+        boolean enough = true;
+        for(Aspect a : Aspect.getPrimalAspects()) {
+            if(workAspectList.getAmount(a) < POSSIBLE_WORK_START) {
+                enough = false;
+                break;
+            }
+        }
+        if(enough) {
+            isManipulating = true;
+        }
+    }
+
+    private Aspect drainAspectFromWand() {
+        ItemStack stack = getStackInSlot(0);
+        if(stack == null || !(stack.getItem() instanceof ItemWandCasting)) return null; //Should never happen..
+        AspectList aspects = ((ItemWandCasting) stack.getItem()).getAllVis(stack);
+        for(Aspect a : getRandomlyOrderedPrimalAspectList()) {
+            if(aspects.getAmount(a) >= 100 && workAspectList.getAmount(a) < WORK_ASPECT_CAP) {
+                int amt = aspects.getAmount(a);
+                ((ItemWandCasting) stack.getItem()).storeVis(stack, a, amt - 100);
+                workAspectList.add(a, 1);
+                return a;
+            }
+        }
+        return null;
+    }
+
+    private List<Aspect> getRandomlyOrderedPrimalAspectList() {
+        ArrayList<Aspect> primals = (ArrayList<Aspect>) Aspect.getPrimalAspects().clone();
+        Collections.shuffle(primals);
+        return primals;
+    }
+
+    private boolean canDrainFromWand() {
+        ItemStack stack = getStackInSlot(0);
+        if(stack == null || !(stack.getItem() instanceof ItemWandCasting)) return false;
+        AspectList aspects = ((ItemWandCasting) stack.getItem()).getAllVis(stack);
+        for(Aspect a : Aspect.getPrimalAspects()) {
+            if(aspects.getAmount(a) < 100) continue;
+            if(workAspectList.getAmount(a) < WORK_ASPECT_CAP) return true;
+        }
+        return false;
+    }
+
+    private void checkMultiblockTick() {
+        checkMultiblock();
+        if(!isMultiblockStructurePresent()) {
+            breakMultiblock();
+            isMultiblock = false;
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            markDirty();
+        }
+    }
+
+    private void playAspectDrainFromWand(Aspect drained) {
+        if(drained == null) return;
+        NetworkRegistry.TargetPoint point = getTargetPoint(32);
+        PacketTCWispyLine line = new PacketTCWispyLine(worldObj.provider.dimensionId, xCoord + 0.5, yCoord + 0.8, zCoord + 0.5,
+                xCoord + 0.5, yCoord + 1.4 + (((double) worldObj.rand.nextInt(4)) / 10D), zCoord + 0.5, 40, drained.getColor());
+        PacketHandler.INSTANCE.sendToAllAround(line, point);
     }
 
     @Override
     public boolean receiveClientEvent(int p_145842_1_, int p_145842_2_) {
         return super.receiveClientEvent(p_145842_1_, p_145842_2_);
+    }
+
+    private void dropWand() {
+        if(getStackInSlot(0) != null)
+            InventoryUtils.dropItems(worldObj, xCoord, yCoord, zCoord);
     }
 
     public void breakMultiblock() {
@@ -71,8 +236,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
             }
         }
 
-        if(getStackInSlot(0) != null)
-            InventoryUtils.dropItems(worldObj, xCoord, yCoord, zCoord);
+        dropWand();
     }
 
     public void formMultiblock() {
@@ -87,21 +251,22 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
             worldObj.setBlock(absX, absY, absZ, info.block, info.meta, 0);
             worldObj.markBlockForUpdate(absX, absY, absZ);
         }
-        NetworkRegistry.TargetPoint target = new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 32);
+        NetworkRegistry.TargetPoint target = getTargetPoint(32);
         TileManipulatorPillar pillar = (TileManipulatorPillar) worldObj.getTileEntity(xCoord + 1, yCoord, zCoord + 1); //wrong
         pillar.setOrientation((byte) 5);
-        PacketStartAnimation animation = new PacketStartAnimation(PacketStartAnimation.ID_PILLAR_RUNES, pillar.xCoord, pillar.yCoord, pillar.zCoord);
+        PacketStartAnimation animation = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, pillar.xCoord, pillar.yCoord, pillar.zCoord);
         PacketHandler.INSTANCE.sendToAllAround(animation, target);
         TileManipulatorPillar pillar2 = (TileManipulatorPillar) worldObj.getTileEntity(xCoord - 1, yCoord, zCoord + 1);
         pillar2.setOrientation((byte) 3);
-        animation = new PacketStartAnimation(PacketStartAnimation.ID_PILLAR_RUNES, pillar2.xCoord, pillar2.yCoord, pillar2.zCoord);
+        animation = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, pillar2.xCoord, pillar2.yCoord, pillar2.zCoord);
         PacketHandler.INSTANCE.sendToAllAround(animation, target);
         TileManipulatorPillar pillar3 = (TileManipulatorPillar) worldObj.getTileEntity(xCoord + 1, yCoord, zCoord - 1); //wrong
         pillar3.setOrientation((byte) 4);
-        animation = new PacketStartAnimation(PacketStartAnimation.ID_PILLAR_RUNES, pillar3.xCoord, pillar3.yCoord, pillar3.zCoord);
+        animation = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, pillar3.xCoord, pillar3.yCoord, pillar3.zCoord);
         PacketHandler.INSTANCE.sendToAllAround(animation, target);
-        animation = new PacketStartAnimation(PacketStartAnimation.ID_PILLAR_RUNES, xCoord - 1, yCoord, zCoord - 1);
+        animation = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, xCoord - 1, yCoord, zCoord - 1);
         PacketHandler.INSTANCE.sendToAllAround(animation, target);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         markDirty();
         this.isMultiblock = true;
     }
@@ -113,6 +278,10 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
         NBTTagCompound tag = compound.getCompoundTag("Gadomancy");
         this.multiblockStructurePresent = tag.getBoolean("mBlockPresent");
         this.isMultiblock = tag.getBoolean("mBlockState");
+        this.isManipulating = tag.getBoolean("manipulating");
+        this.manipulatorTick = tag.getInteger("manipulatorTick");
+        this.workPhase = tag.getInteger("workPhase");
+        workAspectList.readFromNBT(tag, "workAspectList");
     }
 
     @Override
@@ -122,6 +291,10 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
         NBTTagCompound tag = new NBTTagCompound();
         tag.setBoolean("mBlockPresent", this.multiblockStructurePresent);
         tag.setBoolean("mBlockState", this.isMultiblock);
+        tag.setBoolean("manipulating", this.isManipulating);
+        tag.setInteger("manipulatorTick", this.manipulatorTick);
+        tag.setInteger("workPhase", this.workPhase);
+        workAspectList.writeToNBT(tag, "workAspectList");
         compound.setTag("Gadomancy", tag);
     }
 
@@ -155,9 +328,13 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
         return isInMultiblock() && super.canInsertItem(par1, par2ItemStack, par3);
     }
 
+    public NetworkRegistry.TargetPoint getTargetPoint(double radius) {
+        return new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, radius);
+    }
+
     @Override
     public AspectList getAspects() {
-        return new AspectList();
+        return workAspectList;
     }
 
     @Override
