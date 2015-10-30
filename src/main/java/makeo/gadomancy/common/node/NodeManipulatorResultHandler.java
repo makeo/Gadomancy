@@ -81,6 +81,9 @@ public class NodeManipulatorResultHandler {
 
         //Almighty Growing
         possibleResults.add(RegisteredManipulations.resultApplyGrowing);
+
+        //Let the node gain primals
+        possibleResults.add(RegisteredManipulations.resultGainPrimal);
     }
 
 }

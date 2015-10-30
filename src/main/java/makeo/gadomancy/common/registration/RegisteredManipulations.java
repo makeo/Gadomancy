@@ -11,6 +11,8 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 
+import java.util.List;
+
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
@@ -142,6 +144,26 @@ public class RegisteredManipulations {
                     return false;
             }
             return true;
+        }
+    };
+
+    public static NodeManipulatorResult resultGainPrimal = new NodeManipulatorResult(3) {
+        @Override
+        public boolean affect(TileExtendedNode node) {
+            List<Aspect> primals = Aspect.getPrimalAspects();
+            int modulo = primals.size();
+            int index = node.getWorldObj().rand.nextInt(primals.size());
+            for (int i = 0; i < primals.size(); i++) {
+                int get = (index + i) % modulo;
+                Aspect rand = primals.get(get);
+                if(node.getAspectsBase().getAmount(rand) <= 0) {
+                    int randGain = node.getWorldObj().rand.nextInt(8) + 3;
+                    node.getAspectsBase().add(rand, randGain);
+                    node.getAspects().add(rand, randGain);
+                    return true;
+                }
+            }
+            return false;
         }
     };
 
