@@ -28,6 +28,8 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
     public static final byte ID_EX_VORTEX = 1;
     public static final byte ID_BURST = 2;
     public static final byte ID_RUNES = 3;
+    public static final byte ID_SPARKLE_SPREAD = 4;
+    public static final byte ID_SPARKLE = 5;
 
     private byte annimationId;
     private int x;
@@ -79,6 +81,12 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
                 break;
             case ID_RUNES:
                 UtilsFX.doRuneEffects(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z);
+                break;
+            case ID_SPARKLE_SPREAD:
+                UtilsFX.doSparkleEffectsAround(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z);
+                break;
+            case ID_SPARKLE:
+                UtilsFX.doSparkleEffects(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z);
                 break;
         }
         return null;

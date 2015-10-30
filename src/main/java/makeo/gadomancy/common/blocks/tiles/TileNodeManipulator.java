@@ -42,26 +42,24 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
     private static final int POSSIBLE_WORK_START = 50;
     private static final int WORK_ASPECT_CAP = 250;
 
-    private int ticksExisted = 0;
     private boolean multiblockStructurePresent = false;
     private boolean isMultiblock = false;
 
     private int workPhase = 0;
     private AspectList workAspectList = new AspectList();
 
-    private boolean isManipulating = true;
+    private boolean isManipulating = false;
     private int manipulatorTick = 0;
 
     @Override
     public void updateEntity() {
-        ticksExisted++;
 
         if(worldObj.isRemote) return;
 
         if(isInMultiblock()) {
             checkMultiblockTick();
         }
-        if(isInMultiblock()) { //If multiblock is still present
+        if(isInMultiblock()) {
             multiblockTick();
         }
     }
@@ -87,7 +85,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
                 PacketHandler.INSTANCE.sendToAllAround(bolt, getTargetPoint(32));
             }
         } else {
-            sheduleManipulation();
+            scheduleManipulation();
         }
     }
 
@@ -105,28 +103,20 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
         return Vec3.createVectorHelper(0, 0, 0);
     }
 
-    private void sheduleManipulation() {
+    private void scheduleManipulation() {
         manipulatorTick = 0;
         isManipulating = false;
         workAspectList = new AspectList();
 
         TileEntity te = worldObj.getTileEntity(xCoord, yCoord + 2, zCoord);
-        if(te == null || !(te instanceof TileExtendedNode)) return; //Multiblock broken?
+        if(te == null || !(te instanceof TileExtendedNode)) return;
         TileExtendedNode node = (TileExtendedNode) te;
         NodeManipulatorResult result;
         do {
             result = NodeManipulatorResultHandler.getRandomResult(node);
         } while (!result.affect(node));
-        //TODO fx
-        switch (result.getEffectType()) {
-            case NEGATIVE:
-                break;
-            case POSITIVE:
-                break;
-            case NEUTRAL:
-                break;
-        }
-
+        PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_SPARKLE_SPREAD, xCoord, yCoord + 2, zCoord);
+        PacketHandler.INSTANCE.sendToAllAround(packet, getTargetPoint(32));
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         worldObj.markBlockForUpdate(xCoord, yCoord + 2, zCoord);
         markDirty();

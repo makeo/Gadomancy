@@ -137,6 +137,14 @@ public class BlockStoneMachine extends Block {
     }
 
     @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p_149727_5_, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
+        if(world.getBlock(x, y - 1, z).equals(RegisteredBlocks.blockNodeManipulator) && world.getBlockMetadata(x, y - 1, z) == 5) {
+            world.getBlock(x, y - 1, z).onBlockActivated(world, x, y - 1, z, p_149727_5_, p_149727_6_, p_149727_7_, p_149727_8_, p_149727_9_);
+        }
+        return super.onBlockActivated(world, x, y, z, p_149727_5_, p_149727_6_, p_149727_7_, p_149727_8_, p_149727_9_);
+    }
+
+    @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         int metadata = world.getBlockMetadata(x, y, z);
         if(metadata == 15) {

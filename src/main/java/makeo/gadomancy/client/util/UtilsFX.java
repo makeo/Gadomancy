@@ -1,5 +1,6 @@
 package makeo.gadomancy.client.util;
 
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.world.World;
 import thaumcraft.common.Thaumcraft;
 
@@ -33,4 +34,17 @@ public class UtilsFX {
         return (worldObj.rand.nextFloat() * (worldObj.rand.nextBoolean() ? 1 : -1)) / 2F;
     }
 
+    public static void doSparkleEffectsAround(World world, int x, int y, int z) {
+        doSparkleEffects(world, x,     y,     z);
+        doSparkleEffects(world, x + 1, y,     z);
+        doSparkleEffects(world, x,     y,     z + 1);
+        doSparkleEffects(world, x - 1, y,     z);
+        doSparkleEffects(world, x,     y,     z - 1);
+        doSparkleEffects(world, x,     y - 1, z);
+        doSparkleEffects(world, x,     y + 1, z);
+    }
+
+    public static void doSparkleEffects(World world, int x, int y, int z) {
+        Thaumcraft.proxy.blockSparkle(world, x, y, z, -9999, 10);
+    }
 }

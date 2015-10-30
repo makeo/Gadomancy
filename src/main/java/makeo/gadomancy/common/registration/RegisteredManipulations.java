@@ -17,7 +17,7 @@ import thaumcraft.api.nodes.NodeModifier;
  */
 public class RegisteredManipulations {
 
-    public static NodeManipulatorResult resultBreakCompounds = new NodeManipulatorResult(4, NodeManipulatorResult.ResultType.NEUTRAL) {
+    public static NodeManipulatorResult resultBreakCompounds = new NodeManipulatorResult(4) {
         @Override
         public boolean affect(TileExtendedNode node) {
             AspectList baseList = node.getAspectsBase();
@@ -39,7 +39,7 @@ public class RegisteredManipulations {
         }
     };
 
-    public static NodeManipulatorResult resultCombineAspects = new NodeManipulatorResult(4, NodeManipulatorResult.ResultType.NEUTRAL) {
+    public static NodeManipulatorResult resultCombineAspects = new NodeManipulatorResult(4) {
         @Override
         public boolean affect(TileExtendedNode node) {
             AspectList base = node.getAspectsBase();
@@ -87,7 +87,7 @@ public class RegisteredManipulations {
         }
     };
 
-    public static NodeManipulatorResult resultIncreaseModifier = new NodeManipulatorResult(1, NodeManipulatorResult.ResultType.POSITIVE) {
+    public static NodeManipulatorResult resultIncreaseModifier = new NodeManipulatorResult(1) {
 
         @Override
         public boolean canAffect(TileExtendedNode node) {
@@ -114,7 +114,7 @@ public class RegisteredManipulations {
         }
     };
 
-    public static NodeManipulatorResult resultDecreaseModifier = new NodeManipulatorResult(1, NodeManipulatorResult.ResultType.NEGATIVE) {
+    public static NodeManipulatorResult resultDecreaseModifier = new NodeManipulatorResult(1) {
 
         @Override
         public boolean canAffect(TileExtendedNode node) {
