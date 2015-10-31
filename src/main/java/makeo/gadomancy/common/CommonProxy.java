@@ -6,6 +6,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import makeo.gadomancy.common.containers.ContainerInfusionClaw;
+import makeo.gadomancy.common.events.EventHandlerEntity;
 import makeo.gadomancy.common.events.EventHandlerGolem;
 import makeo.gadomancy.common.events.EventHandlerNetwork;
 import makeo.gadomancy.common.events.EventHandlerWorld;
@@ -66,6 +67,7 @@ public class CommonProxy implements IGuiHandler {
         MinecraftForge.EVENT_BUS.register(EVENT_HANDLER_GOLEM);
         FMLCommonHandler.instance().bus().register(new EventHandlerNetwork());
         MinecraftForge.EVENT_BUS.register(new EventHandlerWorld());
+        MinecraftForge.EVENT_BUS.register(new EventHandlerEntity());
 
         RegisteredRecipes.init();
 
