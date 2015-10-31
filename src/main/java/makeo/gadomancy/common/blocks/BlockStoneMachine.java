@@ -162,6 +162,8 @@ public class BlockStoneMachine extends Block {
         int metadata = world.getBlockMetadata(x, y, z);
         if(metadata == 11 || metadata == 15) {
             setBlockBounds(0, 0, 0, 1, 1, 1);
+        } else if(metadata == 0) {
+            setBlockBoundsBasedOnState(world, x, y, z);
         }
 
         super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
