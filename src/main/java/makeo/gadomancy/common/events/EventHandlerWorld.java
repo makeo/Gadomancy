@@ -3,6 +3,7 @@ package makeo.gadomancy.common.events;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredIntegrations;
@@ -97,6 +98,19 @@ public class EventHandlerWorld {
                                 ForgeDirection.getOrientation(sideHit == null ? 1 : sideHit).getOpposite());
                         RegisteredBlocks.blockStickyJar.onBlockPlacedBy(e.world, e.x, e.y, e.z, e.player, e.itemInHand);
                     }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onBreak(BlockEvent.BreakEvent event) {
+        if(!event.world.isRemote) {
+            if(event.block == RegisteredBlocks.blockNodeManipulator) {
+                TileEntity te = event.world.getTileEntity(event.x, event.y, event.z);
+                if(te != null && te instanceof TileNodeManipulator) {
+                    if(((TileNodeManipulator) te).isInMultiblock())
+                        ((TileNodeManipulator) te).breakMultiblock();
                 }
             }
         }

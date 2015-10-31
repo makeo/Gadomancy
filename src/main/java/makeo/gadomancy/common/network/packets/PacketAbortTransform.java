@@ -8,9 +8,12 @@ import io.netty.buffer.ByteBuf;
 import makeo.gadomancy.client.transformation.TransformationHelper;
 
 /**
- * User: makeo
- * Date: 03.07.2015
- * Time: 21:42
+ * This class is part of the Gadomancy Mod
+ * Gadomancy is Open Source and distributed under the
+ * GNU LESSER GENERAL PUBLIC LICENSE
+ * for more read the LICENSE file
+ * <p/>
+ * Created by makeo @ 03.07.2015 21:42
  */
 public class PacketAbortTransform implements IMessage, IMessageHandler<PacketAbortTransform, IMessage> {
     private int entityId;

@@ -1,4 +1,4 @@
-package makeo.gadomancy.common.blocks.tiles;
+package makeo.gadomancy.common.node;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -10,7 +10,6 @@ package makeo.gadomancy.common.blocks.tiles;
  */
 public enum ExtendedNodeType {
 
-    GROWING,
-    STARVING
+    GROWING
 
 }

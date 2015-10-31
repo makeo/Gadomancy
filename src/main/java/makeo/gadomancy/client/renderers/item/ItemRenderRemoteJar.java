@@ -1,12 +1,12 @@
 package makeo.gadomancy.client.renderers.item;
 
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import makeo.gadomancy.client.renderers.tile.RenderTileRemoteJar;
 import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.utils.NBTHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.src.FMLRenderAccessLibrary;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.AspectList;
@@ -48,7 +48,7 @@ public class ItemRenderRemoteJar extends ItemRenderTileEntity<TileRemoteJar> {
         GL11.glPushMatrix();
         GL11.glTranslatef(0.5f, 0.5f, 0.5f);
 
-        FMLRenderAccessLibrary.renderInventoryBlock(RenderBlocks.getInstance(), RegisteredBlocks.blockRemoteJar, 0, RegisteredBlocks.blockRemoteJar.getRenderType());
+        RenderingRegistry.instance().renderInventoryBlock(RenderBlocks.getInstance(), RegisteredBlocks.blockRemoteJar, 0, RegisteredBlocks.blockRemoteJar.getRenderType());
         GL11.glPopMatrix();
     }
 }

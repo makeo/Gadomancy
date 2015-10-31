@@ -6,9 +6,12 @@ import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.EnumGolemType;
 
 /**
- * User: makeo
- * Date: 05.07.2015
- * Time: 15:47
+ * This class is part of the Gadomancy Mod
+ * Gadomancy is Open Source and distributed under the
+ * GNU LESSER GENERAL PUBLIC LICENSE
+ * for more read the LICENSE file
+ * <p/>
+ * Created by makeo @ 05.07.2015 15:47
  */
 public class FakeEntityGolemBase extends EntityGolemBase {
     private EntityGolemBase golem;

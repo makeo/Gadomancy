@@ -87,6 +87,6 @@ public class RenderEventHandler {
     @SubscribeEvent
     public void worldRenderEvent(RenderWorldLastEvent event) {
         ExtendedTypeDisplayManager.notifyRenderTick();
-        MultiTickEffectDispatcher.notifyRenderTick(Minecraft.getMinecraft().theWorld);
+        MultiTickEffectDispatcher.notifyRenderTick(Minecraft.getMinecraft().theWorld, event.partialTicks);
     }
 }

@@ -1,28 +1,23 @@
-package makeo.gadomancy.common.blocks.tiles;
+package makeo.gadomancy.common.node;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketAnimationAbsorb;
 import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import makeo.gadomancy.common.utils.ResearchHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.EntityAspectOrb;
-import thaumcraft.common.lib.network.playerdata.PacketResearchComplete;
-import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.TileNode;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,9 +30,9 @@ import java.util.Map;
  */
 public class GrowingNodeBehavior {
 
-    public static final double SATURATION_DIFFICULTY = 10D;
-    public static final double SATURATION_CAP = 100D;
-    public static final int HAPPINESS_CAP = 1000;
+    public static final double SATURATION_DIFFICULTY = 15D;
+    public static final double SATURATION_CAP = 90D;
+    public static final int HAPPINESS_CAP = 500;
 
     //The node the growing node attacks.
     private TileNode fixedNode;
@@ -72,15 +67,7 @@ public class GrowingNodeBehavior {
         addSaturation(aspect, increasedSaturation);
         owningNode.getAspectsBase().add(aspect, value);
 
-        String research = Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTH";
-        List players = owningNode.getWorldObj().getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(owningNode.xCoord, owningNode.yCoord, owningNode.zCoord, owningNode.xCoord + 1, owningNode.yCoord + 1, owningNode.zCoord + 1).expand(6.0D, 6.0D, 6.0D));
-        for(Object pl : players) {
-            EntityPlayer player = (EntityPlayer) pl;
-            if(!ResearchManager.isResearchComplete(player.getCommandSenderName(), research) && ResearchManager.doesPlayerHaveRequisites(player.getCommandSenderName(), research)) {
-                thaumcraft.common.lib.network.PacketHandler.INSTANCE.sendTo(new PacketResearchComplete(research), (EntityPlayerMP)player);
-                Thaumcraft.proxy.getResearchManager().completeResearch(player, research);
-            }
-        }
+        ResearchHelper.distributeResearch(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTH", owningNode.getWorldObj(), owningNode.xCoord, owningNode.yCoord, owningNode.zCoord, 6);
 
         computeOverallSaturation();
     }
@@ -181,10 +168,7 @@ public class GrowingNodeBehavior {
                 int x = fixedNode.xCoord;
                 int y = fixedNode.yCoord;
                 int z = fixedNode.zCoord;
-                owningNode.getWorldObj().setBlockToAir(x, y, z);
-                owningNode.getWorldObj().removeTileEntity(x, y, z);
-                owningNode.getWorldObj().markBlockForUpdate(x, y, z);
-                this.fixedNode = null;
+                removeFixedNode(x, y, z);
                 return needUpdate;
             }
             Aspect a = baseAspects.getAspects()[owningNode.getWorldObj().rand.nextInt(baseAspects.getAspects().length)];
@@ -199,6 +183,8 @@ public class GrowingNodeBehavior {
                     int oz = owningNode.zCoord;
                     currentAspects.reduce(a, 1);
 
+                    ResearchHelper.distributeResearch(Gadomancy.MODID.toUpperCase() + ".GROWING_ATTACK", owningNode.getWorldObj(), owningNode.xCoord, owningNode.yCoord, owningNode.zCoord, 16);
+
                     EntityAspectOrb aspectOrb = new EntityAspectOrb(world, fx + 0.5D, fy + 0.5D, fz + 0.5D, a, 1);
                     Vec3 dir = Vec3.createVectorHelper(fx + 0.5D, fy + 0.5D, fz + 0.5D).subtract(Vec3.createVectorHelper(ox + 0.5D, oy + 0.5D, oz + 0.5D)).normalize();
                     dir.addVector(randOffset(), randOffset(), randOffset()).normalize();
@@ -209,20 +195,45 @@ public class GrowingNodeBehavior {
                     PacketTCNodeBolt bolt = new PacketTCNodeBolt(ox + 0.5F, oy + 0.5F, oz + 0.5F, fx + 0.5F, fy + 0.5F, fz + 0.5F);
                     PacketHandler.INSTANCE.sendToAllAround(bolt, point);
 
-                    PacketAnimationAbsorb packet = new PacketAnimationAbsorb(ox, oy, oz, fx, fy, fz);
+                    PacketAnimationAbsorb packet = new PacketAnimationAbsorb(ox, oy, oz, fx, fy, fz, 7);
                     PacketHandler.INSTANCE.sendToAllAround(packet, point);
 
                     world.markBlockForUpdate(fx, fy, fz);
                     fixedNode.markDirty();
                     needUpdate = true;
-
+                } else {
+                    if(baseAspects.size() <= 1) {
+                        int x = fixedNode.xCoord;
+                        int y = fixedNode.yCoord;
+                        int z = fixedNode.zCoord;
+                        removeFixedNode(x, y, z);
+                        needUpdate = true;
+                    }
+                    baseAspects.remove(a);
+                    currentAspects.remove(a);
+                    return needUpdate;
                 }
             } else {
+                if(baseAspects.size() <= 1) {
+                    int x = fixedNode.xCoord;
+                    int y = fixedNode.yCoord;
+                    int z = fixedNode.zCoord;
+                    removeFixedNode(x, y, z);
+                    needUpdate = true;
+                }
                 baseAspects.remove(a);
                 currentAspects.remove(a);
+                return needUpdate;
             }
         }
         return needUpdate;
+    }
+
+    private void removeFixedNode(int x, int y, int z) {
+        owningNode.getWorldObj().setBlockToAir(x, y, z);
+        owningNode.getWorldObj().removeTileEntity(x, y, z);
+        owningNode.getWorldObj().markBlockForUpdate(x, y, z);
+        this.fixedNode = null;
     }
 
     private float randOffset() {
@@ -263,9 +274,7 @@ public class GrowingNodeBehavior {
         return (Math.log(i) / 6) + 1;
     }
 
-    private void handleOverfeed() {
-        //TODO let node collapse if overfed & still feeding...
-    }
+    private void handleOverfeed() {}
 
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
         this.isSaturated = nbtTagCompound.getBoolean("overallSaturated");

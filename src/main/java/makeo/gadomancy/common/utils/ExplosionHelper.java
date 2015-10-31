@@ -132,7 +132,7 @@ public class ExplosionHelper {
                         Block b = world.getBlock(xx, yy, zz);
                         float hardness = b.getBlockHardness(world, xx, yy, zz);
                         if(b != Blocks.air && hardness > 0 && hardness <= 50 && b != RegisteredBlocks.blockNode) {
-                            PacketAnimationAbsorb absorb = new PacketAnimationAbsorb(x, y, z, xx, yy, zz);
+                            PacketAnimationAbsorb absorb = new PacketAnimationAbsorb(x, y, z, xx, yy, zz, 7);
                             PacketHandler.INSTANCE.sendToAllAround(absorb, new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 32D));
                             pastTickBlocks.add(Vec3.createVectorHelper(xx, yy, zz));
                         }

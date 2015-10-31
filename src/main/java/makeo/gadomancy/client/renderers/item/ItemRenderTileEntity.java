@@ -17,19 +17,21 @@ import org.lwjgl.opengl.GL11;
  * Created by makeo @ 29.09.2015 18:29
  */
 public class ItemRenderTileEntity<T extends TileEntity> implements IItemRenderer {
-    private static final World FAKE_WORLD = new FakeWorld();
+    protected static final World FAKE_WORLD = new FakeWorld();
 
-    private final TileEntitySpecialRenderer render;
-    protected final T tile;
+    protected TileEntitySpecialRenderer renderer;
+    protected T tile;
 
-    public ItemRenderTileEntity(TileEntitySpecialRenderer render, T tile) {
-        this.render = render;
+    public ItemRenderTileEntity(TileEntitySpecialRenderer renderer, T tile) {
+        this.renderer = renderer;
         this.tile = tile;
 
         if(tile.getWorldObj() == null) {
             tile.setWorldObj(FAKE_WORLD);
         }
     }
+
+    protected ItemRenderTileEntity() { }
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
@@ -50,6 +52,6 @@ public class ItemRenderTileEntity<T extends TileEntity> implements IItemRenderer
             GL11.glTranslatef(0, -0.1f, 0);
         }
 
-        this.render.renderTileEntityAt(tile, 0.0D, 0.0D, 0.0D, 0.0F);
+        this.renderer.renderTileEntityAt(tile, 0.0D, 0.0D, 0.0D, 0.0F);
     }
 }

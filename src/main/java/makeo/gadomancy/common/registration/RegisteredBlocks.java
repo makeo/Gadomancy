@@ -2,25 +2,17 @@ package makeo.gadomancy.common.registration;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.api.ClickBehavior;
-import makeo.gadomancy.common.blocks.BlockArcaneDropper;
-import makeo.gadomancy.common.blocks.BlockExtendedNodeJar;
-import makeo.gadomancy.common.blocks.BlockInfusionClaw;
-import makeo.gadomancy.common.blocks.BlockNode;
-import makeo.gadomancy.common.blocks.BlockRemoteJar;
-import makeo.gadomancy.common.blocks.BlockStickyJar;
-import makeo.gadomancy.common.blocks.tiles.TileArcaneDropper;
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
-import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
-import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
-import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
+import makeo.gadomancy.common.blocks.*;
+import makeo.gadomancy.common.blocks.tiles.*;
 import makeo.gadomancy.common.items.ItemBlockRemoteJar;
+import makeo.gadomancy.common.items.ItemBlockStoneMachine;
+import makeo.gadomancy.common.items.ItemNodeManipulator;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.blocks.BlockStoneDeviceItem;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileInfusionMatrix;
 
@@ -47,6 +39,8 @@ public class RegisteredBlocks {
     public static BlockRemoteJar blockRemoteJar;
     public static BlockNode blockNode;
     public static BlockExtendedNodeJar blockExtendedNodeJar;
+    public static BlockNodeManipulator blockNodeManipulator;
+    public static BlockStoneMachine blockStoneMachine;
 
     public static void init() {
         registerBlocks();
@@ -65,6 +59,8 @@ public class RegisteredBlocks {
         blockRemoteJar = registerBlock(new BlockRemoteJar(), ItemBlockRemoteJar.class);
         blockNode = (BlockNode) new BlockNode().setBlockName("blockAiry");
         blockExtendedNodeJar = registerBlock(new BlockExtendedNodeJar());
+        blockNodeManipulator = registerBlock(new BlockNodeManipulator(), ItemNodeManipulator.class);
+        blockStoneMachine = registerBlock(new BlockStoneMachine(), ItemBlockStoneMachine.class);
     }
 
     private static <T extends Block> T registerBlock(String name, T block) {
@@ -97,6 +93,9 @@ public class RegisteredBlocks {
         registerTile(TileRemoteJar.class);
         registerTile(TileExtendedNode.class);
         registerTile(TileExtendedNodeJar.class);
+        registerTile(TileNodeManipulator.class);
+        registerTile(TileManipulatorPillar.class);
+        registerTile(TileManipulationFocus.class);
     }
 
     private static void registerTile(Class<? extends TileEntity> tile, String name) {

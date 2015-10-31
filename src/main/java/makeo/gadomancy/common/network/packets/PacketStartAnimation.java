@@ -6,6 +6,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
+import makeo.gadomancy.client.util.UtilsFX;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
 import makeo.gadomancy.common.utils.ExplosionHelper;
@@ -26,6 +27,9 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
     public static final byte ID_INFUSIONCLAW = 0;
     public static final byte ID_EX_VORTEX = 1;
     public static final byte ID_BURST = 2;
+    public static final byte ID_RUNES = 3;
+    public static final byte ID_SPARKLE_SPREAD = 4;
+    public static final byte ID_SPARKLE = 5;
 
     private byte annimationId;
     private int x;
@@ -74,6 +78,15 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
                 break;
             case ID_BURST:
                 Thaumcraft.proxy.burst(Minecraft.getMinecraft().theWorld, message.x + 0.5F, message.y + 0.5F, message.z + 0.5F, Minecraft.getMinecraft().theWorld.rand.nextInt(3) + 1);
+                break;
+            case ID_RUNES:
+                UtilsFX.doRuneEffects(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z);
+                break;
+            case ID_SPARKLE_SPREAD:
+                UtilsFX.doSparkleEffectsAround(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z);
+                break;
+            case ID_SPARKLE:
+                UtilsFX.doSparkleEffects(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z);
                 break;
         }
         return null;

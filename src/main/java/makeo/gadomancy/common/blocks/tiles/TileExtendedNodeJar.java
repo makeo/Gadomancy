@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.blocks.tiles;
 
+import makeo.gadomancy.common.node.ExtendedNodeType;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,7 +15,6 @@ import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileJar;
 import thaumcraft.common.tiles.TileJarNode;
 import thaumcraft.common.tiles.TileNode;
 

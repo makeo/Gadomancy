@@ -74,6 +74,8 @@ public class CommonProxy implements IGuiHandler {
 
         RegisteredResearches.postInit();
 
+        RegisteredItems.postInit();
+
         ModSubstitutions.postInit();
     }
 
