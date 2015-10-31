@@ -1,13 +1,8 @@
 package makeo.gadomancy.client.renderers.tile;
 
 import makeo.gadomancy.client.models.ModelSmallCube;
-import makeo.gadomancy.client.renderers.block.BlockNodeManipulatorRenderer;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
