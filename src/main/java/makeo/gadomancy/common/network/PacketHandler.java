@@ -5,6 +5,7 @@ import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.network.packets.PacketAnimationAbsorb;
+import makeo.gadomancy.common.network.packets.PacketFamiliar;
 import makeo.gadomancy.common.network.packets.PacketStartAnimation;
 import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
 import makeo.gadomancy.common.network.packets.PacketTCWispyLine;
@@ -29,5 +30,7 @@ public class PacketHandler {
         INSTANCE.registerMessage(PacketAnimationAbsorb.class, PacketAnimationAbsorb.class, id++, Side.CLIENT);
         INSTANCE.registerMessage(PacketTCNodeBolt.class, PacketTCNodeBolt.class, id++, Side.CLIENT);
         INSTANCE.registerMessage(PacketTCWispyLine.class, PacketTCWispyLine.class, id++, Side.CLIENT);
+
+        INSTANCE.registerMessage(PacketFamiliar.PacketFamiliarBolt.class, PacketFamiliar.PacketFamiliarBolt.class, id++, Side.CLIENT);
     }
 }

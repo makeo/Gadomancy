@@ -9,6 +9,8 @@ import makeo.gadomancy.common.containers.ContainerInfusionClaw;
 import makeo.gadomancy.common.events.EventHandlerGolem;
 import makeo.gadomancy.common.events.EventHandlerNetwork;
 import makeo.gadomancy.common.events.EventHandlerWorld;
+import makeo.gadomancy.common.familiar.FamiliarHandler;
+import makeo.gadomancy.common.familiar.FamiliarHandlerServer;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.registration.*;
 import makeo.gadomancy.client.ClientProxy;
@@ -40,6 +42,7 @@ import java.util.List;
  */
 public class CommonProxy implements IGuiHandler {
     public static final EventHandlerGolem EVENT_HANDLER_GOLEM = new EventHandlerGolem();
+    public FamiliarHandler familiarHandler;
 
     public void onConstruct() { }
 
@@ -56,6 +59,7 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void initalize() {
+        familiarHandler = new FamiliarHandlerServer();
 
         NetworkRegistry.INSTANCE.registerGuiHandler(Gadomancy.instance, this);
 
@@ -77,6 +81,8 @@ public class CommonProxy implements IGuiHandler {
         RegisteredItems.postInit();
 
         ModSubstitutions.postInit();
+
+        familiarHandler.setupPostInit();
     }
 
     public static void unregisterWandHandler(String modid, Block block, int metadata) {

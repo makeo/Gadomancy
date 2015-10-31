@@ -11,6 +11,7 @@ import makeo.gadomancy.client.renderers.block.BlockExtendedNodeJarRenderer;
 import makeo.gadomancy.client.renderers.block.RenderBlockTransparent;
 import makeo.gadomancy.client.renderers.entity.RenderAdditionalGolemBase;
 import makeo.gadomancy.client.renderers.item.*;
+import makeo.gadomancy.client.renderers.item.familiar.FamiliarHandlerClient;
 import makeo.gadomancy.client.renderers.tile.*;
 import makeo.gadomancy.common.CommonProxy;
 import makeo.gadomancy.common.blocks.tiles.*;
@@ -53,6 +54,8 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void initalize() {
         super.initalize();
+
+        familiarHandler = new FamiliarHandlerClient(); //Overwriting the server sided one.
 
         injectGolemTextures();
 

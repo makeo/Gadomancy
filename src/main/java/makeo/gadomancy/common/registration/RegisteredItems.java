@@ -3,6 +3,7 @@ package makeo.gadomancy.common.registration;
 import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.items.*;
+import makeo.gadomancy.common.items.baubles.ItemFamiliar;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -35,9 +36,7 @@ public class RegisteredItems {
     public static Item itemTransformationFocus;
     public static Item itemGolemCoreBreak;
     public static Item itemExtendedNodeJar;
-
-    //@Deprecated
-    //public static Item itemBlockAiryCopy; //!!!!!!!!!!DO NOT TOUCH THIS OR USE THIS ANYWHERE!!!!!!!!!!
+    public static Item itemFamiliar;
 
     public static void preInit() {
         creativeTab = new CreativeTabs(Gadomancy.MODID) {
@@ -66,6 +65,7 @@ public class RegisteredItems {
         itemTransformationFocus = registerItem(new ItemTransformationFocus());
         itemGolemCoreBreak = registerItem(new ItemGolemCoreBreak());
         itemExtendedNodeJar = registerItem(new ItemExtendedNodeJar());
+        itemFamiliar = registerItem(new ItemFamiliar());
     }
 
     private static <T extends Item> T registerItem(T item, String name) {
