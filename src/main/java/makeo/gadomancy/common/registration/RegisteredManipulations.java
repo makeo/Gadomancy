@@ -173,7 +173,7 @@ public class RegisteredManipulations {
             NodeType newType = node.getNodeType();
             int random = node.getWorldObj().rand.nextInt(40);
             if(random > 38) {
-                newType = NodeType.HUNGRY; //1 of 40
+                if(!(node.getExtendedNodeType() != null && node.getExtendedNodeType().equals(ExtendedNodeType.GROWING))) newType = NodeType.HUNGRY; //1 of 40
             } else if(random > 37) {
                 newType = NodeType.TAINTED; //1 of 40
             } else if(random > 34) {
@@ -196,6 +196,7 @@ public class RegisteredManipulations {
         @Override
         public boolean affect(TileExtendedNode node) {
             boolean isGrowingAlready = node.getExtendedNodeType() != null && node.getExtendedNodeType().equals(ExtendedNodeType.GROWING);
+            if(isGrowingAlready) if(node.getNodeType().equals(NodeType.HUNGRY)) isGrowingAlready = false;
             if(!isGrowingAlready) {
                 node.setExtendedNodeType(ExtendedNodeType.GROWING);
                 ResearchHelper.distributeResearch(Gadomancy.MODID.toUpperCase() + ".GROWING", node.getWorldObj(), node.xCoord, node.yCoord, node.zCoord, 12);
