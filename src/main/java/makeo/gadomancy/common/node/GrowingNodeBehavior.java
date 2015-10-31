@@ -202,21 +202,27 @@ public class GrowingNodeBehavior {
                     fixedNode.markDirty();
                     needUpdate = true;
                 } else {
+                    if(baseAspects.size() <= 1) {
+                        int x = fixedNode.xCoord;
+                        int y = fixedNode.yCoord;
+                        int z = fixedNode.zCoord;
+                        removeFixedNode(x, y, z);
+                        needUpdate = true;
+                    }
                     baseAspects.remove(a);
                     currentAspects.remove(a);
+                    return needUpdate;
+                }
+            } else {
+                if(baseAspects.size() <= 1) {
                     int x = fixedNode.xCoord;
                     int y = fixedNode.yCoord;
                     int z = fixedNode.zCoord;
                     removeFixedNode(x, y, z);
-                    return needUpdate;
+                    needUpdate = true;
                 }
-            } else {
                 baseAspects.remove(a);
                 currentAspects.remove(a);
-                int x = fixedNode.xCoord;
-                int y = fixedNode.yCoord;
-                int z = fixedNode.zCoord;
-                removeFixedNode(x, y, z);
                 return needUpdate;
             }
         }
