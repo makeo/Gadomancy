@@ -6,8 +6,12 @@ import makeo.gadomancy.common.items.*;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import thaumcraft.api.ThaumcraftApi;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
+import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +54,10 @@ public class RegisteredItems {
         registerDefaultStickyJars();
     }
 
+    public static void postInit() {
+        registerItemAspects();
+    }
+
     //Items
     private static void registerItems() {
         itemFakeModIcon = registerItem(new ItemFakeModIcon());
@@ -69,6 +77,12 @@ public class RegisteredItems {
         return registerItem(item, item.getClass().getSimpleName());
     }
 
+    private static void registerItemAspects() {
+        AspectList oldAspects = ThaumcraftCraftingManager.getObjectTags(new ItemStack(RegisteredBlocks.blockStoneMachine));
+
+        ThaumcraftApi.registerObjectTag(new ItemStack(Item.getItemFromBlock(RegisteredBlocks.blockStoneMachine)), new int[]{11, 15}, new AspectList());
+        ThaumcraftApi.registerObjectTag(new ItemStack(Item.getItemFromBlock(RegisteredBlocks.blockStoneMachine)), new int[]{0}, oldAspects);
+    }
 
     //Sticky jars
     private static void registerDefaultStickyJars() {
