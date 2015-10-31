@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.common.blocks.BlockStoneDevice;
 import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 import java.util.List;
@@ -85,6 +86,7 @@ public class BlockNodeManipulator extends BlockStoneDevice {
         } else if(!world.isRemote && heldItem != null && heldItem.getItem() instanceof ItemWandCasting) {
             tile.checkMultiblock();
             if (tile.isMultiblockStructurePresent()) {
+                if(!ResearchManager.isResearchComplete(player.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR")) return false;
                 if (ThaumcraftApiHelper.consumeVisFromWandCrafting(player.getCurrentEquippedItem(), player, RegisteredRecipes.costsNodeManipulatorMultiblock, true)) {
                     tile.formMultiblock();
                     return true;
