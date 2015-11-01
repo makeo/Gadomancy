@@ -1,17 +1,25 @@
 package makeo.gadomancy.client.util;
 
+import baubles.api.BaublesApi;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import makeo.gadomancy.common.network.packets.PacketFamiliar;
+import makeo.gadomancy.common.registration.RegisteredItems;
+import makeo.gadomancy.common.utils.FakeWorld;
+import makeo.gadomancy.common.utils.NBTHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.renderers.entity.RenderPrimalOrb;
+import thaumcraft.client.renderers.entity.RenderWisp;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.entities.monster.EntityWisp;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -28,8 +36,9 @@ import java.util.Map;
  * Created by HellFirePvP @ 31.10.2015 12:13
  */
 public class FamiliarHandlerClient {
+    private static final EntityWisp ENTITY_WISP = new EntityWisp(new FakeWorld());
 
-    private static RenderPrimalOrb fallbackRenderer;
+    private static RenderWisp fallbackRenderer;
 
     private static Map<String, PartialEntityFamiliar> clientFamiliars = new HashMap<String, PartialEntityFamiliar>();
     private static List<String> familiarPlayers = new ArrayList<String>();
@@ -74,7 +83,16 @@ public class FamiliarHandlerClient {
 
             //Info: "Thanks" to RenderPlayerEvent, GL11 offset is moved to the player already.
             //GL11 coordinates: Player.posX, Player.posY + Player.eyeHeight (1.62 client side..), Player.posZ, rotation: 0
-            fallbackRenderer.renderEntityAt(fam.dummyEntity, fam.renderX, fam.renderY, fam.renderZ, 0, partialTicks);
+
+            ItemStack stack = BaublesApi.getBaubles(player).getStackInSlot(0);
+            if(stack != null && stack.getItem() == RegisteredItems.itemFamiliar
+                    && stack.hasTagCompound() && stack.getTagCompound().hasKey("aspect")) {
+                //ENTITY_WISP.setType(stack.getTagCompound().getString("aspect"));
+                //ENTITY_WISP.setType(Aspect.AIR.getName());
+                ENTITY_WISP.getDataWatcher().getWatchedObject(22).setObject(Aspect.AIR.getName());
+                ENTITY_WISP.ticksExisted = fam.dummyEntity.ticksExisted;
+                fallbackRenderer.renderEntityAt(ENTITY_WISP, fam.renderX, fam.renderY, fam.renderZ, 0, partialTicks);
+            }
             //Render at abs positions: ram.posX, fam.posY, fam.posZ
         }
     }
@@ -87,7 +105,7 @@ public class FamiliarHandlerClient {
     }
 
     static {
-        fallbackRenderer = new RenderPrimalOrb();
+        fallbackRenderer = new RenderWisp();
         fallbackRenderer.setRenderManager(RenderManager.instance);
     }
 

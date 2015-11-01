@@ -5,12 +5,15 @@ import baubles.api.IBauble;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.NBTHelper;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import thaumcraft.api.aspects.Aspect;
+
+import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -30,7 +33,14 @@ public class ItemFamiliar extends Item implements IBauble {
     }
 
     @Override
-    public EnumRarity getRarity(ItemStack p_77613_1_) {
+    public void getSubItems(Item item, CreativeTabs tab, List list) {
+        ItemStack stack = new ItemStack(item);
+        NBTHelper.getData(stack).setString("aspect", Aspect.MAGIC.getName());
+        list.add(stack);
+    }
+
+    @Override
+    public EnumRarity getRarity(ItemStack stack) {
         return RegisteredItems.raritySacred;
     }
 
@@ -106,5 +116,4 @@ public class ItemFamiliar extends Item implements IBauble {
         }
         return attack;
     }
-
 }
