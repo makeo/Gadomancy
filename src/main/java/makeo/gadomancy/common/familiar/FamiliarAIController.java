@@ -1,9 +1,10 @@
 package makeo.gadomancy.common.familiar;
 
-import makeo.gadomancy.common.familiar.ai.FamiliarAIProcess;
+import baubles.api.BaublesApi;
 import makeo.gadomancy.common.registration.RegisteredFamiliarAI;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,15 +44,16 @@ public class FamiliarAIController {
         this.availableTasks.add(RegisteredFamiliarAI.familiarAIZapAttackingMonsters);
     }
 
-    public void sheduleTick() {
+    public void scheduleTick() {
         reduceRunningCooldowns();
         if(runningTask == null) {
             selectNewTask();
         } else {
-            runningTask.tick(ticksInTask, owningPlayer.worldObj, owningPlayer);
+            ItemStack famStack = BaublesApi.getBaubles(owningPlayer).getStackInSlot(0);
+            runningTask.tick(ticksInTask, owningPlayer.worldObj, owningPlayer, famStack);
             ticksInTask++;
             if(ticksInTask >= runningTask.getDuration()) {
-                if(runningTask.getCooldownDuration() > 0) cooldownProcesses.put(runningTask, runningTask.getCooldownDuration());
+                if(runningTask.getCooldownDuration(famStack) > 0) cooldownProcesses.put(runningTask, runningTask.getCooldownDuration(famStack));
                 if(runningTask.tryLoop() && !requestedLoop.contains(runningTask)) requestedLoop.addLast(runningTask);
                 runningTask = null;
                 ticksInTask = 0;
@@ -76,7 +78,7 @@ public class FamiliarAIController {
         for (int i = 0; i < size; i++) {
             int index = (randIndex + i) % size;
             FamiliarAIProcess process = availableTasks.get(index);
-            if(process.canRun(owningPlayer.worldObj, owningPlayer.posX, owningPlayer.posY, owningPlayer.posZ, owningPlayer) &&
+            if(process.canRun(owningPlayer.worldObj, owningPlayer.posX, owningPlayer.posY, owningPlayer.posZ, owningPlayer, BaublesApi.getBaubles(owningPlayer).getStackInSlot(0)) &&
                     !cooldownProcesses.containsKey(process)) {
                 runningTask = process;
             }

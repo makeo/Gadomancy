@@ -4,7 +4,6 @@ import baubles.api.BaublesApi;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketFamiliar;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
@@ -32,7 +31,7 @@ public class FamiliarHandlerServer {
         familiarAI = new HashMap<EntityPlayer, FamiliarAIController>();
     }
 
-    public void notifyEquip(World world, EntityPlayer player) {
+    public void notifyEquip(World world, ItemStack itemStack, EntityPlayer player) {
         if(!world.isRemote) {
             if(!familiarAI.containsKey(player)) {
                 FamiliarAIController controller = new FamiliarAIController(player);
@@ -70,7 +69,7 @@ public class FamiliarHandlerServer {
         }
     }
 
-    public void equippedTick(World world, EntityPlayer player) {
+    public void equippedTick(World world, ItemStack itemStack, EntityPlayer player) {
         if(!world.isRemote) {
             IInventory baublesInv = BaublesApi.getBaubles(player);
             if(baublesInv.getStackInSlot(0) == null) {
@@ -79,10 +78,10 @@ public class FamiliarHandlerServer {
             }
 
             if(familiarAI.get(player) == null || !activeFamiliars.contains(player.getCommandSenderName())) {
-                notifyEquip(world, player);
+                notifyEquip(world, itemStack, player);
             }
 
-            familiarAI.get(player).sheduleTick();
+            familiarAI.get(player).scheduleTick();
         }
     }
 
@@ -93,7 +92,7 @@ public class FamiliarHandlerServer {
     public void checkPlayerEquipment(EntityPlayer p) {
         IInventory baublesInv = BaublesApi.getBaubles(p);
         if(baublesInv.getStackInSlot(0) != null) {
-            notifyEquip(p.worldObj, p);
+            notifyEquip(p.worldObj, baublesInv.getStackInSlot(0), p);
         }
     }
 }

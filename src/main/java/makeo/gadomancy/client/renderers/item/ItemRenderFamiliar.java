@@ -2,7 +2,6 @@ package makeo.gadomancy.client.renderers.item;
 
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
 import makeo.gadomancy.common.items.baubles.ItemFamiliar;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;

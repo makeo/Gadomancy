@@ -144,7 +144,7 @@ public class RegisteredRecipes {
             NBTTagCompound compound = NBTHelper.getData(result);
             compound.setString("aspect", aspect.getName());
 
-            recipes[i] = ThaumcraftApi.addInfusionCraftingRecipe(SimpleResearchItem.getFullName("STICKYJAR"), result, 4, new AspectList().add(aspect, 46).add(Aspect.AURA, 34).add(Aspect.MAGIC, 51), new ItemStack(ConfigItems.itemResource, 1, 1), new ItemStack[] { wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 15), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 14), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 15), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 14) });
+            recipes[i] = ThaumcraftApi.addInfusionCraftingRecipe(SimpleResearchItem.getFullName("FAMILIAR"), result, 4, new AspectList().add(aspect, 46).add(Aspect.AURA, 34).add(Aspect.MAGIC, 51), new ItemStack(ConfigItems.itemResource, 1, 1), new ItemStack[] { wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 15), new ItemStack(ConfigBlocks.blockCrystal, 1, 6) , wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 14), new ItemStack(ConfigBlocks.blockCrystal, 1, 6), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 15), new ItemStack(ConfigBlocks.blockCrystal, 1, 6), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 14), new ItemStack(ConfigBlocks.blockCrystal, 1, 6) });
         }
         return recipes;
     }

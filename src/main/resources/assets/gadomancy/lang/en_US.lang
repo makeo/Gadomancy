@@ -1,5 +1,6 @@
 item.ItemGolemPlacer.silverwood.name=Silverwood Golem
 item.ItemTransformationFocus.name=[WIP] Wand Focus: Transformation
+item.ItemFamiliar.name=Familiar
 
 itemGroup.gadomancy=Gadomancy
 tc.research_category.gadomancy=Gadomancy
@@ -31,6 +32,10 @@ gadomancy.research_page.INFUSIONCLAW.1=Lorem ipsum dolor sit amet, consetetur sa
 tc.research_name.GADOMANCY.REMOTEJAR=Mirrored Jars
 tc.research_text.GADOMANCY.REMOTEJAR=Mirrored transportation
 gadomancy.research_page.REMOTEJAR.1=Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
+
+tc.research_name.GADOMANCY.FAMILIAR=Familiar
+tc.research_text.GADOMANCY.FAMILIAR=A arcane follower
+gadomancy.research_page.FAMILIAR.1=Thanks to your deep research into Wisps and arcane flames you call 'Nitor' you think you may be able to create a being just like the Wisp. But that's not enough! You might be able to direct its movements and actions to defend yourself with it. But it seems a bit weak.. Let's do something about that when the time comes...
 
 tc.research_name.GADOMANCY.NODE_MANIPULATOR=Node Manipulator
 tc.research_text.GADOMANCY.NODE_MANIPULATOR=Almost like roulette

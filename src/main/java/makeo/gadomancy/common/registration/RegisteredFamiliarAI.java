@@ -2,12 +2,14 @@ package makeo.gadomancy.common.registration;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import makeo.gadomancy.common.familiar.FamiliarAIController;
-import makeo.gadomancy.common.familiar.ai.FamiliarAIProcess;
+import makeo.gadomancy.common.familiar.FamiliarAIProcess;
+import makeo.gadomancy.common.items.baubles.ItemFamiliar;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketFamiliar;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -28,15 +30,15 @@ public class RegisteredFamiliarAI {
 
     public static FamiliarAIProcess familiarAIIdle = new FamiliarAIProcess(1) {
         @Override
-        public boolean canRun(World world, double x, double y, double z, EntityPlayer parent) {
+        public boolean canRun(World world, double x, double y, double z, EntityPlayer parent, ItemStack stackInSlot) {
             return true;
         }
 
         @Override
-        public void tick(int ticksSoFar, World worldObj, EntityPlayer owningPlayer) {}
+        public void tick(int ticksSoFar, World worldObj, EntityPlayer owningPlayer, ItemStack itemStack) {}
 
         @Override
-        public int getCooldownDuration() {
+        public int getCooldownDuration(ItemStack itemStack) {
             return 0;
         }
     };
@@ -44,13 +46,16 @@ public class RegisteredFamiliarAI {
     public static FamiliarAIProcess familiarAIZapAttackingMonsters = new FamiliarAIProcess(1) {
 
         @Override
-        public boolean canRun(World world, double x, double y, double z, EntityPlayer parent) {
-            return getPotentialTargets(world, parent).size() > 0;
+        public boolean canRun(World world, double x, double y, double z, EntityPlayer parent, ItemStack itemStack) {
+            int rangeInc = ((ItemFamiliar) itemStack.getItem()).getAttackRangeIncrease(itemStack);
+            return getPotentialTargets(world, parent, rangeInc).size() > 0;
         }
 
         @Override
-        public void tick(int ticksSoFar, World world, EntityPlayer parent) {
-            List<EntityLivingBase> lastTargetters = getPotentialTargets(world, parent);
+        public void tick(int ticksSoFar, World world, EntityPlayer parent, ItemStack itemStack) {
+            int rangeInc = ((ItemFamiliar) itemStack.getItem()).getAttackRangeIncrease(itemStack);
+
+            List<EntityLivingBase> lastTargetters = getPotentialTargets(world, parent, rangeInc);
             if(lastTargetters.size() < 1) {
                 FamiliarAIController.cleanTargetterList(parent);
                 return;
@@ -61,7 +66,7 @@ public class RegisteredFamiliarAI {
                 return;
             }
 
-            mob.attackEntityFrom(DamageSource.magic, 6);
+            mob.attackEntityFrom(DamageSource.magic, ((ItemFamiliar) itemStack.getItem()).getAttackStrength(itemStack));
 
             world.playSoundEffect(mob.posX + 0.5, mob.posY + 0.5, mob.posZ + 0.5, "thaumcraft:zap", 0.8F, 1.0F);
 
@@ -70,9 +75,10 @@ public class RegisteredFamiliarAI {
             FamiliarAIController.cleanTargetterList(parent);
         }
 
-        private List<EntityLivingBase> getPotentialTargets(World world, EntityPlayer player) {
-            List<EntityLivingBase> validTargets = getCloseEnoughTargetters(world, player);
-            List mobs = world.getEntitiesWithinAABB(IMob.class, AxisAlignedBB.getBoundingBox(player.posX - 0.5, player.posY - 0.5, player.posZ - 0.5, player.posX + 0.5, player.posY + 0.5, player.posZ + 0.5).expand(5, 5, 5));
+        private List<EntityLivingBase> getPotentialTargets(World world, EntityPlayer player, int rangeInc) {
+            List<EntityLivingBase> validTargets = getCloseEnoughTargetters(world, player, rangeInc);
+            int range = 5 + rangeInc;
+            List mobs = world.getEntitiesWithinAABB(IMob.class, AxisAlignedBB.getBoundingBox(player.posX - 0.5, player.posY - 0.5, player.posZ - 0.5, player.posX + 0.5, player.posY + 0.5, player.posZ + 0.5).expand(range, range, range));
             for(Object mobObj : mobs) {
                 if(!(mobObj instanceof EntityLivingBase)) continue;
                 EntityLivingBase mob = (EntityLivingBase) mobObj;
@@ -82,11 +88,12 @@ public class RegisteredFamiliarAI {
             return validTargets;
         }
 
-        private List<EntityLivingBase> getCloseEnoughTargetters(World world, EntityPlayer parent) {
+        private List<EntityLivingBase> getCloseEnoughTargetters(World world, EntityPlayer parent, int rangeInc) {
             LinkedList<EntityLivingBase> lastTargetters = FamiliarAIController.getLastTargetters(parent);
             if(lastTargetters == null || lastTargetters.isEmpty()) return new ArrayList<EntityLivingBase>();
             List<EntityLivingBase> closeEnoughLastTargetters = new ArrayList<EntityLivingBase>();
-            List livingAround = world.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(parent.posX - 0.5, parent.posY - 0.5, parent.posZ - 0.5, parent.posX + 0.5, parent.posY + 0.5, parent.posZ + 0.5).expand(8, 8, 8));
+            int range = 8 + rangeInc;
+            List livingAround = world.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(parent.posX - 0.5, parent.posY - 0.5, parent.posZ - 0.5, parent.posX + 0.5, parent.posY + 0.5, parent.posZ + 0.5).expand(range, range, range));
             for(Object living : livingAround) {
                 if(!(living instanceof EntityLivingBase)) continue;
                 if(lastTargetters.contains(living)) closeEnoughLastTargetters.add((EntityLivingBase) living);
@@ -100,8 +107,8 @@ public class RegisteredFamiliarAI {
         }
 
         @Override
-        public int getCooldownDuration() {
-            return 20;
+        public int getCooldownDuration(ItemStack itemStack) {
+            return 20 - ((ItemFamiliar) itemStack.getItem()).getAttackCooldownReduction(itemStack);
         }
     };
 

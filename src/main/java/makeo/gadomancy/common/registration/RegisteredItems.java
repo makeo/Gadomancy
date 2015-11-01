@@ -5,8 +5,11 @@ import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.items.*;
 import makeo.gadomancy.common.items.baubles.ItemFamiliar;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.EnumHelper;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -27,6 +30,8 @@ import java.util.List;
  */
 public class RegisteredItems {
     private RegisteredItems() {}
+
+    public static EnumRarity raritySacred = EnumHelper.addRarity("Sacred", EnumChatFormatting.GOLD, "Sacred");
 
     public static CreativeTabs creativeTab;
 
