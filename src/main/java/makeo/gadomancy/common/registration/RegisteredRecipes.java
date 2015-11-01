@@ -9,6 +9,7 @@ import makeo.gadomancy.common.utils.NBTHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -17,7 +18,9 @@ import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
+import thaumcraft.common.items.ItemWispEssence;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,6 +45,7 @@ public class RegisteredRecipes {
     public static InfusionRecipe recipeInfusionClaw;
     public static InfusionRecipe recipeNodeManipulator;
     public static InfusionRecipe recipeRandomizationFocus;
+    public static InfusionRecipe[] recipesFamilar;
 
     public static IArcaneRecipe recipeStickyJar;
     public static IArcaneRecipe recipeArcaneDropper;
@@ -95,6 +99,8 @@ public class RegisteredRecipes {
                 null, null, null, null, new ItemStack(RegisteredBlocks.blockNode, 1, 5), null, null, null, null,
                 new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11), null, new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 0), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11),
                 new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15), null, new ItemStack(RegisteredBlocks.blockNodeManipulator, 1, 5), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15)));
+
+        recipesFamilar = createFamilarRecipes();
     }
 
     private static IArcaneRecipe[] stickyJarRecipes = null;
@@ -121,5 +127,25 @@ public class RegisteredRecipes {
         }
 
         return stickyJarRecipes;
+    }
+
+    public static InfusionRecipe[] createFamilarRecipes() {
+        List<Aspect> aspects = new ArrayList<Aspect>(Aspect.aspects.values());
+        InfusionRecipe[] recipes = new InfusionRecipe[aspects.size()];
+
+        ItemWispEssence itemEssence = (ItemWispEssence)ConfigItems.itemWispEssence;
+        for (int i = 0; i < aspects.size(); i++) {
+            Aspect aspect = aspects.get(i);
+
+            ItemStack wispyEssence = new ItemStack(itemEssence, 0, 0);
+            itemEssence.setAspects(wispyEssence, new AspectList().add(aspect, 1));
+
+            ItemStack result = new ItemStack(RegisteredItems.itemFamiliar);
+            NBTTagCompound compound = NBTHelper.getData(result);
+            compound.setString("aspect", aspect.getName());
+
+            recipes[i] = ThaumcraftApi.addInfusionCraftingRecipe(SimpleResearchItem.getFullName("STICKYJAR"), result, 4, new AspectList().add(aspect, 46).add(Aspect.AURA, 34).add(Aspect.MAGIC, 51), new ItemStack(ConfigItems.itemResource, 1, 1), new ItemStack[] { wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 15), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 14), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 15), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 14) });
+        }
+        return recipes;
     }
 }
