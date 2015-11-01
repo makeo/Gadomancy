@@ -52,12 +52,6 @@ import java.util.Map;
  * Created by makeo @ 05.07.2015 13:20
  */
 public class EventHandlerWorld {
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void on(EntityEvent.EntityConstructing e) {
-        if (e.entity instanceof EntityPlayer) {
-            //e.entity.registerExtendedProperties(Gadomancy.MODID, new ExtendedPlayerProperties((EntityPlayer) e.entity));
-        }
-    }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void on(WorldEvent.Load e) {

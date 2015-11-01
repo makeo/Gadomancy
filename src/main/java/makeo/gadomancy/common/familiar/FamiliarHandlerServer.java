@@ -1,6 +1,8 @@
 package makeo.gadomancy.common.familiar;
 
+import baubles.api.BaublesApi;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -27,7 +29,11 @@ public class FamiliarHandlerServer implements FamiliarHandler {
 
     @Override
     public void notifyEquip(World world, ItemStack familiarStack, EntityPlayer player) {
-        if(!world.isRemote) familiarAI.put(player, new FamiliarAIController(player));
+        if(!world.isRemote) {
+            FamiliarAIController controller = new FamiliarAIController(player);
+            controller.registerDefaultTasks();
+            familiarAI.put(player, controller);
+        }
     }
 
     @Override
@@ -37,7 +43,18 @@ public class FamiliarHandlerServer implements FamiliarHandler {
 
     @Override
     public void equippedTick(World world, ItemStack familiarStack, EntityPlayer player) {
-        if(!world.isRemote) familiarAI.get(player).sheduleTick();
+        if(!world.isRemote) {
+            IInventory baublesInv = BaublesApi.getBaubles(player);
+            if(baublesInv.getStackInSlot(0) == null) {
+                notifyUnequip(world, familiarStack, player);
+                return;
+            }
+
+            if(familiarAI.get(player) == null) {
+                notifyEquip(world, familiarStack, player);
+            }
+            familiarAI.get(player).sheduleTick();
+        }
     }
 
 }

@@ -1,10 +1,14 @@
 package makeo.gadomancy.client.renderers.item.familiar;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import makeo.gadomancy.common.familiar.FamiliarHandlerServer;
 import makeo.gadomancy.common.network.packets.PacketFamiliar;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import thaumcraft.common.Thaumcraft;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -46,8 +50,12 @@ public class FamiliarHandlerClient extends FamiliarHandlerServer {
 
     }
 
+    @SideOnly(Side.CLIENT)
     public void processPacket(PacketFamiliar packet) {
         if(packet instanceof PacketFamiliar.PacketFamiliarBolt) {
+            PacketFamiliar.PacketFamiliarBolt pkt = (PacketFamiliar.PacketFamiliarBolt) packet;
+            EntityPlayer p = Minecraft.getMinecraft().thePlayer;
+            Thaumcraft.proxy.nodeBolt(Minecraft.getMinecraft().theWorld, (float) p.posX, (float) (p.posY + p.eyeHeight), (float) p.posZ, pkt.targetX, pkt.targetY, pkt.targetZ);
             //TODO zap given coordinates from current familiar render coordinates
         }
     }

@@ -19,7 +19,7 @@ public abstract class PacketFamiliar {
 
     public static class PacketFamiliarBolt extends PacketFamiliar implements IMessage, IMessageHandler<PacketFamiliarBolt, IMessage> {
 
-        private float targetX, targetY, targetZ;
+        public float targetX, targetY, targetZ;
 
         public PacketFamiliarBolt() {}
 
