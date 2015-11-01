@@ -70,6 +70,8 @@ public class CommonProxy implements IGuiHandler {
         RegisteredRecipes.init();
 
         ModSubstitutions.init();
+
+        RegisteredPotions.init();
     }
 
     public void postInitalize() {

@@ -64,6 +64,7 @@ gadomancy.research_page.GROWING_GROWTHCLUE.2=In contrast to that it seems that i
 gadomancy.golemblurb.default=??
 gadomancy.golemblurb.breakcore=Master, should I break everything, or something specific?
 gadomancy.golem.breakcore=Break
+gadomancy.golem.bodyguardcore=Bodyguard
 
 gadomancy.upgrades.runicshield=Runic Shield
 

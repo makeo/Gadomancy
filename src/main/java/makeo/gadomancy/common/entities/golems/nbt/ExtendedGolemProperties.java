@@ -30,7 +30,10 @@ public class ExtendedGolemProperties implements IExtendedEntityProperties {
     private boolean updateHealth = false;
     private float health;
 
-    private EntityAITasksWrapper wrapper = null;
+    private boolean isSitting = false;
+
+    private EntityAITasksWrapper taskWrapper = null;
+    private EntityAITasksWrapper targetWrapper = null;
 
     public ExtendedGolemProperties(EntityGolemBase golem) {
         this.golem = golem;
@@ -48,6 +51,14 @@ public class ExtendedGolemProperties implements IExtendedEntityProperties {
         return health;
     }
 
+    public boolean isSitting() {
+        return isSitting;
+    }
+
+    public void setSitting(boolean isSitting) {
+        this.isSitting = isSitting;
+    }
+
     @Override
     public void saveNBTData(NBTTagCompound compound) {
         AdditionalGolemType type = GadomancyApi.getAdditionalGolemType(golem.getGolemType());
@@ -63,6 +74,8 @@ public class ExtendedGolemProperties implements IExtendedEntityProperties {
             writeAdvancedGolemType(entityData, type);
             golem.ridingEntity = new OverrideRidingEntity(golem, compound, golem.ridingEntity);
         }
+
+        compound.setBoolean(Gadomancy.MODID + ":sitting", isSitting);
     }
 
     private static void writeAdvancedGolemType(NBTTagCompound base, AdditionalGolemType type) {
@@ -89,6 +102,8 @@ public class ExtendedGolemProperties implements IExtendedEntityProperties {
             }
         }
 
+        isSitting = compound.getBoolean(Gadomancy.MODID + ":sitting");
+
         updateGolemCore();
     }
 
@@ -109,27 +124,42 @@ public class ExtendedGolemProperties implements IExtendedEntityProperties {
     }
 
     public void setWrapperIfNeeded() {
-        if(wrapper == null) {
-            wrapper = new EntityAITasksWrapper(golem);
-            golem.tasks = wrapper;
+        boolean needsUpdate = false;
+        if(taskWrapper == null) {
+            taskWrapper = new EntityAITasksWrapper(golem, golem.tasks, true);
+            golem.tasks = taskWrapper;
 
+            needsUpdate = true;
+        }
+
+        if(targetWrapper == null) {
+            targetWrapper = new EntityAITasksWrapper(golem, golem.targetTasks, false);
+            golem.targetTasks = targetWrapper;
+
+            needsUpdate = true;
+        }
+
+        if(needsUpdate) {
             updateGolem();
         }
     }
 
     public void updateGolem() {
-        wrapper.unlock();
+        taskWrapper.unlock();
+        targetWrapper.unlock();
+
         golem.setupGolem();
         golem.setupGolemInventory();
 
         AdditionalGolemCore core = GadomancyApi.getAdditionalGolemCore(golem);
         if(core != null) {
-            wrapper.taskEntries.clear();
-            golem.targetTasks.taskEntries.clear();
+            taskWrapper.taskEntries.clear();
+            targetWrapper.taskEntries.clear();
 
             core.setupGolem(golem);
 
-            wrapper.lock();
+            taskWrapper.lock();
+            targetWrapper.lock();
         }
     }
 
