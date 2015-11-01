@@ -21,6 +21,8 @@ public class ItemFamiliar extends Item implements IBauble {
 
     public ItemFamiliar() {
         setUnlocalizedName("ItemFamiliar");
+        setMaxStackSize(1);
+        setFull3D();
         setCreativeTab(RegisteredItems.creativeTab);
     }
 

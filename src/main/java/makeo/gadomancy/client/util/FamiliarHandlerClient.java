@@ -72,6 +72,8 @@ public class FamiliarHandlerClient {
             if(renderView.worldObj.provider.dimensionId != player.worldObj.provider.dimensionId) continue;
             if(renderView.getDistanceSqToEntity(player) > 1024) continue;
 
+            //Info: "Thanks" to RenderPlayerEvent, GL11 offset is moved to the player already.
+            //GL11 coordinates: Player.posX, Player.posY + Player.eyeHeight (1.62 client side..), Player.posZ, rotation: 0
             fallbackRenderer.renderEntityAt(fam.dummyEntity, fam.renderX, fam.renderY, fam.renderZ, 0, partialTicks);
             //Render at abs positions: ram.posX, fam.posY, fam.posZ
         }
@@ -79,7 +81,9 @@ public class FamiliarHandlerClient {
 
     @SideOnly(Side.CLIENT)
     public static void playerTickEvent() {
+        if(Minecraft.getMinecraft().theWorld == null) return;
         for(PartialEntityFamiliar fam : clientFamiliars.values()) fam.tick();
+        PartialEntityFamiliar.DUMMY_FAMILIAR.tick();
     }
 
     static {
@@ -103,8 +107,9 @@ public class FamiliarHandlerClient {
         protected void writeEntityToNBT(NBTTagCompound p_70014_1_) {}
     }
 
-    @SideOnly(Side.CLIENT)
     public static class PartialEntityFamiliar {
+
+        public static final PartialEntityFamiliar DUMMY_FAMILIAR = new PartialEntityFamiliar(null, "§Invalid§");
 
         private static final double RAD_CAP = 2 * Math.PI;
         private static final int CRICLE_TIME_TICKS = 160;
@@ -132,6 +137,8 @@ public class FamiliarHandlerClient {
                     EntityPlayer player = Minecraft.getMinecraft().theWorld.getPlayerEntityByName(potentialOwnerName);
                     if(player != null) {
                         owner = new WeakReference<EntityPlayer>(player);
+                    } else {
+                        return;
                     }
                 } else {
                     return;
@@ -151,7 +158,7 @@ public class FamiliarHandlerClient {
             double theta = RAD_CAP * part;
             this.renderX = RADIUS * Math.cos(theta);
             this.renderZ = RADIUS * Math.sin(theta);
-            this.renderY = 1 + Math.sin(theta * 2) / 4D;
+            this.renderY = 0.7 + Math.sin(theta * 2) / 4D;
 
             this.posX = owner.get().posX + renderX;
             this.posZ = owner.get().posZ + renderZ;
