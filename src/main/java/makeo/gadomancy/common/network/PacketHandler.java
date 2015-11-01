@@ -32,5 +32,7 @@ public class PacketHandler {
         INSTANCE.registerMessage(PacketTCWispyLine.class, PacketTCWispyLine.class, id++, Side.CLIENT);
 
         INSTANCE.registerMessage(PacketFamiliar.PacketFamiliarBolt.class, PacketFamiliar.PacketFamiliarBolt.class, id++, Side.CLIENT);
+        INSTANCE.registerMessage(PacketFamiliar.PacketFamiliarSyncCompletely.class, PacketFamiliar.PacketFamiliarSyncCompletely.class, id++, Side.CLIENT);
+        INSTANCE.registerMessage(PacketFamiliar.PacketFamiliarSyncSingle.class, PacketFamiliar.PacketFamiliarSyncSingle.class, id++, Side.CLIENT);
     }
 }

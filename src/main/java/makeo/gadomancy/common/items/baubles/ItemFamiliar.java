@@ -34,21 +34,21 @@ public class ItemFamiliar extends Item implements IBauble {
     @Override
     public void onWornTick(ItemStack itemStack, EntityLivingBase entity) {
         if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar) {
-            Gadomancy.proxy.familiarHandler.equippedTick(((EntityPlayer) entity).worldObj, itemStack, (EntityPlayer) entity);
+            Gadomancy.proxy.familiarHandler.equippedTick(((EntityPlayer) entity).worldObj, (EntityPlayer) entity);
         }
     }
 
     @Override
     public void onEquipped(ItemStack itemStack, EntityLivingBase entity) {
         if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar) {
-            Gadomancy.proxy.familiarHandler.notifyEquip(((EntityPlayer) entity).worldObj, itemStack, (EntityPlayer) entity);
+            Gadomancy.proxy.familiarHandler.notifyEquip(((EntityPlayer) entity).worldObj, (EntityPlayer) entity);
         }
     }
 
     @Override
     public void onUnequipped(ItemStack itemStack, EntityLivingBase entity) {
         if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar) {
-            Gadomancy.proxy.familiarHandler.notifyUnequip(((EntityPlayer) entity).worldObj, itemStack, (EntityPlayer) entity);
+            Gadomancy.proxy.familiarHandler.notifyUnequip(((EntityPlayer) entity).worldObj, (EntityPlayer) entity);
         }
     }
 

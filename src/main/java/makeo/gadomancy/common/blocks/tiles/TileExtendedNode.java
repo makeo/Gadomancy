@@ -103,6 +103,9 @@ public class TileExtendedNode extends TileNode implements INode {
                     ResearchHelper.distributeResearch(Gadomancy.MODID.toUpperCase() + ".GROWING_AGGRESSION", worldObj, xCoord, yCoord, zCoord, 6);
 
                     livingEntity.attackEntityFrom(DamageSource.magic, behavior.getZapDamage());
+
+                    worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "thaumcraft:zap", 0.8F, 1.0F);
+
                     PacketTCNodeBolt packet = new PacketTCNodeBolt(xCoord + 0.5F, yCoord + 0.5F, zCoord + 0.5F, (float) livingEntity.posX, (float) (livingEntity.posY + livingEntity.height), (float) livingEntity.posZ);
                     PacketHandler.INSTANCE.sendToAllAround(packet, new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 32.0D));
                 }

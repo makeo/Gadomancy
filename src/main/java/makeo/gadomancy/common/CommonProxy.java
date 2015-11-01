@@ -3,14 +3,12 @@ package makeo.gadomancy.common;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import makeo.gadomancy.common.containers.ContainerInfusionClaw;
 import makeo.gadomancy.common.events.EventHandlerEntity;
 import makeo.gadomancy.common.events.EventHandlerGolem;
 import makeo.gadomancy.common.events.EventHandlerNetwork;
 import makeo.gadomancy.common.events.EventHandlerWorld;
-import makeo.gadomancy.common.familiar.FamiliarHandler;
 import makeo.gadomancy.common.familiar.FamiliarHandlerServer;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.registration.*;
@@ -18,14 +16,10 @@ import makeo.gadomancy.client.ClientProxy;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import thaumcraft.api.wands.WandTriggerRegistry;
-import thaumcraft.common.blocks.BlockAiryItem;
-import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.golems.ContainerGolem;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
@@ -43,7 +37,7 @@ import java.util.List;
  */
 public class CommonProxy implements IGuiHandler {
     public static final EventHandlerGolem EVENT_HANDLER_GOLEM = new EventHandlerGolem();
-    public FamiliarHandler familiarHandler;
+    public FamiliarHandlerServer familiarHandler;
 
     public void onConstruct() { }
 

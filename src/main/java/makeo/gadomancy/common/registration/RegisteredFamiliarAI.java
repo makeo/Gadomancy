@@ -6,10 +6,8 @@ import makeo.gadomancy.common.familiar.ai.FamiliarAIProcess;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketFamiliar;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -65,7 +63,9 @@ public class RegisteredFamiliarAI {
 
             mob.attackEntityFrom(DamageSource.magic, 6);
 
-            PacketFamiliar.PacketFamiliarBolt bolt = new PacketFamiliar.PacketFamiliarBolt((float) mob.posX, (float) mob.posY, (float) mob.posZ);
+            world.playSoundEffect(mob.posX + 0.5, mob.posY + 0.5, mob.posZ + 0.5, "thaumcraft:zap", 0.8F, 1.0F);
+
+            PacketFamiliar.PacketFamiliarBolt bolt = new PacketFamiliar.PacketFamiliarBolt(parent.getCommandSenderName(), (float) mob.posX, (float) mob.posY, (float) mob.posZ);
             PacketHandler.INSTANCE.sendToAllAround(bolt, new NetworkRegistry.TargetPoint(mob.worldObj.provider.dimensionId, mob.posX, mob.posY, mob.posZ, 32));
             FamiliarAIController.cleanTargetterList(parent);
         }
