@@ -3,6 +3,7 @@ package makeo.gadomancy.client.util;
 import baubles.api.BaublesApi;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.common.items.baubles.ItemFamiliar;
 import makeo.gadomancy.common.network.packets.PacketFamiliar;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.FakeWorld;
@@ -84,9 +85,8 @@ public class FamiliarHandlerClient {
             if(!ownerName.equals(player.getCommandSenderName())) continue;
 
             ItemStack stack = BaublesApi.getBaubles(player).getStackInSlot(0);
-            if(stack != null && stack.getItem() == RegisteredItems.itemFamiliar
-                    && stack.hasTagCompound() && stack.getTagCompound().hasKey("aspect")) {
-                ENTITY_WISP.setType(stack.getTagCompound().getString("aspect"));
+            if(((ItemFamiliar) stack.getItem()).hasAspect(stack)) {
+                ENTITY_WISP.setType(((ItemFamiliar) stack.getItem()).getAspect(stack).getTag());
                 ENTITY_WISP.ticksExisted = fam.dummyEntity.ticksExisted;
                 GL11.glPushMatrix();
                 fallbackRenderer.doRender(ENTITY_WISP, fam.renderX, fam.renderY, fam.renderZ, 0, partialTicks);

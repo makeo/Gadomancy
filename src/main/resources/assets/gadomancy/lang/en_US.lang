@@ -37,6 +37,26 @@ tc.research_name.GADOMANCY.FAMILIAR=Familiar
 tc.research_text.GADOMANCY.FAMILIAR=A arcane follower
 gadomancy.research_page.FAMILIAR.1=Thanks to your deep research into Wisps and arcane flames you call 'Nitor' you think you may be able to create a being just like the Wisp. Using the same Ethereal Essence and Essentia you are able to define the base aspect of your Familiar. But that's not enough! You might be able to direct its movements and actions to defend yourself with it. However, making it attack players doesn't seem so easy and it seems a bit weak too.. Let's do something about that when the time comes...
 
+tc.research_name.GADOMANCY.FAM_ATTACK_1=Attack Enhancement
+tc.research_text.GADOMANCY.FAM_ATTACK_1=Increasing the damage
+gadomancy.research_page.FAM_ATTACK_1.1=a1
+
+tc.research_name.GADOMANCY.FAM_ATTACK_2=Further Attack Enhancement
+tc.research_text.GADOMANCY.FAM_ATTACK_2=What does the scouter say about its power level?
+gadomancy.research_page.FAM_ATTACK_2.1=a2
+
+tc.research_name.GADOMANCY.FAM_ATTACK_3=Maximized Damage
+tc.research_text.GADOMANCY.FAM_ATTACK_3=ITS OVER 9000!
+gadomancy.research_page.FAM_ATTACK_3.1=a3
+
+tc.research_name.GADOMANCY.FAM_RANGE_1=Range Enhancement
+tc.research_text.GADOMANCY.FAM_RANGE_1=Attacking even further
+gadomancy.research_page.FAM_RANGE_1.1=r1
+
+tc.research_name.GADOMANCY.FAM_COOLDOWN_1=Attack-Speed Enhancement
+tc.research_text.GADOMANCY.FAM_COOLDOWN_1=A scientific Railgun
+gadomancy.research_page.FAM_COOLDOWN_1.1=c1
+
 tc.research_name.GADOMANCY.NODE_MANIPULATOR=Node Manipulator
 tc.research_text.GADOMANCY.NODE_MANIPULATOR=Almost like roulette
 gadomancy.research_page.NODE_MANIPULATOR.1=By infusing your ordinary Wand Recharge Pedestal with the stabilizing factors of a Node Stabilizer and the Paving Stone of Warding along with some of the most ancient ingredients that share the highest affinity when it comes to channeling Vis in its most pure form, one of the most dangerous machines fell into your possession: The Node Manipulator. A machine so capable of changing the way an aura node transports Vis from their end to our end.

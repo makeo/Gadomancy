@@ -57,9 +57,9 @@ public class ItemRenderFamiliar implements IItemRenderer {
         try {
             cleanActiveRenderInfo(type);
             GL11.glScalef(1.2F, 1.2F, 1.2F);
-            if(item.hasTagCompound() && item.getTagCompound().hasKey("aspect")) {
+            if(((ItemFamiliar) item.getItem()).hasAspect(item)) {
                 ENTITY_WISP.ticksExisted = FamiliarHandlerClient.PartialEntityFamiliar.DUMMY_FAMILIAR.ticksExisted;
-                ENTITY_WISP.setType(item.getTagCompound().getString("aspect"));
+                ENTITY_WISP.setType(((ItemFamiliar) item.getItem()).getAspect(item).getTag());
                 fallbackRenderer.doRender(ENTITY_WISP, 0, 0, 0, 0, 0);
             }
         } finally {

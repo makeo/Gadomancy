@@ -48,6 +48,11 @@ public class RegisteredResearches {
 
     //Familiar
     public static ResearchItem researchFamiliarBasic;
+    public static ResearchItem researchFamiliarAttack_1;
+    public static ResearchItem researchFamiliarAttack_2;
+    public static ResearchItem researchFamiliarAttack_3;
+    public static ResearchItem researchFamiliarRange_1;
+    public static ResearchItem researchFamiliarCooldown_1;
 
     public static void init() {
 
@@ -143,6 +148,54 @@ public class RegisteredResearches {
                 .setParents(nitorResearch.key)
                 .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR.1"), new ResearchPage(RegisteredRecipes.recipesFamilar)).registerResearchItem();
 
+        ResearchItem researchTallow = PseudoResearchItem.create("TALLOW", 7, -3).registerResearchItem();
+
+        researchFamiliarAttack_1 = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_1", Gadomancy.MODID,
+                new AspectList(),
+                5, -1, 2, new ItemStack(RegisteredItems.itemFakeModIcon, 1, 1))
+                .setConcealed()
+                .setParents(Gadomancy.MODID.toUpperCase() + ".FAMILIAR", researchTallow.key)
+                .setPages(new ResearchPage("gadomancy.research_page.FAM_ATTACK_1.1"), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[0])).registerResearchItem();
+
+        ResearchItem researchVoidSeed = PseudoResearchItem.create("ELDRITCHMINOR", 8, -2).registerResearchItem();
+
+        researchFamiliarAttack_2 = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_2", Gadomancy.MODID,
+                new AspectList(),
+                7, 0, 2, new ItemStack(RegisteredItems.itemFakeModIcon, 1, 2))
+                .setConcealed()
+                .setParents(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_1", researchVoidSeed.key)
+                .setPages(new ResearchPage("gadomancy.research_page.FAM_ATTACK_2.1"), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[1])).registerResearchItem();
+
+        ResearchItem researchPrimodialPearl = PseudoResearchItem.create("PRIMPEARL", 10, 1).registerResearchItem();
+        ResearchItem researchEthBloom = PseudoResearchItem.create("ETHEREALBLOOM", 9, 0).registerResearchItem();
+        ResearchItem researchBathSalts = PseudoResearchItem.create("BATHSALTS", 3, 2).registerResearchItem();
+        ResearchItem researchPrimalFocus2 = PseudoResearchItem.create("FOCUSPRIMAL", 3, 4, true).registerResearchItem();
+        ResearchItem researchAlumentum = PseudoResearchItem.create("ALUMENTUM", 2, 0).registerResearchItem();
+
+        researchFamiliarAttack_3 = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_3", Gadomancy.MODID,
+                new AspectList(),
+                8, 2, 2, new ItemStack(RegisteredItems.itemFakeModIcon, 1, 3))
+                .setConcealed()
+                .setParents(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_2", researchPrimodialPearl.key, researchEthBloom.key)
+                .setPages(new ResearchPage("gadomancy.research_page.FAM_ATTACK_3.1"), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[2])).registerResearchItem();
+
+        researchFamiliarRange_1 = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".FAM_RANGE_1", Gadomancy.MODID,
+                new AspectList(),
+                4, 1, 2, new ItemStack(RegisteredItems.itemFakeModIcon, 1, 4))
+                .setConcealed()
+                .setParents(Gadomancy.MODID.toUpperCase() + ".FAMILIAR", Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_2", researchAlumentum.key)
+                .setPages(new ResearchPage("gadomancy.research_page.FAM_RANGE_1.1"), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[3])).registerResearchItem();
+
+        researchFamiliarCooldown_1 = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".FAM_COOLDOWN_1", Gadomancy.MODID,
+                new AspectList(),
+                5, 3, 2, new ItemStack(RegisteredItems.itemFakeModIcon, 1, 5))
+                .setConcealed()
+                .setParents(Gadomancy.MODID.toUpperCase() + ".FAM_RANGE_1", Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_3", researchBathSalts.key, researchPrimalFocus2.key)
+                .setPages(new ResearchPage("gadomancy.research_page.FAM_COOLDOWN_1.1"), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[4])).registerResearchItem();
+
+        //Warpy warpy
+        ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_3", 2);
+        ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".FAM_COOLDOWN_1", 3);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR", 4);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTHCLUE", 3);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".FAMILIAR", 1);
