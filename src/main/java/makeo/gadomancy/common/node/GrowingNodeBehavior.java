@@ -192,7 +192,7 @@ public class GrowingNodeBehavior {
                     fixedNode.getWorldObj().spawnEntityInWorld(aspectOrb);
 
                     NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(world.provider.dimensionId, ox + 0.5F, oy + 0.5F, oz + 0.5F, 32);
-                    PacketTCNodeBolt bolt = new PacketTCNodeBolt(ox + 0.5F, oy + 0.5F, oz + 0.5F, fx + 0.5F, fy + 0.5F, fz + 0.5F);
+                    PacketTCNodeBolt bolt = new PacketTCNodeBolt(ox + 0.5F, oy + 0.5F, oz + 0.5F, fx + 0.5F, fy + 0.5F, fz + 0.5F, 0, false);
                     PacketHandler.INSTANCE.sendToAllAround(bolt, point);
 
                     PacketAnimationAbsorb packet = new PacketAnimationAbsorb(ox, oy, oz, fx, fy, fz, 7);

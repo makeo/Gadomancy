@@ -22,15 +22,19 @@ public abstract class PacketFamiliar {
     public static class PacketFamiliarBolt extends PacketFamiliar implements IMessage, IMessageHandler<PacketFamiliarBolt, IMessage> {
 
         public float targetX, targetY, targetZ;
+        public int type;
+        public boolean mightGetLong;
         public String owner;
 
         public PacketFamiliarBolt() {}
 
-        public PacketFamiliarBolt(String whoseFamiliar, float targetX, float targetY, float targetZ) {
+        public PacketFamiliarBolt(String whoseFamiliar, float targetX, float targetY, float targetZ, int type, boolean mightGetLong) {
             this.targetX = targetX;
             this.targetY = targetY;
             this.targetZ = targetZ;
             this.owner = whoseFamiliar;
+            this.type = type;
+            this.mightGetLong = mightGetLong;
         }
 
         @Override
@@ -38,6 +42,9 @@ public abstract class PacketFamiliar {
             this.targetX = buf.readFloat();
             this.targetY = buf.readFloat();
             this.targetZ = buf.readFloat();
+
+            this.type = buf.readInt();
+            this.mightGetLong = buf.readBoolean();
 
             int length = buf.readInt();
             byte[] strBytes = new byte[length];
@@ -50,6 +57,9 @@ public abstract class PacketFamiliar {
             buf.writeFloat(targetX);
             buf.writeFloat(targetY);
             buf.writeFloat(targetZ);
+
+            buf.writeInt(type);
+            buf.writeBoolean(mightGetLong);
 
             byte[] str = owner.getBytes();
             buf.writeInt(str.length);

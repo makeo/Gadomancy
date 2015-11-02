@@ -70,7 +70,7 @@ public class RegisteredFamiliarAI {
 
             world.playSoundEffect(mob.posX + 0.5, mob.posY + 0.5, mob.posZ + 0.5, "thaumcraft:zap", 0.8F, 1.0F);
 
-            PacketFamiliar.PacketFamiliarBolt bolt = new PacketFamiliar.PacketFamiliarBolt(parent.getCommandSenderName(), (float) mob.posX, (float) mob.posY, (float) mob.posZ);
+            PacketFamiliar.PacketFamiliarBolt bolt = new PacketFamiliar.PacketFamiliarBolt(parent.getCommandSenderName(), (float) mob.posX, (float) mob.posY, (float) mob.posZ, 6, true);
             PacketHandler.INSTANCE.sendToAllAround(bolt, new NetworkRegistry.TargetPoint(mob.worldObj.provider.dimensionId, mob.posX, mob.posY, mob.posZ, 32));
             FamiliarAIController.cleanTargetterList(parent);
         }

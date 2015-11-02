@@ -87,7 +87,7 @@ public class ExplosionHelper {
                         if(livingEntity instanceof EntityPlayer && ((EntityPlayer) livingEntity).capabilities.isCreativeMode) continue;
                         if(world.rand.nextInt(16) != 0) continue;
                         livingEntity.attackEntityFrom(DamageSource.magic, 4F);
-                        PacketTCNodeBolt packet = new PacketTCNodeBolt(x + 0.5F, y + 0.5F, z + 0.5F, (float) livingEntity.posX, (float) (livingEntity.posY + livingEntity.height), (float) livingEntity.posZ);
+                        PacketTCNodeBolt packet = new PacketTCNodeBolt(x + 0.5F, y + 0.5F, z + 0.5F, (float) livingEntity.posX, (float) (livingEntity.posY + livingEntity.height), (float) livingEntity.posZ, 0, false);
                         PacketHandler.INSTANCE.sendToAllAround(packet, new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 32.0D));
                     }
                 }

@@ -48,7 +48,6 @@ public class ItemFamiliar extends Item implements IBauble {
             }
 
             if(stack.getTagCompound().hasKey("AttackUpgrade1") || stack.getTagCompound().hasKey("AttackUpgrade2") || stack.getTagCompound().hasKey("AttackUpgrade3")) {
-                lore.add("");
                 String strength = EnumChatFormatting.DARK_RED + "Strength ";
                 if(stack.getTagCompound().hasKey("AttackUpgrade1")) strength += "I";
                 if(stack.getTagCompound().hasKey("AttackUpgrade2")) strength += "I";
@@ -57,12 +56,10 @@ public class ItemFamiliar extends Item implements IBauble {
             }
 
             if(stack.getTagCompound().hasKey("RangeUpgrade1")) {
-                lore.add("");
                 lore.add(EnumChatFormatting.GOLD + "Reach I");
             }
 
             if(stack.getTagCompound().hasKey("CdUpgrade1")) {
-                lore.add("");
                 lore.add(EnumChatFormatting.AQUA + "Swiftness I");
             }
         }

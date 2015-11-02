@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.client.fx.bolt.FXLightningBolt;
 import thaumcraft.client.renderers.entity.RenderPrimalOrb;
 import thaumcraft.client.renderers.entity.RenderWisp;
 import thaumcraft.common.Thaumcraft;
@@ -53,7 +54,10 @@ public class FamiliarHandlerClient {
             if(p == null || p.getDistanceSqToEntity(Minecraft.getMinecraft().thePlayer) > 1024) return; //32^2
             PartialEntityFamiliar fam = clientFamiliars.get(p.getCommandSenderName());
             if(fam == null) return;
-            Thaumcraft.proxy.nodeBolt(Minecraft.getMinecraft().theWorld, (float) fam.posX, (float) fam.posY, (float) fam.posZ, pkt.targetX, pkt.targetY, pkt.targetZ);
+            FXLightningBolt bolt = new FXLightningBolt(Minecraft.getMinecraft().theWorld, (float) fam.posX, (float) fam.posY, (float) fam.posZ, pkt.targetX, pkt.targetY, pkt.targetZ, Minecraft.getMinecraft().theWorld.rand.nextLong(), 10, 4.0F, 5);
+            bolt.defaultFractal();
+            bolt.setType(pkt.type);
+            bolt.finalizeBolt();
         } else if(packet instanceof PacketFamiliar.PacketFamiliarSyncCompletely) {
             PacketFamiliar.PacketFamiliarSyncCompletely sync = (PacketFamiliar.PacketFamiliarSyncCompletely) packet;
             familiarPlayers = sync.playerNamesWithFamiliars;
