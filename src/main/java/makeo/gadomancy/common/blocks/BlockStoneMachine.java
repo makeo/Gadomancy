@@ -69,8 +69,6 @@ public class BlockStoneMachine extends Block {
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List list) {
         list.add(new ItemStack(item, 1, 0));
-        list.add(new ItemStack(item, 1, 15));
-        list.add(new ItemStack(item, 1, 11));
     }
 
     @Override

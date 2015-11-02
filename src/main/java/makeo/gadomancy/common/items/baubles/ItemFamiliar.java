@@ -41,6 +41,13 @@ public class ItemFamiliar extends Item implements IBauble {
         ItemStack stack = new ItemStack(item);
         setAspect(stack, Aspect.MAGIC);
         list.add(stack);
+
+        stack = new ItemStack(item);
+        setAspect(stack, Aspect.MAGIC);
+        for(FamiliarUpgrade upgrade : FamiliarUpgrade.values()) {
+            addUpgrade(stack, upgrade);
+        }
+        list.add(stack);
     }
 
     @Override
@@ -165,6 +172,7 @@ public class ItemFamiliar extends Item implements IBauble {
 
     public boolean hasUpgrade(ItemStack stack, FamiliarUpgrade upgrade) {
         if(stack == null || !(stack.getItem() instanceof ItemFamiliar)) return false;
+        if(upgrade == null) return true;
         if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey(upgrade.getTag())) return false;
         return stack.getTagCompound().getBoolean(upgrade.getTag());
     }
