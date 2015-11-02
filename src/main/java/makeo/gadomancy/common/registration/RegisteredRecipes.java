@@ -133,18 +133,18 @@ public class RegisteredRecipes {
         List<Aspect> aspects = new ArrayList<Aspect>(Aspect.aspects.values());
         InfusionRecipe[] recipes = new InfusionRecipe[aspects.size()];
 
-        ItemWispEssence itemEssence = (ItemWispEssence)ConfigItems.itemWispEssence;
+        ItemWispEssence itemEssence = (ItemWispEssence) ConfigItems.itemWispEssence;
         for (int i = 0; i < aspects.size(); i++) {
             Aspect aspect = aspects.get(i);
 
-            ItemStack wispyEssence = new ItemStack(itemEssence, 0, 0);
-            itemEssence.setAspects(wispyEssence, new AspectList().add(aspect, 1));
+            ItemStack wispyEssence = new ItemStack(itemEssence, 1, 0);
+            itemEssence.setAspects(wispyEssence, new AspectList().add(aspect, 2));
 
             ItemStack result = new ItemStack(RegisteredItems.itemFamiliar);
             NBTTagCompound compound = NBTHelper.getData(result);
-            compound.setString("aspect", aspect.getName());
+            compound.setString("aspect", aspect.getTag());
 
-            recipes[i] = ThaumcraftApi.addInfusionCraftingRecipe(SimpleResearchItem.getFullName("FAMILIAR"), result, 4, new AspectList().add(aspect, 46).add(Aspect.AURA, 34).add(Aspect.MAGIC, 51), new ItemStack(ConfigItems.itemResource, 1, 1), new ItemStack[] { wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 15), new ItemStack(ConfigBlocks.blockCrystal, 1, 6) , wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 14), new ItemStack(ConfigBlocks.blockCrystal, 1, 6), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 15), new ItemStack(ConfigBlocks.blockCrystal, 1, 6), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 14), new ItemStack(ConfigBlocks.blockCrystal, 1, 6) });
+            recipes[i] = ThaumcraftApi.addInfusionCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".FAMILIAR", result, 4, new AspectList().add(aspect, 46).add(Aspect.AURA, 34).add(Aspect.MAGIC, 51), new ItemStack(ConfigItems.itemResource, 1, 1), new ItemStack[] { wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 15), new ItemStack(ConfigBlocks.blockCrystal, 1, 6) , wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 14), new ItemStack(ConfigBlocks.blockCrystal, 1, 6), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 15), new ItemStack(ConfigBlocks.blockCrystal, 1, 6), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 14), new ItemStack(ConfigBlocks.blockCrystal, 1, 6) });
         }
         return recipes;
     }

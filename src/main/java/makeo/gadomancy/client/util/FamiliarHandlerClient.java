@@ -9,12 +9,14 @@ import makeo.gadomancy.common.utils.FakeWorld;
 import makeo.gadomancy.common.utils.NBTHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.renderers.entity.RenderPrimalOrb;
 import thaumcraft.client.renderers.entity.RenderWisp;
@@ -36,7 +38,7 @@ import java.util.Map;
  * Created by HellFirePvP @ 31.10.2015 12:13
  */
 public class FamiliarHandlerClient {
-    private static final EntityWisp ENTITY_WISP = new EntityWisp(new FakeWorld());
+    private static final EntityWisp ENTITY_WISP;
 
     private static RenderWisp fallbackRenderer;
 
@@ -52,7 +54,6 @@ public class FamiliarHandlerClient {
             PartialEntityFamiliar fam = clientFamiliars.get(p.getCommandSenderName());
             if(fam == null) return;
             Thaumcraft.proxy.nodeBolt(Minecraft.getMinecraft().theWorld, (float) fam.posX, (float) fam.posY, (float) fam.posZ, pkt.targetX, pkt.targetY, pkt.targetZ);
-            //TODO zap given coordinates from current familiar render coordinates
         } else if(packet instanceof PacketFamiliar.PacketFamiliarSyncCompletely) {
             PacketFamiliar.PacketFamiliarSyncCompletely sync = (PacketFamiliar.PacketFamiliarSyncCompletely) packet;
             familiarPlayers = sync.playerNamesWithFamiliars;
@@ -72,28 +73,21 @@ public class FamiliarHandlerClient {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void playerRenderEvent(EntityPlayer player, float partialTicks) { //RenderPlayerEvent.Post
-        EntityLivingBase renderView = Minecraft.getMinecraft().renderViewEntity;
+    public static void playerRenderEvent(EntityPlayer player, float partialTicks) {
         for(String ownerName : clientFamiliars.keySet()) {
             PartialEntityFamiliar fam = clientFamiliars.get(ownerName);
 
             if(!ownerName.equals(player.getCommandSenderName())) continue;
-            if(renderView.worldObj.provider.dimensionId != player.worldObj.provider.dimensionId) continue;
-            if(renderView.getDistanceSqToEntity(player) > 1024) continue;
-
-            //Info: "Thanks" to RenderPlayerEvent, GL11 offset is moved to the player already.
-            //GL11 coordinates: Player.posX, Player.posY + Player.eyeHeight (1.62 client side..), Player.posZ, rotation: 0
 
             ItemStack stack = BaublesApi.getBaubles(player).getStackInSlot(0);
             if(stack != null && stack.getItem() == RegisteredItems.itemFamiliar
                     && stack.hasTagCompound() && stack.getTagCompound().hasKey("aspect")) {
-                //ENTITY_WISP.setType(stack.getTagCompound().getString("aspect"));
-                //ENTITY_WISP.setType(Aspect.AIR.getName());
-                ENTITY_WISP.getDataWatcher().getWatchedObject(22).setObject(Aspect.AIR.getName());
+                ENTITY_WISP.setType(stack.getTagCompound().getString("aspect"));
                 ENTITY_WISP.ticksExisted = fam.dummyEntity.ticksExisted;
-                fallbackRenderer.renderEntityAt(ENTITY_WISP, fam.renderX, fam.renderY, fam.renderZ, 0, partialTicks);
+                GL11.glPushMatrix();
+                fallbackRenderer.doRender(ENTITY_WISP, fam.renderX, fam.renderY, fam.renderZ, 0, partialTicks);
+                GL11.glPopMatrix();
             }
-            //Render at abs positions: ram.posX, fam.posY, fam.posZ
         }
     }
 
@@ -107,6 +101,7 @@ public class FamiliarHandlerClient {
     static {
         fallbackRenderer = new RenderWisp();
         fallbackRenderer.setRenderManager(RenderManager.instance);
+        ENTITY_WISP = new EntityWisp(new FakeWorld());
     }
 
     public static class DummyEntityFamiliar extends Entity {

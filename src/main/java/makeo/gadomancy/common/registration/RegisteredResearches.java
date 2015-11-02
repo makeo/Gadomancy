@@ -4,6 +4,7 @@ import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.research.AlternatingResearchItem;
 import makeo.gadomancy.common.research.PseudoResearchItem;
 import makeo.gadomancy.common.research.SimpleResearchItem;
+import makeo.gadomancy.common.utils.NBTHelper;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -65,10 +66,11 @@ public class RegisteredResearches {
                 .setPages(new ResearchPage("gadomancy.research_page.GOLEMRUNICSHIELD.1"), new ResearchPage(RegisteredRecipes.recipesGolemRunicShield)).registerResearchItem();
 
         ResearchItem researchDistill = PseudoResearchItem.create("DISTILESSENTIA", -2, -5).registerResearchItem();
+        ResearchItem researchBellows = PseudoResearchItem.create("BELLOWS", -3, -1).registerResearchItem();
 
         researchArcaneDropper = new SimpleResearchItem("ARCANEDROPPER", -1, -2, 2, new ItemStack(RegisteredBlocks.blockArcaneDropper),
                 new AspectList().add(Aspect.ORDER, 4).add(Aspect.AIR, 6).add(Aspect.EARTH, 5).add(Aspect.SENSES, 5).add(Aspect.MECHANISM, 7))
-                .setParents(researchDistill.key).setConcealed()
+                .setParents(researchDistill.key, researchBellows.key).setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.ARCANEDROPPER.1"), new ResearchPage(RegisteredRecipes.recipeArcaneDropper)).registerResearchItem();
 
         ResearchItem researchHarvestGather = PseudoResearchItem.create("COREHARVEST", 3, -6).registerResearchItem();
@@ -85,7 +87,7 @@ public class RegisteredResearches {
         ResearchItem researchItemVoidMetal = PseudoResearchItem.create("VOIDMETAL", -8, -6).registerResearchItem();
         ResearchItem researchWandPedestal = PseudoResearchItem.create("WANDPED", -9, -8).registerResearchItem();
         ResearchItem researchWardingStone = PseudoResearchItem.create("PAVEWARD", -10, -6).registerResearchItem();
-        ResearchItem researchNodeStabilizer = PseudoResearchItem.create("NODESTABILIZER", -12, -5).registerResearchItem();
+        ResearchItem researchNodeStabilizer = PseudoResearchItem.create("WANDPEDFOC", -12, -5).registerResearchItem();
         ResearchItem researchCoreUse = PseudoResearchItem.create("COREUSE", -5, -9).registerResearchItem();
 
         researchInfusionClaw = new SimpleResearchItem("INFUSIONCLAW", -6, -7, 5, new ItemStack(RegisteredBlocks.blockInfusionClaw),
@@ -131,9 +133,12 @@ public class RegisteredResearches {
 
         ResearchItem nitorResearch = PseudoResearchItem.create("NITOR", 2, -4).registerResearchItem();
 
+        ItemStack familiarResearchStack = new ItemStack(RegisteredItems.itemFamiliar, 1, 0);
+        NBTHelper.getData(familiarResearchStack).setString("aspect", Aspect.MAGIC.getTag());
+
         researchFamiliarBasic = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".FAMILIAR", Gadomancy.MODID,
                 new AspectList().add(Aspect.AURA, 8).add(Aspect.MAGIC, 10).add(Aspect.AIR, 2).add(Aspect.WATER, 2).add(Aspect.EARTH, 2).add(Aspect.FIRE, 2).add(Aspect.ORDER, 2).add(Aspect.ENTROPY, 2),
-                3, -2, 2, new ItemStack(RegisteredItems.itemFamiliar, 1, 0))
+                3, -2, 2, familiarResearchStack)
                 .setSpecial().setConcealed()
                 .setParents(nitorResearch.key)
                 .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR.1"), new ResearchPage(RegisteredRecipes.recipesFamilar)).registerResearchItem();

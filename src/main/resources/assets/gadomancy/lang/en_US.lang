@@ -35,7 +35,7 @@ gadomancy.research_page.REMOTEJAR.1=Lorem ipsum dolor sit amet, consetetur sadip
 
 tc.research_name.GADOMANCY.FAMILIAR=Familiar
 tc.research_text.GADOMANCY.FAMILIAR=A arcane follower
-gadomancy.research_page.FAMILIAR.1=Thanks to your deep research into Wisps and arcane flames you call 'Nitor' you think you may be able to create a being just like the Wisp. But that's not enough! You might be able to direct its movements and actions to defend yourself with it. But it seems a bit weak.. Let's do something about that when the time comes...
+gadomancy.research_page.FAMILIAR.1=Thanks to your deep research into Wisps and arcane flames you call 'Nitor' you think you may be able to create a being just like the Wisp. Using the same Ethereal Essence and Essentia you are able to define the base aspect of your Familiar. But that's not enough! You might be able to direct its movements and actions to defend yourself with it. However, making it attack players doesn't seem so easy and it seems a bit weak too.. Let's do something about that when the time comes...
 
 tc.research_name.GADOMANCY.NODE_MANIPULATOR=Node Manipulator
 tc.research_text.GADOMANCY.NODE_MANIPULATOR=Almost like roulette

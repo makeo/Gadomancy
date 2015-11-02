@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import thaumcraft.api.aspects.Aspect;
 
 import java.util.List;
@@ -35,8 +36,37 @@ public class ItemFamiliar extends Item implements IBauble {
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
         ItemStack stack = new ItemStack(item);
-        NBTHelper.getData(stack).setString("aspect", Aspect.MAGIC.getName());
+        NBTHelper.getData(stack).setString("aspect", Aspect.MAGIC.getTag());
         list.add(stack);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List lore, boolean par4Flag) {
+        if(stack.hasTagCompound()) {
+            if(stack.getTagCompound().hasKey("aspect") && Aspect.getAspect(stack.getTagCompound().getString("aspect")) != null) {
+                lore.add(Aspect.getAspect(stack.getTagCompound().getString("aspect")).getName());
+            }
+
+            if(stack.getTagCompound().hasKey("AttackUpgrade1") || stack.getTagCompound().hasKey("AttackUpgrade2") || stack.getTagCompound().hasKey("AttackUpgrade3")) {
+                lore.add("");
+                String strength = EnumChatFormatting.DARK_RED + "Strength ";
+                if(stack.getTagCompound().hasKey("AttackUpgrade1")) strength += "I";
+                if(stack.getTagCompound().hasKey("AttackUpgrade2")) strength += "I";
+                if(stack.getTagCompound().hasKey("AttackUpgrade3")) strength += "I";
+                lore.add(strength);
+            }
+
+            if(stack.getTagCompound().hasKey("RangeUpgrade1")) {
+                lore.add("");
+                lore.add(EnumChatFormatting.GOLD + "Reach I");
+            }
+
+            if(stack.getTagCompound().hasKey("CdUpgrade1")) {
+                lore.add("");
+                lore.add(EnumChatFormatting.AQUA + "Swiftness I");
+            }
+        }
+        super.addInformation(stack, player, lore, par4Flag);
     }
 
     @Override
