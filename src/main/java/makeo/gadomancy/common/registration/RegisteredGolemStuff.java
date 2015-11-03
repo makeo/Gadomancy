@@ -4,7 +4,7 @@ import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.entities.golems.cores.BodyguardCore;
+import makeo.gadomancy.common.entities.golems.cores.BodyguardGolemCore;
 import makeo.gadomancy.common.entities.golems.cores.BreakGolemCore;
 import makeo.gadomancy.common.entities.golems.types.SilverwoodGolemType;
 import makeo.gadomancy.common.entities.golems.upgrades.GolemUpgrade;
@@ -36,7 +36,7 @@ public class RegisteredGolemStuff {
         typeSilverwood = registerGolemType("SILVERWOOD", new SilverwoodGolemType());
 
         breakCore = registerGolemCore("breakCore", new BreakGolemCore());
-        bodyguardCore = registerGolemCore("bodyguardCore", new BodyguardCore());
+        bodyguardCore = registerGolemCore("bodyguardCore", new BodyguardGolemCore());
 
         upgradeRunicShield = registerGolemUpgrade(new GolemUpgradeRunicShield());
     }

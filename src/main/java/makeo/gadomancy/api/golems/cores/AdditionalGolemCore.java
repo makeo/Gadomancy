@@ -59,6 +59,13 @@ public abstract class AdditionalGolemCore {
     public abstract String getUnlocalizedName();
 
     /**
+     * @return If you're able to set markers using the golemancers bell
+     */
+    public boolean hasMarkers() {
+        return true;
+    }
+
+    /**
      * @return the item that is used as a core
      */
     public abstract ItemStack getItem();

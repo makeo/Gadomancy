@@ -26,7 +26,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigate;
 import thaumcraft.common.entities.ai.misc.AIOpenDoor;
 import thaumcraft.common.entities.golems.EntityGolemBase;
+import thaumcraft.common.entities.golems.Marker;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -37,12 +39,13 @@ import java.util.Random;
  * <p/>
  * Created by makeo @ 31.10.2015 15:35
  */
-public class BodyguardCore extends AdditionalGolemCore {
+public class BodyguardGolemCore extends AdditionalGolemCore {
     @Override
     public void setupGolem(EntityGolemBase golem) {
         WrappedGolem wrapped = new WrappedGolem(golem);
 
         golem.setHomeArea(0, 300000000, 0, 300000000);
+        golem.setMarkers(new ArrayList<Marker>());
 
         golem.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(wrapped));
         golem.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(wrapped));
@@ -59,6 +62,11 @@ public class BodyguardCore extends AdditionalGolemCore {
         golem.tasks.addTask(5, new AIOpenDoor(golem, true));
         golem.tasks.addTask(7, new EntityAIWatchClosest(golem, EntityPlayer.class, 6.0F));
         golem.tasks.addTask(8, new EntityAILookIdle(golem));
+    }
+
+    @Override
+    public boolean hasMarkers() {
+        return false;
     }
 
     private static class WrappedGolem extends EntityTameable {
