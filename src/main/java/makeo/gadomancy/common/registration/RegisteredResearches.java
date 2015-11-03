@@ -151,7 +151,7 @@ public class RegisteredResearches {
         ResearchItem researchTallow = PseudoResearchItem.create("TALLOW", 7, -3).registerResearchItem();
 
         researchFamiliarAttack_1 = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_1", Gadomancy.MODID,
-                new AspectList(),
+                new AspectList().add(Aspect.AURA, 6).add(Aspect.MAGIC, 8).add(Aspect.WEAPON, 6),
                 5, -1, 2, new ItemStack(RegisteredItems.itemFakeModIcon, 1, 1))
                 .setConcealed()
                 .setParents(Gadomancy.MODID.toUpperCase() + ".FAMILIAR", researchTallow.key)
@@ -160,7 +160,7 @@ public class RegisteredResearches {
         ResearchItem researchVoidSeed = PseudoResearchItem.create("ELDRITCHMINOR", 8, -2).registerResearchItem();
 
         researchFamiliarAttack_2 = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_2", Gadomancy.MODID,
-                new AspectList(),
+                new AspectList().add(Aspect.AURA, 10).add(Aspect.MAGIC, 12).add(Aspect.ELDRITCH, 8).add(Aspect.WEAPON, 8),
                 7, 0, 2, new ItemStack(RegisteredItems.itemFakeModIcon, 1, 2))
                 .setConcealed()
                 .setParents(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_1", researchVoidSeed.key)
@@ -173,21 +173,21 @@ public class RegisteredResearches {
         ResearchItem researchAlumentum = PseudoResearchItem.create("ALUMENTUM", 2, 0).registerResearchItem();
 
         researchFamiliarAttack_3 = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_3", Gadomancy.MODID,
-                new AspectList(),
+                new AspectList().add(Aspect.ORDER, 4).add(Aspect.AURA, 6).add(Aspect.FIRE, 6).add(Aspect.MAGIC, 6).add(Aspect.AIR, 6).add(Aspect.ELDRITCH, 8).add(Aspect.WATER, 5).add(Aspect.WEAPON, 8).add(Aspect.ENTROPY, 6).add(Aspect.EARTH, 8),
                 8, 2, 2, new ItemStack(RegisteredItems.itemFakeModIcon, 1, 3))
                 .setConcealed()
                 .setParents(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_2", researchPrimodialPearl.key, researchEthBloom.key)
                 .setPages(new ResearchPage("gadomancy.research_page.FAM_ATTACK_3.1"), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[2])).registerResearchItem();
 
         researchFamiliarRange_1 = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".FAM_RANGE_1", Gadomancy.MODID,
-                new AspectList(),
+                new AspectList().add(Aspect.AURA, 8).add(Aspect.MOTION, 10).add(Aspect.MAGIC, 8).add(Aspect.VOID, 8).add(Aspect.ENERGY, 10),
                 4, 1, 2, new ItemStack(RegisteredItems.itemFakeModIcon, 1, 4))
                 .setConcealed()
                 .setParents(Gadomancy.MODID.toUpperCase() + ".FAMILIAR", Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_2", researchAlumentum.key)
                 .setPages(new ResearchPage("gadomancy.research_page.FAM_RANGE_1.1"), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[3])).registerResearchItem();
 
         researchFamiliarCooldown_1 = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".FAM_COOLDOWN_1", Gadomancy.MODID,
-                new AspectList(),
+                new AspectList().add(Aspect.AURA, 12).add(Aspect.MAGIC, 10).add(Aspect.TAINT, 10).add(Aspect.ELDRITCH, 8).add(Aspect.WEAPON, 10).add(Aspect.VOID, 10),
                 5, 3, 2, new ItemStack(RegisteredItems.itemFakeModIcon, 1, 5))
                 .setConcealed()
                 .setParents(Gadomancy.MODID.toUpperCase() + ".FAM_RANGE_1", Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_3", researchBathSalts.key, researchPrimalFocus2.key)
