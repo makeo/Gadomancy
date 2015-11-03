@@ -78,6 +78,7 @@ public class FamiliarHandlerClient {
             if(!ownerName.equals(player.getCommandSenderName())) continue;
 
             ItemStack stack = BaublesApi.getBaubles(player).getStackInSlot(0);
+            if(stack == null || !(stack.getItem() instanceof ItemFamiliar)) return;
             if(((ItemFamiliar) stack.getItem()).hasAspect(stack)) {
                 ENTITY_WISP.setType(((ItemFamiliar) stack.getItem()).getAspect(stack).getTag());
                 ENTITY_WISP.ticksExisted = fam.dummyEntity.ticksExisted;
