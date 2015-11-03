@@ -2,12 +2,12 @@ package makeo.gadomancy.common.events;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.api.golems.events.GolemDropPlacerEvent;
 import makeo.gadomancy.api.golems.events.PlacerCreateGolemEvent;
+import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.entities.golems.ItemAdditionalGolemPlacer;
 import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;

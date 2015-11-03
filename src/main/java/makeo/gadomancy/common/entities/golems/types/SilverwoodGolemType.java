@@ -1,7 +1,7 @@
 package makeo.gadomancy.common.entities.golems.types;
 
-import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
+import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;

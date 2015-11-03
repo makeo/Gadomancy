@@ -3,7 +3,6 @@ package makeo.gadomancy.common.integration.waila;
 import makeo.gadomancy.common.blocks.BlockInfusionClaw;
 import makeo.gadomancy.common.blocks.BlockRemoteJar;
 import makeo.gadomancy.common.blocks.BlockStickyJar;
-import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
 import makeo.gadomancy.common.integration.IntegrationMod;
 import mcp.mobius.waila.api.impl.ModuleRegistrar;
 import thaumcraft.common.entities.golems.EntityGolemBase;

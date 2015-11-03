@@ -5,7 +5,6 @@ import makeo.gadomancy.common.items.baubles.ItemFamiliar;
 import makeo.gadomancy.common.utils.FakeWorld;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;

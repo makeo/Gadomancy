@@ -1,7 +1,6 @@
 package makeo.gadomancy.common.utils;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 import java.util.LinkedHashMap;

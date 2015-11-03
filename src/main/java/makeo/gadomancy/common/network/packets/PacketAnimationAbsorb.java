@@ -9,9 +9,6 @@ import io.netty.buffer.ByteBuf;
 import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import thaumcraft.common.Thaumcraft;
 
 /**
  * This class is part of the Gadomancy Mod

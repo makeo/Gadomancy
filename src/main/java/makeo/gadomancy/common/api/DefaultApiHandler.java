@@ -1,11 +1,11 @@
 package makeo.gadomancy.common.api;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.api.ClickBehavior;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.api.internal.IApiHandler;
+import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.entities.golems.ItemAdditionalGolemPlacer;
 import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;

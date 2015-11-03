@@ -1,7 +1,6 @@
 package makeo.gadomancy.common.registration;
 
 import makeo.gadomancy.common.utils.MultiblockHelper;
-import net.minecraft.init.Blocks;
 import thaumcraft.common.config.ConfigBlocks;
 
 /**

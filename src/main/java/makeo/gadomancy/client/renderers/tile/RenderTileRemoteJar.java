@@ -1,8 +1,8 @@
 package makeo.gadomancy.client.renderers.tile;
 
 import makeo.gadomancy.client.models.ModelJarPot;
-import makeo.gadomancy.common.utils.FakeWorld;
 import makeo.gadomancy.common.blocks.BlockRemoteJar;
+import makeo.gadomancy.common.utils.FakeWorld;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;

@@ -1,6 +1,5 @@
 package makeo.gadomancy.common.utils;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.network.PacketHandler;
@@ -9,9 +8,6 @@ import makeo.gadomancy.common.network.packets.PacketStartAnimation;
 import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SoundHandler;
-import net.minecraft.client.audio.SoundRegistry;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;

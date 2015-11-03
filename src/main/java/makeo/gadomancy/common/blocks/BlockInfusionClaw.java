@@ -1,7 +1,7 @@
 package makeo.gadomancy.common.blocks;
 
-import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.api.ClickBehavior;
+import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;

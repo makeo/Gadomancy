@@ -5,24 +5,17 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import makeo.gadomancy.common.items.baubles.ItemFamiliar;
 import makeo.gadomancy.common.network.packets.PacketFamiliar;
-import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.FakeWorld;
-import makeo.gadomancy.common.utils.NBTHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
-import thaumcraft.client.renderers.entity.RenderPrimalOrb;
 import thaumcraft.client.renderers.entity.RenderWisp;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.monster.EntityWisp;
 
 import java.lang.ref.WeakReference;
@@ -175,7 +168,7 @@ public class FamiliarHandlerClient {
             double theta = RAD_CAP * part;
             this.renderX = RADIUS * Math.cos(theta);
             this.renderZ = RADIUS * Math.sin(theta);
-            this.renderY = 0.7 + Math.sin(theta * 2) / 4D;
+            this.renderY = 0.7 + Math.sin(theta * 2) / 2D;
 
             this.posX = owner.get().posX + renderX;
             this.posZ = owner.get().posZ + renderZ;

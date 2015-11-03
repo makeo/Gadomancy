@@ -23,7 +23,6 @@ import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.client.lib.REHWandHandler;
 import thaumcraft.common.items.relics.ItemThaumometer;
 import thaumcraft.common.items.wands.ItemWandCasting;
-import thaumcraft.common.tiles.TileJarNode;
 
 import java.util.ArrayList;
 

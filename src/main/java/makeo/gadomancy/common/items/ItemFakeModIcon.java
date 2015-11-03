@@ -1,14 +1,9 @@
 package makeo.gadomancy.common.items;
 
 import makeo.gadomancy.common.Gadomancy;
-import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
-
-import java.awt.*;
 
 /**
  * This class is part of the Gadomancy Mod

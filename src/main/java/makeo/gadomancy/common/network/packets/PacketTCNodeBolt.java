@@ -7,10 +7,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.Vec3;
-import net.minecraftforge.common.DimensionManager;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
-import thaumcraft.common.Thaumcraft;
 
 /**
  * This class is part of the Gadomancy Mod

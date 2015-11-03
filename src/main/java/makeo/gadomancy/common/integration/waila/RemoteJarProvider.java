@@ -1,7 +1,6 @@
 package makeo.gadomancy.common.integration.waila;
 
 import makeo.gadomancy.common.blocks.BlockRemoteJar;
-import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
 import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
 import makeo.gadomancy.common.items.ItemBlockRemoteJar;
 import mcp.mobius.waila.api.IWailaConfigHandler;
