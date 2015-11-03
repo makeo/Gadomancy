@@ -18,7 +18,7 @@ import net.minecraft.util.ResourceLocation;
  */
 public class SilverwoodGolemType extends AdditionalGolemType {
     public SilverwoodGolemType() {
-        super(20, 3, 0.36F, false, 3, 8, 75, 1);
+        super(20, 9, 0.38f, false, 3, 8, 75, 1);
     }
 
     @Override

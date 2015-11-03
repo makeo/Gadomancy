@@ -7,7 +7,7 @@ tc.research_category.gadomancy=Gadomancy
 
 tc.research_name.GADOMANCY.GOLEMSILVERWOOD=Silverwood Golems
 tc.research_text.GADOMANCY.GOLEMSILVERWOOD=Just a dash of Chemical X
-gadomancy.research_page.GOLEMSILVERWOOD.1=This golem is carved from a silverwood log. The extra magical affinities of silverwood allow this golem to hold more upgrades.<BR>§l§nSilverwood Golem Attributes§r<BR>§lDurability:§r Below Average<BR>§lStrength:§r Low<BR>§lSelf-repair:§r Average<BR>§lCarry Limit:§r 4<BR>§lSpeed:§r Above Average<BR>§lUpgrades:§r 3
+gadomancy.research_page.GOLEMSILVERWOOD.1=This golem is carved from a silverwood log. The extra magical affinities of silverwood allow this golem to hold more upgrades.<BR>§l§nSilverwood Golem Attributes§r<BR>§lDurability:§r Average<BR>§lStrength:§r Low<BR>§lSelf-repair:§r Average<BR>§lCarry Limit:§r 8<BR>§lSpeed:§r Fast<BR>§lUpgrades:§r 3
 
 tc.research_name.GADOMANCY.GOLEMRUNICSHIELD=Golemic Shielding
 tc.research_text.GADOMANCY.GOLEMRUNICSHIELD=Now available to your tiny friends!
