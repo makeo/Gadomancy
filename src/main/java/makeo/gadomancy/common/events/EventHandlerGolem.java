@@ -223,17 +223,25 @@ public class EventHandlerGolem {
                         event.setCanceled(true);
                     }
                 }
-            } else if(!event.target.worldObj.isRemote) {
-                if(heldItem == null
-                        || (heldItem.getItem() != ConfigItems.itemGolemBell
-                        && heldItem.getItem() != ConfigItems.itemGolemUpgrade
-                        && heldItem.getItem() != ConfigItems.itemGolemDecoration
-                        && !(heldItem.getItem() instanceof ItemWandCasting))) {
-                    AdditionalGolemCore core = GadomancyApi.getAdditionalGolemCore(golem);
-                    if(core != null) {
-                        if(core.hasGui() && !core.openGui(event.entityPlayer, golem)) {
-                            event.entityPlayer.openGui(Gadomancy.instance, 0, golem.worldObj, golem.getEntityId(), 0, 0);
+            } else {
+                if(!event.target.worldObj.isRemote) {
+                    if(heldItem == null
+                            || (heldItem.getItem() != ConfigItems.itemGolemBell
+                            && heldItem.getItem() != ConfigItems.itemGolemUpgrade
+                            && heldItem.getItem() != ConfigItems.itemGolemDecoration
+                            && !(heldItem.getItem() instanceof ItemWandCasting))) {
+                        AdditionalGolemCore core = GadomancyApi.getAdditionalGolemCore(golem);
+                        if(core != null) {
+                            if(core.hasGui() && !core.openGui(event.entityPlayer, golem)) {
+                                event.entityPlayer.openGui(Gadomancy.instance, 0, golem.worldObj, golem.getEntityId(), 0, 0);
+                            }
+                            event.setCanceled(true);
                         }
+                    }
+                }
+                if(heldItem != null && heldItem.getItem() == ConfigItems.itemGolemBell) {
+                    AdditionalGolemCore core = GadomancyApi.getAdditionalGolemCore(golem);
+                    if(core != null && !core.hasMarkers()) {
                         event.setCanceled(true);
                     }
                 }
