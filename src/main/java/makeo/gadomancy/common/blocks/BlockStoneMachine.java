@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.blocks;
 
+import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileManipulationFocus;
 import makeo.gadomancy.common.blocks.tiles.TileManipulatorPillar;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
@@ -19,6 +20,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import thaumcraft.common.config.ConfigBlocks;
+import thaumcraft.common.tiles.TilePedestal;
 
 import java.util.List;
 import java.util.Random;
@@ -43,19 +45,29 @@ public class BlockStoneMachine extends Block {
 
     private IIcon pillarIcon;
     private IIcon focusIcon;
+    public IIcon pedestalSideIcon;
+    public IIcon pedestalTopIcon;
 
     @Override
     public void registerBlockIcons(IIconRegister ir) {
         pillarIcon = ir.registerIcon("thaumcraft:es_1");
         focusIcon = ir.registerIcon("thaumcraft:thaumiumblock");
+        pedestalTopIcon = ir.registerIcon(Gadomancy.MODID + ":manipulator_bot");
+        pedestalSideIcon = ir.registerIcon(Gadomancy.MODID + ":ancient_pedestal_side");
     }
 
     @Override
     public IIcon getIcon(int side, int metadata) {
-        if(metadata == 11 || metadata == 15) {
+        if (metadata == 11 || metadata == 15) {
             return pillarIcon;
-        } else if(metadata == 0) {
+        } else if (metadata == 0) {
             return focusIcon;
+        } else if (metadata == 1) {
+            if (side > 1) {
+                return pedestalSideIcon;
+            } else {
+                return pedestalTopIcon;
+            }
         }
 
         return super.getIcon(side, metadata);
@@ -63,18 +75,19 @@ public class BlockStoneMachine extends Block {
 
     @Override
     public boolean hasTileEntity(int metadata) {
-        return metadata == 15 || metadata == 0;
+        return metadata == 15 || metadata == 0 || metadata == 1;
     }
 
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List list) {
         list.add(new ItemStack(item, 1, 0));
+        list.add(new ItemStack(item, 1, 1));
     }
 
     @Override
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
         int metadata = world.getBlockMetadata(x, y, z);
-        if(metadata == 11 || metadata == 15) {
+        if (metadata == 11 || metadata == 15) {
             return new ItemStack(getItemDropped(metadata, null, 0), 1, damageDropped(metadata));
         }
 
@@ -83,10 +96,12 @@ public class BlockStoneMachine extends Block {
 
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
-        if(metadata == 15) {
+        if (metadata == 15) {
             return new TileManipulatorPillar();
-        } else if(metadata == 0) {
+        } else if (metadata == 0) {
             return new TileManipulationFocus();
+        } else if(metadata == 1) {
+            return new TilePedestal();
         }
         return null;
     }
@@ -98,7 +113,7 @@ public class BlockStoneMachine extends Block {
 
     @Override
     public Item getItemDropped(int metadata, Random random, int fortune) {
-        if(metadata == 11 || metadata == 15) {
+        if (metadata == 11 || metadata == 15) {
             return Item.getItemFromBlock(ConfigBlocks.blockCosmeticSolid);
         }
 
@@ -107,7 +122,7 @@ public class BlockStoneMachine extends Block {
 
     @Override
     public boolean canReplace(World world, int x, int y, int z, int side, ItemStack stack) {
-        if(stack.getItemDamage() == 0 && (y < 1 || world.getBlock(x, y - 1, z) != RegisteredBlocks.blockNodeManipulator)) {
+        if (stack.getItemDamage() == 0 && (y < 1 || world.getBlock(x, y - 1, z) != RegisteredBlocks.blockNodeManipulator)) {
             return false;
         }
         return super.canReplace(world, x, y, z, side, stack);
@@ -116,18 +131,18 @@ public class BlockStoneMachine extends Block {
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
         int metadata = world.getBlockMetadata(x, y, z);
-        if(metadata == 15) {
-            if(world.getBlock(x, y + 1, z) != this || world.getBlockMetadata(x, y + 1, z) != 11) {
+        if (metadata == 15) {
+            if (world.getBlock(x, y + 1, z) != this || world.getBlockMetadata(x, y + 1, z) != 11) {
                 dropBlockAsItem(world, x, y, z, metadata, 0);
                 world.setBlockToAir(x, y, z);
             }
-        } else if(metadata == 11) {
-            if(world.getBlock(x, y - 1, z) != this || world.getBlockMetadata(x, y - 1, z) != 15) {
+        } else if (metadata == 11) {
+            if (world.getBlock(x, y - 1, z) != this || world.getBlockMetadata(x, y - 1, z) != 15) {
                 dropBlockAsItem(world, x, y, z, metadata, 0);
                 world.setBlockToAir(x, y, z);
             }
-        } else if(metadata == 0) {
-            if(world.getBlock(x, y - 1, z) != RegisteredBlocks.blockNodeManipulator || world.getBlockMetadata(x, y - 1, z) != 5) {
+        } else if (metadata == 0) {
+            if (world.getBlock(x, y - 1, z) != RegisteredBlocks.blockNodeManipulator || world.getBlockMetadata(x, y - 1, z) != 5) {
                 dropBlockAsItem(world, x, y, z, metadata, 0);
                 world.setBlockToAir(x, y, z);
             }
@@ -135,22 +150,31 @@ public class BlockStoneMachine extends Block {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p_149727_5_, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
-        if(world.getBlockMetadata(x, y, z) == 0 && world.getBlock(x, y - 1, z).equals(RegisteredBlocks.blockNodeManipulator) && world.getBlockMetadata(x, y - 1, z) == 5) {
-            world.getBlock(x, y - 1, z).onBlockActivated(world, x, y - 1, z, p_149727_5_, p_149727_6_, p_149727_7_, p_149727_8_, p_149727_9_);
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+        int metadata = world.getBlockMetadata(x, y, z);
+
+        if(metadata == 0) {
+            if (world.getBlock(x, y - 1, z).equals(RegisteredBlocks.blockNodeManipulator) && world.getBlockMetadata(x, y - 1, z) == 5) {
+                return world.getBlock(x, y - 1, z).onBlockActivated(world, x, y - 1, z, player, side, hitX, hitY, hitZ);
+            }
+        } else if(metadata == 1) {
+            return ConfigBlocks.blockStoneDevice.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
         }
-        return super.onBlockActivated(world, x, y, z, p_149727_5_, p_149727_6_, p_149727_7_, p_149727_8_, p_149727_9_);
+
+        return super.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
     }
 
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         int metadata = world.getBlockMetadata(x, y, z);
-        if(metadata == 15) {
+        if (metadata == 15) {
             setBlockBounds(0, 0, 0, 1, 0.5f, 1);
-        } else if(metadata == 11) {
+        } else if (metadata == 11) {
             setBlockBounds(0.0F, -1.0F, 0.0F, 1.0F, -0.5F, 1.0F);
-        } else if(metadata == 0) {
-            setBlockBounds(3/16f, 0, 3/16f, 1-(3/16f), 6/16f, 1-(3/16f));
+        } else if (metadata == 0) {
+            setBlockBounds(3 / 16f, 0, 3 / 16f, 1 - (3 / 16f), 6 / 16f, 1 - (3 / 16f));
+        } else if(metadata == 1) {
+            setBlockBounds(0.25f, 0, 0.25f, 0.75f, 0.99f, 0.75f);
         }
         super.setBlockBoundsBasedOnState(world, x, y, z);
     }
@@ -158,27 +182,24 @@ public class BlockStoneMachine extends Block {
     @Override
     public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List list, Entity entity) {
         int metadata = world.getBlockMetadata(x, y, z);
-        if(metadata == 11 || metadata == 15) {
+        if (metadata == 11 || metadata == 15 || metadata == 1) {
             setBlockBounds(0, 0, 0, 1, 1, 1);
-        } else if(metadata == 0) {
+        } else if (metadata == 0) {
             setBlockBoundsBasedOnState(world, x, y, z);
         }
-
         super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
     }
 
-    public boolean isOpaqueCube()
-/*  97:    */   {
-/*  98: 96 */     return false;
-/*  99:    */   }
+    public boolean isOpaqueCube() {
+        return false;
+    }
 
-    public boolean renderAsNormalBlock()
-/* 102:    */   {
-/* 103:102 */     return false;
-/* 104:    */   }
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
 
     @Override
     public int getRenderType() {
-        return -1;
+        return RegisteredBlocks.rendererBlockStoneMachine;
     }
 }
