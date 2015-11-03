@@ -46,6 +46,7 @@ public class RegisteredRecipes {
     public static InfusionRecipe recipeNodeManipulator;
     public static InfusionRecipe recipeRandomizationFocus;
     public static InfusionRecipe[] recipesFamilar;
+    public static InfusionRecipe recipeGolemCoreBodyguard;
 
     //ID's: 0-2=Strength upgrades, 3=range, 4=cdReduction
     public static InfusionRecipe[][] recipesFamiliarAugmentation;
@@ -103,7 +104,8 @@ public class RegisteredRecipes {
                 new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11), null, new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 0), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11),
                 new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15), null, new ItemStack(RegisteredBlocks.blockNodeManipulator, 1, 5), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15)));
 
-
+        recipeGolemCoreBodyguard = ThaumcraftApi.addInfusionCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".GOLEMCOREBODYGUARD", new ItemStack(RegisteredItems.itemGolemCoreBreak, 1, 1), 3, new AspectList().add(Aspect.TOOL, 28).add(Aspect.MECHANISM, 20).add(Aspect.WEAPON, 10).add(Aspect.ARMOR, 16),
+                new ItemStack(ConfigItems.itemGolemCore, 1, 4), new ItemStack[] { new ItemStack(ConfigItems.itemBootsTraveller, 1, 0), new ItemStack(Items.ender_pearl, 1, 0), new ItemStack(ConfigItems.itemSwordElemental, 1, 0), new ItemStack(Items.ender_pearl, 1, 0) } );
 
         recipesFamilar = createFamilarRecipes();
         recipesFamiliarAugmentation = createFamiliarAugmentationRecipes();

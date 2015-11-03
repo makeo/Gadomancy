@@ -35,6 +35,7 @@ public class RegisteredResearches {
     public static ResearchItem researchStickyJar;
     public static ResearchItem researchArcaneDropper;
     public static ResearchItem researchGolemCoreBreak;
+    public static ResearchItem researchGolemCoreBodyguard;
     public static ResearchItem researchInfusionClaw;
     public static ResearchItem researchRemoteJar;
     public static ResearchItem researchNodeManipulator;
@@ -78,15 +79,23 @@ public class RegisteredResearches {
                 .setParents(researchDistill.key, researchBellows.key).setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.ARCANEDROPPER.1"), new ResearchPage(RegisteredRecipes.recipeArcaneDropper)).registerResearchItem();
 
-        ResearchItem researchHarvestGather = PseudoResearchItem.create("COREHARVEST", 3, -6).registerResearchItem();
-        ResearchItem researchEleToolAxe = PseudoResearchItem.create("ELEMENTALAXE", 4, -8).registerResearchItem();
-        ResearchItem researchEleToolPick = PseudoResearchItem.create("ELEMENTALPICK", 5, -7).registerResearchItem();
-        ResearchItem researchEleToolShovel = PseudoResearchItem.create("ELEMENTALSHOVEL", 6, -6).registerResearchItem();
+        ResearchItem researchHarvestGather = PseudoResearchItem.create("COREHARVEST", 3, -8).registerResearchItem();
+        ResearchItem researchEleToolAxe = PseudoResearchItem.create("ELEMENTALAXE", 4, -10).registerResearchItem();
+        ResearchItem researchEleToolPick = PseudoResearchItem.create("ELEMENTALPICK", 5, -9).registerResearchItem();
+        ResearchItem researchEleToolShovel = PseudoResearchItem.create("ELEMENTALSHOVEL", 6, -8).registerResearchItem();
+        ResearchItem researchEleSword = PseudoResearchItem.create("ELEMENTALSWORD", 7, -7).registerResearchItem();
 
-        researchGolemCoreBreak = new SimpleResearchItem("GOLEMCOREBREAK", 5, -4, 3, new ItemStack(RegisteredItems.itemGolemCoreBreak),
+        researchGolemCoreBreak = new SimpleResearchItem("GOLEMCOREBREAK", 5, -6, 3, new ItemStack(RegisteredItems.itemGolemCoreBreak),
                 new AspectList().add(Aspect.TOOL, 8).add(Aspect.ENTROPY, 8).add(Aspect.MECHANISM, 8))
                 .setParents(researchHarvestGather.key, researchEleToolAxe.key, researchEleToolPick.key, researchEleToolShovel.key).setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.GOLEMCOREBREAK.1"), new ResearchPage(RegisteredRecipes.recipeGolemCoreBreak)).registerResearchItem();
+
+        ResearchItem researchBootsTraveller = PseudoResearchItem.create("BOOTSTRAVELLER", 3, -6).registerResearchItem();
+
+        researchGolemCoreBodyguard = new SimpleResearchItem("GOLEMCOREBODYGUARD", 5, -4, 2, new ItemStack(RegisteredItems.itemGolemCoreBreak, 1, 1),
+                new AspectList().add(Aspect.TOOL, 8).add(Aspect.ORDER, 8).add(Aspect.MECHANISM, 10).add(Aspect.ARMOR, 8).add(Aspect.WEAPON, 8))
+                .setParents(researchBootsTraveller.key, researchEleSword.key).setConcealed()
+                .setPages(new ResearchPage("gadomancy.research_page.GOLEMCOREBODYGUARD.1"), new ResearchPage(RegisteredRecipes.recipeGolemCoreBodyguard)).registerResearchItem();
 
         ResearchItem researchFocusPrimal = PseudoResearchItem.create("FOCUSPRIMAL", -7, -10).registerResearchItem();
         ResearchItem researchItemVoidMetal = PseudoResearchItem.create("VOIDMETAL", -8, -6).registerResearchItem();
@@ -98,7 +107,7 @@ public class RegisteredResearches {
         researchInfusionClaw = new SimpleResearchItem("INFUSIONCLAW", -6, -7, 5, new ItemStack(RegisteredBlocks.blockInfusionClaw),
                 new AspectList().add(Aspect.ELDRITCH, 8).add(Aspect.MECHANISM, 8).add(Aspect.MAGIC, 8).add(Aspect.ORDER, 8).add(Aspect.DARKNESS, 4))
                 .setParents(researchFocusPrimal.key, researchItemVoidMetal.key, researchWandPedestal.key, researchCoreUse.key).setConcealed()
-                .setPages(new ResearchPage("gadomancy.research_page.INFUSIONCLAW.1"), new ResearchPage(RegisteredRecipes.recipeInfusionClaw)).registerResearchItem();
+                .setPages(new ResearchPage("gadomancy.research_page.INFUSIONCLAW.1"), new ResearchPage(RegisteredRecipes.recipeInfusionClaw), new ResearchPage("gadomancy.research_page.INFUSIONCLAW.2")).registerResearchItem();
 
 
         researchNodeManipulator = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR", Gadomancy.MODID,
@@ -214,6 +223,6 @@ public class RegisteredResearches {
                 RegisteredRecipes.recipeRemoteJar.getRecipeOutput(),
                 new AspectList().add(Aspect.WATER, 4).add(Aspect.MECHANISM, 8).add(Aspect.EARTH, 4).add(Aspect.ORDER, 8))
                 .setParents(researchVoidJar.key).setConcealed()
-                .setPages(new ResearchPage("gadomancy.research_page.REMOTEJAR.1"), new ResearchPage(RegisteredRecipes.recipeRemoteJar)).registerResearchItem();
+                .setPages(new ResearchPage("gadomancy.research_page.REMOTEJAR.1"), new ResearchPage(RegisteredRecipes.recipeRemoteJar), new ResearchPage("gadomancy.research_page.REMOTEJAR.2")).registerResearchItem();
     }
 }

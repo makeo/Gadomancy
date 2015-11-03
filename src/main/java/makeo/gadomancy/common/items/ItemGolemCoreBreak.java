@@ -21,6 +21,7 @@ import java.util.List;
  *
  * Created by makeo @ 02.10.2015 19:40
  */
+//TODO rename when updating to 1.8
 public class ItemGolemCoreBreak extends Item {
     public ItemGolemCoreBreak() {
         setCreativeTab(RegisteredItems.creativeTab);

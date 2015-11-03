@@ -32,7 +32,7 @@ public class GrowingNodeBehavior {
 
     public static final double SATURATION_DIFFICULTY = 15D;
     public static final double SATURATION_CAP = 90D;
-    public static final int HAPPINESS_CAP = 500;
+    public static final int HAPPINESS_CAP = 400;
 
     //The node the growing node attacks.
     private TileNode fixedNode;
@@ -256,6 +256,7 @@ public class GrowingNodeBehavior {
                         inc *= evaluateFeedingDenialFunc((lastFedRow > 0 ? lastFedRow : 1));
                     } else {
                         inc *= -10;
+                        lastFedRow = 0;
                     }
                 }
                 this.overallHappiness += inc; //The node doesn't like to be forced to eat the same every time.
@@ -274,7 +275,9 @@ public class GrowingNodeBehavior {
         return (Math.log(i) / 6) + 1;
     }
 
-    private void handleOverfeed() {}
+    private void handleOverfeed() {
+        //TODO handle transformation into STARVING
+    }
 
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
         this.isSaturated = nbtTagCompound.getBoolean("overallSaturated");
