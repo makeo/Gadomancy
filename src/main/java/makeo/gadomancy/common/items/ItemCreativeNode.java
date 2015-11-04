@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.items;
 
+import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import net.minecraft.creativetab.CreativeTabs;
@@ -9,12 +10,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.apache.logging.log4j.LogManager;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
-import thaumcraft.common.blocks.BlockAiry;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 
@@ -32,6 +31,7 @@ public class ItemCreativeNode extends Item {
     public ItemCreativeNode() {
         setCreativeTab(RegisteredItems.creativeTab);
         setUnlocalizedName("nodePlacer");
+        setTextureName(Gadomancy.MODID + ":transparent");
     }
 
     @Override
