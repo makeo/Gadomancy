@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.INode;
+import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.tile.TileNodeRenderer;
@@ -44,8 +45,8 @@ public class ItemNodeRenderer implements IItemRenderer {
         renderNodeItem(type, item, data);
     }
 
-    //Gadomancy: Renamed to access it static from another class
-    public static void renderNodeItem(IItemRenderer.ItemRenderType type, ItemStack item, Object... data) {
+    //Gadomancy: Renamed to access it static from another class and added aspects, nodeType and nodeModifier as params
+    public static void renderNodeItem(IItemRenderer.ItemRenderType type, ItemStack item, AspectList aspects, NodeType nodeType, NodeModifier nodeModifier, Object... data) {
         if (type == IItemRenderer.ItemRenderType.ENTITY) {
             GL11.glTranslatef(-0.5F, -0.25F, -0.5F);
         } else if ((type == IItemRenderer.ItemRenderType.EQUIPPED) && ((data[1] instanceof EntityPlayer))) {
@@ -53,7 +54,7 @@ public class ItemNodeRenderer implements IItemRenderer {
         }
         TileNode tjf = new TileNode();
         tjf.setAspects(aspects);
-        tjf.setNodeType(NodeType.NORMAL);
+        tjf.setNodeType(nodeType);
         tjf.blockType = ConfigBlocks.blockAiry;
         tjf.blockMetadata = 0;
         GL11.glPushMatrix();
@@ -66,6 +67,11 @@ public class ItemNodeRenderer implements IItemRenderer {
         renderItemNode(tjf);
         GL11.glPopMatrix();
         GL11.glEnable(32826);
+    }
+
+
+    public static void renderNodeItem(IItemRenderer.ItemRenderType type, ItemStack item, Object... data) {
+        renderNodeItem(type, item, aspects, NodeType.NORMAL, null, data);
     }
 
     private static AspectList aspects = new AspectList().add(Aspect.AIR, 40).add(Aspect.FIRE, 40).add(Aspect.EARTH, 40).add(Aspect.WATER, 40);

@@ -6,6 +6,7 @@ import makeo.gadomancy.common.blocks.tiles.TileManipulatorPillar;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -20,6 +21,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import thaumcraft.common.config.ConfigBlocks;
+import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.tiles.TilePedestal;
 
 import java.util.List;
@@ -119,6 +121,13 @@ public class BlockStoneMachine extends Block {
 
         return super.getItemDropped(metadata, random, fortune);
     }
+
+      public void breakBlock(World world, int x, int y, int z, Block block, int metadata) {
+          if(metadata == 1) {
+              InventoryUtils.dropItems(world, x, y, z);
+          }
+          super.breakBlock(world, x, y, z, block, metadata);
+      }
 
     @Override
     public boolean canReplace(World world, int x, int y, int z, int side, ItemStack stack) {

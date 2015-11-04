@@ -13,12 +13,7 @@ import makeo.gadomancy.client.renderers.block.BlockExtendedNodeJarRenderer;
 import makeo.gadomancy.client.renderers.block.RenderBlockStoneMachine;
 import makeo.gadomancy.client.renderers.block.RenderBlockTransparent;
 import makeo.gadomancy.client.renderers.entity.RenderAdditionalGolemBase;
-import makeo.gadomancy.client.renderers.item.ItemExNodeRenderer;
-import makeo.gadomancy.client.renderers.item.ItemJarExtendedNodeRenderer;
-import makeo.gadomancy.client.renderers.item.ItemRenderFamiliar;
-import makeo.gadomancy.client.renderers.item.ItemRenderRemoteJar;
-import makeo.gadomancy.client.renderers.item.ItemRenderStoneMachine;
-import makeo.gadomancy.client.renderers.item.ItemRenderTileEntity;
+import makeo.gadomancy.client.renderers.item.*;
 import makeo.gadomancy.client.renderers.tile.RenderTileArcaneDropper;
 import makeo.gadomancy.client.renderers.tile.RenderTileExtendedNode;
 import makeo.gadomancy.client.renderers.tile.RenderTileExtendedNodeJar;
@@ -121,6 +116,7 @@ public class ClientProxy extends CommonProxy {
         itemRenderStoneMachine.registerRenderer(0, new TileManipulationFocus(), renderTileManipulationFocus);
 
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemFamiliar, new ItemRenderFamiliar());
+        MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemCreativeNode, new ItemCreativeNodeRenderer());
 
         //Blocks
         RegisteredBlocks.rendererTransparentBlock = registerBlockRenderer(new RenderBlockTransparent());
