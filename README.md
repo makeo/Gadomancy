@@ -1,6 +1,3 @@
 # Gadomancy
-An adon for Thaumcraft
+An addon for Thaumcraft: http://minecraft.curseforge.com/projects/gadomancy
 
-TODO:
-- Add Thaumonomicon text
-- Fix unknown bugs
