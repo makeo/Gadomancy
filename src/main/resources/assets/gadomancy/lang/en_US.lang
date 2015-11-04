@@ -1,6 +1,6 @@
 item.ItemGolemPlacer.silverwood.name=Silverwood Golem
 item.ItemTransformationFocus.name=[WIP] Wand Focus: Transformation
-item.ItemFamiliar.name=Familiar
+item.ItemFamiliar.name=Ethereal Familiar
 
 itemGroup.gadomancy=Gadomancy
 tc.research_category.gadomancy=Gadomancy
@@ -27,7 +27,7 @@ gadomancy.research_page.GOLEMCOREBREAK.1=Golems fitted with this core will monit
 
 tc.research_name.GADOMANCY.GOLEMCOREBODYGUARD=Golem Core: Bodyguard
 tc.research_text.GADOMANCY.GOLEMCOREBODYGUARD=One does not simply attack my Master
-gadomancy.research_page.GOLEMCOREBODYGUARD.1=Nothing to read here so far.
+gadomancy.research_page.GOLEMCOREBODYGUARD.1=Guard Golems are all good and fine, but even with upgrades, they still don't understand how to protect their master specifically. Adding a few modifications to a Golem Core: Guard easily remedies this issue. A golem equipped with the Golem Core: Bodyguard will be smart enough to follow its master around in a manner similar to that of a tamed wolf.
 
 tc.research_name.GADOMANCY.INFUSIONCLAW=Automated Infusion
 tc.research_text.GADOMANCY.INFUSIONCLAW=Floating stuff!
@@ -39,29 +39,29 @@ tc.research_text.GADOMANCY.REMOTEJAR=Mirrored transportation
 gadomancy.research_page.REMOTEJAR.1=The essentia mirror is excellent for moving essentia around for infusions, but you have the uncanny feeling that it has some untapped potential. Two essentia mirrors, when linked, effectively allow essentia to move between two points in space. By placing an essentia mirror inside of a specially altered warded jar, the space inside of one jar can be effectively linked to another. In order to link two jars, simply place one in the world and right click it with another mirrored jar.
 gadomancy.research_page.REMOTEJAR.2=If a network already exists, then the jar will be added to the current network. Unlike essentia mirrors, mirrored jar networks can have more than two jars. The space inside of a network is shared and balanced between the jars it contains. To put it simply, a two jar network will hold two jars of essentia, a three jar network will hold three, etc. Also, when one mirrored jar is filled, it will attempt to evenly distribute its contents between the other jars in its network.
 
-tc.research_name.GADOMANCY.FAMILIAR=Familiar
+tc.research_name.GADOMANCY.FAMILIAR=Ethereal Familiar
 tc.research_text.GADOMANCY.FAMILIAR=A arcane follower
 gadomancy.research_page.FAMILIAR.1=Thanks to your deep research into Wisps and arcane flames you call 'Nitor' you think you may be able to create a being just like the Wisp. Using the same Ethereal Essence and Essentia you are able to define the base aspect of your Familiar. But that's not enough! You might be able to direct its movements and actions to defend yourself with it. However, making it attack players doesn't seem so easy and it seems a bit weak too.. Let's do something about that when the time comes...
 
 tc.research_name.GADOMANCY.FAM_ATTACK_1=Attack Enhancement
 tc.research_text.GADOMANCY.FAM_ATTACK_1=Increasing the damage
-gadomancy.research_page.FAM_ATTACK_1.1=a1
+gadomancy.research_page.FAM_ATTACK_1.1=By concentrating more magic into the wisp, its attack power is effectively doubled.
 
 tc.research_name.GADOMANCY.FAM_ATTACK_2=Further Attack Enhancement
 tc.research_text.GADOMANCY.FAM_ATTACK_2=What does the scouter say about its power level?
-gadomancy.research_page.FAM_ATTACK_2.1=a2
+gadomancy.research_page.FAM_ATTACK_2.1=By adding eldritch energies and further concentrating the wisps internal magic, an even further doubling can be achieved. You occasionally hear strange whispering coming from the familiar, but the sound is so quiet that you don't think it will be an issue.
 
 tc.research_name.GADOMANCY.FAM_ATTACK_3=Maximized Damage
 tc.research_text.GADOMANCY.FAM_ATTACK_3=ITS OVER 9000!
-gadomancy.research_page.FAM_ATTACK_3.1=a3
+gadomancy.research_page.FAM_ATTACK_3.1=After observing the primordial pearl for some time, you think you can find a way to use it to enhance the familiar even further. By infusing the resonating energies of the pearl with the familiar, you found a way to double its power. The nearly inaudible whispering has become far more pronounced, leaving you with an uneasy feeling...
 
 tc.research_name.GADOMANCY.FAM_RANGE_1=Range Enhancement
 tc.research_text.GADOMANCY.FAM_RANGE_1=Attacking even further
-gadomancy.research_page.FAM_RANGE_1.1=r1
+gadomancy.research_page.FAM_RANGE_1.1=By enhancing the wisps sensitivity to external influence, you can slightly increasing its range.
 
 tc.research_name.GADOMANCY.FAM_COOLDOWN_1=Attack-Speed Enhancement
 tc.research_text.GADOMANCY.FAM_COOLDOWN_1=A scientific Railgun
-gadomancy.research_page.FAM_COOLDOWN_1.1=c1
+gadomancy.research_page.FAM_COOLDOWN_1.1=The resonance of the primordial pearl has proven useful in more than one way. Combining the pearl and a primal wand focus with the wisp seems to change its frequencies drastically. The enhanced wisp attacks twice as fast as before.
 
 tc.research_name.GADOMANCY.NODE_MANIPULATOR=Node Manipulator
 tc.research_text.GADOMANCY.NODE_MANIPULATOR=Almost like roulette
