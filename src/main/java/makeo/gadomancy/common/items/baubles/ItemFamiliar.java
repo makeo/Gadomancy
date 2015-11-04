@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.common.Thaumcraft;
 
 import java.util.List;
 
@@ -106,6 +107,7 @@ public class ItemFamiliar extends Item implements IBauble {
 
     @Override
     public void onWornTick(ItemStack itemStack, EntityLivingBase entity) {
+        if(itemStack == null) return;
         if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar) {
             Gadomancy.proxy.familiarHandler.equippedTick(((EntityPlayer) entity).worldObj, itemStack, (EntityPlayer) entity);
         }
@@ -113,13 +115,27 @@ public class ItemFamiliar extends Item implements IBauble {
 
     @Override
     public void onEquipped(ItemStack itemStack, EntityLivingBase entity) {
+        if(itemStack == null) return;
         if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar) {
             Gadomancy.proxy.familiarHandler.notifyEquip(((EntityPlayer) entity).worldObj, itemStack, (EntityPlayer) entity);
+
+            if(((EntityPlayer) entity).worldObj.isRemote) return;
+
+            int probability = 0;
+            if(hasUpgrade(itemStack, FamiliarUpgrade.ATTACK_2)) probability += 1;
+            if(hasUpgrade(itemStack, FamiliarUpgrade.ATTACK_3)) probability += 1;
+            if(probability > 0) {
+                int rand = itemRand.nextInt(20000 / probability);
+                if(rand == 42) {
+                    Thaumcraft.addWarpToPlayer((EntityPlayer) entity, 1 + itemRand.nextInt(4), true);
+                }
+            }
         }
     }
 
     @Override
     public void onUnequipped(ItemStack itemStack, EntityLivingBase entity) {
+        if(itemStack == null) return;
         if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar) {
             Gadomancy.proxy.familiarHandler.notifyUnequip(((EntityPlayer) entity).worldObj, (EntityPlayer) entity);
         }

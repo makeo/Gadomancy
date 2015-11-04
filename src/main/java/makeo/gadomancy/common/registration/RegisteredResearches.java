@@ -84,6 +84,7 @@ public class RegisteredResearches {
         ResearchItem researchEleToolPick = PseudoResearchItem.create("ELEMENTALPICK", 5, -9).registerResearchItem();
         ResearchItem researchEleToolShovel = PseudoResearchItem.create("ELEMENTALSHOVEL", 6, -8).registerResearchItem();
         ResearchItem researchEleSword = PseudoResearchItem.create("ELEMENTALSWORD", 7, -7).registerResearchItem();
+        ResearchItem researchCoreGuard = PseudoResearchItem.create("COREGUARD", 7, -5).registerResearchItem();
 
         researchGolemCoreBreak = new SimpleResearchItem("GOLEMCOREBREAK", 5, -6, 3, new ItemStack(RegisteredItems.itemGolemCoreBreak),
                 new AspectList().add(Aspect.TOOL, 8).add(Aspect.ENTROPY, 8).add(Aspect.MECHANISM, 8))
@@ -94,7 +95,7 @@ public class RegisteredResearches {
 
         researchGolemCoreBodyguard = new SimpleResearchItem("GOLEMCOREBODYGUARD", 5, -4, 2, new ItemStack(RegisteredItems.itemGolemCoreBreak, 1, 1),
                 new AspectList().add(Aspect.TOOL, 8).add(Aspect.ORDER, 8).add(Aspect.MECHANISM, 10).add(Aspect.ARMOR, 8).add(Aspect.WEAPON, 8))
-                .setParents(researchBootsTraveller.key, researchEleSword.key).setConcealed()
+                .setParents(researchBootsTraveller.key, researchEleSword.key, researchCoreGuard.key).setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.GOLEMCOREBODYGUARD.1"), new ResearchPage(RegisteredRecipes.recipeGolemCoreBodyguard)).registerResearchItem();
 
         ResearchItem researchFocusPrimal = PseudoResearchItem.create("FOCUSPRIMAL", -7, -10).registerResearchItem();
