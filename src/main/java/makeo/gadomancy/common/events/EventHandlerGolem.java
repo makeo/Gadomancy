@@ -73,10 +73,6 @@ public class EventHandlerGolem {
 
     @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
     public void on(EntityJoinWorldEvent event) {
-        if(event.world.isRemote && event.entity instanceof EntityGolemBase) {
-            System.out.println();
-        }
-
         if(!event.entity.worldObj.isRemote && event.entity instanceof EntityGolemBase) {
             EntityGolemBase golem = (EntityGolemBase) event.entity;
             ExtendedGolemProperties props = (ExtendedGolemProperties) golem.getExtendedProperties(Gadomancy.MODID);
