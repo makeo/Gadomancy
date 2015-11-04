@@ -2,6 +2,7 @@ package makeo.gadomancy.client.events;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import makeo.gadomancy.client.util.ExtendedTypeDisplayManager;
+import makeo.gadomancy.client.util.FamiliarHandlerClient;
 import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
@@ -12,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
@@ -21,7 +23,6 @@ import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.client.lib.REHWandHandler;
 import thaumcraft.common.items.relics.ItemThaumometer;
 import thaumcraft.common.items.wands.ItemWandCasting;
-import thaumcraft.common.tiles.TileJarNode;
 
 import java.util.ArrayList;
 
@@ -88,5 +89,10 @@ public class RenderEventHandler {
     public void worldRenderEvent(RenderWorldLastEvent event) {
         ExtendedTypeDisplayManager.notifyRenderTick();
         MultiTickEffectDispatcher.notifyRenderTick(Minecraft.getMinecraft().theWorld, event.partialTicks);
+    }
+
+    @SubscribeEvent
+    public void playerRenderEvent(RenderPlayerEvent.Post renderEvent) {
+        FamiliarHandlerClient.playerRenderEvent(renderEvent.entityPlayer, renderEvent.partialRenderTick);
     }
 }

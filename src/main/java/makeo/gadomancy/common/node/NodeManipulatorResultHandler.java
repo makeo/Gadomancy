@@ -5,7 +5,6 @@ import makeo.gadomancy.common.registration.RegisteredManipulations;
 import net.minecraft.util.WeightedRandom;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.common.lib.research.ResearchManager;
 
 import java.util.ArrayList;
 import java.util.List;

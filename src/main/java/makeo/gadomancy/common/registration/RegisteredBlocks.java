@@ -2,8 +2,23 @@ package makeo.gadomancy.common.registration;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.api.ClickBehavior;
-import makeo.gadomancy.common.blocks.*;
-import makeo.gadomancy.common.blocks.tiles.*;
+import makeo.gadomancy.common.blocks.BlockArcaneDropper;
+import makeo.gadomancy.common.blocks.BlockExtendedNodeJar;
+import makeo.gadomancy.common.blocks.BlockInfusionClaw;
+import makeo.gadomancy.common.blocks.BlockNode;
+import makeo.gadomancy.common.blocks.BlockNodeManipulator;
+import makeo.gadomancy.common.blocks.BlockRemoteJar;
+import makeo.gadomancy.common.blocks.BlockStickyJar;
+import makeo.gadomancy.common.blocks.BlockStoneMachine;
+import makeo.gadomancy.common.blocks.tiles.TileArcaneDropper;
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
+import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
+import makeo.gadomancy.common.blocks.tiles.TileManipulationFocus;
+import makeo.gadomancy.common.blocks.tiles.TileManipulatorPillar;
+import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
+import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
+import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
 import makeo.gadomancy.common.items.ItemBlockRemoteJar;
 import makeo.gadomancy.common.items.ItemBlockStoneMachine;
 import makeo.gadomancy.common.items.ItemNodeManipulator;
@@ -12,7 +27,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import thaumcraft.common.blocks.BlockStoneDeviceItem;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileInfusionMatrix;
 
@@ -32,6 +46,7 @@ public class RegisteredBlocks {
 
     public static int rendererTransparentBlock;
     public static int rendererExtendedNodeJarBlock;
+    public static int rendererBlockStoneMachine;
 
     public static BlockStickyJar blockStickyJar;
     public static BlockArcaneDropper blockArcaneDropper;

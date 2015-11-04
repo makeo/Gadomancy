@@ -2,12 +2,12 @@ package makeo.gadomancy.common.events;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.api.golems.events.GolemDropPlacerEvent;
 import makeo.gadomancy.api.golems.events.PlacerCreateGolemEvent;
+import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.entities.golems.ItemAdditionalGolemPlacer;
 import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;
@@ -53,7 +53,7 @@ public class EventHandlerGolem {
 
             golem.registerExtendedProperties(Gadomancy.MODID, new ExtendedGolemProperties(golem));
 
-            golem.getDataWatcher().addObject(ModConfig.getGolemDatawatcherId(), "");
+            golem.getDataWatcher().addObject(ModConfig.golemDatawatcherId, "");
         }
     }
 
@@ -73,10 +73,6 @@ public class EventHandlerGolem {
 
     @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
     public void on(EntityJoinWorldEvent event) {
-        if(event.world.isRemote && event.entity instanceof EntityGolemBase) {
-            System.out.println();
-        }
-
         if(!event.entity.worldObj.isRemote && event.entity instanceof EntityGolemBase) {
             EntityGolemBase golem = (EntityGolemBase) event.entity;
             ExtendedGolemProperties props = (ExtendedGolemProperties) golem.getExtendedProperties(Gadomancy.MODID);
@@ -223,17 +219,25 @@ public class EventHandlerGolem {
                         event.setCanceled(true);
                     }
                 }
-            } else if(!event.target.worldObj.isRemote) {
-                if(heldItem == null
-                        || (heldItem.getItem() != ConfigItems.itemGolemBell
-                        && heldItem.getItem() != ConfigItems.itemGolemUpgrade
-                        && heldItem.getItem() != ConfigItems.itemGolemDecoration
-                        && !(heldItem.getItem() instanceof ItemWandCasting))) {
-                    AdditionalGolemCore core = GadomancyApi.getAdditionalGolemCore(golem);
-                    if(core != null) {
-                        if(core.hasGui() && !core.openGui(event.entityPlayer, golem)) {
-                            event.entityPlayer.openGui(Gadomancy.instance, 0, golem.worldObj, golem.getEntityId(), 0, 0);
+            } else {
+                if(!event.target.worldObj.isRemote) {
+                    if(heldItem == null
+                            || (heldItem.getItem() != ConfigItems.itemGolemBell
+                            && heldItem.getItem() != ConfigItems.itemGolemUpgrade
+                            && heldItem.getItem() != ConfigItems.itemGolemDecoration
+                            && !(heldItem.getItem() instanceof ItemWandCasting))) {
+                        AdditionalGolemCore core = GadomancyApi.getAdditionalGolemCore(golem);
+                        if(core != null) {
+                            if(core.hasGui() && !core.openGui(event.entityPlayer, golem)) {
+                                event.entityPlayer.openGui(Gadomancy.instance, 0, golem.worldObj, golem.getEntityId(), 0, 0);
+                            }
+                            event.setCanceled(true);
                         }
+                    }
+                }
+                if(heldItem != null && heldItem.getItem() == ConfigItems.itemGolemBell) {
+                    AdditionalGolemCore core = GadomancyApi.getAdditionalGolemCore(golem);
+                    if(core != null && !core.hasMarkers()) {
                         event.setCanceled(true);
                     }
                 }

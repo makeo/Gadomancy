@@ -1,9 +1,6 @@
 package makeo.gadomancy.common.items;
 
-import makeo.gadomancy.common.blocks.BlockStoneMachine;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockBrewingStand;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;

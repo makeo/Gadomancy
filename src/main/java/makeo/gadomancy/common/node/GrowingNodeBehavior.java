@@ -32,7 +32,7 @@ public class GrowingNodeBehavior {
 
     public static final double SATURATION_DIFFICULTY = 15D;
     public static final double SATURATION_CAP = 90D;
-    public static final int HAPPINESS_CAP = 500;
+    public static final int HAPPINESS_CAP = 400;
 
     //The node the growing node attacks.
     private TileNode fixedNode;
@@ -192,7 +192,7 @@ public class GrowingNodeBehavior {
                     fixedNode.getWorldObj().spawnEntityInWorld(aspectOrb);
 
                     NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(world.provider.dimensionId, ox + 0.5F, oy + 0.5F, oz + 0.5F, 32);
-                    PacketTCNodeBolt bolt = new PacketTCNodeBolt(ox + 0.5F, oy + 0.5F, oz + 0.5F, fx + 0.5F, fy + 0.5F, fz + 0.5F);
+                    PacketTCNodeBolt bolt = new PacketTCNodeBolt(ox + 0.5F, oy + 0.5F, oz + 0.5F, fx + 0.5F, fy + 0.5F, fz + 0.5F, 0, false);
                     PacketHandler.INSTANCE.sendToAllAround(bolt, point);
 
                     PacketAnimationAbsorb packet = new PacketAnimationAbsorb(ox, oy, oz, fx, fy, fz, 7);
@@ -256,6 +256,7 @@ public class GrowingNodeBehavior {
                         inc *= evaluateFeedingDenialFunc((lastFedRow > 0 ? lastFedRow : 1));
                     } else {
                         inc *= -10;
+                        lastFedRow = 0;
                     }
                 }
                 this.overallHappiness += inc; //The node doesn't like to be forced to eat the same every time.
@@ -274,7 +275,9 @@ public class GrowingNodeBehavior {
         return (Math.log(i) / 6) + 1;
     }
 
-    private void handleOverfeed() {}
+    private void handleOverfeed() {
+        //TODO handle transformation into STARVING
+    }
 
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
         this.isSaturated = nbtTagCompound.getBoolean("overallSaturated");

@@ -1,7 +1,7 @@
 package makeo.gadomancy.common.items;
 
-import makeo.gadomancy.common.node.ExtendedNodeType;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
+import makeo.gadomancy.common.node.ExtendedNodeType;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;

@@ -1,6 +1,5 @@
 package makeo.gadomancy.client.util;
 
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.world.World;
 import thaumcraft.common.Thaumcraft;
 

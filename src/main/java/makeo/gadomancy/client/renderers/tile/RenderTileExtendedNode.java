@@ -1,7 +1,7 @@
 package makeo.gadomancy.client.renderers.tile;
 
-import makeo.gadomancy.common.node.ExtendedNodeType;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
+import makeo.gadomancy.common.node.ExtendedNodeType;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 

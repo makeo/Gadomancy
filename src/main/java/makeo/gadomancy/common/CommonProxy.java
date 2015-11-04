@@ -3,26 +3,33 @@ package makeo.gadomancy.common;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+import makeo.gadomancy.client.ClientProxy;
 import makeo.gadomancy.common.containers.ContainerInfusionClaw;
+import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.events.EventHandlerEntity;
 import makeo.gadomancy.common.events.EventHandlerGolem;
 import makeo.gadomancy.common.events.EventHandlerNetwork;
 import makeo.gadomancy.common.events.EventHandlerWorld;
+import makeo.gadomancy.common.familiar.FamiliarHandlerServer;
 import makeo.gadomancy.common.network.PacketHandler;
-import makeo.gadomancy.common.registration.*;
-import makeo.gadomancy.client.ClientProxy;
+import makeo.gadomancy.common.registration.ModSubstitutions;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
+import makeo.gadomancy.common.registration.RegisteredGolemStuff;
+import makeo.gadomancy.common.registration.RegisteredIntegrations;
+import makeo.gadomancy.common.registration.RegisteredItems;
+import makeo.gadomancy.common.registration.RegisteredPotions;
+import makeo.gadomancy.common.registration.RegisteredRecipes;
+import makeo.gadomancy.common.registration.RegisteredResearches;
+import makeo.gadomancy.common.utils.WorldProviderTCEldrich;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import thaumcraft.api.wands.WandTriggerRegistry;
-import thaumcraft.common.blocks.BlockAiryItem;
-import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.golems.ContainerGolem;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
@@ -40,6 +47,7 @@ import java.util.List;
  */
 public class CommonProxy implements IGuiHandler {
     public static final EventHandlerGolem EVENT_HANDLER_GOLEM = new EventHandlerGolem();
+    public FamiliarHandlerServer familiarHandler;
 
     public void onConstruct() { }
 
@@ -56,16 +64,23 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void initalize() {
+        familiarHandler = new FamiliarHandlerServer();
 
         NetworkRegistry.INSTANCE.registerGuiHandler(Gadomancy.instance, this);
 
         MinecraftForge.EVENT_BUS.register(EVENT_HANDLER_GOLEM);
         FMLCommonHandler.instance().bus().register(new EventHandlerNetwork());
         MinecraftForge.EVENT_BUS.register(new EventHandlerWorld());
+        MinecraftForge.EVENT_BUS.register(new EventHandlerEntity());
 
         RegisteredRecipes.init();
 
         ModSubstitutions.init();
+
+        RegisteredPotions.init();
+
+        //DimensionManager.registerProviderType(ModConfig.dimOuterId, WorldProviderTCEldrich.class, false);
+        //DimensionManager.registerDimension(ModConfig.dimOuterId, ModConfig.dimOuterId);
     }
 
     public void postInitalize() {
@@ -77,6 +92,8 @@ public class CommonProxy implements IGuiHandler {
         RegisteredItems.postInit();
 
         ModSubstitutions.postInit();
+
+        familiarHandler.setupPostInit();
     }
 
     public static void unregisterWandHandler(String modid, Block block, int metadata) {

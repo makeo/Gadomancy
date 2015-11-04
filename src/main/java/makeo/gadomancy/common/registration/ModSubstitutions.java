@@ -3,20 +3,12 @@ package makeo.gadomancy.common.registration;
 import com.google.common.collect.BiMap;
 import cpw.mods.fml.common.registry.FMLControlledNamespacedRegistry;
 import cpw.mods.fml.common.registry.GameData;
-import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.common.CommonProxy;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import thaumcraft.api.research.ResearchCategories;
-import thaumcraft.api.research.ResearchItem;
-import thaumcraft.api.research.ResearchPage;
-import thaumcraft.common.blocks.BlockAiryItem;
 import thaumcraft.common.config.ConfigBlocks;
-
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod

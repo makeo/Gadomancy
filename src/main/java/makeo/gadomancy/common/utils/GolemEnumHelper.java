@@ -1,8 +1,8 @@
 package makeo.gadomancy.common.utils;
 
-import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
+import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.entities.golems.types.RemovedGolemType;
 import net.minecraftforge.common.util.EnumHelper;
 import thaumcraft.common.entities.golems.EnumGolemType;

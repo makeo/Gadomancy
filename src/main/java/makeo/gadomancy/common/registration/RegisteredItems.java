@@ -3,11 +3,14 @@ package makeo.gadomancy.common.registration;
 import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.items.*;
+import makeo.gadomancy.common.items.baubles.ItemFamiliar;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.EnumHelper;
 import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
@@ -27,6 +30,8 @@ import java.util.List;
 public class RegisteredItems {
     private RegisteredItems() {}
 
+    public static EnumRarity raritySacred = EnumHelper.addRarity("Sacred", EnumChatFormatting.GOLD, "Sacred");
+
     public static CreativeTabs creativeTab;
 
     public static Item itemFakeModIcon;
@@ -35,9 +40,8 @@ public class RegisteredItems {
     public static Item itemTransformationFocus;
     public static Item itemGolemCoreBreak;
     public static Item itemExtendedNodeJar;
-
-    //@Deprecated
-    //public static Item itemBlockAiryCopy; //!!!!!!!!!!DO NOT TOUCH THIS OR USE THIS ANYWHERE!!!!!!!!!!
+    public static Item itemFamiliar;
+    public static Item itemCreativeNode;
 
     public static void preInit() {
         creativeTab = new CreativeTabs(Gadomancy.MODID) {
@@ -66,6 +70,8 @@ public class RegisteredItems {
         itemTransformationFocus = registerItem(new ItemTransformationFocus());
         itemGolemCoreBreak = registerItem(new ItemGolemCoreBreak());
         itemExtendedNodeJar = registerItem(new ItemExtendedNodeJar());
+        itemFamiliar = registerItem(new ItemFamiliar());
+        itemCreativeNode = registerItem(new ItemCreativeNode());
     }
 
     private static <T extends Item> T registerItem(T item, String name) {

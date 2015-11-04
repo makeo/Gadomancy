@@ -1,7 +1,6 @@
 package makeo.gadomancy.common.integration;
 
 import makeo.gadomancy.common.CommonProxy;
-import makeo.gadomancy.common.registration.ModSubstitutions;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import net.minecraft.block.Block;

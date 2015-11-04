@@ -2,7 +2,6 @@ package makeo.gadomancy.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
 import makeo.gadomancy.common.items.ItemExtendedNodeJar;
 import makeo.gadomancy.common.registration.RegisteredBlocks;

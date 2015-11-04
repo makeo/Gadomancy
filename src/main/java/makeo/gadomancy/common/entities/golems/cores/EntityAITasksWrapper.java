@@ -1,6 +1,8 @@
 package makeo.gadomancy.common.entities.golems.cores;
 
 import makeo.gadomancy.api.GadomancyApi;
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITasks;
 import thaumcraft.common.entities.golems.EntityGolemBase;
@@ -21,14 +23,18 @@ public class EntityAITasksWrapper extends EntityAITasks {
     private final EntityAITasks original;
     private boolean locked = true;
 
-    public EntityAITasksWrapper(EntityGolemBase golem) {
-        super(golem.targetTasks.theProfiler);
+    private boolean scheduleUpdate;
+
+    public EntityAITasksWrapper(EntityGolemBase golem, EntityAITasks tasks, boolean scheduleUpdate) {
+        super(tasks.theProfiler);
 
         this.golem = golem;
-        this.original = golem.targetTasks;
+        this.original = tasks;
 
         this.taskEntries = new WrapperList(original.taskEntries);
         this.original.taskEntries = this.taskEntries;
+
+        this.scheduleUpdate = scheduleUpdate;
     }
 
     private class WrapperList extends ArrayList {
@@ -40,6 +46,8 @@ public class EntityAITasksWrapper extends EntityAITasks {
         public void clear() {
             if(!isLocked()) {
                 super.clear();
+            } else if(scheduleUpdate) {
+                ((ExtendedGolemProperties)golem.getExtendedProperties(Gadomancy.MODID)).updateGolem();
             }
         }
     }

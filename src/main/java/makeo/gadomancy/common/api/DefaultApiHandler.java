@@ -1,11 +1,11 @@
 package makeo.gadomancy.common.api;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.api.ClickBehavior;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.api.internal.IApiHandler;
+import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.entities.golems.ItemAdditionalGolemPlacer;
 import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;
@@ -64,7 +64,7 @@ public class DefaultApiHandler implements IApiHandler {
 
     @Override
     public AdditionalGolemCore getAdditionalGolemCore(EntityGolemBase golem) {
-        String coreName = golem.getDataWatcher().getWatchableObjectString(ModConfig.getGolemDatawatcherId());
+        String coreName = golem.getDataWatcher().getWatchableObjectString(ModConfig.golemDatawatcherId);
         if(!coreName.isEmpty()) {
             return additionalGolemCores.get(coreName);
         }
@@ -97,7 +97,7 @@ public class DefaultApiHandler implements IApiHandler {
         String coreName = core == null ? "" : core.getName();
 
         golem.setCore(core == null ? -1 : core.getBaseCore());
-        golem.getDataWatcher().updateObject(ModConfig.getGolemDatawatcherId(), coreName);
+        golem.getDataWatcher().updateObject(ModConfig.golemDatawatcherId, coreName);
 
         if(!golem.worldObj.isRemote) {
             NBTHelper.getPersistentData(golem).setString("Core", coreName);

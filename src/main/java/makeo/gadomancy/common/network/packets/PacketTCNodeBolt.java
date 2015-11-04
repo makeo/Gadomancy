@@ -7,9 +7,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.Vec3;
-import net.minecraftforge.common.DimensionManager;
-import thaumcraft.common.Thaumcraft;
+import thaumcraft.client.fx.bolt.FXLightningBolt;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -23,16 +21,20 @@ public class PacketTCNodeBolt implements IMessage, IMessageHandler<PacketTCNodeB
 
     private float x, y, z;
     private float targetX, targetY, targetZ;
+    private int type;
+    private boolean mightGetLong;
 
     public PacketTCNodeBolt() {}
 
-    public PacketTCNodeBolt(float x, float y, float z, float targetX, float targetY, float targetZ) {
+    public PacketTCNodeBolt(float x, float y, float z, float targetX, float targetY, float targetZ, int type, boolean mightGetLong) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.targetX = targetX;
         this.targetY = targetY;
         this.targetZ = targetZ;
+        this.type = type;
+        this.mightGetLong = mightGetLong;
     }
 
     @Override
@@ -43,6 +45,8 @@ public class PacketTCNodeBolt implements IMessage, IMessageHandler<PacketTCNodeB
         this.targetX = buf.readFloat();
         this.targetY = buf.readFloat();
         this.targetZ = buf.readFloat();
+        this.type = buf.readInt();
+        this.mightGetLong = buf.readBoolean();
     }
 
     @Override
@@ -53,12 +57,17 @@ public class PacketTCNodeBolt implements IMessage, IMessageHandler<PacketTCNodeB
         buf.writeFloat(targetX);
         buf.writeFloat(targetY);
         buf.writeFloat(targetZ);
+        buf.writeInt(type);
+        buf.writeBoolean(mightGetLong);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IMessage onMessage(PacketTCNodeBolt p, MessageContext ctx) {
-        Thaumcraft.proxy.nodeBolt(Minecraft.getMinecraft().theWorld, p.x, p.y, p.z, p.targetX, p.targetY, p.targetZ);
+        FXLightningBolt bolt = new FXLightningBolt(Minecraft.getMinecraft().theWorld, p.x, p.y, p.z, p.targetX, p.targetY, p.targetZ, Minecraft.getMinecraft().theWorld.rand.nextLong(), 10, 4.0F, 5);
+        bolt.defaultFractal();
+        bolt.setType(p.type);
+        bolt.finalizeBolt();
         return null;
     }
 }
