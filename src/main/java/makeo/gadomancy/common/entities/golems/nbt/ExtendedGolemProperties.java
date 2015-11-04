@@ -114,7 +114,7 @@ public class ExtendedGolemProperties implements IExtendedEntityProperties {
                 if(persistent.hasKey("Core")) {
                     for(AdditionalGolemCore core : GadomancyApi.getAdditionalGolemCores()) {
                         if(core.getName().equals(persistent.getString("Core"))) {
-                            golem.getDataWatcher().updateObject(ModConfig.getGolemDatawatcherId(), core.getName());
+                            golem.getDataWatcher().updateObject(ModConfig.golemDatawatcherId, core.getName());
                             break;
                         }
                     }

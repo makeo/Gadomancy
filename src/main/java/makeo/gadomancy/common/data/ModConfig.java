@@ -13,7 +13,11 @@ import java.io.File;
  * Created by makeo @ 15.09.2015 18:25
  */
 public class ModConfig {
+
     private static Configuration config;
+
+    public static int golemDatawatcherId = 29;
+    public static int dimOuterId = -73;
 
     private ModConfig() {}
 
@@ -22,16 +26,13 @@ public class ModConfig {
 
         config.load();
 
-        getGolemDatawatcherId();
+        loadFromConfig();
 
         config.save();
     }
 
-    private static int golemDatawatcherId = -1;
-    public static int getGolemDatawatcherId() {
-        if(golemDatawatcherId < 0) {
-            golemDatawatcherId = config.getInt("datawatcherId", "golem", 29, 0, 31, "Do not edit unless you know what are you doing!");
-        }
-        return golemDatawatcherId;
+    private static void loadFromConfig() {
+        golemDatawatcherId = config.getInt("datawatcherId", "golem", 29, 0, 31, "Do not edit unless you know what are you doing!");
+        dimOuterId = config.getInt("dimOuterId", "dimension", -73, Integer.MIN_VALUE, Integer.MAX_VALUE, "Dimension Id for the eldrich mazes accessed via Node Manipulator");
     }
 }

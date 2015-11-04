@@ -6,6 +6,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import makeo.gadomancy.client.ClientProxy;
 import makeo.gadomancy.common.containers.ContainerInfusionClaw;
+import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.events.EventHandlerEntity;
 import makeo.gadomancy.common.events.EventHandlerGolem;
 import makeo.gadomancy.common.events.EventHandlerNetwork;
@@ -20,11 +21,13 @@ import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.registration.RegisteredPotions;
 import makeo.gadomancy.common.registration.RegisteredRecipes;
 import makeo.gadomancy.common.registration.RegisteredResearches;
+import makeo.gadomancy.common.utils.WorldProviderTCEldrich;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import thaumcraft.api.wands.WandTriggerRegistry;
 import thaumcraft.common.entities.golems.ContainerGolem;
@@ -75,6 +78,9 @@ public class CommonProxy implements IGuiHandler {
         ModSubstitutions.init();
 
         RegisteredPotions.init();
+
+        //DimensionManager.registerProviderType(ModConfig.dimOuterId, WorldProviderTCEldrich.class, false);
+        //DimensionManager.registerDimension(ModConfig.dimOuterId, ModConfig.dimOuterId);
     }
 
     public void postInitalize() {

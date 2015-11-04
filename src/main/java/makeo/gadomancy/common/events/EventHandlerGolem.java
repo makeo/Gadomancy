@@ -53,7 +53,7 @@ public class EventHandlerGolem {
 
             golem.registerExtendedProperties(Gadomancy.MODID, new ExtendedGolemProperties(golem));
 
-            golem.getDataWatcher().addObject(ModConfig.getGolemDatawatcherId(), "");
+            golem.getDataWatcher().addObject(ModConfig.golemDatawatcherId, "");
         }
     }
 
