@@ -110,14 +110,6 @@ public class ItemFamiliar extends Item implements IBauble {
         if(itemStack == null) return;
         if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar) {
             Gadomancy.proxy.familiarHandler.equippedTick(((EntityPlayer) entity).worldObj, itemStack, (EntityPlayer) entity);
-        }
-    }
-
-    @Override
-    public void onEquipped(ItemStack itemStack, EntityLivingBase entity) {
-        if(itemStack == null) return;
-        if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar) {
-            Gadomancy.proxy.familiarHandler.notifyEquip(((EntityPlayer) entity).worldObj, itemStack, (EntityPlayer) entity);
 
             if(((EntityPlayer) entity).worldObj.isRemote) return;
 
@@ -130,6 +122,14 @@ public class ItemFamiliar extends Item implements IBauble {
                     Thaumcraft.addWarpToPlayer((EntityPlayer) entity, 1 + itemRand.nextInt(4), true);
                 }
             }
+        }
+    }
+
+    @Override
+    public void onEquipped(ItemStack itemStack, EntityLivingBase entity) {
+        if(itemStack == null) return;
+        if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar) {
+            Gadomancy.proxy.familiarHandler.notifyEquip(((EntityPlayer) entity).worldObj, itemStack, (EntityPlayer) entity);
         }
     }
 
