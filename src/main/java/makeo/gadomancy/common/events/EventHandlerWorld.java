@@ -2,6 +2,7 @@ package makeo.gadomancy.common.events;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
@@ -9,6 +10,7 @@ import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.GolemEnumHelper;
 import makeo.gadomancy.common.utils.JarMultiblockHandler;
+import makeo.gadomancy.common.utils.world.TCMazeHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
@@ -42,6 +44,8 @@ public class EventHandlerWorld {
 
             GolemEnumHelper.validateSavedMapping();
             GolemEnumHelper.reorderEnum();
+
+            TCMazeHandler.init();
         }
     }
 
@@ -49,9 +53,17 @@ public class EventHandlerWorld {
     public void on(WorldEvent.Unload e) {
         if (!e.world.isRemote && e.world.equals(MinecraftServer.getServer().getEntityWorld())) {
             Gadomancy.unloadModData();
+
+            TCMazeHandler.closeAllSessionsAndCleanup();
         }
     }
 
+    @SubscribeEvent
+    public void on(TickEvent.WorldTickEvent event) {
+        if(!event.world.isRemote && event.world.provider.dimensionId == 0) {
+            TCMazeHandler.tick();
+        }
+    }
 
     private Map<EntityPlayer, Integer> interacts = null;
 

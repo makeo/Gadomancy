@@ -21,8 +21,8 @@ import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.registration.RegisteredPotions;
 import makeo.gadomancy.common.registration.RegisteredRecipes;
 import makeo.gadomancy.common.registration.RegisteredResearches;
-import makeo.gadomancy.common.utils.WorldProviderTCEldrich;
 import makeo.gadomancy.common.utils.Injector;
+import makeo.gadomancy.common.utils.world.WorldProviderTCEldrich;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -79,8 +79,8 @@ public class CommonProxy implements IGuiHandler {
 
         RegisteredPotions.init();
 
-        //DimensionManager.registerProviderType(ModConfig.dimOuterId, WorldProviderTCEldrich.class, false);
-        //DimensionManager.registerDimension(ModConfig.dimOuterId, ModConfig.dimOuterId);
+        DimensionManager.registerProviderType(ModConfig.dimOuterId, WorldProviderTCEldrich.class, false);
+        DimensionManager.registerDimension(ModConfig.dimOuterId, ModConfig.dimOuterId);
     }
 
     public void postInitalize() {

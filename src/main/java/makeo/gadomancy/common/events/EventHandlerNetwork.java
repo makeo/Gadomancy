@@ -7,6 +7,7 @@ import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketFamiliar;
 import makeo.gadomancy.common.network.packets.PacketUpdateGolemTypeOrder;
 import makeo.gadomancy.common.utils.GolemEnumHelper;
+import makeo.gadomancy.common.utils.world.TCMazeHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 
@@ -33,5 +34,7 @@ public class EventHandlerNetwork {
     public void on(PlayerEvent.PlayerLoggedOutEvent e) {
         EntityPlayer player = e.player;
         Gadomancy.proxy.familiarHandler.notifyUnequip(player.worldObj, player);
+
+        TCMazeHandler.closeSession(e.player);
     }
 }

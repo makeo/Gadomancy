@@ -1,4 +1,4 @@
-package makeo.gadomancy.common.utils;
+package makeo.gadomancy.common.utils.world;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

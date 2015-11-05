@@ -18,6 +18,7 @@ public class ModConfig {
 
     public static int golemDatawatcherId = 29;
     public static int dimOuterId = -73;
+    public static int maxMazeCount = -1;
 
     private ModConfig() {}
 
@@ -34,5 +35,6 @@ public class ModConfig {
     private static void loadFromConfig() {
         golemDatawatcherId = config.getInt("datawatcherId", "golem", 29, 0, 31, "Do not edit unless you know what are you doing!");
         dimOuterId = config.getInt("dimOuterId", "dimension", -73, Integer.MIN_VALUE, Integer.MAX_VALUE, "Dimension Id for the eldrich mazes accessed via Node Manipulator");
+        maxMazeCount = config.getInt("maxMazeCount", "dimension", -1, -1, Integer.MAX_VALUE, "Defines how many Eldritch mazes may exist at the same time using the Gadomancy Eldritch ritual. (-1 = infinite) Note that 1 maze = 1 player; Once the player finishes the maze, the maze closes itself and teleports the player out.");
     }
 }
