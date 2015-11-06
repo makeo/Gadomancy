@@ -35,12 +35,18 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
     private int x;
     private int y;
     private int z;
+    private byte additionalData;
 
     public PacketStartAnimation(byte annimationId, int x, int y, int z) {
+        this(annimationId, x, y, z, (byte) 0);
+    }
+    
+    public PacketStartAnimation(byte annimationId, int x, int y, int z, byte additionalData) {
         this.annimationId = annimationId;
         this.x = x;
         this.y = y;
         this.z = z;
+        this.additionalData = additionalData;
     }
 
     public PacketStartAnimation() {}
@@ -51,6 +57,7 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
         this.x = buf.readInt();
         this.y = buf.readInt();
         this.z = buf.readInt();
+        this.additionalData = buf.readByte();
     }
 
     @Override
@@ -59,6 +66,7 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
         buf.writeInt(x);
         buf.writeInt(y);
         buf.writeInt(z);
+        buf.writeByte(additionalData);
     }
 
     @Override
@@ -80,7 +88,7 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
                 Thaumcraft.proxy.burst(Minecraft.getMinecraft().theWorld, message.x + 0.5F, message.y + 0.5F, message.z + 0.5F, Minecraft.getMinecraft().theWorld.rand.nextInt(3) + 1);
                 break;
             case ID_RUNES:
-                UtilsFX.doRuneEffects(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z);
+                UtilsFX.doRuneEffects(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z, message.additionalData);
                 break;
             case ID_SPARKLE_SPREAD:
                 UtilsFX.doSparkleEffectsAround(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z);

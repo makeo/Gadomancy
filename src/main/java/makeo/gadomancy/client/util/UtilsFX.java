@@ -4,6 +4,7 @@ import net.minecraft.world.World;
 import thaumcraft.common.Thaumcraft;
 
 import java.awt.*;
+import java.util.Random;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -15,18 +16,29 @@ import java.awt.*;
  */
 public class UtilsFX {
 
-    private static final Color[] runeColors = new Color[] { new Color(0xB60707), new Color(0xEE3782), new Color(0xF37B20), new Color(0xFF6722), new Color(0xFF6D30), new Color(0xFF0000) };
+    private static final Color[] runeColors_red = new Color[] { new Color(0xB60707), new Color(0xEE3782), new Color(0xF37B20), new Color(0xFF6722), new Color(0xFF6D30), new Color(0xFF0000) };
+    private static final Color[] runeColors_green = new Color[] { new Color(0x005629), new Color(0x0E9C00), new Color(0x000000), new Color(0x00FF00), new Color(0x004C3E)};
 
-    public static void doRuneEffects(World world, int x, int y, int z) {
+    public static void doRuneEffects(World world, int x, int y, int z, byte colorFlag) {
         if(world.isRemote) {
             int cnt = 20;
             while(cnt > 0) {
                 cnt--;
-                Color rand = runeColors[world.rand.nextInt(runeColors.length)];
+                Color rand = evaluateRandomColor(world.rand, colorFlag);
                 Thaumcraft.proxy.blockRunes(world, x + randomOffset(world), y + randomOffset(world), z + randomOffset(world),
                         rand.getRed() / 255F, rand.getGreen() / 255F, rand.getBlue() / 255F, world.rand.nextInt(10) + 30, -0.01F - (world.rand.nextBoolean() ? world.rand.nextBoolean() ? 0.02F : 0.01F : 0F));
             }
         }
+    }
+
+    private static Color evaluateRandomColor(Random rand, byte colorFlag) {
+        Color[] possibleColors;
+        if(colorFlag == 1) {
+            possibleColors = runeColors_green;
+        } else {
+            possibleColors = runeColors_red;
+        }
+        return possibleColors[rand.nextInt(possibleColors.length)];
     }
 
     private static float randomOffset(World worldObj) {

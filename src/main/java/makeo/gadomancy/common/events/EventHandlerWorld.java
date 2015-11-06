@@ -60,7 +60,7 @@ public class EventHandlerWorld {
 
     @SubscribeEvent
     public void on(TickEvent.WorldTickEvent event) {
-        if(!event.world.isRemote && event.world.provider.dimensionId == 0) {
+        if (!event.world.isRemote && event.world.provider.dimensionId == 0) {
             TCMazeHandler.tick();
         }
     }
@@ -93,11 +93,11 @@ public class EventHandlerWorld {
 
     @SubscribeEvent
     public void onBreak(BlockEvent.BreakEvent event) {
-        if(!event.world.isRemote) {
-            if(event.block == RegisteredBlocks.blockNodeManipulator) {
+        if (!event.world.isRemote) {
+            if (event.block == RegisteredBlocks.blockNodeManipulator) {
                 TileEntity te = event.world.getTileEntity(event.x, event.y, event.z);
-                if(te != null && te instanceof TileNodeManipulator) {
-                    if(((TileNodeManipulator) te).isInMultiblock())
+                if (te != null && te instanceof TileNodeManipulator) {
+                    if (((TileNodeManipulator) te).isInMultiblock())
                         ((TileNodeManipulator) te).breakMultiblock();
                 }
             }

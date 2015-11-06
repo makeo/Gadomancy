@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.world.World;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -14,6 +15,13 @@ import java.util.LinkedHashMap;
  * Created by HellFirePvP @ 27.10.2015 13:56
  */
 public class MultiblockHelper {
+
+    public static boolean isAnyMultiblockPresent(World world, int x, int y, int z, List<MultiblockPattern> patternList) {
+        for(MultiblockPattern pattern : patternList) {
+            if(isMultiblockPresent(world, x, y, z, pattern)) return true;
+        }
+        return false;
+    }
 
     public static boolean isMultiblockPresent(World world, int x, int y, int z, MultiblockPattern pattern) {
         for(IntVec3 vec : pattern.keySet()) {
