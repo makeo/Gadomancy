@@ -17,13 +17,11 @@ import net.minecraft.server.MinecraftServer;
  */
 public class WorldUtil {
 
-    @SideOnly(Side.SERVER)
     public static void teleportToFakeOuter(EntityPlayerMP player) {
         MinecraftServer mServer = FMLCommonHandler.instance().getMinecraftServerInstance();
         mServer.getConfigurationManager().transferPlayerToDimension(player, ModConfig.dimOuterId, new TeleporterNothing(mServer.worldServerForDimension(ModConfig.dimOuterId)));
     }
 
-    @SideOnly(Side.SERVER)
     public static void tryTeleportBack(EntityPlayerMP player, int dim) {
         MinecraftServer mServer = FMLCommonHandler.instance().getMinecraftServerInstance();
         mServer.getConfigurationManager().transferPlayerToDimension(player, dim, new TeleporterNothing(mServer.worldServerForDimension(dim)));

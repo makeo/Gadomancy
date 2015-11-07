@@ -3,9 +3,12 @@ package makeo.gadomancy.common.events;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import makeo.gadomancy.common.familiar.FamiliarAIController;
+import makeo.gadomancy.common.utils.world.TCMazeHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -28,6 +31,13 @@ public class EventHandlerEntity {
     public void on(LivingSetAttackTargetEvent targetEvent) {
         if(targetEvent.target instanceof EntityPlayer) {
             FamiliarAIController.notifyTargetEvent(targetEvent.entityLiving, (EntityPlayer) targetEvent.target);
+        }
+    }
+
+    @SubscribeEvent
+    public void on(LivingDeathEvent event) {
+        if(!event.entity.worldObj.isRemote && event.entityLiving instanceof EntityPlayer) {
+            TCMazeHandler.closeSession((EntityPlayer) event.entityLiving, false);
         }
     }
 

@@ -1,6 +1,7 @@
 package makeo.gadomancy.common.blocks.tiles;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
+import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketStartAnimation;
 import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
@@ -10,11 +11,13 @@ import makeo.gadomancy.common.node.NodeManipulatorResultHandler;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredMultiblocks;
 import makeo.gadomancy.common.utils.MultiblockHelper;
+import makeo.gadomancy.common.utils.world.TCMazeHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
@@ -44,10 +47,10 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
     private static final int NODE_MANIPULATION_POSSIBLE_WORK_START = 70;
     private static final int NODE_MANIPULATION_WORK_ASPECT_CAP = 150;
 
-    private static final int ELDRITCH_PORTAL_CREATOR_WORK_START = 120;
+    private static final int ELDRITCH_PORTAL_CREATOR_WORK_START = 5;
     private static final int ELDRITCH_PORTAL_CREATOR_ASPECT_CAP = 150;
 
-    //Already set when only multiblock would be present.
+    //Already set when only multiblock would be present. aka is set, if 'isMultiblockPresent()' returns true.
     private MultiblockType multiblockType = null;
     private boolean multiblockStructurePresent = false;
     private boolean isMultiblock = false;
@@ -92,7 +95,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
     private void eldritchPortalCreationTick() {
 
         workTick++;
-        if(workTick < 400) {
+        if(workTick < 10) {
             if(workTick % 16 == 0) {
                 PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, xCoord, yCoord, zCoord, (byte) 1);
                 PacketHandler.INSTANCE.sendToAllAround(packet, getTargetPoint(32));
@@ -116,7 +119,11 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
         if(te == null || !(te instanceof TileExtendedNode)) return;
         TileExtendedNode node = (TileExtendedNode) te;
 
-        System.out.println("portal creation?");
+        List players = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(15, 15, 15));
+        if(!players.isEmpty()) {
+            EntityPlayer player = (EntityPlayer) players.get(0);
+            TCMazeHandler.createSessionAndTeleport(player, (int) player.posX, (int) player.posY, (int) player.posZ);
+        }
 
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         worldObj.markBlockForUpdate(xCoord, yCoord + 2, zCoord);
@@ -490,8 +497,18 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
 
     public static enum MultiblockType {
 
-        NODE_MANIPULATOR,
-        E_PORTAL_CREATOR
+        NODE_MANIPULATOR(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR"),
+        E_PORTAL_CREATOR(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR"); //Change sometime.
+
+        private String research;
+
+        private MultiblockType(String research) {
+            this.research = research;
+        }
+
+        public String getResearchNeeded() {
+            return research;
+        }
 
     }
 }

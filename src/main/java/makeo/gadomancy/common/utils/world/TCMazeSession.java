@@ -47,22 +47,24 @@ class TCMazeSession {
         return null;
     }
 
-    final void closeSession() {
+    final void closeSession(boolean teleport) {
         TCMazeHandler.free(chunksAffected);
-        WorldUtil.tryTeleportBack(player, originDimId);
-        player.setPosition(originLocation.xCoord, originLocation.yCoord, originLocation.zCoord);
+        if(teleport) {
+            WorldUtil.tryTeleportBack(player, originDimId);
+            player.setPosition(originLocation.xCoord, originLocation.yCoord, originLocation.zCoord);
+        }
     }
 
     final void startSession() {
         if(portalCell == null) {
             LogManager.getLogger().error("Thaumcraft didn't generate a portal! Stopping instance!", new IllegalStateException());
-            closeSession();
+            closeSession(false);
             player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Thaumcraft didn't generate a portal in the Eldritch dimension. Sorry, we can't teleport you.."));
         } else {
             WorldUtil.teleportToFakeOuter(player);
-            int x = portalCell.x * 16 + 7;
-            int z = portalCell.z * 16 + 7;
-            player.setPosition(x, TCMazeHandler.TELEPORT_LAYER_Y, z);
+            int x = portalCell.x * 16 + 8;
+            int z = portalCell.z * 16 + 8;
+            player.setPositionAndUpdate(x, TCMazeHandler.TELEPORT_LAYER_Y, z);
         }
     }
 

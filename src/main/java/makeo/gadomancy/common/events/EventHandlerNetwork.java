@@ -35,6 +35,6 @@ public class EventHandlerNetwork {
         EntityPlayer player = e.player;
         Gadomancy.proxy.familiarHandler.notifyUnequip(player.worldObj, player);
 
-        TCMazeHandler.closeSession(e.player);
+        TCMazeHandler.closeSession(e.player, true);
     }
 }

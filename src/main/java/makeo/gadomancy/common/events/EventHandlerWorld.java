@@ -6,6 +6,7 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
+import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.GolemEnumHelper;
@@ -16,6 +17,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -59,8 +62,11 @@ public class EventHandlerWorld {
     }
 
     @SubscribeEvent
-    public void on(TickEvent.WorldTickEvent event) {
-        if (!event.world.isRemote && event.world.provider.dimensionId == 0) {
+    public void on(TickEvent.ServerTickEvent event) {
+        if(event.phase != TickEvent.Phase.END) return;
+        WorldServer worldServer = DimensionManager.getWorld(ModConfig.dimOuterId);
+        if(worldServer == null) return;
+        if (!worldServer.isRemote && (worldServer.provider.dimensionId == 0 || worldServer.provider.dimensionId == ModConfig.dimOuterId)) {
             TCMazeHandler.tick();
         }
     }

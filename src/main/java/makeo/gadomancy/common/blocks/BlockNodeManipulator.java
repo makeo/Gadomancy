@@ -82,7 +82,8 @@ public class BlockNodeManipulator extends BlockStoneDevice {
         } else if(!world.isRemote && heldItem != null && heldItem.getItem() instanceof ItemWandCasting) {
             tile.checkMultiblock();
             if (tile.isMultiblockStructurePresent()) {
-                if(!ResearchManager.isResearchComplete(player.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR")) return false;
+                String research = tile.getMultiblockType().getResearchNeeded();
+                if(!ResearchManager.isResearchComplete(player.getCommandSenderName(), research)) return false;
                 if (ThaumcraftApiHelper.consumeVisFromWandCrafting(player.getCurrentEquippedItem(), player, RegisteredRecipes.costsNodeManipulatorMultiblock, true)) {
                     tile.formMultiblock();
                     return true;
