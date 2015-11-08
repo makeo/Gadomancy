@@ -1,6 +1,7 @@
 package makeo.gadomancy.common.blocks;
 
 import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
 import makeo.gadomancy.common.blocks.tiles.TileManipulationFocus;
 import makeo.gadomancy.common.blocks.tiles.TileManipulatorPillar;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
@@ -70,6 +71,8 @@ public class BlockStoneMachine extends Block {
             } else {
                 return pedestalTopIcon;
             }
+        } else if(metadata == 2) {
+            return pedestalTopIcon;
         }
 
         return super.getIcon(side, metadata);
@@ -77,13 +80,14 @@ public class BlockStoneMachine extends Block {
 
     @Override
     public boolean hasTileEntity(int metadata) {
-        return metadata == 15 || metadata == 0 || metadata == 1;
+        return metadata == 15 || metadata == 0 || metadata == 1 || metadata == 2;
     }
 
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List list) {
         list.add(new ItemStack(item, 1, 0));
         list.add(new ItemStack(item, 1, 1));
+        list.add(new ItemStack(item, 1, 2));
     }
 
     @Override
@@ -104,6 +108,8 @@ public class BlockStoneMachine extends Block {
             return new TileManipulationFocus();
         } else if(metadata == 1) {
             return new TilePedestal();
+        } else if(metadata == 2) {
+            return new TileBlockProtector();
         }
         return null;
     }

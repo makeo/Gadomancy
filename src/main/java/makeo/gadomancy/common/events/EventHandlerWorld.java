@@ -4,6 +4,7 @@ import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
 import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
 import makeo.gadomancy.common.data.ModConfig;
@@ -12,17 +13,26 @@ import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.GolemEnumHelper;
 import makeo.gadomancy.common.utils.JarMultiblockHandler;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.Explosion;
+import net.minecraft.world.GameRules;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.tiles.TileJarFillable;
@@ -39,6 +49,14 @@ import java.util.Map;
  * Created by makeo @ 05.07.2015 13:20
  */
 public class EventHandlerWorld {
+    private Entity lastUpdated;
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void on(LivingEvent.LivingUpdateEvent e) {
+        if(!e.entityLiving.worldObj.isRemote) {
+            lastUpdated = e.entityLiving;
+        }
+    }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void on(WorldEvent.Load e) {
@@ -49,6 +67,46 @@ public class EventHandlerWorld {
             GolemEnumHelper.reorderEnum();
 
             TCMazeHandler.init();
+        }
+
+        GameRules rules = e.world.getGameRules();
+        rules.theGameRules.put("mobGriefing", new ValueOverride(this, String.valueOf(rules.getGameRuleBooleanValue("mobGriefing"))));
+    }
+
+    private static class ValueOverride extends GameRules.Value {
+        private final EventHandlerWorld handler;
+        public ValueOverride(EventHandlerWorld handler, String value) {
+            super(value);
+            this.handler = handler;
+        }
+
+        @Override
+        public boolean getGameRuleBooleanValue() {
+            boolean mobGriefing = super.getGameRuleBooleanValue();
+            if(mobGriefing) {
+                Entity lastUpdated = handler.lastUpdated;
+                if(lastUpdated != null) {
+                    StackTraceElement[] elements = Thread.currentThread().getStackTrace();
+                    for(StackTraceElement element : elements) {
+                        if(element.getClassName().equals(EntityLivingBase.class.getName())
+                                && (element.getMethodName().equals("func_70071_h") || element.getMethodName().equals("onUpdate"))) {
+                            return !TileBlockProtector.isSpotProtected(lastUpdated.worldObj, lastUpdated.posX, lastUpdated.posY, lastUpdated.posZ);
+                        }
+                    }
+                }
+            }
+            return mobGriefing;
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public void on(ExplosionEvent.Start e) {
+        Explosion expl = e.explosion;
+        if(expl.isSmoking && TileBlockProtector.isSpotProtected(e.world, expl.explosionX, expl.explosionY, expl.explosionZ)) {
+            //why?
+            //expl.isSmoking = false;
+            e.setCanceled(true);
+            e.world.newExplosion(expl.exploder, expl.explosionX, expl.explosionY, expl.explosionZ, expl.explosionSize, expl.isFlaming, false);
         }
     }
 

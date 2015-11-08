@@ -100,6 +100,7 @@ public class RegisteredBlocks {
         registerTile(TileManipulatorPillar.class);
         registerTile(TileManipulationFocus.class);
         registerTile(TileAdditionalEldritchPortal.class);
+        registerTile(TileBlockProtector.class);
     }
 
     private static void registerTile(Class<? extends TileEntity> tile, String name) {
