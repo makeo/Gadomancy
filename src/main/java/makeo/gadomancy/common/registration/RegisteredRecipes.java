@@ -224,7 +224,7 @@ public class RegisteredRecipes {
             ItemStack result = new ItemStack(RegisteredItems.itemFamiliar);
             familiar.setAspect(result, aspect);
 
-            recipes[i] = ThaumcraftApi.addInfusionCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".FAMILIAR", result, 4, new AspectList().add(aspect, 46).add(Aspect.AURA, 34).add(Aspect.MAGIC, 51), new ItemStack(ConfigItems.itemResource, 1, 1), new ItemStack[] { wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 15), new ItemStack(ConfigBlocks.blockCrystal, 1, 6) , wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 14), new ItemStack(ConfigBlocks.blockCrystal, 1, 6), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 15), new ItemStack(ConfigBlocks.blockCrystal, 1, 6), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 14), new ItemStack(ConfigBlocks.blockCrystal, 1, 6) });
+            recipes[i] = ThaumcraftApi.addInfusionCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".FAMILIAR", result, 4, new AspectList().add(aspect, 46).add(Aspect.AURA, 34).add(Aspect.MAGIC, 51), new ItemStack(ConfigItems.itemAmuletRunic, 1, 0), new ItemStack[] { wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 15), new ItemStack(ConfigBlocks.blockCrystal, 1, 6) , wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 14), new ItemStack(ConfigItems.itemResource, 1, 1), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 15), new ItemStack(ConfigBlocks.blockCrystal, 1, 6), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 14), new ItemStack(ConfigItems.itemResource, 1, 1) });
         }
         return recipes;
     }

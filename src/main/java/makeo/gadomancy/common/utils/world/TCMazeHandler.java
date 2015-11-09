@@ -49,7 +49,6 @@ public class TCMazeHandler {
 
     public static final FakeWorldTCGeneration GEN = new FakeWorldTCGeneration();
 
-    private static List<Integer> scheduledWorldUnloads = new ArrayList<Integer>();
     private static List<TCMazeSession> flaggedSessions = new ArrayList<TCMazeSession>();
 
     private static Map<EntityPlayer, TCMazeSession> runningSessions = new HashMap<EntityPlayer, TCMazeSession>();
@@ -189,23 +188,7 @@ public class TCMazeHandler {
         }
     }
 
-    private static void addToWorldUnloadQueue(int dimId) {
-        if(!scheduledWorldUnloads.contains(dimId)) {
-            scheduledWorldUnloads.add(dimId);
-        }
-    }
-
     public static void scheduleTick() {
-        for(Integer i : scheduledWorldUnloads) {
-            WorldServer ws = DimensionManager.getWorld(i);
-            if (ws != null) {
-                MinecraftForge.EVENT_BUS.post(new WorldEvent.Unload(ws));
-                ws.flush();
-                DimensionManager.setWorld(i, null);
-            }
-        }
-        scheduledWorldUnloads.clear();
-
         Iterator<TCMazeSession> it = flaggedSessions.iterator();
         while(it.hasNext()) {
             TCMazeSession s = it.next();

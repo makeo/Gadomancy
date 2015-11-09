@@ -156,7 +156,7 @@ public class RegisteredResearches {
                 3, -2, 2, familiarResearchStack)
                 .setSpecial().setConcealed()
                 .setParents(nitorResearch.key)
-                .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR.1"), new ResearchPage(RegisteredRecipes.recipesFamilar)).registerResearchItem();
+                .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR.1"), new ResearchPage(RegisteredRecipes.recipesFamilar), new ResearchPage("gadomancy.research_page.FAMILIAR.3")).registerResearchItem();
 
         ResearchItem researchTallow = PseudoResearchItem.create("TALLOW", 7, -3).registerResearchItem();
 
