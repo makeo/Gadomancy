@@ -168,16 +168,12 @@ public class TCMazeHandler {
             runningSessions.get(player).closeSession(teleport);
             runningSessions.remove(player);
         }
-        if (runningSessions.size() == 0) {
-            //addToWorldUnloadQueue(ModConfig.dimOuterId);
-        }
     }
 
     public static void free(Map<CellLoc, Short> locations) {
         if (locations == null) return;
         for (CellLoc loc : locations.keySet()) {
             labyrinthCopy.remove(loc);
-            //forceChunkUnloading(ws, loc.x, loc.z);
         }
     }
 
@@ -218,10 +214,6 @@ public class TCMazeHandler {
                 MazeHandler.generateEldritch(GEN, GEN.rand, l.x, l.z);
             }
             MazeHandler.labyrinth = old;
-            //System.out.println("Maze BuildTime: " + (System.currentTimeMillis() - startMs) + " (ms)");
-            /*System.out.println("Blocks SET: " + GEN.blockCount);
-            System.out.println("Blocks OVERWRITTEN: " + GEN.blockOverwriteCount);
-            System.out.println("BufferChunks CREATED: " + FakeWorldTCGeneration.ChunkBuffer.cnt);*/
 
             finishBuild();
         }

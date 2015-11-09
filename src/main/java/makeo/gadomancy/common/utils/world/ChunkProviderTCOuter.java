@@ -77,11 +77,7 @@ public class ChunkProviderTCOuter implements IChunkProvider {
                 TileEntity te = buf.blockData[pos[3]].createTileEntity(worldObj, buf.metaBuffer[pos[3]]);
                 if(te != null) {
                     if(te instanceof TileEldritchLock) {
-                        NBTTagCompound compound = new NBTTagCompound();
-                        te.writeToNBT(compound);
-                        TileEntity newTe = new TileOverrideEldritchLock();
-                        newTe.readFromNBT(compound);
-                        te = newTe;
+                        te = new TileOverrideEldritchLock();
                     }
 
                     worldObj.addTileEntity(te);
