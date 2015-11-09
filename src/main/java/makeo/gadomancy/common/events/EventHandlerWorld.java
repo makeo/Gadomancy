@@ -19,6 +19,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.GameRules;
@@ -31,6 +33,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.tiles.TileJarFillable;
 
@@ -162,6 +165,12 @@ public class EventHandlerWorld {
                 if (te != null && te instanceof TileNodeManipulator) {
                     if (((TileNodeManipulator) te).isInMultiblock())
                         ((TileNodeManipulator) te).breakMultiblock();
+                }
+            }
+            if (event.world.provider.dimensionId == ModConfig.dimOuterId) {
+                if(event.block == ConfigBlocks.blockEldritchNothing) {
+                    event.setCanceled(true);
+                    event.getPlayer().addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.GRAY + StatCollector.translateToLocal("gadomancy.eldritch.nobreakPortalNothing")));
                 }
             }
         }

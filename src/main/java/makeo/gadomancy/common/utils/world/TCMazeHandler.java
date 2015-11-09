@@ -72,6 +72,7 @@ public class TCMazeHandler {
                 if (!hasOpenSession(player)) {
                     WorldUtil.tryTeleportBack((EntityPlayerMP) player, 0);
                     ChunkCoordinates cc = out.getSpawnPoint();
+                    //TODO return something valid
                     int y = w.getTopSolidOrLiquidBlock(cc.posX, cc.posZ);
                     player.setPositionAndUpdate(cc.posX + 0.5, y, cc.posZ + 0.5);
                 }

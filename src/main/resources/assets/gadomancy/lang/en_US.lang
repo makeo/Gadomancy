@@ -102,6 +102,9 @@ gadomancy.upgrades.runicshield=Runic Shield
 gadomancy.lore.stickyjar=Sticky
 gadomancy.lore.remotejar=§7Network: %s
 
+gadomancy.eldritch.noflyCreative=(even in creative)
+gadomancy.eldritch.nobreakPortalNothing=This portal cannot be broken
+
 tile.BlockStickyJar.name=Sticky Jar
 tile.BlockArcaneDropper.name=Arcane Dropper
 tile.BlockInfusionClaw.name=Infusion Claw

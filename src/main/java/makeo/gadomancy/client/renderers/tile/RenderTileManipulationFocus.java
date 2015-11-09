@@ -21,6 +21,7 @@ public class RenderTileManipulationFocus extends TileEntitySpecialRenderer {
     private static final ModelFocusPortalPart PORTAL_FOCUS = new ModelFocusPortalPart();
 
     public void renderTileEntityAt(TileManipulationFocus tile, double x, double y, double z, float partialTicks) {
+        if(tile.getFociId() == -1) return;
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
 

@@ -105,13 +105,13 @@ public class BlockStoneMachine extends Block {
         if (metadata == 15) {
             return new TileManipulatorPillar();
         } else if (metadata == 0) {
-            return new TileManipulationFocus(0);
+            return new TileManipulationFocus();
         } else if(metadata == 1) {
             return new TilePedestal();
         } else if(metadata == 2) {
             return new TileBlockProtector();
         } else if(metadata == 3) {
-            return new TileManipulationFocus(1);
+            return new TileManipulationFocus();
         }
         return null;
     }
@@ -159,7 +159,7 @@ public class BlockStoneMachine extends Block {
                 dropBlockAsItem(world, x, y, z, metadata, 0);
                 world.setBlockToAir(x, y, z);
             }
-        } else if (metadata == 0) {
+        } else if (metadata == 0 || metadata == 3) {
             if (world.getBlock(x, y - 1, z) != RegisteredBlocks.blockNodeManipulator || world.getBlockMetadata(x, y - 1, z) != 5) {
                 dropBlockAsItem(world, x, y, z, metadata, 0);
                 world.setBlockToAir(x, y, z);
@@ -168,10 +168,20 @@ public class BlockStoneMachine extends Block {
     }
 
     @Override
+    public void onPostBlockPlaced(World world, int x, int y, int z, int metadata) {
+        if(metadata == 0 || metadata == 3) {
+            TileEntity te = world.getTileEntity(x, y, z);
+            if(te != null && te instanceof TileManipulationFocus) {
+                ((TileManipulationFocus) te).setFociId(metadata == 0 ? 0 : 1);
+            }
+        }
+    }
+
+    @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
         int metadata = world.getBlockMetadata(x, y, z);
 
-        if(metadata == 0) {
+        if(metadata == 0 || metadata == 3) {
             if (world.getBlock(x, y - 1, z).equals(RegisteredBlocks.blockNodeManipulator) && world.getBlockMetadata(x, y - 1, z) == 5) {
                 return world.getBlock(x, y - 1, z).onBlockActivated(world, x, y - 1, z, player, side, hitX, hitY, hitZ);
             }
@@ -189,7 +199,7 @@ public class BlockStoneMachine extends Block {
             setBlockBounds(0, 0, 0, 1, 0.5f, 1);
         } else if (metadata == 11) {
             setBlockBounds(0.0F, -1.0F, 0.0F, 1.0F, -0.5F, 1.0F);
-        } else if (metadata == 0) {
+        } else if (metadata == 0 || metadata == 3) {
             setBlockBounds(3 / 16f, 0, 3 / 16f, 1 - (3 / 16f), 6 / 16f, 1 - (3 / 16f));
         } else if(metadata == 1) {
             setBlockBounds(0.25f, 0, 0.25f, 0.75f, 0.99f, 0.75f);
@@ -202,7 +212,7 @@ public class BlockStoneMachine extends Block {
         int metadata = world.getBlockMetadata(x, y, z);
         if (metadata == 11 || metadata == 15 || metadata == 1) {
             setBlockBounds(0, 0, 0, 1, 1, 1);
-        } else if (metadata == 0) {
+        } else if (metadata == 0 || metadata == 3) {
             setBlockBoundsBasedOnState(world, x, y, z);
         }
         super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);

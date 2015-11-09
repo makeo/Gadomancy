@@ -10,6 +10,7 @@ import makeo.gadomancy.common.node.NodeManipulatorResult;
 import makeo.gadomancy.common.node.NodeManipulatorResultHandler;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredMultiblocks;
+import makeo.gadomancy.common.registration.RegisteredRecipes;
 import makeo.gadomancy.common.utils.MultiblockHelper;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -127,18 +128,14 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
 
         TileEntity te = worldObj.getTileEntity(xCoord, yCoord + 2, zCoord);
         if(te == null || !(te instanceof TileExtendedNode)) return;
-        TileExtendedNode node = (TileExtendedNode) te;
 
-        List players = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(15, 15, 15));
-        if(!players.isEmpty()) {
-            EntityPlayer player = (EntityPlayer) players.get(0);
-            //TCMazeHandler.createSessionWaitForTeleport(player, (int) player.posX, (int) player.posY, (int) player.posZ);
-        }
+        worldObj.removeTileEntity(xCoord, yCoord + 2, zCoord);
+        worldObj.setBlockToAir(xCoord, yCoord + 2, zCoord);
+        worldObj.setBlock(xCoord, yCoord + 2, zCoord, RegisteredBlocks.blockAdditionalEldrichPortal);
 
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         worldObj.markBlockForUpdate(xCoord, yCoord + 2, zCoord);
         markDirty();
-        node.markDirty();
     }
 
     private void manipulationTick() {
@@ -295,7 +292,8 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
         for(MultiblockHelper.IntVec3 v : compareableCompleteStructure.keySet()) {
             MultiblockHelper.BlockInfo info = compareableCompleteStructure.get(v);
             MultiblockHelper.BlockInfo restoreInfo = toRestore.get(v);
-            if(info.block == RegisteredBlocks.blockNode || info.block == Blocks.air || info.block == RegisteredBlocks.blockNodeManipulator || restoreInfo == null) continue;
+            if(info.block == RegisteredBlocks.blockNode || (info.block == RegisteredBlocks.blockStoneMachine && (info.meta == 0 || info.meta == 3))
+                    || info.block == Blocks.air || info.block == RegisteredBlocks.blockNodeManipulator) continue;
             int absX = v.x + xCoord;
             int absY = v.y + yCoord;
             int absZ = v.z + zCoord;
@@ -326,7 +324,8 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
         }
         for(MultiblockHelper.IntVec3 v : toBuild.keySet()) {
             MultiblockHelper.BlockInfo info = toBuild.get(v);
-            if(info.block == RegisteredBlocks.blockNode || info.block == Blocks.air || info.block == RegisteredBlocks.blockNodeManipulator) continue;
+            if(info.block == RegisteredBlocks.blockNode || (info.block == RegisteredBlocks.blockStoneMachine && (info.meta == 0 || info.meta == 3))
+                    || info.block == Blocks.air || info.block == RegisteredBlocks.blockNodeManipulator) continue;
             int absX = v.x + xCoord;
             int absY = v.y + yCoord;
             int absZ = v.z + zCoord;
@@ -519,18 +518,23 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
 
     public static enum MultiblockType {
 
-        NODE_MANIPULATOR(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR"),
-        E_PORTAL_CREATOR(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR"); //TODO Change sometime.
+        NODE_MANIPULATOR(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR", RegisteredRecipes.costsNodeManipulatorMultiblock),
+        E_PORTAL_CREATOR(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR", RegisteredRecipes.costsEldritchPortalCreatorMultiblock); //TODO Change sometime.
 
         private String research;
+        private AspectList costs;
 
-        private MultiblockType(String research) {
+        private MultiblockType(String research, AspectList costs) {
             this.research = research;
+            this.costs = costs;
         }
 
         public String getResearchNeeded() {
             return research;
         }
 
+        public AspectList getMultiblockCosts() {
+            return costs;
+        }
     }
 }
