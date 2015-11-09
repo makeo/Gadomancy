@@ -132,7 +132,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
         List players = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(15, 15, 15));
         if(!players.isEmpty()) {
             EntityPlayer player = (EntityPlayer) players.get(0);
-            TCMazeHandler.createSessionWaitForTeleport(player, (int) player.posX, (int) player.posY, (int) player.posZ);
+            //TCMazeHandler.createSessionWaitForTeleport(player, (int) player.posX, (int) player.posY, (int) player.posZ);
         }
 
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);

@@ -59,7 +59,7 @@ class TCMazeSession {
         TCMazeHandler.free(chunksAffected);
         if(teleport) {
             WorldUtil.tryTeleportBack(player, originDimId);
-            player.setPosition(originLocation.xCoord, originLocation.yCoord, originLocation.zCoord);
+            player.setPositionAndUpdate(originLocation.xCoord, originLocation.yCoord, originLocation.zCoord);
         }
     }
 

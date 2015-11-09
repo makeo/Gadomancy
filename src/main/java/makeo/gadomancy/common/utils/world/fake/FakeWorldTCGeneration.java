@@ -14,6 +14,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.EntityPermanentItem;
 import thaumcraft.common.entities.monster.EntityEldritchGuardian;
+import thaumcraft.common.lib.utils.BlockUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,7 +55,18 @@ public class FakeWorldTCGeneration extends FakeWorld {
 
         if(buf.blockData[key] != null) {
             blockOverwriteCount++;
+            ChunkCoordinates cc = new ChunkCoordinates(x, y, z);
+            if(gettedTE.containsKey(cc)) {
+                gettedTE.remove(cc);
+            }
         }
+
+        /*if(block == ConfigBlocks.blockEldritchNothing) {
+            if(BlockUtils.isBlockExposed(this, x, y, z)) {
+                meta = 1;
+            }
+        }*/
+
         buf.blockData[key] = block;
         buf.metaBuffer[key] = (byte) meta;
         if(block.hasTileEntity(meta)) buf.tiles.add(new Integer[] {x, y, z, key});
@@ -175,14 +187,9 @@ public class FakeWorldTCGeneration extends FakeWorld {
         public Block[] blockData = new Block[32768];
         public byte[] metaBuffer = new byte[32768];
         public List<Integer[]> tiles = new ArrayList<Integer[]>();
-        public static int cnt = 0;
 
         public ChunkBuffer(long key) {
             this.key = key;
-            cnt++;
-            if(cnt % 50 == 0) {
-                System.out.println("ChunkBuffers created: " + cnt);
-            }
         }
 
         @Override

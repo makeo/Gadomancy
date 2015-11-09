@@ -52,7 +52,7 @@ public class TileAdditionalEldritchPortal extends TileEldritchPortal {
                     //Teleporting there.
 
                     startTracking(toTeleport, new ExtendedChunkCoordinates(new ChunkCoordinates(xCoord, yCoord, zCoord), toTeleport.dimension));
-                    TCMazeHandler.createSessionWaitForTeleport(toTeleport, toTeleport.posX, toTeleport.posY, toTeleport.posZ);
+                    TCMazeHandler.createSessionWaitForTeleport(toTeleport);
                 } else {
                     //Teleporting back.
 

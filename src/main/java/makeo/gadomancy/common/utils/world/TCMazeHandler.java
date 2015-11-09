@@ -73,7 +73,7 @@ public class TCMazeHandler {
                     WorldUtil.tryTeleportBack((EntityPlayerMP) player, 0);
                     ChunkCoordinates cc = out.getSpawnPoint();
                     int y = w.getTopSolidOrLiquidBlock(cc.posX, cc.posZ);
-                    player.setPosition(cc.posX + 0.5, y, cc.posZ + 0.5);
+                    player.setPositionAndUpdate(cc.posX + 0.5, y, cc.posZ + 0.5);
                 }
             }
             for (EntityPlayer player : runningSessions.keySet()) {
@@ -87,11 +87,11 @@ public class TCMazeHandler {
     /*
      *  Coordinates wanted here are the absolute Portal coordinates.
      */
-    public static boolean createSessionWaitForTeleport(EntityPlayer player, double pX, double pY, double pZ) {
+    public static boolean createSessionWaitForTeleport(EntityPlayer player) {
         if (hasOpenSession(player) || !hasFreeSessionSpace()) return false;
         WorldServer w = MinecraftServer.getServer().worldServerForDimension(ModConfig.dimOuterId);
         reserveSessionSpace(player);
-        setupSession(player, w, pX, pY, pZ);
+        setupSession(player, w);
         return true;
     }
 
@@ -99,24 +99,24 @@ public class TCMazeHandler {
         runningSessions.put(player, TCMazeSession.placeholder());
     }
 
-    private static void setupSession(EntityPlayer player, WorldServer world, double pX, double pY, double pZ) {
+    private static void setupSession(EntityPlayer player, WorldServer world) {
         Vec3 currentPos = Vec3.createVectorHelper(player.posX, player.posY, player.posZ);
         int originDim = player.worldObj.provider.dimensionId;
-        Map<CellLoc, Short> locs = calculateCellLocs(world, pX, pZ);
+        Map<CellLoc, Short> locs = calculateCellLocs(world);
         MazeBuilderThread t = new MazeBuilderThread((EntityPlayerMP) player, locs, originDim, currentPos);
         t.start();
     }
 
-    private static Map<CellLoc, Short> calculateCellLocs(WorldServer world, double pX, double pZ) {
+    private static Map<CellLoc, Short> calculateCellLocs(WorldServer world) {
         ConcurrentHashMap<CellLoc, Short> oldDat = MazeHandler.labyrinth;
         ConcurrentHashMap<CellLoc, Short> bufferOld = new ConcurrentHashMap<CellLoc, Short>(labyrinthCopy);
         MazeHandler.labyrinth = labyrinthCopy;
-        int chX = ((int) pX) >> 4;
-        int chZ = ((int) pZ) >> 4;
+        int chX = getHighestPossibleRandWH(); //To ensure we're always +x and +z
+        int chZ = getHighestPossibleRandWH();
         int w = randWH(world.rand);
         int h = randWH(world.rand);
         while (MazeHandler.mazesInRange(chX, chZ, w, h)) {
-            chX++;
+            chX++; //We grow the mazes in +x direction!
         }
         MazeThread mt = new MazeThread(chX, chZ, w, h, world.rand.nextLong());
         mt.run();
@@ -141,8 +141,16 @@ public class TCMazeHandler {
         return ModConfig.maxMazeCount == -1 || runningSessions.size() < ModConfig.maxMazeCount;
     }
 
+    /*
+    Change getHighestPossibleRandWH accordingly if modifying this.
+     */
     private static int randWH(Random random) {
         return 17 + random.nextInt(2) * 2;
+    }
+
+    private static int getHighestPossibleRandWH() {
+        //Add something to ensure 100% we never get in minus coordinates!
+        return 29; //21 + ensured 8
     }
 
     public static void init() {
@@ -172,6 +180,7 @@ public class TCMazeHandler {
             labyrinthCopy.remove(loc);
             forceChunkUnloading(ws, loc.x, loc.z);
         }
+        System.out.println("new weight: " + labyrinthCopy.size());
     }
 
     private static void forceChunkUnloading(WorldServer ws, int chX, int chZ) {
@@ -226,10 +235,10 @@ public class TCMazeHandler {
                 MazeHandler.generateEldritch(GEN, GEN.rand, l.x, l.z);
                 MazeHandler.labyrinth = old;
             }
-            System.out.println("BuildTime: " + (System.currentTimeMillis() - startMs) + " (ms)");
-            System.out.println("Blocks SET: " + GEN.blockCount);
+            System.out.println("Maze BuildTime: " + (System.currentTimeMillis() - startMs) + " (ms)");
+            /*System.out.println("Blocks SET: " + GEN.blockCount);
             System.out.println("Blocks OVERWRITTEN: " + GEN.blockOverwriteCount);
-            System.out.println("BufferChunks CREATED: " + FakeWorldTCGeneration.ChunkBuffer.cnt);
+            System.out.println("BufferChunks CREATED: " + FakeWorldTCGeneration.ChunkBuffer.cnt);*/
 
             finishBuild();
         }
