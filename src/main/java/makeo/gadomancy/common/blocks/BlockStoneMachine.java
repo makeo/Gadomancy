@@ -62,7 +62,7 @@ public class BlockStoneMachine extends Block {
     public IIcon getIcon(int side, int metadata) {
         if (metadata == 11 || metadata == 15) {
             return pillarIcon;
-        } else if (metadata == 0) {
+        } else if (metadata == 0 || metadata == 3) {
             return focusIcon;
         } else if (metadata == 1) {
             if (side > 1) {
@@ -79,7 +79,7 @@ public class BlockStoneMachine extends Block {
 
     @Override
     public boolean hasTileEntity(int metadata) {
-        return metadata == 15 || metadata == 0 || metadata == 1 || metadata == 2;
+        return metadata == 15 || metadata == 0 || metadata == 1 || metadata == 2 || metadata == 3;
     }
 
     @Override
