@@ -74,6 +74,18 @@ public class FakeWorldTCGeneration extends FakeWorld {
     }
 
     @Override
+    public boolean setBlockMetadataWithNotify(int x, int y, int z, int metadata, int flags) {
+        long chKey = ((long) x >> 4) | ((long) z >> 4) << 32;
+        ChunkBuffer buf = chunks.get(chKey);
+        int keyX = (x & 15) << 7 << 4;
+        int keyZ = (z & 15) << 7;
+        int key = keyX | keyZ | y;
+
+        buf.metaBuffer[key] = (byte) metadata;
+        return true;
+    }
+
+    @Override
     public Block getBlock(int x, int y, int z) {
         long chKey = ((long) x >> 4) | ((long) z >> 4) << 32;
         ChunkBuffer buf = chunks.get(chKey);

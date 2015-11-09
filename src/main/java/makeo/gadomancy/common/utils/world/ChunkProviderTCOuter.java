@@ -16,13 +16,17 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
+import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.EntityPermanentItem;
 import thaumcraft.common.entities.monster.EntityEldritchGuardian;
+import thaumcraft.common.lib.utils.BlockUtils;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 import thaumcraft.common.tiles.TileCrystal;
 import thaumcraft.common.tiles.TileEldritchCrabSpawner;
 import thaumcraft.common.tiles.TileEldritchLock;
+import thaumcraft.common.tiles.TileEldritchNothing;
 
 import java.util.Iterator;
 import java.util.List;
@@ -56,6 +60,13 @@ public class ChunkProviderTCOuter implements IChunkProvider {
         long key = ((long) x) | ((long) z) << 32;
         if(TCMazeHandler.GEN.chunks.containsKey(key)) {
             FakeWorldTCGeneration.ChunkBuffer buf = TCMazeHandler.GEN.chunks.get(key);
+
+            for(int i = 0; i < buf.blockData.length; i++) {
+                if(buf.blockData[i] == ConfigBlocks.blockEldritchNothing) {
+                    ConfigBlocks.blockEldritchNothing.onNeighborBlockChange(TCMazeHandler.GEN, (i >> 11 & 15) | (x << 4), i & 127, (i >> 7 & 15) | (z << 4), ConfigBlocks.blockEldritchNothing);
+                }
+            }
+
             TCMazeHandler.GEN.chunks.remove(key);
 
             chunk = new Chunk(worldObj, buf.blockData, buf.metaBuffer, x, z);
@@ -123,6 +134,11 @@ public class ChunkProviderTCOuter implements IChunkProvider {
                     NBTTagCompound compound = new NBTTagCompound();
                     compound.setByte("facing", ((TileEldritchCrabSpawner) te).getFacing());
                     ((TileEldritchCrabSpawner) correspondingTE).readCustomNBT(compound);
+                } else if(te instanceof TileEldritchNothing) {
+                    if (!(correspondingTE instanceof TileEldritchNothing)) {
+                        System.out.println("DATA INCONSISTENCY - TE at " + te.xCoord + ", " + te.yCoord + ", " + te.zCoord + " EXPECTED: " + te.getClass().getSimpleName() + " GIVEN " + correspondingTE.getClass().getSimpleName());
+                        throw new IllegalStateException();
+                    }
                 } else {
                     throw new IllegalStateException("Unexpected TileEntity: " + te);
                 }
