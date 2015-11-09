@@ -139,7 +139,8 @@ public class BlockStoneMachine extends Block {
 
     @Override
     public boolean canReplace(World world, int x, int y, int z, int side, ItemStack stack) {
-        if (stack.getItemDamage() == 0 && (y < 1 || world.getBlock(x, y - 1, z) != RegisteredBlocks.blockNodeManipulator)) {
+        int damage = stack.getItemDamage();
+        if ((damage == 0 || damage == 3) && (y < 1 || world.getBlock(x, y - 1, z) != RegisteredBlocks.blockNodeManipulator)) {
             return false;
         }
         return super.canReplace(world, x, y, z, side, stack);
