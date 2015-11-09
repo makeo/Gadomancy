@@ -2,7 +2,13 @@ package makeo.gadomancy.common.registration;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.items.*;
+import makeo.gadomancy.common.items.ItemCreativeNode;
+import makeo.gadomancy.common.items.ItemExtendedNodeJar;
+import makeo.gadomancy.common.items.ItemFakeGolemPlacer;
+import makeo.gadomancy.common.items.ItemFakeGolemShield;
+import makeo.gadomancy.common.items.ItemFakeModIcon;
+import makeo.gadomancy.common.items.ItemGolemCoreBreak;
+import makeo.gadomancy.common.items.ItemTransformationFocus;
 import makeo.gadomancy.common.items.baubles.ItemFamiliar;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;

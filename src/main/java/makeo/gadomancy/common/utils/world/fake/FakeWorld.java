@@ -1,9 +1,10 @@
-package makeo.gadomancy.common.utils;
+package makeo.gadomancy.common.utils.world.fake;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.MinecraftException;
 import net.minecraft.world.World;
@@ -25,8 +26,15 @@ import java.io.File;
  * Created by makeo @ 16.10.2015 22:15
  */
 public class FakeWorld extends World {
+
+    public FakeWorld(WorldProvider provider) {
+        super(FakeSaveHandler.instance, "", null, provider, null);
+        difficultySetting = EnumDifficulty.NORMAL;
+    }
+
     public FakeWorld() {
         super(FakeSaveHandler.instance, "", null, FakeWorldProvider.instance, null);
+        difficultySetting = EnumDifficulty.NORMAL;
     }
 
     @Override
@@ -103,8 +111,7 @@ public class FakeWorld extends World {
         }
 
         @Override
-        public void flush() {
-        }
+        public void flush() {}
 
         @Override
         public File getWorldDirectory() {

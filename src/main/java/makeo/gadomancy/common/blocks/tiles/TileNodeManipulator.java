@@ -74,6 +74,17 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
     }
 
     private void multiblockTick() {
+        if(multiblockType == null) {
+            if(MultiblockHelper.isMultiblockPresent(worldObj, xCoord, yCoord, zCoord, RegisteredMultiblocks.completeNodeManipulatorMultiblock)) {
+                multiblockType = MultiblockType.E_PORTAL_CREATOR;
+            } else if(MultiblockHelper.isMultiblockPresent(worldObj, xCoord, yCoord, zCoord, RegisteredMultiblocks.completeEldritchPortalCreator)) {
+                multiblockType = MultiblockType.NODE_MANIPULATOR;
+            }
+        }
+        if(multiblockType == null) {
+            breakMultiblock();
+            return;
+        }
         switch (multiblockType) {
             case NODE_MANIPULATOR:
                 if(!isWorking) {
@@ -93,7 +104,6 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
     }
 
     private void eldritchPortalCreationTick() {
-
         workTick++;
         if(workTick < 10) {
             if(workTick % 16 == 0) {
@@ -122,7 +132,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
         List players = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(15, 15, 15));
         if(!players.isEmpty()) {
             EntityPlayer player = (EntityPlayer) players.get(0);
-            TCMazeHandler.createSessionAndTeleport(player, (int) player.posX, (int) player.posY, (int) player.posZ);
+            TCMazeHandler.createSessionWaitForTeleport(player, (int) player.posX, (int) player.posY, (int) player.posZ);
         }
 
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -303,6 +313,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
 
     public void formMultiblock() {
         MultiblockHelper.MultiblockPattern toBuild;
+        if(multiblockType == null) return;
         switch (multiblockType) {
             case NODE_MANIPULATOR:
                 toBuild = RegisteredMultiblocks.completeNodeManipulatorMultiblock;
@@ -390,6 +401,17 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
         boolean prevState = isMultiblockStructurePresent();
         if(prevState) { //If there is already a multiblock formed...
             if(isInMultiblock()) { //If we were actually in multiblock before
+                if(multiblockType == null) {
+                    if(MultiblockHelper.isMultiblockPresent(worldObj, xCoord, yCoord, zCoord, RegisteredMultiblocks.completeNodeManipulatorMultiblock)) {
+                        multiblockType = MultiblockType.E_PORTAL_CREATOR;
+                    } else if(MultiblockHelper.isMultiblockPresent(worldObj, xCoord, yCoord, zCoord, RegisteredMultiblocks.completeEldritchPortalCreator)) {
+                        multiblockType = MultiblockType.NODE_MANIPULATOR;
+                    }
+                }
+                if(multiblockType == null) {
+                    breakMultiblock();
+                    return false;
+                }
                 switch (multiblockType) {
                     case NODE_MANIPULATOR:
                         setMultiblockStructurePresent(MultiblockHelper.isMultiblockPresent(worldObj, xCoord, yCoord, zCoord, RegisteredMultiblocks.completeNodeManipulatorMultiblock), MultiblockType.NODE_MANIPULATOR);
@@ -498,7 +520,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
     public static enum MultiblockType {
 
         NODE_MANIPULATOR(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR"),
-        E_PORTAL_CREATOR(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR"); //Change sometime.
+        E_PORTAL_CREATOR(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR"); //TODO Change sometime.
 
         private String research;
 

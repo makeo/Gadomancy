@@ -36,6 +36,14 @@ class TCMazeSession {
         this.portalCell = findPortal();
     }
 
+    TCMazeSession() {
+        player = null;
+        chunksAffected = null;
+        portalCell = null;
+        originDimId = 0;
+        originLocation = null;
+    }
+
     private CellLoc findPortal() {
         for(CellLoc loc : chunksAffected.keySet()) {
             Short s = chunksAffected.get(loc);
@@ -64,8 +72,11 @@ class TCMazeSession {
             WorldUtil.teleportToFakeOuter(player);
             int x = portalCell.x * 16 + 8;
             int z = portalCell.z * 16 + 8;
-            player.setPositionAndUpdate(x, TCMazeHandler.TELEPORT_LAYER_Y, z);
+            player.setPositionAndUpdate(x + 0.5, TCMazeHandler.TELEPORT_LAYER_Y, z + 0.5);
         }
     }
 
+    public static TCMazeSession placeholder() {
+        return new TCMazeSession();
+    }
 }

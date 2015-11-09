@@ -15,7 +15,6 @@ import makeo.gadomancy.common.utils.JarMultiblockHandler;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
@@ -23,7 +22,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -31,7 +29,6 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import thaumcraft.common.items.wands.ItemWandCasting;
@@ -127,6 +124,8 @@ public class EventHandlerWorld {
         if (!worldServer.isRemote && (worldServer.provider.dimensionId == 0 || worldServer.provider.dimensionId == ModConfig.dimOuterId)) {
             TCMazeHandler.tick();
         }
+
+        TCMazeHandler.scheduleTick();
     }
 
     private Map<EntityPlayer, Integer> interacts = null;

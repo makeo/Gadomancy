@@ -81,7 +81,7 @@ public class CommonProxy implements IGuiHandler {
 
         RegisteredPotions.init();
 
-        DimensionManager.registerProviderType(ModConfig.dimOuterId, WorldProviderTCEldrich.class, false);
+        DimensionManager.registerProviderType(ModConfig.dimOuterId, WorldProviderTCEldrich.class, true);
         DimensionManager.registerDimension(ModConfig.dimOuterId, ModConfig.dimOuterId);
     }
 

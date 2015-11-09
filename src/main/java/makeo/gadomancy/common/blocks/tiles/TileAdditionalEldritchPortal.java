@@ -1,27 +1,31 @@
 package makeo.gadomancy.common.blocks.tiles;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.utils.world.TCMazeHandler;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
-import thaumcraft.api.ThaumcraftApiHelper;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.playerdata.PacketResearchComplete;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.WorldServer;
 import thaumcraft.common.tiles.TileEldritchPortal;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
  * GNU LESSER GENERAL PUBLIC LICENSE
  * for more read the LICENSE file
- * <p/>
+ *
  * Created by makeo @ 06.11.2015 23:32
  */
 public class TileAdditionalEldritchPortal extends TileEldritchPortal {
+
+    private static Map<EntityPlayer, ExtendedChunkCoordinates> trackedPortalActivity = new HashMap<EntityPlayer, ExtendedChunkCoordinates>();
+    private EntityPlayer toTeleport;
     private int count = 0;
 
     @Override
@@ -34,30 +38,58 @@ public class TileAdditionalEldritchPortal extends TileEldritchPortal {
             this.opencount += 1;
         }
 
-        if ((!this.worldObj.isRemote) && (this.count % 5 == 0)) {
+        if ((!this.worldObj.isRemote) && (this.count % 5 == 0) && toTeleport == null) {
             List<EntityPlayerMP> players = this.worldObj.getEntitiesWithinAABB(EntityPlayerMP.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1).expand(0.5D, 1.0D, 0.5D));
-            for (EntityPlayerMP player : players) {
-                if ((player.ridingEntity == null) && (player.riddenByEntity == null)) {
-                    if (player.timeUntilPortal > 0) {
-                        player.timeUntilPortal = 100;
-                    } else if (player.dimension != ModConfig.dimOuterId) {
-                        player.timeUntilPortal = 100;
+            if(players != null && !players.isEmpty()) {
+                EntityPlayerMP toTeleport = players.get(0);
 
-                        //TODO: Teleport to dim
-                        //player.mcServer.getConfigurationManager().transferPlayerToDimension(player, Config.dimensionOuterId, new TeleporterThaumcraft(mServer.worldServerForDimension(Config.dimensionOuterId)));
+                if(toTeleport.timeUntilPortal > 0) return;
 
-                        if (!ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), "ENTEROUTER")) {
-                            PacketHandler.INSTANCE.sendTo(new PacketResearchComplete("ENTEROUTER"), player);
-                            Thaumcraft.proxy.getResearchManager().completeResearch(player, "ENTEROUTER");
-                        }
-                    } else {
-                        player.timeUntilPortal = 100;
+                this.toTeleport = toTeleport;
+                toTeleport.timeUntilPortal = 200;
 
-                        //TODO: Teleport out
-                        //player.mcServer.getConfigurationManager().transferPlayerToDimension(player, 0, new TeleporterThaumcraft(mServer.worldServerForDimension(0)));
-                    }
+                if(toTeleport.dimension != ModConfig.dimOuterId) {
+                    //Teleporting there.
+
+                    startTracking(toTeleport, new ExtendedChunkCoordinates(new ChunkCoordinates(xCoord, yCoord, zCoord), toTeleport.dimension));
+                    TCMazeHandler.createSessionWaitForTeleport(toTeleport, toTeleport.posX, toTeleport.posY, toTeleport.posZ);
+                } else {
+                    //Teleporting back.
+
+                    TCMazeHandler.closeSession(toTeleport, true);
                 }
             }
         }
     }
+
+    public static void startTracking(EntityPlayer player, ExtendedChunkCoordinates tileCoords) {
+        if(!trackedPortalActivity.containsKey(player)) {
+            trackedPortalActivity.put(player, tileCoords);
+        }
+    }
+
+    public static void informSessionStart(EntityPlayer player) {
+        if(trackedPortalActivity.containsKey(player)) {
+            ExtendedChunkCoordinates tileCoords = trackedPortalActivity.get(player);
+            if(tileCoords != null) {
+                ChunkCoordinates cc = tileCoords.coordinates;
+                WorldServer ws = MinecraftServer.getServer().worldServerForDimension(tileCoords.dimId);
+                ws.removeTileEntity(cc.posX, cc.posY, cc.posZ);
+                ws.setBlockToAir(cc.posX, cc.posY, cc.posZ);
+                ws.markBlockForUpdate(cc.posX, cc.posY, cc.posZ);
+            }
+        }
+    }
+
+    public static class ExtendedChunkCoordinates {
+
+        private ChunkCoordinates coordinates;
+        private int dimId;
+
+        public ExtendedChunkCoordinates(ChunkCoordinates coordinates, int dimId) {
+            this.coordinates = coordinates;
+            this.dimId = dimId;
+        }
+    }
+
 }

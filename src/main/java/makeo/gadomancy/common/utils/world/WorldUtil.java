@@ -1,8 +1,6 @@
 package makeo.gadomancy.common.utils.world;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import makeo.gadomancy.common.data.ModConfig;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
