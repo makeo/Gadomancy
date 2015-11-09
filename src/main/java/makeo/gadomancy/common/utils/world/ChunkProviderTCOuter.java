@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.utils.world;
 
+import makeo.gadomancy.common.blocks.tiles.TileOverrideEldritchLock;
 import makeo.gadomancy.common.utils.world.fake.FakeWorldTCGeneration;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EnumCreatureType;
@@ -64,6 +65,14 @@ public class ChunkProviderTCOuter implements IChunkProvider {
             for(Integer[] pos : buf.tiles) {
                 TileEntity te = buf.blockData[pos[3]].createTileEntity(worldObj, buf.metaBuffer[pos[3]]);
                 if(te != null) {
+                    if(te instanceof TileEldritchLock) {
+                        NBTTagCompound compound = new NBTTagCompound();
+                        te.writeToNBT(compound);
+                        TileEntity newTe = new TileOverrideEldritchLock();
+                        newTe.readFromNBT(compound);
+                        te = newTe;
+                    }
+
                     worldObj.addTileEntity(te);
                     chunk.func_150812_a(pos[0] & 15, pos[1], pos[2] & 15, te);
                     te.blockMetadata = buf.metaBuffer[pos[3]];
