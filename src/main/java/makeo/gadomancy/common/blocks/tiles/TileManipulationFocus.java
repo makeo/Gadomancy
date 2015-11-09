@@ -1,7 +1,5 @@
 package makeo.gadomancy.common.blocks.tiles;
 
-import net.minecraft.nbt.NBTTagCompound;
-
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
@@ -11,20 +9,17 @@ import net.minecraft.nbt.NBTTagCompound;
  * Created by makeo @ 28.10.2015 16:27
  */
 public class TileManipulationFocus extends SynchronizedTileEntity {
-    public int fociId;
+    private int fociId;
+    public TileManipulationFocus(int fociId) {
+        this.fociId = fociId;
+    }
+
+    public int getFociId() {
+        return fociId;
+    }
 
     @Override
     public boolean canUpdate() {
         return false;
-    }
-
-    @Override
-    public void readCustomNBT(NBTTagCompound compound) {
-        fociId = compound.getInteger("fociId");
-    }
-
-    @Override
-    public void writeCustomNBT(NBTTagCompound compound) {
-        compound.setInteger("fociId", fociId);
     }
 }

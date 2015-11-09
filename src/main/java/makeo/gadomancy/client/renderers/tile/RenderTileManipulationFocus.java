@@ -22,18 +22,20 @@ public class RenderTileManipulationFocus extends TileEntitySpecialRenderer {
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
 
-        bindTexture(new SimpleResourceLocation("models/manipulation_focus_" + tile.fociId + ".png"));
+        bindTexture(new SimpleResourceLocation("models/manipulation_focus_" + tile.getFociId() + ".png"));
 
         GL11.glRotatef(180, 1, 0, 0);
         GL11.glTranslatef(0.5f, -1.5f + (2/16f), -0.5f);
 
-        if(tile.fociId == 0) {
+        if(tile.getFociId() == 0) {
             GL11.glPushMatrix();
             for(int i = 0; i < 4; i++) {
                 RANDOM_FOCUS.render(null, 0, 0, 0, 0, 0, 0.0625f);
                 GL11.glRotatef(90, 0, 1, 0);
             }
             GL11.glPopMatrix();
+        } else if(tile.getFociId() == 1) {
+            //TODO: Hell hell hell
         }
 
         GL11.glPopMatrix();

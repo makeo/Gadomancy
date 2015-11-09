@@ -87,6 +87,7 @@ public class BlockStoneMachine extends Block {
         list.add(new ItemStack(item, 1, 0));
         list.add(new ItemStack(item, 1, 1));
         list.add(new ItemStack(item, 1, 2));
+        list.add(new ItemStack(item, 1, 3));
     }
 
     @Override
@@ -104,11 +105,13 @@ public class BlockStoneMachine extends Block {
         if (metadata == 15) {
             return new TileManipulatorPillar();
         } else if (metadata == 0) {
-            return new TileManipulationFocus();
+            return new TileManipulationFocus(0);
         } else if(metadata == 1) {
             return new TilePedestal();
         } else if(metadata == 2) {
             return new TileBlockProtector();
+        } else if(metadata == 3) {
+            return new TileManipulationFocus(1);
         }
         return null;
     }
