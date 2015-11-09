@@ -50,21 +50,21 @@ public class ChunkProviderTCOuter implements IChunkProvider {
 
     public Chunk provideChunk(int x, int z) {
         Chunk chunk;
-        long key = ((long) x & 15) | ((long) z & 15) << 32;
+        long key = ((long) x) | ((long) z) << 32;
         if(TCMazeHandler.GEN.chunks.containsKey(key)) {
-            System.out.println("preGen Chunk found for " + x + ", " + z);
             FakeWorldTCGeneration.ChunkBuffer buf = TCMazeHandler.GEN.chunks.get(key);
+            TCMazeHandler.GEN.chunks.remove(key);
+
             chunk = new Chunk(worldObj, buf.blockData, buf.metaBuffer, x, z);
             byte[] abyte = chunk.getBiomeArray();
             System.arraycopy(biomeArr, 0, abyte, 0, biomeArr.length);
 
             for(Integer[] pos : buf.tiles) {
-                TileEntity te = buf.blockData[pos[3]].createTileEntity(worldObj, metaArr[pos[3]]);
+                TileEntity te = buf.blockData[pos[3]].createTileEntity(worldObj, buf.metaBuffer[pos[3]]);
                 if(te != null) {
-                    System.out.println("te wasn't null");
                     worldObj.loadedTileEntityList.add(te);
                     chunk.func_150812_a(pos[0] & 15, pos[1], pos[2] & 15, te);
-                    te.blockMetadata = metaArr[pos[3]];
+                    te.blockMetadata = buf.metaBuffer[pos[3]];
                 }
             }
 
@@ -83,28 +83,36 @@ public class ChunkProviderTCOuter implements IChunkProvider {
                 if(te instanceof TileEntityMobSpawner) {
                     if(!(correspondingTE instanceof TileEntityMobSpawner)) {
                         System.out.println("DATA INCONSISTENCY - TE at " + te.xCoord + ", " + te.yCoord + ", " + te.zCoord + " EXPECTED: " + te.getClass().getSimpleName() + " GIVEN " + correspondingTE.getClass().getSimpleName());
-                        throw new IllegalStateException();
+                        //throw new IllegalStateException();
+                        it.remove();
+                        continue;
                     }
 
                     ((TileEntityMobSpawner) correspondingTE).func_145881_a().setEntityName(((TileEntityMobSpawner) te).func_145881_a().getEntityNameToSpawn());
                 } else if(te instanceof TileEldritchLock) {
                     if(!(correspondingTE instanceof TileEldritchLock)) {
                         System.out.println("DATA INCONSISTENCY - TE at " + te.xCoord + ", " + te.yCoord + ", " + te.zCoord + " EXPECTED: " + te.getClass().getSimpleName() + " GIVEN " + correspondingTE.getClass().getSimpleName());
-                        throw new IllegalStateException();
+                        //throw new IllegalStateException();
+                        it.remove();
+                        continue;
                     }
 
                     ((TileEldritchLock) correspondingTE).setFacing(((TileEldritchLock) te).getFacing());
                 } else if(te instanceof TileCrystal) {
                     if(!(correspondingTE instanceof TileCrystal)) {
                         System.out.println("DATA INCONSISTENCY - TE at " + te.xCoord + ", " + te.yCoord + ", " + te.zCoord + " EXPECTED: " + te.getClass().getSimpleName() + " GIVEN " + correspondingTE.getClass().getSimpleName());
-                        throw new IllegalStateException();
+                        //throw new IllegalStateException();
+                        it.remove();
+                        continue;
                     }
 
                     ((TileCrystal) correspondingTE).orientation = ((TileCrystal) te).orientation;
                 } else if(te instanceof TileEldritchCrabSpawner) {
                     if(!(correspondingTE instanceof TileEldritchCrabSpawner)) {
                         System.out.println("DATA INCONSISTENCY - TE at " + te.xCoord + ", " + te.yCoord + ", " + te.zCoord + " EXPECTED: " + te.getClass().getSimpleName() + " GIVEN " + correspondingTE.getClass().getSimpleName());
-                        throw new IllegalStateException();
+                        //throw new IllegalStateException();
+                        it.remove();
+                        continue;
                     }
 
                     ((TileEldritchCrabSpawner) correspondingTE).setFacing(((TileEldritchCrabSpawner) te).getFacing());
@@ -126,8 +134,6 @@ public class ChunkProviderTCOuter implements IChunkProvider {
                     item.motionY = 0;
                     item.motionZ = 0;
                     chunk.addEntity(item);
-                    worldObj.loadedEntityList.add(item);
-                    worldObj.onEntityAdded(item);
                     itEntity.remove();
                 } else if(bufE instanceof FakeWorldTCGeneration.EntityGuardianBuf) {
                     FakeWorldTCGeneration.EntityGuardianBuf b = (FakeWorldTCGeneration.EntityGuardianBuf) bufE;
@@ -136,17 +142,13 @@ public class ChunkProviderTCOuter implements IChunkProvider {
                     guardian.setPosition(b.x, b.y, b.z);
                     guardian.setHomeArea(b.coordinates.posX, b.coordinates.posY, b.coordinates.posZ, (int) b.dst);
                     chunk.addEntity(guardian);
-                    worldObj.loadedEntityList.add(guardian);
-                    worldObj.onEntityAdded(guardian);
                     itEntity.remove();
                 } else {
                     throw new IllegalStateException("Unexpected Entity: " + bufE);
                 }
             }
-
-            TCMazeHandler.GEN.chunks.remove(key);
         } else {
-            System.out.println("Creating NEW Chunk");
+            //System.out.println("Creating NEW Chunk");
 
             Block[] ablock = new Block[blockArr.length];
             System.arraycopy(blockArr, 0, ablock, 0, blockArr.length);

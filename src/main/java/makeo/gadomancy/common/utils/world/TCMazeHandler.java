@@ -143,7 +143,7 @@ public class TCMazeHandler {
     }
 
     private static int randWH(Random random) {
-        return 15 + random.nextInt(8) * 2;
+        return 17 + random.nextInt(2) * 2;
     }
 
     public static void init() {
@@ -244,6 +244,9 @@ public class TCMazeHandler {
                 MazeHandler.labyrinth = old;
             }
             System.out.println("BuildTime: " + (System.currentTimeMillis() - startMs) + " (ms)");
+            System.out.println("Blocks SET: " + GEN.blockCount);
+            System.out.println("Blocks OVERWRITTEN: " + GEN.blockOverwriteCount);
+            System.out.println("BufferChunks CREATED: " + FakeWorldTCGeneration.ChunkBuffer.cnt);
 
             finishBuild();
         }

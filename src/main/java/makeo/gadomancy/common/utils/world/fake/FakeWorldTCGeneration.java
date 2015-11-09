@@ -7,6 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -36,15 +37,24 @@ public class FakeWorldTCGeneration extends FakeWorld {
     public ChunkMap chunks = new ChunkMap();
     public List<Object> bufferedEntities = new ArrayList<Object>();
     public Map<ChunkCoordinates, TileEntity> gettedTE = new HashMap<ChunkCoordinates, TileEntity>();
+    public int blockCount = 0, blockOverwriteCount = 0;
 
     @Override
     public boolean setBlock(int x, int y, int z, Block block, int meta, int flags) {
         if(block == ConfigBlocks.blockEldritchPortal) return true;
         if(block == ConfigBlocks.blockEldritch && (meta == 1 || meta == 2 || meta == 3)) return true;
 
-        ChunkBuffer buf = chunks.get(((long) x & 15) | ((long) z & 15) << 32);
-        int key = ((x & 15) << 4 | (z & 15)) << 7 | y;
+        blockCount++;
 
+        long chKey = ((long) x >> 4) | ((long) z >> 4) << 32;
+        ChunkBuffer buf = chunks.get(chKey);
+        int keyX = (x & 15) << 7 << 4;
+        int keyZ = (z & 15) << 7;
+        int key = keyX | keyZ | y;
+
+        if(buf.blockData[key] != null) {
+            blockOverwriteCount++;
+        }
         buf.blockData[key] = block;
         buf.metaBuffer[key] = (byte) meta;
         if(block.hasTileEntity(meta)) buf.tiles.add(new Integer[] {x, y, z, key});
@@ -53,8 +63,12 @@ public class FakeWorldTCGeneration extends FakeWorld {
 
     @Override
     public Block getBlock(int x, int y, int z) {
-        ChunkBuffer buf = chunks.get(((long) x & 15) | ((long) z & 15) << 32);
-        int key = ((x & 15) << 4 | (z & 15)) << 7 | y;
+        long chKey = ((long) x >> 4) | ((long) z >> 4) << 32;
+        ChunkBuffer buf = chunks.get(chKey);
+        int keyX = (x & 15) << 7 << 4;
+        int keyZ = (z & 15) << 7;
+        int key = keyX | keyZ | y;
+        //int key = ((x & 15) << 4 | (z & 15)) << 7 | y;
 
         Block b = buf.blockData[key];
         return b == null ? Blocks.air : b;
@@ -62,8 +76,11 @@ public class FakeWorldTCGeneration extends FakeWorld {
 
     @Override
     public int getBlockMetadata(int x, int y, int z) {
-        ChunkBuffer buf = chunks.get(((long) x & 15) | ((long) z & 15) << 32);
-        int key = ((x & 15) << 4 | (z & 15)) << 7 | y;
+        long chKey = ((long) x >> 4) | ((long) z >> 4) << 32;
+        ChunkBuffer buf = chunks.get(chKey);
+        int keyX = (x & 15) << 7 << 4;
+        int keyZ = (z & 15) << 7;
+        int key = keyX | keyZ | y;
 
         return buf.metaBuffer[key];
     }
@@ -158,7 +175,7 @@ public class FakeWorldTCGeneration extends FakeWorld {
         public Block[] blockData = new Block[32768];
         public byte[] metaBuffer = new byte[32768];
         public List<Integer[]> tiles = new ArrayList<Integer[]>();
-        static int cnt = 0;
+        public static int cnt = 0;
 
         public ChunkBuffer(long key) {
             this.key = key;
