@@ -212,14 +212,13 @@ public class TCMazeHandler {
 
         @Override
         public void run() {
-            long startMs = System.currentTimeMillis();
+            ConcurrentHashMap<CellLoc, Short> old = MazeHandler.labyrinth;
+            MazeHandler.labyrinth = labyrinthCopy;
             for (CellLoc l : chunksAffected.keySet()) {
-                ConcurrentHashMap<CellLoc, Short> old = MazeHandler.labyrinth;
-                MazeHandler.labyrinth = labyrinthCopy;
                 MazeHandler.generateEldritch(GEN, GEN.rand, l.x, l.z);
-                MazeHandler.labyrinth = old;
             }
-            System.out.println("Maze BuildTime: " + (System.currentTimeMillis() - startMs) + " (ms)");
+            MazeHandler.labyrinth = old;
+            //System.out.println("Maze BuildTime: " + (System.currentTimeMillis() - startMs) + " (ms)");
             /*System.out.println("Blocks SET: " + GEN.blockCount);
             System.out.println("Blocks OVERWRITTEN: " + GEN.blockOverwriteCount);
             System.out.println("BufferChunks CREATED: " + FakeWorldTCGeneration.ChunkBuffer.cnt);*/
