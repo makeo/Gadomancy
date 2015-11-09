@@ -23,16 +23,14 @@ public class RegisteredMultiblocks {
             .addBlock(1, 1, 1, RegisteredBlocks.blockStoneMachine, 11).addBlock(-1, 1, 1, RegisteredBlocks.blockStoneMachine, 11).addBlock(-1, 1, -1, RegisteredBlocks.blockStoneMachine, 11).addBlock(1, 1, -1, RegisteredBlocks.blockStoneMachine, 11);
 
     public static final MultiblockHelper.MultiblockPattern incompleteEldritchPortalCreator = new MultiblockHelper.MultiblockPattern(RegisteredBlocks.blockNodeManipulator, 5)
-            .addBlock(0, 2, 0, RegisteredBlocks.blockNode, 0)
+            .addBlock(0, 2, 0, RegisteredBlocks.blockNode, 0).addBlock(0, 1, 0, RegisteredBlocks.blockStoneMachine, 3)
             .addBlock(3, 0, 0, RegisteredBlocks.blockStoneMachine, 1).addBlock(0, 0, 3, RegisteredBlocks.blockStoneMachine, 1)
             .addBlock(-3, 0, 0, RegisteredBlocks.blockStoneMachine, 1).addBlock(0, 0, -3, RegisteredBlocks.blockStoneMachine, 1)
-            //TODO add focus here.
             .addBlock(1, 0, 1, ConfigBlocks.blockCosmeticSolid, 15).addBlock(-1, 0, 1, ConfigBlocks.blockCosmeticSolid, 15).addBlock(-1, 0, -1, ConfigBlocks.blockCosmeticSolid, 15).addBlock(1, 0, -1, ConfigBlocks.blockCosmeticSolid, 15)
             .addBlock(1, 1, 1, ConfigBlocks.blockCosmeticSolid, 11).addBlock(-1, 1, 1, ConfigBlocks.blockCosmeticSolid, 11).addBlock(-1, 1, -1, ConfigBlocks.blockCosmeticSolid, 11).addBlock(1, 1, -1, ConfigBlocks.blockCosmeticSolid, 11);
 
     public static final MultiblockHelper.MultiblockPattern completeEldritchPortalCreator = new MultiblockHelper.MultiblockPattern(RegisteredBlocks.blockNodeManipulator, 5)
-            //TODO add focus here.
-            .addBlock(0, 2, 0, RegisteredBlocks.blockNode, 0)
+            .addBlock(0, 2, 0, RegisteredBlocks.blockNode, 0).addBlock(0, 1, 0, RegisteredBlocks.blockStoneMachine, 3)
             .addBlock(3, 0, 0, RegisteredBlocks.blockStoneMachine, 1).addBlock(0, 0, 3, RegisteredBlocks.blockStoneMachine, 1)
             .addBlock(-3, 0, 0, RegisteredBlocks.blockStoneMachine, 1).addBlock(0, 0, -3, RegisteredBlocks.blockStoneMachine, 1)
             .addBlock(1, 0, 1, RegisteredBlocks.blockStoneMachine, 15).addBlock(-1, 0, 1, RegisteredBlocks.blockStoneMachine, 15).addBlock(-1, 0, -1, RegisteredBlocks.blockStoneMachine, 15).addBlock(1, 0, -1, RegisteredBlocks.blockStoneMachine, 15)

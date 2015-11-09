@@ -71,6 +71,7 @@ public class TileAdditionalEldritchPortal extends TileEldritchPortal {
     public static void informSessionStart(EntityPlayer player) {
         if(trackedPortalActivity.containsKey(player)) {
             ExtendedChunkCoordinates tileCoords = trackedPortalActivity.get(player);
+            trackedPortalActivity.remove(player);
             if(tileCoords != null) {
                 ChunkCoordinates cc = tileCoords.coordinates;
                 WorldServer ws = MinecraftServer.getServer().worldServerForDimension(tileCoords.dimId);

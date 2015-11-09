@@ -175,25 +175,9 @@ public class TCMazeHandler {
 
     public static void free(Map<CellLoc, Short> locations) {
         if (locations == null) return;
-        WorldServer ws = DimensionManager.getWorld(ModConfig.dimOuterId);
         for (CellLoc loc : locations.keySet()) {
             labyrinthCopy.remove(loc);
-            forceChunkUnloading(ws, loc.x, loc.z);
-        }
-        System.out.println("new weight: " + labyrinthCopy.size());
-    }
-
-    private static void forceChunkUnloading(WorldServer ws, int chX, int chZ) {
-        if (ws == null) return;
-        long chunkPair = ChunkCoordIntPair.chunkXZ2Int(chX, chZ);
-        ChunkProviderServer serverChProvider = ws.theChunkProviderServer;
-        LongHashMap chunks = serverChProvider.loadedChunkHashMap;
-        Chunk c = (Chunk) chunks.getValueByKey(chunkPair);
-
-        serverChProvider.loadedChunkHashMap.remove(chunkPair);
-        if (c != null) {
-            c.onChunkUnload();
-            serverChProvider.loadedChunks.remove(c);
+            //forceChunkUnloading(ws, loc.x, loc.z);
         }
     }
 

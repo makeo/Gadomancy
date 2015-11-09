@@ -70,15 +70,12 @@ class TCMazeSession {
     final void startSession() {
         WorldServer ws = DimensionManager.getWorld(ModConfig.dimOuterId);
 
-        int chunkCount = 0;
         for(CellLoc loc : chunksAffected.keySet()) {
             long k = ChunkCoordIntPair.chunkXZ2Int(loc.x, loc.z);
             if(ws.theChunkProviderServer.loadedChunkHashMap.containsItem(k)) {
                 ws.theChunkProviderServer.loadedChunkHashMap.remove(k);
-                chunkCount++;
             }
         }
-        LogManager.getLogger().info("Removed " + chunkCount + " of " + chunksAffected.keySet().size() + " chunks from Eldritch dimension.");
 
         if(portalCell == null) {
             LogManager.getLogger().error("Thaumcraft didn't generate a portal! Stopping instance!", new IllegalStateException());
