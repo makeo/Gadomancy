@@ -53,11 +53,13 @@ public class EventHandlerEntity {
         if ((event.entity.worldObj.provider.dimensionId == ModConfig.dimOuterId) && ((player.ticksExisted & 7) == 0) && ((player.capabilities.isFlying) || (Hover.getHover(player.getEntityId())))){
             player.capabilities.isFlying = false;
             Hover.setHover(player.getEntityId(), false);
-            String msg = StatCollector.translateToLocal("tc.break.fly");
-            if(player.capabilities.isCreativeMode) {
-                msg += " " + StatCollector.translateToLocal("gadomancy.eldritch.noflyCreative");
+            if(!((EntityPlayer) event.entityLiving).worldObj.isRemote) {
+                String msg = StatCollector.translateToLocal("tc.break.fly");
+                if(player.capabilities.isCreativeMode) {
+                    msg += " " + StatCollector.translateToLocal("gadomancy.eldritch.noflyCreative");
+                }
+                player.addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.GRAY + msg));
             }
-            player.addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.GRAY + msg));
         }
     }
 

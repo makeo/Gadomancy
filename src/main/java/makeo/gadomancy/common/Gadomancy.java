@@ -4,12 +4,14 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLConstructionEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.common.api.DefaultApiHandler;
 import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.data.ModData;
+import thaumcraft.common.Thaumcraft;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -69,6 +71,8 @@ public class Gadomancy
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.initalize();
+
+        FMLInterModComms.sendMessage(Thaumcraft.MODID, "dimensionBlacklist", ModConfig.dimOuterId + ":0");
     }
 
     @Mod.EventHandler
