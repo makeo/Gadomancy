@@ -50,7 +50,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
     private static final int NODE_MANIPULATION_POSSIBLE_WORK_START = 70;
     private static final int NODE_MANIPULATION_WORK_ASPECT_CAP = 150;
 
-    private static final int ELDRITCH_PORTAL_CREATOR_WORK_START = 10;
+    private static final int ELDRITCH_PORTAL_CREATOR_WORK_START = 120;
     private static final int ELDRITCH_PORTAL_CREATOR_ASPECT_CAP = 150;
 
     //Already set when only multiblock would be present. aka is set, if 'isMultiblockPresent()' returns true.
@@ -100,7 +100,14 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
                 if(!isWorking) {
                     doAspectChecks(ELDRITCH_PORTAL_CREATOR_ASPECT_CAP, ELDRITCH_PORTAL_CREATOR_WORK_START);
                 } else {
-                    if(!checkEldritchEyes()) return;
+                    if(!checkEldritchEyes()) {
+                        if(workTick > 1) {
+                            workAspectList = new AspectList();
+                            workTick = 0;
+                            isWorking = false;
+                        }
+                        return;
+                    }
                     eldritchPortalCreationTick();
                 }
                 break;
@@ -129,17 +136,37 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
 
     private void eldritchPortalCreationTick() {
         workTick++;
-        if(workTick < 40) {
+        if(workTick < 400) {
             if((workTick & 15) == 0) {
                 PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, xCoord, yCoord, zCoord, (byte) 1);
                 PacketHandler.INSTANCE.sendToAllAround(packet, getTargetPoint(32));
+            }
+            if((workTick & 7) == 0) {
+                switch ((workTick >> 3) & 3) {
+                    case 0:
+                        PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, xCoord + 3, yCoord, zCoord, (byte) 1);
+                        PacketHandler.INSTANCE.sendToAllAround(packet, getTargetPoint(32));
+                        break;
+                    case 1:
+                        PacketStartAnimation packet1 = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, xCoord - 3, yCoord, zCoord, (byte) 1);
+                        PacketHandler.INSTANCE.sendToAllAround(packet1, getTargetPoint(32));
+                        break;
+                    case 2:
+                        PacketStartAnimation packet2 = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, xCoord, yCoord, zCoord + 3, (byte) 1);
+                        PacketHandler.INSTANCE.sendToAllAround(packet2, getTargetPoint(32));
+                        break;
+                    case 3:
+                        PacketStartAnimation packet3 = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, xCoord, yCoord, zCoord - 3, (byte) 1);
+                        PacketHandler.INSTANCE.sendToAllAround(packet3, getTargetPoint(32));
+                        break;
+                }
             }
             if(worldObj.rand.nextBoolean()) {
                 Vec3 rel = getRelPillarLoc(worldObj.rand.nextInt(4));
                 PacketTCNodeBolt bolt = new PacketTCNodeBolt(xCoord + 0.5F, yCoord + 2.5F, zCoord + 0.5F, (float) (xCoord + 0.5F + rel.xCoord), (float) (yCoord + 2.5F + rel.yCoord), (float) (zCoord + 0.5F + rel.zCoord), 3, false);
                 PacketHandler.INSTANCE.sendToAllAround(bolt, getTargetPoint(32));
             }
-            if(worldObj.rand.nextBoolean()) {
+            if(worldObj.rand.nextInt(4) == 0) {
                 Vec3 relPed = getRelPedestalLoc(worldObj.rand.nextInt(4));
                 PacketTCNodeBolt bolt = new PacketTCNodeBolt(xCoord + 0.5F, yCoord + 2.5F, zCoord + 0.5F, (float) (xCoord + 0.5F + relPed.xCoord), (float) (yCoord + 2.5F + relPed.yCoord), (float) (zCoord + 0.5F + relPed.zCoord), 3, false);
                 PacketHandler.INSTANCE.sendToAllAround(bolt, getTargetPoint(32));
@@ -172,18 +199,26 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
         TileEntity te = worldObj.getTileEntity(xCoord + 3, yCoord, zCoord);
         if(te != null && te instanceof TilePedestal) {
             ((TilePedestal) te).setInventorySlotContents(0, null);
+            PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_SPARKLE_SPREAD, xCoord + 3, yCoord, zCoord);
+            PacketHandler.INSTANCE.sendToAllAround(packet, getTargetPoint(32));
         }
         te = worldObj.getTileEntity(xCoord - 3, yCoord, zCoord);
         if(te != null && te instanceof TilePedestal) {
             ((TilePedestal) te).setInventorySlotContents(0, null);
+            PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_SPARKLE_SPREAD, xCoord - 3, yCoord, zCoord);
+            PacketHandler.INSTANCE.sendToAllAround(packet, getTargetPoint(32));
         }
         te = worldObj.getTileEntity(xCoord, yCoord, zCoord + 3);
         if(te != null && te instanceof TilePedestal) {
             ((TilePedestal) te).setInventorySlotContents(0, null);
+            PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_SPARKLE_SPREAD, xCoord, yCoord, zCoord + 3);
+            PacketHandler.INSTANCE.sendToAllAround(packet, getTargetPoint(32));
         }
         te = worldObj.getTileEntity(xCoord, yCoord, zCoord - 3);
         if(te != null && te instanceof TilePedestal) {
             ((TilePedestal) te).setInventorySlotContents(0, null);
+            PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_SPARKLE_SPREAD, xCoord, yCoord, zCoord - 3);
+            PacketHandler.INSTANCE.sendToAllAround(packet, getTargetPoint(32));
         }
     }
 
@@ -391,7 +426,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
         }
         for(MultiblockHelper.IntVec3 v : toBuild.keySet()) {
             MultiblockHelper.BlockInfo info = toBuild.get(v);
-            if(info.block == RegisteredBlocks.blockNode || (info.block == RegisteredBlocks.blockStoneMachine && (info.meta == 0 || info.meta == 3))
+            if(info.block == RegisteredBlocks.blockNode || (info.block == RegisteredBlocks.blockStoneMachine && (info.meta == 0 || info.meta == 1 || info.meta == 3))
                     || info.block == Blocks.air || info.block == RegisteredBlocks.blockNodeManipulator) continue;
             int absX = v.x + xCoord;
             int absY = v.y + yCoord;
