@@ -20,15 +20,7 @@ import makeo.gadomancy.client.renderers.item.ItemRenderFamiliar;
 import makeo.gadomancy.client.renderers.item.ItemRenderRemoteJar;
 import makeo.gadomancy.client.renderers.item.ItemRenderStoneMachine;
 import makeo.gadomancy.client.renderers.item.ItemRenderTileEntity;
-import makeo.gadomancy.client.renderers.tile.RenderTileArcaneDropper;
-import makeo.gadomancy.client.renderers.tile.RenderTileExtendedNode;
-import makeo.gadomancy.client.renderers.tile.RenderTileExtendedNodeJar;
-import makeo.gadomancy.client.renderers.tile.RenderTileInfusionClaw;
-import makeo.gadomancy.client.renderers.tile.RenderTileManipulationFocus;
-import makeo.gadomancy.client.renderers.tile.RenderTileManipulatorPillar;
-import makeo.gadomancy.client.renderers.tile.RenderTileNodeManipulator;
-import makeo.gadomancy.client.renderers.tile.RenderTileRemoteJar;
-import makeo.gadomancy.client.renderers.tile.RenderTileStickyJar;
+import makeo.gadomancy.client.renderers.tile.*;
 import makeo.gadomancy.common.CommonProxy;
 import makeo.gadomancy.common.blocks.tiles.TileAdditionalEldritchPortal;
 import makeo.gadomancy.common.blocks.tiles.TileArcaneDropper;
@@ -45,6 +37,7 @@ import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.SimpleReloadableResourceManager;
 import net.minecraft.entity.Entity;
@@ -60,6 +53,7 @@ import thaumcraft.client.renderers.entity.RenderGolemBase;
 import thaumcraft.client.renderers.tile.TileEldritchPortalRenderer;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.golems.EntityGolemBase;
+import thaumcraft.common.tiles.TileEldritchObelisk;
 
 import java.util.List;
 
@@ -108,6 +102,8 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileManipulationFocus.class, renderTileManipulationFocus);
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileAdditionalEldritchPortal.class, new TileEldritchPortalRenderer());
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEldritchObelisk.class, new RenderTileObelisk());
 
         //Items
         TileArcaneDropper fakeTile = new TileArcaneDropper();
