@@ -8,6 +8,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.WorldServer;
+import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.TileEldritchPortal;
 
 import java.util.HashMap;
@@ -44,6 +45,10 @@ public class TileAdditionalEldritchPortal extends TileEldritchPortal {
                 EntityPlayerMP toTeleport = players.get(0);
 
                 if(toTeleport.timeUntilPortal > 0) return;
+
+                if(!ResearchManager.isResearchComplete(toTeleport.getCommandSenderName(), TileNodeManipulator.MultiblockType.E_PORTAL_CREATOR.getResearchNeeded())) {
+                    return;
+                }
 
                 this.toTeleport = toTeleport;
                 toTeleport.timeUntilPortal = 200;
