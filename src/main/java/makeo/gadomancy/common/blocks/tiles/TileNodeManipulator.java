@@ -163,12 +163,12 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
             }
             if(worldObj.rand.nextBoolean()) {
                 Vec3 rel = getRelPillarLoc(worldObj.rand.nextInt(4));
-                PacketTCNodeBolt bolt = new PacketTCNodeBolt(xCoord + 0.5F, yCoord + 2.5F, zCoord + 0.5F, (float) (xCoord + 0.5F + rel.xCoord), (float) (yCoord + 2.5F + rel.yCoord), (float) (zCoord + 0.5F + rel.zCoord), 3, false);
+                PacketTCNodeBolt bolt = new PacketTCNodeBolt(xCoord + 0.5F, yCoord + 2.5F, zCoord + 0.5F, (float) (xCoord + 0.5F + rel.xCoord), (float) (yCoord + 2.5F + rel.yCoord), (float) (zCoord + 0.5F + rel.zCoord), 2, false);
                 PacketHandler.INSTANCE.sendToAllAround(bolt, getTargetPoint(32));
             }
             if(worldObj.rand.nextInt(4) == 0) {
                 Vec3 relPed = getRelPedestalLoc(worldObj.rand.nextInt(4));
-                PacketTCNodeBolt bolt = new PacketTCNodeBolt(xCoord + 0.5F, yCoord + 2.5F, zCoord + 0.5F, (float) (xCoord + 0.5F + relPed.xCoord), (float) (yCoord + 2.5F + relPed.yCoord), (float) (zCoord + 0.5F + relPed.zCoord), 3, false);
+                PacketTCNodeBolt bolt = new PacketTCNodeBolt(xCoord + 0.5F, yCoord + 2.5F, zCoord + 0.5F, (float) (xCoord + 0.5F + relPed.xCoord), (float) (yCoord + 2.5F + relPed.yCoord), (float) (zCoord + 0.5F + relPed.zCoord), 2, false);
                 PacketHandler.INSTANCE.sendToAllAround(bolt, getTargetPoint(32));
             }
         } else {
