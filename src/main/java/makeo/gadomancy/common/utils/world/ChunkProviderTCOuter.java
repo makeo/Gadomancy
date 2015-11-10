@@ -15,14 +15,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.EntityPermanentItem;
 import thaumcraft.common.entities.monster.EntityEldritchGuardian;
-import thaumcraft.common.lib.utils.BlockUtils;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 import thaumcraft.common.tiles.TileCrystal;
 import thaumcraft.common.tiles.TileEldritchCrabSpawner;
@@ -180,6 +177,7 @@ public class ChunkProviderTCOuter implements IChunkProvider {
                     }
                 }
             }
+
         } else {
             Block[] ablock = new Block[blockArr.length];
             System.arraycopy(blockArr, 0, ablock, 0, blockArr.length);
@@ -211,16 +209,6 @@ public class ChunkProviderTCOuter implements IChunkProvider {
 
         MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(p_73153_1_, this.worldObj, this.worldObj.rand, p_73153_2_, p_73153_3_, false));
         net.minecraft.block.BlockFalling.fallInstantly = false;
-
-
-
-        /*for(int cX = 0; cX < 16; cX++) {
-            for(int cY = 50; cY < 64; cY++) {
-                for(int cZ = 0; cZ < 16; cZ++) {
-                    worldObj.func_147451_t((p_73153_2_ << 4)+cX, cY, (p_73153_3_ << 4)+cZ);
-                }
-            }
-        }*/
     }
 
     public boolean saveChunks(boolean p_73151_1_, IProgressUpdate p_73151_2_) {

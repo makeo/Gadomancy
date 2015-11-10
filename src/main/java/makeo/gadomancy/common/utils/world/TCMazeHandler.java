@@ -11,16 +11,11 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.LongHashMap;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.WorldEvent;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.world.dim.CellLoc;
 import thaumcraft.common.lib.world.dim.GenCommon;
@@ -265,9 +260,9 @@ public class TCMazeHandler {
 
             for(CellLoc l : chunksAffected.keySet()) {
                 for(int cX = 0; cX < 16; cX++) {
-                    for(int cY = 50; cY < 64; cY++) {
+                    for(int cY = 51; cY < 61; cY++) {
                         for(int cZ = 0; cZ < 16; cZ++) {
-                            TCMazeHandler.GEN.func_147451_t((l.x << 4)+cX, cY, (l.z << 4)+cZ);
+                            TCMazeHandler.GEN.updateLightByType(EnumSkyBlock.Block, (l.x << 4)+cX, cY, (l.z << 4)+cZ);
                         }
                     }
                 }
