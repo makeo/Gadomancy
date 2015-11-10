@@ -53,6 +53,8 @@ import thaumcraft.client.renderers.entity.RenderGolemBase;
 import thaumcraft.client.renderers.tile.TileEldritchPortalRenderer;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.golems.EntityGolemBase;
+import thaumcraft.common.tiles.TileEldritchAltar;
+import thaumcraft.common.tiles.TileEldritchCap;
 import thaumcraft.common.tiles.TileEldritchObelisk;
 
 import java.util.List;
@@ -104,6 +106,8 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileAdditionalEldritchPortal.class, new TileEldritchPortalRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEldritchObelisk.class, new RenderTileObelisk());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEldritchAltar.class, new RenderTileCapEldritch("textures/models/obelisk_cap_altar.png"));
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEldritchCap.class, new RenderTileCapEldritch("textures/models/obelisk_cap.png"));
 
         //Items
         TileArcaneDropper fakeTile = new TileArcaneDropper();
