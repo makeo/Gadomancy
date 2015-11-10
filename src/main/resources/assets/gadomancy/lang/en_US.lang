@@ -104,6 +104,7 @@ gadomancy.lore.remotejar=§7Network: %s
 
 gadomancy.eldritch.noflyCreative=(even in creative)
 gadomancy.eldritch.nobreakPortalNothing=This portal cannot be broken
+gadomancy.eldritch.portalSpawned=You sense the opening of a portal in the distance.
 
 tile.BlockStickyJar.name=Sticky Jar
 tile.BlockArcaneDropper.name=Arcane Dropper

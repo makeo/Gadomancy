@@ -18,8 +18,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by makeo @ 09.11.2015 21:20
  */
 public class TileOverrideEldritchLock extends TileEldritchLock {
-    private int count = 0;
-    private Entity[] bosses = null;
 
     @Override
     public void updateEntity() {
@@ -34,33 +32,23 @@ public class TileOverrideEldritchLock extends TileEldritchLock {
                     super.updateEntity();
 
                     int count = Entity.nextEntityID - nextEntityId;
-                    bosses = new Entity[count];
+                    Entity[] bosses = new Entity[count];
                     for(int i = 0; i < count; i++) {
                         bosses[i] = worldObj.getEntityByID(nextEntityId + i);
                     }
 
                     MazeHandler.labyrinth = old;
+                    for(TCMazeSession session : TCMazeHandler.getSessions().values()) {
+                        if(session.chunksAffected != null && session.chunksAffected.containsKey(new CellLoc(xCoord >> 4, zCoord >> 4))) {
+                            TCMazeHandler.putBosses(session, bosses);
+                            break;
+                        }
+                    }
                     return;
                 }
             }
         }
 
         super.updateEntity();
-
-        if(bosses != null && ++count % 20 == 0) {
-            for(Entity entity : bosses) {
-                if(entity != null && !entity.isDead) {
-                    return;
-                }
-            }
-
-            for(TCMazeSession session : TCMazeHandler.getSessions().values()) {
-                if(session.chunksAffected != null && session.chunksAffected.containsKey(new CellLoc(xCoord >> 4, zCoord >> 4))) {
-                    TCMazeHandler.handleBossFinish(session);
-                    break;
-                }
-            }
-            bosses = null;
-        }
     }
 }

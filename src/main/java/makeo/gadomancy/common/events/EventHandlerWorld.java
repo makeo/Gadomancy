@@ -122,11 +122,6 @@ public class EventHandlerWorld {
     @SubscribeEvent
     public void on(TickEvent.ServerTickEvent event) {
         if(event.phase != TickEvent.Phase.END) return;
-        WorldServer worldServer = DimensionManager.getWorld(ModConfig.dimOuterId);
-        if(worldServer == null) return;
-        if (!worldServer.isRemote && (worldServer.provider.dimensionId == 0 || worldServer.provider.dimensionId == ModConfig.dimOuterId)) {
-            TCMazeHandler.tick();
-        }
 
         TCMazeHandler.scheduleTick();
     }
