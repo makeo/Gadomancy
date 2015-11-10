@@ -1,6 +1,8 @@
 package makeo.gadomancy.common.blocks.tiles;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.ThaumcraftApiHelper;
@@ -126,7 +128,12 @@ public class TileBlockProtector extends TileJarFillable {
         return false;
     }
 
+    private static boolean isSpotProtected(TileBlockProtector tile, Entity entity) {
+        AxisAlignedBB protectedAABB = AxisAlignedBB.getBoundingBox(tile.xCoord - tile.range, tile.yCoord - tile.range, tile.zCoord - tile.range, tile.xCoord + tile.range, tile.yCoord + tile.range, tile.zCoord + tile.range);
+        return protectedAABB.intersectsWith(entity.getBoundingBox());
+    }
+
     private static boolean isSpotProtected(TileBlockProtector tile, double x, double y, double z) {
-        return tile.getDistanceFrom(x, y, z) < tile.range * tile.range;
+        return (tile.xCoord - x) <= tile.range && (tile.yCoord - y) <= tile.range && (tile.zCoord - z) <= tile.range;
     }
 }

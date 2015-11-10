@@ -213,6 +213,7 @@ public class RegisteredResearches {
 
     public static void postInit() {
         ResearchItem researchJar = PseudoResearchItem.create("JARLABEL", -3, -7).registerResearchItem();
+        ResearchItem researchEssentiaMirror = PseudoResearchItem.create("MIRRORESSENTIA", -6, -2).registerResearchItem();
 
         researchStickyJar = new AlternatingResearchItem("STICKYJAR", -5, -5, 2,
                 new AspectList().add(Aspect.SLIME, 8).add(Aspect.EARTH, 8),
@@ -223,7 +224,7 @@ public class RegisteredResearches {
         researchRemoteJar = new SimpleResearchItem("REMOTEJAR", -4, -3, 3,
                 RegisteredRecipes.recipeRemoteJar.getRecipeOutput(),
                 new AspectList().add(Aspect.WATER, 4).add(Aspect.MECHANISM, 8).add(Aspect.EARTH, 4).add(Aspect.ORDER, 8))
-                .setParents(researchJar.key).setConcealed()
+                .setParents(researchJar.key, researchEssentiaMirror.key).setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.REMOTEJAR.1"), new ResearchPage(RegisteredRecipes.recipeRemoteJar), new ResearchPage("gadomancy.research_page.REMOTEJAR.2")).registerResearchItem();
     }
 }
