@@ -114,23 +114,49 @@ public class TileBlockProtector extends TileJarFillable {
 
     private static List<TileBlockProtector> protectors = new ArrayList<TileBlockProtector>();
 
-    public static boolean isSpotProtected(World world, double x, double y, double z) {
+    public static boolean isSpotProtected(World world, final double x, final double y, final double z) {
+        return isSpotProtected(world, new ProtectionHelper() {
+            @Override
+            public boolean checkProtection(TileBlockProtector tile) {
+                return isSpotProtected(tile, x, y, z);
+            }
+        });
+    }
+
+    public static boolean isSpotProtected(World world, final Entity entity) {
+        return isSpotProtected(world, new ProtectionHelper() {
+            @Override
+            public boolean checkProtection(TileBlockProtector tile) {
+                return isSpotProtected(tile, entity);
+            }
+        });
+    }
+
+    public static boolean isSpotProtected(World world, ProtectionHelper helper) {
         for (int i = 0; i < protectors.size(); i++) {
             TileBlockProtector protector = protectors.get(i);
             if (protector.isInvalid()) {
                 protectors.remove(i);
                 i--;
             } else if (protector.worldObj.isRemote == world.isRemote
-                    && isSpotProtected(protector, x, y, z)) {
+                    && helper.checkProtection(protector)) {
                 return true;
             }
         }
         return false;
     }
 
+    private static interface ProtectionHelper {
+        boolean checkProtection(TileBlockProtector tile);
+    }
+
     private static boolean isSpotProtected(TileBlockProtector tile, Entity entity) {
         AxisAlignedBB protectedAABB = AxisAlignedBB.getBoundingBox(tile.xCoord - tile.range, tile.yCoord - tile.range, tile.zCoord - tile.range, tile.xCoord + tile.range, tile.yCoord + tile.range, tile.zCoord + tile.range);
-        return protectedAABB.intersectsWith(entity.getBoundingBox());
+        AxisAlignedBB entityAABB = entity.getBoundingBox();
+        if(entityAABB != null) {
+            return protectedAABB.intersectsWith(entityAABB.addCoord(entity.posX, entity.posY, entity.posZ));
+        }
+        return isSpotProtected(tile, entity.posX, entity.posY, entity.posZ);
     }
 
     private static boolean isSpotProtected(TileBlockProtector tile, double x, double y, double z) {

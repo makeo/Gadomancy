@@ -90,7 +90,7 @@ public class EventHandlerWorld {
                     for(StackTraceElement element : elements) {
                         if(element.getClassName().equals(EntityLivingBase.class.getName())
                                 && (element.getMethodName().equals("func_70071_h") || element.getMethodName().equals("onUpdate"))) {
-                            return !TileBlockProtector.isSpotProtected(lastUpdated.worldObj, lastUpdated.posX, lastUpdated.posY, lastUpdated.posZ);
+                            return !TileBlockProtector.isSpotProtected(lastUpdated.worldObj, lastUpdated);
                         }
                     }
                 }
@@ -102,7 +102,9 @@ public class EventHandlerWorld {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void on(ExplosionEvent.Start e) {
         Explosion expl = e.explosion;
-        if(expl.isSmoking && TileBlockProtector.isSpotProtected(e.world, expl.explosionX, expl.explosionY, expl.explosionZ)) {
+        if(expl.isSmoking
+                && (expl.exploder != null ? TileBlockProtector.isSpotProtected(e.world, expl.exploder) :
+                    TileBlockProtector.isSpotProtected(e.world, expl.explosionX, expl.explosionY, expl.explosionZ))) {
             //why?
             //expl.isSmoking = false;
             e.setCanceled(true);
