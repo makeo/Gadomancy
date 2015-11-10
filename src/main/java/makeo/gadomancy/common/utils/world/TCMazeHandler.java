@@ -263,6 +263,16 @@ public class TCMazeHandler {
             }
             MazeHandler.labyrinth = old;
 
+            for(CellLoc l : chunksAffected.keySet()) {
+                for(int cX = 0; cX < 16; cX++) {
+                    for(int cY = 50; cY < 64; cY++) {
+                        for(int cZ = 0; cZ < 16; cZ++) {
+                            TCMazeHandler.GEN.func_147451_t((l.x << 4)+cX, cY, (l.z << 4)+cZ);
+                        }
+                    }
+                }
+            }
+
             finishBuild();
         }
 

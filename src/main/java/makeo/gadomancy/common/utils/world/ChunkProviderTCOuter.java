@@ -10,6 +10,7 @@ import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
@@ -70,6 +71,7 @@ public class ChunkProviderTCOuter implements IChunkProvider {
             TCMazeHandler.GEN.chunks.remove(key);
 
             chunk = new Chunk(worldObj, buf.blockData, buf.metaBuffer, x, z);
+
             byte[] abyte = chunk.getBiomeArray();
             System.arraycopy(biomeArr, 0, abyte, 0, biomeArr.length);
 
@@ -166,6 +168,18 @@ public class ChunkProviderTCOuter implements IChunkProvider {
                     throw new IllegalStateException("Unexpected Entity: " + bufE);
                 }
             }
+
+            for(int cX = 0; cX < 16; cX++) {
+                for(int cY = 50; cY < 64; cY++) {
+                    for(int cZ = 0; cZ < 16; cZ++) {
+                        int lightKey = ((cX & 15) << 4 | (cZ & 15)) << 7 | cY;
+                        int lightVal = buf.lightData[lightKey];
+                        if(lightVal > 0) {
+                            chunk.setLightValue(EnumSkyBlock.Block, cX, cY, cZ, lightVal);
+                        }
+                    }
+                }
+            }
         } else {
             Block[] ablock = new Block[blockArr.length];
             System.arraycopy(blockArr, 0, ablock, 0, blockArr.length);
@@ -178,6 +192,7 @@ public class ChunkProviderTCOuter implements IChunkProvider {
         }
 
         chunk.generateSkylightMap();
+
         return chunk;
     }
 
@@ -196,6 +211,16 @@ public class ChunkProviderTCOuter implements IChunkProvider {
 
         MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(p_73153_1_, this.worldObj, this.worldObj.rand, p_73153_2_, p_73153_3_, false));
         net.minecraft.block.BlockFalling.fallInstantly = false;
+
+
+
+        /*for(int cX = 0; cX < 16; cX++) {
+            for(int cY = 50; cY < 64; cY++) {
+                for(int cZ = 0; cZ < 16; cZ++) {
+                    worldObj.func_147451_t((p_73153_2_ << 4)+cX, cY, (p_73153_3_ << 4)+cZ);
+                }
+            }
+        }*/
     }
 
     public boolean saveChunks(boolean p_73151_1_, IProgressUpdate p_73151_2_) {

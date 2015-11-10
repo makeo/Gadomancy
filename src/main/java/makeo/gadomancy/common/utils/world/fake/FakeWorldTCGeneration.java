@@ -5,9 +5,12 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -110,6 +113,52 @@ public class FakeWorldTCGeneration extends FakeWorld {
     }
 
     @Override
+    public boolean canBlockSeeTheSky(int p_72937_1_, int p_72937_2_, int p_72937_3_) {
+        return false;
+    }
+
+    @Override
+    protected boolean chunkExists(int p_72916_1_, int p_72916_2_) {
+        return true;
+    }
+
+    @Override
+    public Chunk getChunkFromChunkCoords(int x, int z) {
+        long key = ((long)x) | (((long)z) << 32);
+        return new FakeChunk(this, x, z, chunks.get(key));
+    }
+
+    private static class FakeChunk extends Chunk {
+        private ChunkBuffer buf;
+
+        public FakeChunk(World world, int x, int z, ChunkBuffer buf) {
+            super(world, x, z);
+            this.buf = buf;
+        }
+
+        @Override
+        public void setLightValue(EnumSkyBlock type, int x, int y, int z, int light) {
+            if(type == EnumSkyBlock.Block) {
+                int key = ((x & 15) << 4 | (z & 15)) << 7 | y;
+                buf.lightData[key] = light;
+            }
+        }
+    }
+
+    @Override
+    public int getSavedLightValue(EnumSkyBlock type, int x, int y, int z) {
+        if(type == EnumSkyBlock.Block) {
+            ChunkBuffer buf = chunks.get(((long) x >> 4) | ((long) z >> 4) << 32);
+
+            int keyX = (x & 15) << 7 << 4;
+            int keyZ = (z & 15) << 7;
+            int key = keyX | keyZ | y;
+            return buf.lightData[key];
+        }
+        return 0;
+    }
+
+    @Override
     public boolean isAirBlock(int x, int y, int z) {
         return getBlock(x, y, z) == Blocks.air;
     }
@@ -199,6 +248,7 @@ public class FakeWorldTCGeneration extends FakeWorld {
         public Block[] blockData = new Block[32768];
         public byte[] metaBuffer = new byte[32768];
         public List<Integer[]> tiles = new ArrayList<Integer[]>();
+        public int[] lightData = new int[32768];
 
         public ChunkBuffer(long key) {
             this.key = key;
@@ -234,6 +284,7 @@ public class FakeWorldTCGeneration extends FakeWorld {
         static {
             instance = new TCFakeWorldProvider();
             instance.dimensionId = ModConfig.dimOuterId;
+            instance.hasNoSky = true;
         }
 
         @Override

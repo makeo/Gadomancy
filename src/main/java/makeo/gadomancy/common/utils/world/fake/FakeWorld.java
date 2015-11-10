@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.profiler.Profiler;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.MinecraftException;
@@ -28,7 +29,8 @@ import java.io.File;
 public class FakeWorld extends World {
 
     public FakeWorld(WorldProvider provider) {
-        super(FakeSaveHandler.instance, "", null, provider, null);
+        super(FakeSaveHandler.instance, "", null, provider, new Profiler());
+        theProfiler.profilingEnabled = false;
         difficultySetting = EnumDifficulty.NORMAL;
     }
 
