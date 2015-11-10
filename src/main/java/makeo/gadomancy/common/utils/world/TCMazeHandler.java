@@ -176,6 +176,10 @@ public class TCMazeHandler {
         }
     }
 
+    public static Map<EntityPlayer, TCMazeSession> getSessions() {
+        return runningSessions;
+    }
+
     public static void free(Map<CellLoc, Short> locations) {
         if (locations == null) return;
         for (CellLoc loc : locations.keySet()) {
