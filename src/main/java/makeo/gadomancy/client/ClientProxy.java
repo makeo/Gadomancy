@@ -123,8 +123,10 @@ public class ClientProxy extends CommonProxy {
 
         ItemRenderStoneMachine itemRenderStoneMachine = new ItemRenderStoneMachine();
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockStoneMachine), itemRenderStoneMachine);
-        itemRenderStoneMachine.registerRenderer(0, new TileManipulationFocus().setFociId(0), renderTileManipulationFocus);
-        itemRenderStoneMachine.registerRenderer(3, new TileManipulationFocus().setFociId(1), renderTileManipulationFocus);
+        itemRenderStoneMachine.registerRenderer(0, new TileManipulationFocus(), renderTileManipulationFocus);
+        TileManipulationFocus tileManipulationFocus = new TileManipulationFocus();
+        tileManipulationFocus.blockMetadata = 3;
+        itemRenderStoneMachine.registerRenderer(3, tileManipulationFocus, renderTileManipulationFocus);
 
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemFamiliar, new ItemRenderFamiliar());
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemCreativeNode, new ItemCreativeNodeRenderer());

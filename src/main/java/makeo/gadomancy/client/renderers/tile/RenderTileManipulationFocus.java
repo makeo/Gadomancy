@@ -21,19 +21,18 @@ public class RenderTileManipulationFocus extends TileEntitySpecialRenderer {
     private static final ModelFocusPortalPart PORTAL_FOCUS = new ModelFocusPortalPart();
 
     public void renderTileEntityAt(TileManipulationFocus tile, double x, double y, double z, float partialTicks) {
-        if(tile.getFociId() == -1) return;
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
 
-        bindTexture(new SimpleResourceLocation("models/manipulation_focus_" + tile.getFociId() + ".png"));
+        bindTexture(new SimpleResourceLocation("models/manipulation_focus_" + tile.getBlockMetadata() + ".png"));
 
         GL11.glRotatef(180, 1, 0, 0);
         GL11.glTranslatef(0.5f, -1.5f + (2/16f), -0.5f);
 
-        if(tile.getFociId() == 0 || tile.getFociId() == 1) {
+        if(tile.getBlockMetadata() == 0 || tile.getBlockMetadata() == 3) {
             GL11.glPushMatrix();
             for(int i = 0; i < 4; i++) {
-                if(tile.getFociId() == 0) {
+                if(tile.getBlockMetadata() == 0) {
                     RANDOM_FOCUS.render(null, 0, 0, 0, 0, 0, 0.0625f);
                 } else {
                     PORTAL_FOCUS.render(null, 0, 0, 0, 0, 0, 0.0625f);

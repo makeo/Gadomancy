@@ -167,7 +167,7 @@ public class BlockStoneMachine extends Block {
         }
     }
 
-    @Override
+    /*@Override
     public void onPostBlockPlaced(World world, int x, int y, int z, int metadata) {
         if(metadata == 0 || metadata == 3) {
             TileEntity te = world.getTileEntity(x, y, z);
@@ -175,7 +175,7 @@ public class BlockStoneMachine extends Block {
                 ((TileManipulationFocus) te).setFociId(metadata == 0 ? 0 : 1);
             }
         }
-    }
+    }*/
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
