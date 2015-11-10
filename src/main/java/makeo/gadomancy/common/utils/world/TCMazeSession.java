@@ -23,7 +23,7 @@ import java.util.Map;
  *
  * Created by HellFirePvP @ 05.11.2015 14:12
  */
-class TCMazeSession {
+public class TCMazeSession {
 
     public final EntityPlayerMP player;
     public final Map<CellLoc, Short> chunksAffected;

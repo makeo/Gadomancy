@@ -85,6 +85,11 @@ public class TCMazeHandler {
         }
     }
 
+    public static void handleBossFinish(TCMazeSession session) {
+
+        
+    }
+
     /*
      *  Coordinates wanted here are the absolute Portal coordinates.
      */

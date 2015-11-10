@@ -48,7 +48,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
     private static final int NODE_MANIPULATION_POSSIBLE_WORK_START = 70;
     private static final int NODE_MANIPULATION_WORK_ASPECT_CAP = 150;
 
-    private static final int ELDRITCH_PORTAL_CREATOR_WORK_START = 5;
+    private static final int ELDRITCH_PORTAL_CREATOR_WORK_START = 120;
     private static final int ELDRITCH_PORTAL_CREATOR_ASPECT_CAP = 150;
 
     //Already set when only multiblock would be present. aka is set, if 'isMultiblockPresent()' returns true.
@@ -106,7 +106,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
 
     private void eldritchPortalCreationTick() {
         workTick++;
-        if(workTick < 10) {
+        if(workTick < 400) {
             if(workTick % 16 == 0) {
                 PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_RUNES, xCoord, yCoord, zCoord, (byte) 1);
                 PacketHandler.INSTANCE.sendToAllAround(packet, getTargetPoint(32));
