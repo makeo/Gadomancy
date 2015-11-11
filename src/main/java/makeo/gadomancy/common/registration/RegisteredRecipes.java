@@ -39,6 +39,7 @@ public class RegisteredRecipes {
     public static AspectList costsEldritchPortalCreatorMultiblock = new AspectList().add(Aspect.FIRE, 150).add(Aspect.WATER, 150).add(Aspect.EARTH, 150).add(Aspect.AIR, 150).add(Aspect.ORDER, 150).add(Aspect.ENTROPY, 150);
 
     public static List multiblockNodeManipulator;
+    public static List multiblockEldritchPortalCreator;
 
     public static InfusionRecipe recipeGolemSilverwood;
     public static InfusionRecipe[] recipesGolemRunicShield;
@@ -48,6 +49,7 @@ public class RegisteredRecipes {
     public static InfusionRecipe recipeRandomizationFocus;
     public static InfusionRecipe[] recipesFamilar;
     public static InfusionRecipe recipeGolemCoreBodyguard;
+    public static InfusionRecipe recipePortalFocus;
 
     //ID's: 0-2=Strength upgrades, 3=range, 4=cdReduction
     public static InfusionRecipe[][] recipesFamiliarAugmentation;
@@ -55,6 +57,7 @@ public class RegisteredRecipes {
     public static IArcaneRecipe recipeStickyJar;
     public static IArcaneRecipe recipeArcaneDropper;
     public static IArcaneRecipe recipeRemoteJar;
+    public static IArcaneRecipe recipeAncientPedestal;
 
     public static void init() {
         AdditionalGolemType typeSilverwood = RegisteredGolemStuff.typeSilverwood;
@@ -99,14 +102,32 @@ public class RegisteredRecipes {
                 new ItemStack(ConfigBlocks.blockStoneDevice, 1, 8),
                 new ItemStack[] {new ItemStack(ConfigItems.itemResource, 1, 15), new ItemStack(ConfigItems.itemResource, 1, 16), new ItemStack(ConfigBlocks.blockCrystal, 1, 6), new ItemStack(ConfigItems.itemResource, 1, 16), new ItemStack(ConfigItems.itemResource, 1, 15), new ItemStack(ConfigItems.itemResource, 1, 16), new ItemStack(ConfigBlocks.blockCrystal, 1, 6), new ItemStack(ConfigItems.itemResource, 1, 16)});
 
+        recipePortalFocus = ThaumcraftApi.addInfusionCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".E_PORTAL_CREATOR",
+                new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 3), 7,
+                new AspectList().add(Aspect.ELDRITCH, 22).add(Aspect.VOID, 38).add(Aspect.MECHANISM, 30).add(Aspect.DARKNESS, 28).add(Aspect.EXCHANGE, 38),
+                new ItemStack(ConfigBlocks.blockStoneDevice, 1, 8),
+                new ItemStack[] {new ItemStack(ConfigItems.itemEldritchObject, 1, 0), new ItemStack(ConfigBlocks.blockCrystal, 1, 5), new ItemStack(ConfigItems.itemResource, 1, 16), new ItemStack(ConfigBlocks.blockCrystal, 1, 5), new ItemStack(ConfigItems.itemEldritchObject, 1, 0), new ItemStack(ConfigBlocks.blockCrystal, 1, 5), new ItemStack(ConfigItems.itemResource, 1, 16), new ItemStack(ConfigBlocks.blockCrystal, 1, 5)} );
+
         multiblockNodeManipulator = Arrays.asList(costsNodeManipulatorMultiblock, 3, 3, 3,
                 Arrays.asList(
                 null, null, null, null, new ItemStack(RegisteredBlocks.blockNode, 1, 5), null, null, null, null,
                 new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11), null, new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 0), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11),
                 new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15), null, new ItemStack(RegisteredBlocks.blockNodeManipulator, 1, 5), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15)));
 
+        //                                                                                    x  y  z
+        multiblockEldritchPortalCreator = Arrays.asList(costsEldritchPortalCreatorMultiblock, 7, 3, 7,
+                Arrays.asList(
+                        null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, new ItemStack(RegisteredBlocks.blockNode, 1, 5), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+                        null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11), null, null,   null, null, null, new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 3), null, null, null,   null, null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+                        null, null, null, new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 1), null, null, null, null, null, null, null, null, null, null, null, null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15), null, null, new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 1), null, null, new ItemStack(RegisteredBlocks.blockNodeManipulator, 1, 5), null, null, new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 1), null, null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15), null, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15), null, null, null, null, null, null, null, null, null, null, null, null, new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 1), null, null, null
+                ));
+
         recipeGolemCoreBodyguard = ThaumcraftApi.addInfusionCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".GOLEMCOREBODYGUARD", new ItemStack(RegisteredItems.itemGolemCoreBreak, 1, 1), 3, new AspectList().add(Aspect.TOOL, 28).add(Aspect.MECHANISM, 20).add(Aspect.WEAPON, 10).add(Aspect.ARMOR, 16),
                 new ItemStack(ConfigItems.itemGolemCore, 1, 4), new ItemStack[] { new ItemStack(ConfigItems.itemBootsTraveller, 1, 0), new ItemStack(Items.ender_pearl, 1, 0), new ItemStack(ConfigItems.itemSwordElemental, 1, 0), new ItemStack(Items.ender_pearl, 1, 0) } );
+
+        recipeAncientPedestal = ThaumcraftApi.addArcaneCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".E_PORTAL_CREATOR", new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 1),
+                new AspectList().add(Aspect.ENTROPY, 25).add(Aspect.ORDER, 25),
+                "SPS", " S ", "SPS", 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11), 'P', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15));
 
         recipesFamilar = createFamilarRecipes();
         recipesFamiliarAugmentation = createFamiliarAugmentationRecipes();

@@ -39,6 +39,7 @@ public class RegisteredResearches {
     public static ResearchItem researchInfusionClaw;
     public static ResearchItem researchRemoteJar;
     public static ResearchItem researchNodeManipulator;
+    public static ResearchItem researchEldritchPortalCreator;
 
     //Growing nodes stuff
     public static ResearchItem researchGrowingNodes;
@@ -105,6 +106,8 @@ public class RegisteredResearches {
         ResearchItem researchNodeStabilizer = PseudoResearchItem.create("WANDPEDFOC", -12, -5).registerResearchItem();
         ResearchItem researchCoreUse = PseudoResearchItem.create("COREUSE", -5, -9).registerResearchItem();
 
+        ResearchItem researchOculus = PseudoResearchItem.create("OCULUS", -11, -2).setRound().setSpecial().registerResearchItem();
+
         researchInfusionClaw = new SimpleResearchItem("INFUSIONCLAW", -6, -7, 5, new ItemStack(RegisteredBlocks.blockInfusionClaw),
                 new AspectList().add(Aspect.ELDRITCH, 8).add(Aspect.MECHANISM, 8).add(Aspect.MAGIC, 8).add(Aspect.ORDER, 8).add(Aspect.DARKNESS, 4))
                 .setParents(researchFocusPrimal.key, researchItemVoidMetal.key, researchWandPedestal.key, researchCoreUse.key).setConcealed()
@@ -116,6 +119,13 @@ public class RegisteredResearches {
                 .setConcealed().setSpecial()
                 .setParents(researchItemVoidMetal.key, researchNodeStabilizer.key, researchWardingStone.key, researchWandPedestal.key)
                 .setPages(new ResearchPage("gadomancy.research_page.NODE_MANIPULATOR.1"), new ResearchPage(RegisteredRecipes.recipeNodeManipulator), new ResearchPage("gadomancy.research_page.NODE_MANIPULATOR.3"), new ResearchPage(RegisteredRecipes.recipeRandomizationFocus), new ResearchPage(RegisteredRecipes.multiblockNodeManipulator), new ResearchPage("gadomancy.research_page.NODE_MANIPULATOR.6")).registerResearchItem();
+
+        researchEldritchPortalCreator = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".E_PORTAL_CREATOR", Gadomancy.MODID,
+                new AspectList().add(Aspect.ELDRITCH, 6).add(Aspect.DARKNESS, 10).add(Aspect.TRAVEL, 8).add(Aspect.AURA, 10).add(Aspect.VOID, 6).add(Aspect.MECHANISM, 4),
+                -10, 0, 2, new ItemStack(RegisteredBlocks.blockAdditionalEldrichPortal, 1, 0))
+                .setConcealed().setSpecial()
+                .setParents(researchNodeManipulator.key, researchOculus.key)
+                .setPages(new ResearchPage("gadomancy.research_page.E_PORTAL_CREATOR.1"), new ResearchPage(RegisteredRecipes.recipeAncientPedestal), new ResearchPage("gadomancy.research_page.E_PORTAL_CREATOR.3"), new ResearchPage(RegisteredRecipes.recipePortalFocus), new ResearchPage("gadomancy.research_page.E_PORTAL_CREATOR.5"), new ResearchPage(RegisteredRecipes.multiblockEldritchPortalCreator)).registerResearchItem();
 
         researchGrowingNodes = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING", Gadomancy.MODID, new AspectList(), -8, -1, 5, new ResourceLocation("thaumcraft", "textures/misc/r_nodes.png"))
                 .setSpecial().setLost().setConcealed()
@@ -209,6 +219,7 @@ public class RegisteredResearches {
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR", 4);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTHCLUE", 3);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".FAMILIAR", 1);
+        ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".E_PORTAL_CREATOR", 3);
     }
 
     public static void postInit() {

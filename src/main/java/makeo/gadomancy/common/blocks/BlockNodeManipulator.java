@@ -3,7 +3,6 @@ package makeo.gadomancy.common.blocks;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
 import makeo.gadomancy.common.registration.RegisteredItems;
-import makeo.gadomancy.common.registration.RegisteredRecipes;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;

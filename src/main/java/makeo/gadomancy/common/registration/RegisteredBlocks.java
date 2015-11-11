@@ -13,7 +13,6 @@ import makeo.gadomancy.common.blocks.BlockStickyJar;
 import makeo.gadomancy.common.blocks.BlockStoneMachine;
 import makeo.gadomancy.common.blocks.tiles.TileAdditionalEldritchPortal;
 import makeo.gadomancy.common.blocks.tiles.TileArcaneDropper;
-import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
 import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;

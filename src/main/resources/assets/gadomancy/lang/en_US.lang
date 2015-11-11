@@ -70,6 +70,16 @@ gadomancy.research_page.NODE_MANIPULATOR.1=Aura nodes have intrigued you for the
 gadomancy.research_page.NODE_MANIPULATOR.3=The Node Manipulator is a device that essentially works in a manner opposite to that of a wand recharge pedestal. By drawing vis from a wand or staff and channeling it back into the node, the node manipulator will force a node to destabilize slightly.<LINE> The manipulator's main pedestal is not stable enough to alter nodes on its own. By adding a specially modified focus to hold the wand/staff in place for vis extraction and a set of pillars to channel the extracted vis into the node, the device is finally ready for use. Just place a wand/staff on the pedestal, and the node manipulator will start automatically.
 gadomancy.research_page.NODE_MANIPULATOR.6=The Node Manipulator needs at least 70 of all six primal aspects to begin manipulating a node, but allowing more that 70 seems to yield greater effects. <BR>Despite all of your research into node behavior, you still haven't the slightest idea what the node manipulator will actually do to aura nodes. The only way to find out seems to be testing it out...
 
+tc.research_name.GADOMANCY.E_PORTAL_CREATOR=Eldritch Portal Creator
+tc.research_text.GADOMANCY.E_PORTAL_CREATOR=<missing>
+gadomancy.research_page.E_PORTAL_CREATOR.1=<missing>
+gadomancy.research_page.E_PORTAL_CREATOR.3=<missing>
+gadomancy.research_page.E_PORTAL_CREATOR.5=<missing>
+
+tc.research_name.GADOMANCY.BLOCK_PROTECTOR=Runic Enervation Projector <or however you guys want to name it>
+tc.research_text.GADOMANCY.BLOCK_PROTECTOR=<missing>
+gadomancy.research_page.BLOCK_PROTECTOR.1=<missing>
+
 tc.research_name.GADOMANCY.GROWING=Growing Nodes
 tc.research_text.GADOMANCY.GROWING=Feed me Semour
 gadomancy.research_page.GROWING.1=This node is something... different. <BR>You did expect an Energized Node to be the only stable connection between us and the source of all Vis, but this Aura Node seems very stable too. Energizing an Aura Node channels Vis from its source into the world and breaks it down to the purest primal Aspects. <BR>But... this node behaves much differently from others. It feels as though it's looking for something... it seems... restless. Something about this behavior is disconcerting in the extreme.
@@ -99,9 +109,12 @@ gadomancy.golem.bodyguardcore=Bodyguard
 
 gadomancy.upgrades.runicshield=Runic Shield
 
+gadomancy.lore.hasAdditionalLore=<Press SHIFT for more information>
+
 gadomancy.lore.stickyjar=Sticky
 gadomancy.lore.remotejar=§7Network: %s
 
+gadomancy.eldritch.portalPlacerCreative=Creative portal placer
 gadomancy.eldritch.noflyCreative=(even in creative)
 gadomancy.eldritch.nobreakPortalNothing=This portal cannot be broken
 gadomancy.eldritch.portalSpawned=You sense the opening of a portal in the distance.

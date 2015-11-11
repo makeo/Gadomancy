@@ -2,7 +2,6 @@ package makeo.gadomancy.common.events;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
 import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.familiar.FamiliarAIController;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;

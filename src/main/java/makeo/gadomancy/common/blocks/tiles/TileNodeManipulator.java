@@ -12,13 +12,11 @@ import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredMultiblocks;
 import makeo.gadomancy.common.registration.RegisteredRecipes;
 import makeo.gadomancy.common.utils.MultiblockHelper;
-import makeo.gadomancy.common.utils.world.TCMazeHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
@@ -636,7 +634,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
     public static enum MultiblockType {
 
         NODE_MANIPULATOR(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR", RegisteredRecipes.costsNodeManipulatorMultiblock),
-        E_PORTAL_CREATOR(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR", RegisteredRecipes.costsEldritchPortalCreatorMultiblock); //TODO Change sometime.
+        E_PORTAL_CREATOR(Gadomancy.MODID.toUpperCase() + ".E_PORTAL_CREATOR", RegisteredRecipes.costsEldritchPortalCreatorMultiblock);
 
         private String research;
         private AspectList costs;

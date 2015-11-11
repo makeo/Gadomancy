@@ -7,7 +7,6 @@ import makeo.gadomancy.common.items.baubles.ItemFamiliar;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketFamiliar;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;

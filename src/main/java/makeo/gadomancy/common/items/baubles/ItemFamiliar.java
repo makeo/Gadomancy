@@ -12,6 +12,8 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import org.lwjgl.input.Keyboard;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.Thaumcraft;
 
@@ -52,29 +54,42 @@ public class ItemFamiliar extends Item implements IBauble {
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List lore, boolean par4Flag) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List lore, boolean flag) {
         if(stack.hasTagCompound()) {
             if(hasAspect(stack)) {
                 lore.add(getAspect(stack).getName());
             }
 
-            if(hasUpgrade(stack, FamiliarUpgrade.ATTACK_1) || hasUpgrade(stack, FamiliarUpgrade.ATTACK_2) || hasUpgrade(stack, FamiliarUpgrade.ATTACK_3)) {
-                String strength = EnumChatFormatting.DARK_RED + "Strength ";
-                if(hasUpgrade(stack, FamiliarUpgrade.ATTACK_1)) strength += "I";
-                if(hasUpgrade(stack, FamiliarUpgrade.ATTACK_2)) strength += "I";
-                if(hasUpgrade(stack, FamiliarUpgrade.ATTACK_3)) strength += "I";
-                lore.add(strength);
-            }
+            if(Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54)) {
+                if(hasUpgrade(stack, FamiliarUpgrade.ATTACK_1) || hasUpgrade(stack, FamiliarUpgrade.ATTACK_2) || hasUpgrade(stack, FamiliarUpgrade.ATTACK_3)) {
+                    String strength = EnumChatFormatting.DARK_RED + "Strength ";
+                    if(hasUpgrade(stack, FamiliarUpgrade.ATTACK_1)) strength += "I";
+                    if(hasUpgrade(stack, FamiliarUpgrade.ATTACK_2)) strength += "I";
+                    if(hasUpgrade(stack, FamiliarUpgrade.ATTACK_3)) strength += "I";
+                    lore.add(strength);
+                }
 
-            if(hasUpgrade(stack, FamiliarUpgrade.RANGE_1)) {
-                lore.add(EnumChatFormatting.GOLD + "Reach I");
-            }
+                if(hasUpgrade(stack, FamiliarUpgrade.RANGE_1)) {
+                    lore.add(EnumChatFormatting.GOLD + "Reach I");
+                }
 
-            if(hasUpgrade(stack, FamiliarUpgrade.COOLDOWN_1)) {
-                lore.add(EnumChatFormatting.AQUA + "Swiftness I");
+                if(hasUpgrade(stack, FamiliarUpgrade.COOLDOWN_1)) {
+                    lore.add(EnumChatFormatting.AQUA + "Swiftness I");
+                }
+            } else {
+                if(hasAnyUpgrade(stack)) {
+                    lore.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + StatCollector.translateToLocal("gadomancy.lore.hasAdditionalLore"));
+                }
             }
         }
-        super.addInformation(stack, player, lore, par4Flag);
+        super.addInformation(stack, player, lore, flag);
+    }
+
+    public boolean hasAnyUpgrade(ItemStack stack) {
+        for(FamiliarUpgrade upgrade : FamiliarUpgrade.values()) {
+            if(hasUpgrade(stack, upgrade)) return true;
+        }
+        return false;
     }
 
     @Override

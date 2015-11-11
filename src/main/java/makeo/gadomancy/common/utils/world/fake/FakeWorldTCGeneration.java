@@ -5,10 +5,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
@@ -17,7 +15,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.EntityPermanentItem;
 import thaumcraft.common.entities.monster.EntityEldritchGuardian;
-import thaumcraft.common.lib.utils.BlockUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

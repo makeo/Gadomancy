@@ -3,8 +3,14 @@ package makeo.gadomancy.common.items;
 import makeo.gadomancy.common.Gadomancy;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
+
+import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -25,6 +31,12 @@ public class ItemBlockAdditionalEldritchPortal extends ItemBlock {
     public void registerIcons(IIconRegister ir) {
         super.registerIcons(ir);
         portalIcon = ir.registerIcon(Gadomancy.MODID + ":eldritch_portal");
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean flag) {
+        list.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("gadomancy.eldritch.portalPlacerCreative"));
+        super.addInformation(stack, player, list, flag);
     }
 
     @Override
