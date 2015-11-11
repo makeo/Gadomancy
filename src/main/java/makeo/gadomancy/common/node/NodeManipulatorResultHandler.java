@@ -24,20 +24,28 @@ public class NodeManipulatorResultHandler {
 
     private NodeManipulatorResultHandler() {}
 
-    public static NodeManipulatorResult getRandomResult(TileExtendedNode affectedNode) {
-        return getRandomResult(affectedNode.getWorldObj().rand, affectedNode);
+    public static NodeManipulatorResult getRandomResult(TileExtendedNode affectedNode, int percChance) {
+        return getRandomResult(affectedNode.getWorldObj().rand, affectedNode, percChance);
     }
 
-    public static NodeManipulatorResult getRandomResult(Random random, TileExtendedNode affectedNode) {
+    public static NodeManipulatorResult getRandomResult(Random random, TileExtendedNode affectedNode, int percChance) {
+        int resultPositiveChance = Math.round(((float) percChance) / 5F);
         List<NodeManipulatorResult> localResults = new ArrayList<NodeManipulatorResult>();
         for(NodeManipulatorResult result : possibleResults) {
-            if(result.canAffect(affectedNode)) localResults.add(result);
+            if(result.canAffect(affectedNode)) {
+                ResultType type = result.getResultType();
+                if(type == ResultType.NEGATIVE) {
+                    if(random.nextInt(100) < resultPositiveChance) continue;
+                }
+
+                localResults.add(result);
+            }
         }
         if(localResults.isEmpty()) return null;
         return (NodeManipulatorResult) WeightedRandom.getRandomItem(random, localResults);
     }
 
-    public static void combine(AspectList containingList, Aspect a, Aspect b) {
+    public static void combine(AspectList containingList, Aspect a, Aspect b, int addition) {
         if(!canCombine(a, b)) return;
         Aspect combination = NodeManipulatorResultHandler.getCombination(a, b);
         int lowerAmount;
@@ -48,7 +56,7 @@ public class NodeManipulatorResultHandler {
         }
         containingList.remove(a, lowerAmount);
         containingList.remove(b, lowerAmount);
-        containingList.add(combination, lowerAmount);
+        containingList.add(combination, lowerAmount + addition);
     }
 
     public static boolean canCombine(Aspect a, Aspect b) {
@@ -83,6 +91,14 @@ public class NodeManipulatorResultHandler {
 
         //Let the node gain primals
         possibleResults.add(RegisteredManipulations.resultGainPrimal);
+    }
+
+    public static enum ResultType {
+
+        POSITIVE,
+        NEGATIVE,
+        NEUTRAL
+
     }
 
 }

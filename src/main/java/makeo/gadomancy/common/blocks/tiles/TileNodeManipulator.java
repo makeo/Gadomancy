@@ -48,7 +48,7 @@ import java.util.Map;
 public class TileNodeManipulator extends TileWandPedestal implements IAspectContainer, IWandable {
 
     private static final int NODE_MANIPULATION_POSSIBLE_WORK_START = 70;
-    private static final int NODE_MANIPULATION_WORK_ASPECT_CAP = 150;
+    private static final int NODE_MANIPULATION_WORK_ASPECT_CAP = 120;
 
     private static final int ELDRITCH_PORTAL_CREATOR_WORK_START = 120;
     private static final int ELDRITCH_PORTAL_CREATOR_ASPECT_CAP = 150;
@@ -268,6 +268,8 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
     }
 
     private void scheduleManipulation() {
+        float overSized = calcOversize(NODE_MANIPULATION_POSSIBLE_WORK_START);
+
         workTick = 0;
         isWorking = false;
         workAspectList = new AspectList();
@@ -275,9 +277,14 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
         TileEntity te = worldObj.getTileEntity(xCoord, yCoord + 2, zCoord);
         if(te == null || !(te instanceof TileExtendedNode)) return;
         TileExtendedNode node = (TileExtendedNode) te;
+        int areaRange = NODE_MANIPULATION_WORK_ASPECT_CAP - NODE_MANIPULATION_POSSIBLE_WORK_START;
+        int percChanceForBetter = 0;
+        if(areaRange > 0) {
+            percChanceForBetter = (int) ((overSized / ((float) areaRange)) * 100);
+        }
         NodeManipulatorResult result;
         do {
-            result = NodeManipulatorResultHandler.getRandomResult(node);
+            result = NodeManipulatorResultHandler.getRandomResult(node, percChanceForBetter);
         } while (!result.affect(node));
         PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_SPARKLE_SPREAD, xCoord, yCoord + 2, zCoord);
         PacketHandler.INSTANCE.sendToAllAround(packet, getTargetPoint(32));
@@ -285,6 +292,14 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
         worldObj.markBlockForUpdate(xCoord, yCoord + 2, zCoord);
         markDirty();
         node.markDirty();
+    }
+
+    private float calcOversize(int neededAspects) {
+        int overall = 0;
+        for(Aspect a : Aspect.getPrimalAspects()) {
+            overall += workAspectList.getAmount(a) - neededAspects;
+        }
+        return ((float) overall) / 6F;
     }
 
     private void doAspectChecks(int aspectCap, int possibleWorkStart) {

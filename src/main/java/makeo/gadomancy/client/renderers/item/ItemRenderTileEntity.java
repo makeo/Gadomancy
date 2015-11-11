@@ -1,5 +1,6 @@
 package makeo.gadomancy.client.renderers.item;
 
+import makeo.gadomancy.common.blocks.tiles.TileManipulationFocus;
 import makeo.gadomancy.common.utils.world.fake.FakeWorld;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
@@ -46,11 +47,13 @@ public class ItemRenderTileEntity<T extends TileEntity> implements IItemRenderer
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         if(type == IItemRenderer.ItemRenderType.ENTITY)
-            GL11.glTranslatef(-0.5f, -0.5f, -0.5f);
+            GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
-        if(type == ItemRenderType.INVENTORY) {
-            GL11.glTranslatef(0, -0.1f, 0);
-        }
+        if(type == ItemRenderType.INVENTORY)
+            GL11.glTranslatef(0, -0.1F, 0);
+
+        if(type == ItemRenderType.EQUIPPED_FIRST_PERSON && tile instanceof TileManipulationFocus)
+            GL11.glTranslatef(0, 0.6F, 0);
 
         this.renderer.renderTileEntityAt(tile, 0.0D, 0.0D, 0.0D, 0.0F);
     }

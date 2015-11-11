@@ -13,8 +13,15 @@ import net.minecraft.util.WeightedRandom;
  */
 public abstract class NodeManipulatorResult extends WeightedRandom.Item {
 
-    public NodeManipulatorResult(int chanceToRoll) {
+    private NodeManipulatorResultHandler.ResultType resultType;
+
+    public NodeManipulatorResult(int chanceToRoll, NodeManipulatorResultHandler.ResultType resultType) {
         super(chanceToRoll);
+        this.resultType = resultType;
+    }
+
+    public NodeManipulatorResultHandler.ResultType getResultType() {
+        return resultType;
     }
 
     public boolean canAffect(TileExtendedNode node) {

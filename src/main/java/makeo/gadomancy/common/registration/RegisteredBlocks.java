@@ -13,6 +13,7 @@ import makeo.gadomancy.common.blocks.BlockStickyJar;
 import makeo.gadomancy.common.blocks.BlockStoneMachine;
 import makeo.gadomancy.common.blocks.tiles.TileAdditionalEldritchPortal;
 import makeo.gadomancy.common.blocks.tiles.TileArcaneDropper;
+import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
 import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
@@ -119,6 +120,7 @@ public class RegisteredBlocks {
         registerTile(TileManipulationFocus.class);
         registerTile(TileAdditionalEldritchPortal.class);
         registerTile(TileBlockProtector.class);
+        //registerTile(TileAuraPylon.class);
     }
 
     private static void registerTile(Class<? extends TileEntity> tile, String name) {

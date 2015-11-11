@@ -31,7 +31,7 @@ import java.util.Map;
 public class GrowingNodeBehavior {
 
     public static final double SATURATION_DIFFICULTY = 15D;
-    public static final double SATURATION_CAP = 90D;
+    public static final double SATURATION_CAP = 110D;
     public static final int HAPPINESS_CAP = 400;
 
     //The node the growing node attacks.

@@ -2,6 +2,7 @@ package makeo.gadomancy.common.events;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
 import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.familiar.FamiliarAIController;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
@@ -13,6 +14,8 @@ import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import thaumcraft.common.entities.EntityPermanentItem;
 import thaumcraft.common.items.armor.Hover;
 
 /**
@@ -43,6 +46,15 @@ public class EventHandlerEntity {
     public void on(LivingDeathEvent event) {
         if(!event.entity.worldObj.isRemote && event.entityLiving instanceof EntityPlayer) {
             TCMazeHandler.closeSession((EntityPlayer) event.entityLiving, false);
+        }
+    }
+
+    @SubscribeEvent
+    public void on(EntityItemPickupEvent event) {
+        if(!event.entityPlayer.worldObj.isRemote) {
+            if(event.item != null && event.item instanceof EntityPermanentItem) {
+                //TODO inform TileAuraPylon...
+            }
         }
     }
 
