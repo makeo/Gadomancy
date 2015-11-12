@@ -1,8 +1,12 @@
 package makeo.gadomancy.common.blocks.tiles;
 
+import makeo.gadomancy.common.blocks.BlockAuraPylon;
+import makeo.gadomancy.common.utils.ItemUtils;
+import net.minecraft.block.Block;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -13,10 +17,12 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.aspects.IEssentiaTransport;
+import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.EntityPermanentItem;
 import thaumcraft.common.entities.EntitySpecialItem;
 import thaumcraft.common.items.ItemCrystalEssence;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,6 +48,8 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
     //Input tile handles Essentia IO all 8 ticks and thus provides needed amount information.
 
     private EntityPermanentItem tcPermItem;
+    private boolean isPartOfMultiblock = false;
+
     private int ticksExisted = 0;
     private Aspect holdingAspect;
     private int amount = 0;
@@ -54,19 +62,33 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
     public void updateEntity() {
         ticksExisted++;
 
-        if ((ticksExisted & 7) == 0) {
-            if (checkComponents()) return;
-        }
+        if(!worldObj.isRemote) {
+            if ((ticksExisted & 7) == 0) {
+                if (checkComponents()) return;
+            }
 
-        if (isInputTile()) {
-            handleIO();
-        }
-        if (isMasterTile()) {
-            handleCrystal();
-            if (holdingAspect != null) {
-                handleEffectDistribution();
+            if (isInputTile()) {
+                handleIO();
+            }
+            if (isMasterTile()) {
+                handleCrystal();
+                if (holdingAspect != null) {
+                    handleEffectDistribution();
+                }
+            }
+        } else {
+            if(isInputTile() && holdingAspect != null) {
+                doEssentiaTrail();
             }
         }
+    }
+
+    //Client-Side input tile only!
+    private void doEssentiaTrail() {
+        if((ticksExisted & 1) == 0) return;
+        TileAuraPylon masterTile = getMasterTile();
+        if(masterTile == null) return;
+        Thaumcraft.proxy.essentiaTrailFx(worldObj, xCoord, yCoord, zCoord, masterTile.xCoord, masterTile.yCoord, masterTile.zCoord, 10, holdingAspect.getColor(), 1);
     }
 
     //Special to masterTile only!
@@ -217,12 +239,47 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
             breakTile();
             return true;
         }
+        if(!hasTopTile()) {
+            breakTile();
+            return true;
+        }
         return false;
+    }
+
+    private boolean hasTopTile() {
+        TileAuraPylon master = getMasterTile();
+        if(master == null) return false;
+        TileEntity te = worldObj.getTileEntity(master.xCoord, master.yCoord + 1, master.zCoord);
+        return !(te == null || !(te instanceof TileAuraPylonTop));
     }
 
     //Individual.
     private void breakTile() {
-        //TODO break... ?
+        if(!isPartOfMultiblock || worldObj.isRemote) return;
+
+        int meta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+        Block pylon = worldObj.getBlock(xCoord, yCoord, zCoord);
+        if(pylon != null) {
+            ArrayList<ItemStack> stacks = pylon.getDrops(worldObj, xCoord, yCoord, zCoord, meta, 0);
+            for(ItemStack i : stacks) {
+                EntityItem item = new EntityItem(worldObj, xCoord, yCoord, zCoord, i);
+                ItemUtils.applyRandomDropOffset(item, worldObj.rand);
+                worldObj.spawnEntityInWorld(item);
+            }
+        }
+        worldObj.removeTileEntity(xCoord, yCoord, zCoord);
+        worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+
+    //Individual
+    public boolean isPartOfMultiblock() {
+        return isPartOfMultiblock;
+    }
+
+    //Individual.
+    public void setPartOfMultiblock(boolean isPartOfMultiblock) {
+        this.isPartOfMultiblock = isPartOfMultiblock;
     }
 
     //Individual.
@@ -303,6 +360,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
         }
         this.amount = compound.getInteger("amount");
         this.maxAmount = compound.getInteger("maxAmount");
+        this.isPartOfMultiblock = compound.getBoolean("partOfMultiblock");
     }
 
     @Override
@@ -314,6 +372,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
         }
         compound.setInteger("amount", amount);
         compound.setInteger("maxAmount", maxAmount);
+        compound.setBoolean("partOfMultiblock", isPartOfMultiblock);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////

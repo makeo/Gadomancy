@@ -20,7 +20,9 @@ import makeo.gadomancy.client.renderers.item.ItemRenderFamiliar;
 import makeo.gadomancy.client.renderers.item.ItemRenderRemoteJar;
 import makeo.gadomancy.client.renderers.item.ItemRenderStoneMachine;
 import makeo.gadomancy.client.renderers.item.ItemRenderTileEntity;
+import makeo.gadomancy.client.renderers.item.ItemRenderTileEntityMulti;
 import makeo.gadomancy.client.renderers.tile.RenderTileArcaneDropper;
+import makeo.gadomancy.client.renderers.tile.RenderTileAuraPylon;
 import makeo.gadomancy.client.renderers.tile.RenderTileCapEldritch;
 import makeo.gadomancy.client.renderers.tile.RenderTileExtendedNode;
 import makeo.gadomancy.client.renderers.tile.RenderTileExtendedNodeJar;
@@ -34,6 +36,8 @@ import makeo.gadomancy.client.renderers.tile.RenderTileStickyJar;
 import makeo.gadomancy.common.CommonProxy;
 import makeo.gadomancy.common.blocks.tiles.TileAdditionalEldritchPortal;
 import makeo.gadomancy.common.blocks.tiles.TileArcaneDropper;
+import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
+import makeo.gadomancy.common.blocks.tiles.TileAuraPylonTop;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
@@ -118,6 +122,10 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEldritchAltar.class, new RenderTileCapEldritch("textures/models/obelisk_cap_altar.png"));
         ClientRegistry.bindTileEntitySpecialRenderer(TileEldritchCap.class, new RenderTileCapEldritch("textures/models/obelisk_cap.png"));
 
+        RenderTileAuraPylon renderTileAuraPylon = new RenderTileAuraPylon();
+        ClientRegistry.bindTileEntitySpecialRenderer(TileAuraPylon.class, renderTileAuraPylon);
+        ClientRegistry.bindTileEntitySpecialRenderer(TileAuraPylonTop.class, renderTileAuraPylon);
+
         //Items
         TileArcaneDropper fakeTile = new TileArcaneDropper();
         fakeTile.blockMetadata = 8 | ForgeDirection.SOUTH.ordinal();
@@ -126,6 +134,10 @@ public class ClientProxy extends CommonProxy {
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockInfusionClaw), new ItemRenderTileEntity(renderTileInfusionClaw, new TileInfusionClaw()));
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ConfigBlocks.blockAiry), new ItemExNodeRenderer());
+
+        ItemRenderTileEntityMulti multi = new ItemRenderTileEntityMulti(new ItemRenderTileEntityMulti.RenderSet(renderTileAuraPylon, new TileAuraPylon(), 0),
+                new ItemRenderTileEntityMulti.RenderSet(renderTileAuraPylon, new TileAuraPylonTop(), 1));
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockAuraPylon), multi);
 
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemExtendedNodeJar, new ItemJarExtendedNodeRenderer());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockRemoteJar), new ItemRenderRemoteJar(renderTileRemoteJar));

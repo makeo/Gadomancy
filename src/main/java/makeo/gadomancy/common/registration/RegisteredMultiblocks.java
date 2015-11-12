@@ -35,4 +35,10 @@ public class RegisteredMultiblocks {
             .addBlock(-3, 0, 0, RegisteredBlocks.blockStoneMachine, 1).addBlock(0, 0, -3, RegisteredBlocks.blockStoneMachine, 1)
             .addBlock(1, 0, 1, RegisteredBlocks.blockStoneMachine, 15).addBlock(-1, 0, 1, RegisteredBlocks.blockStoneMachine, 15).addBlock(-1, 0, -1, RegisteredBlocks.blockStoneMachine, 15).addBlock(1, 0, -1, RegisteredBlocks.blockStoneMachine, 15)
             .addBlock(1, 1, 1, RegisteredBlocks.blockStoneMachine, 11).addBlock(-1, 1, 1, RegisteredBlocks.blockStoneMachine, 11).addBlock(-1, 1, -1, RegisteredBlocks.blockStoneMachine, 11).addBlock(1, 1, -1, RegisteredBlocks.blockStoneMachine, 11);
+
+    public static final MultiblockHelper.MultiblockPattern auraPylonPattern = new MultiblockHelper.MultiblockPattern(RegisteredBlocks.blockAuraPylon, 1)
+            .addBlock(0, -1, 0, RegisteredBlocks.blockAuraPylon, 0)
+            .addBlock(0, -2, 0, RegisteredBlocks.blockAuraPylon, 0)
+            .addBlock(0, -3, 0, RegisteredBlocks.blockAuraPylon, 0)
+            .addBlock(0, -4, 0, RegisteredBlocks.blockAuraPylon, 0);
 }

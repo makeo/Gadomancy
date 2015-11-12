@@ -5,6 +5,7 @@ import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
+import makeo.gadomancy.common.utils.ItemUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -94,10 +95,7 @@ public class BlockInfusionClaw extends BlockTransparent {
             float f2 = RANDOM.nextFloat() * 0.8F + 0.1F;
 
             EntityItem entityItem = new EntityItem(world, x + f, y + f1, z + f2, wandStack.copy());
-            float f3 = 0.05F;
-            entityItem.motionX = RANDOM.nextGaussian() * f3;
-            entityItem.motionY = RANDOM.nextGaussian() * f3 + 0.2F;
-            entityItem.motionZ = RANDOM.nextGaussian() * f3;
+            ItemUtils.applyRandomDropOffset(entityItem, world.rand);
 
             world.spawnEntityInWorld(entityItem);
         }
