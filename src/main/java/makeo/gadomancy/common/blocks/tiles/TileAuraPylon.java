@@ -49,6 +49,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
 
     private EntityPermanentItem tcPermItem;
     private boolean isPartOfMultiblock = false;
+    private boolean searchingForItem = false;
 
     private int ticksExisted = 0;
     private Aspect holdingAspect;
@@ -71,15 +72,57 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
                 handleIO();
             }
             if (isMasterTile()) {
-                handleCrystal();
-                if (holdingAspect != null) {
+                boolean hasChanged = handleCrystal();
+                if (hasChanged) {
                     handleEffectDistribution();
                 }
             }
         } else {
+            if(isMasterTile() && searchingForItem) {
+                tryVortexPossibleItemsClient();
+            }
+
             if(isInputTile() && holdingAspect != null) {
                 doEssentiaTrail();
             }
+        }
+    }
+
+    private void tryVortexPossibleItemsClient() {
+        TileAuraPylon io = getInputTile();
+        if (io == null) return;
+        ChunkCoordinates rel = new ChunkCoordinates(xCoord, yCoord - (yCoord - io.yCoord), zCoord);
+        List entityItems = worldObj.selectEntitiesWithinAABB(EntityItem.class,
+                AxisAlignedBB.getBoundingBox(rel.posX - 0.5, rel.posY - 0.5, rel.posZ - 0.5, rel.posX + 0.5, rel.posY + 0.5, rel.posZ + 0.5).expand(8, 8, 8), new IEntitySelector() {
+                    @Override
+                    public boolean isEntityApplicable(Entity e) {
+                        return !(e instanceof EntityPermanentItem) && !(e instanceof EntitySpecialItem) &&
+                                e instanceof EntityItem && ((EntityItem) e).getEntityItem() != null &&
+                                ((EntityItem) e).getEntityItem().getItem() instanceof ItemCrystalEssence;
+                    }
+                });
+        Entity dummy = new EntityItem(worldObj);
+        dummy.posX = rel.posX + 0.5;
+        dummy.posY = rel.posY + 0.5;
+        dummy.posZ = rel.posZ + 0.5;
+
+        //MC code.
+        EntityItem entity = null;
+        double d0 = Double.MAX_VALUE;
+        for (Object entityItem : entityItems) {
+            EntityItem entityIt = (EntityItem) entityItem;
+            if (entityIt != dummy) {
+                double d1 = dummy.getDistanceSqToEntity(entityIt);
+                if (d1 <= d0) {
+                    entity = entityIt;
+                    d0 = d1;
+                }
+            }
+        }
+        if(entity == null) return;
+        if(dummy.getDistanceSqToEntity(entity) >= 4) {
+            entity.noClip = true;
+            applyMovementVectors(entity);
         }
     }
 
@@ -97,26 +140,53 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
         TileEntity iter = worldObj.getTileEntity(xCoord, yCoord - count, zCoord);
         while(iter != null && iter instanceof TileAuraPylon) {
             ((TileAuraPylon) iter).holdingAspect = holdingAspect;
-            count++;
             worldObj.markBlockForUpdate(xCoord, yCoord - count, zCoord);
             iter.markDirty();
+            count++;
+            iter = worldObj.getTileEntity(xCoord, yCoord - count, zCoord);
         }
     }
 
     //Special to masterTile only!
-    private void handleCrystal() {
-        if ((ticksExisted & 3) != 0) return;
+    private boolean handleCrystal() {
+        if ((ticksExisted & 3) != 0) return false;
+
+        boolean hasAspect = holdingAspect != null;
+        boolean hasItem = tcPermItem != null;
+        boolean isSearching = searchingForItem;
 
         tcPermItem = searchForPermItem();
 
         if (holdingAspect == null) {
-            if(tcPermItem == null) return;
-            holdingAspect = ((ItemCrystalEssence) tcPermItem.getEntityItem().getItem()).getAspects(tcPermItem.getEntityItem()).getAspects()[0];
+            if(tcPermItem != null) {
+                holdingAspect = ((ItemCrystalEssence) tcPermItem.getEntityItem().getItem()).getAspects(tcPermItem.getEntityItem()).getAspects()[0];
+            }
         } else {
             if(tcPermItem == null) {
                 holdingAspect = null;
             }
         }
+
+        if(tcPermItem == null) {
+            if(!searchingForItem) {
+                searchingForItem = true;
+                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            }
+        } else {
+            if(searchingForItem) {
+                searchingForItem = false;
+                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            }
+        }
+
+        if((holdingAspect == null) != hasAspect) {
+            return true;
+        } else if((tcPermItem == null) != hasItem) {
+            return true;
+        } else if(searchingForItem != isSearching) {
+            return true;
+        }
+        return false;
     }
 
     //Special to masterTile only!
@@ -162,15 +232,17 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
             }
         }
         if(entity == null) return null;
-        if(dummy.getDistanceSqToEntity(entity) < 0.2) {
+        if(dummy.getDistanceToEntity(entity) < 4) {
             EntityPermanentItem item = new EntityPermanentItem(entity.worldObj, entity.posX, entity.posY, entity.posZ, entity.getEntityItem());
             entity.worldObj.spawnEntityInWorld(item);
             item.setVelocity(0, 0, 0);
             item.hoverStart = entity.hoverStart;
             item.age = entity.age;
+            item.noClip = true;
             entity.setDead();
             return item;
         } else {
+            entity.noClip = true;
             applyMovementVectors(entity);
         }
         return null;
@@ -302,6 +374,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
     //Individual.
     public TileAuraPylon getInputTile() {
         if (isInputTile()) return this;
+        if(worldObj == null) return null;
         TileEntity superTile = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
         if (superTile == null || !(superTile instanceof TileAuraPylon)) return null;
         return ((TileAuraPylon) superTile).getInputTile();
@@ -315,6 +388,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
     //Individual.
     public TileAuraPylon getMasterTile() {
         if (isMasterTile()) return this;
+        if(worldObj == null) return null;
         TileEntity superTile = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
         if (superTile == null || !(superTile instanceof TileAuraPylon)) return null;
         return ((TileAuraPylon) superTile).getMasterTile();
@@ -361,6 +435,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
         this.amount = compound.getInteger("amount");
         this.maxAmount = compound.getInteger("maxAmount");
         this.isPartOfMultiblock = compound.getBoolean("partOfMultiblock");
+        this.searchingForItem = compound.getBoolean("searchingItem");
     }
 
     @Override
@@ -373,6 +448,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
         compound.setInteger("amount", amount);
         compound.setInteger("maxAmount", maxAmount);
         compound.setBoolean("partOfMultiblock", isPartOfMultiblock);
+        compound.setBoolean("searchingItem", searchingForItem);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -541,5 +617,11 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
     @Override
     public boolean renderExtendedTube() {
         return false;
+    }
+
+    public boolean isLowestTile() {
+        if(worldObj == null) return false;
+        TileEntity te = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
+        return te == null || !(te instanceof TileAuraPylon);
     }
 }

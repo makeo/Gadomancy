@@ -3,18 +3,25 @@ package makeo.gadomancy.common.blocks;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
 import makeo.gadomancy.common.blocks.tiles.TileAuraPylonTop;
+import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
+import makeo.gadomancy.common.registration.RegisteredMultiblocks;
+import makeo.gadomancy.common.registration.RegisteredRecipes;
+import makeo.gadomancy.common.utils.MultiblockHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import thaumcraft.api.ThaumcraftApiHelper;
+import thaumcraft.common.items.wands.ItemWandCasting;
 
 import java.util.List;
 
@@ -77,6 +84,32 @@ public class BlockAuraPylon extends BlockContainer implements IBlockTransparent 
         } else {
             return new TileAuraPylonTop();
         }
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9) {
+        if(world.getBlockMetadata(x, y, z) != 1) return false;
+        ItemStack heldItem = player.getHeldItem();
+        if(!world.isRemote && heldItem != null && heldItem.getItem() instanceof ItemWandCasting) {
+            //TODO check for research!
+            if(MultiblockHelper.isMultiblockPresent(world, x, y, z, RegisteredMultiblocks.auraPylonPattern) &&
+                    ThaumcraftApiHelper.consumeVisFromWandCrafting(player.getCurrentEquippedItem(), player, RegisteredRecipes.costsAuraPylonMultiblock, true)) {
+                TileAuraPylon ta = (TileAuraPylon) world.getTileEntity(x, y - 1, z);
+                ta.setTileInformation(true, false);
+                ta = (TileAuraPylon) world.getTileEntity(x, y - 4, z);
+                ta.setTileInformation(false, true);
+                int count = 1;
+                TileEntity iter = world.getTileEntity(x, y - count, z);
+                while(iter != null && iter instanceof TileAuraPylon) {
+                    ((TileAuraPylon) iter).setPartOfMultiblock(true);
+                    world.markBlockForUpdate(x, y - count, z);
+                    iter.markDirty();
+                    count++;
+                    iter = world.getTileEntity(x, y - count, z);
+                }
+            }
+        }
+        return false;
     }
 
     @Override

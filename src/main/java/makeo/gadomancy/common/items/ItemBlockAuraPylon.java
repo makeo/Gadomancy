@@ -1,6 +1,8 @@
 package makeo.gadomancy.common.items;
 
+import makeo.gadomancy.common.registration.RegisteredItems;
 import net.minecraft.block.Block;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
@@ -18,6 +20,11 @@ public class ItemBlockAuraPylon extends ItemBlock {
         super(block);
         setMaxDamage(0);
         setHasSubtypes(true);
+    }
+
+    @Override
+    public EnumRarity getRarity(ItemStack p_77613_1_) {
+        return RegisteredItems.raritySacred;
     }
 
     @Override

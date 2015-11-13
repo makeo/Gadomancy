@@ -7,6 +7,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import thaumcraft.api.aspects.Aspect;
 
 import java.util.ArrayList;
 
@@ -37,6 +38,14 @@ public class TileAuraPylonTop extends SynchronizedTileEntity {
         }
     }
 
+    public Aspect getAspect() {
+        TileEntity te = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
+        if(te == null || !(te instanceof TileAuraPylon)) {
+            return null;
+        }
+        return ((TileAuraPylon) te).getAspectType();
+    }
+
     private void breakTile() {
         int meta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
         Block pylon = worldObj.getBlock(xCoord, yCoord, zCoord);
@@ -62,19 +71,4 @@ public class TileAuraPylonTop extends SynchronizedTileEntity {
         return true;
     }
 
-    public static class DummyEntity extends Entity {
-
-        public DummyEntity() {
-            super(null);
-        }
-
-        @Override
-        protected void entityInit() {}
-
-        @Override
-        protected void readEntityFromNBT(NBTTagCompound p_70037_1_) {}
-
-        @Override
-        protected void writeEntityToNBT(NBTTagCompound p_70014_1_) {}
-    }
 }
