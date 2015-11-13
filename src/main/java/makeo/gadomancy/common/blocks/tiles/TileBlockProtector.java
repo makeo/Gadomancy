@@ -3,9 +3,11 @@ package makeo.gadomancy.common.blocks.tiles;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.ThaumcraftApiHelper;
@@ -117,7 +119,7 @@ public class TileBlockProtector extends TileJarFillable {
                     ((EntityCreeper) entity).timeSinceIgnited = 0;
                 }
 
-                if(worldObj.isRemote) {
+                if(worldObj.isRemote && !(entity instanceof EntityPlayer)) {
                     spawnEntityParticles(entity);
                 }
             }
@@ -125,8 +127,21 @@ public class TileBlockProtector extends TileJarFillable {
     }
 
     private void spawnEntityParticles(EntityLivingBase entity) {
-        if(worldObj.rand.nextInt(30) == 0) {
-            //TODO:
+        AxisAlignedBB cube = entity.boundingBox;
+        if(cube != null && worldObj.rand.nextInt(20) == 0) {
+            double posX = worldObj.rand.nextDouble() * (cube.maxX - cube.minX) + cube.minX;
+            double posY = worldObj.rand.nextDouble() * (cube.maxX - cube.minX) + cube.minY;
+            double posZ = worldObj.rand.nextDouble() * (cube.maxX - cube.minX) + cube.minZ;
+
+            switch (worldObj.rand.nextInt(5)) {
+                case 0: posX = cube.maxX; break;
+                case 1: posY = cube.maxY; break;
+                case 2: posZ = cube.maxZ; break;
+                case 3: posX = cube.minX; break;
+                case 4: posZ = cube.minZ; break;
+            }
+
+            Thaumcraft.proxy.wispFX3(this.worldObj, posX, posY, posZ, posX + this.worldObj.rand.nextFloat() * 0.2F, posY, posZ + this.worldObj.rand.nextFloat() * 0.2F, 0.2F, 6, true, -0.02F);
         }
     }
 
@@ -216,7 +231,7 @@ public class TileBlockProtector extends TileJarFillable {
     }
 
     private static boolean isSpotProtected(TileBlockProtector tile, Entity entity) {
-        AxisAlignedBB entityAABB = entity.getBoundingBox();
+        AxisAlignedBB entityAABB = entity.boundingBox;
         if (entityAABB != null) {
             return tile.getProtectedAABB().intersectsWith(entityAABB.addCoord(entity.posX, entity.posY, entity.posZ));
         }
@@ -228,6 +243,6 @@ public class TileBlockProtector extends TileJarFillable {
     }
 
     private static boolean isSpotProtected(TileBlockProtector tile, double x, double y, double z) {
-        return (tile.xCoord - x) <= tile.range && (tile.yCoord - y) <= tile.range && (tile.zCoord - z) <= tile.range;
+        return tile.getProtectedAABB().isVecInside(Vec3.createVectorHelper(x, y, z));
     }
 }
