@@ -57,9 +57,14 @@ public class BlockAuraPylon extends BlockContainer implements IBlockTransparent 
     }
 
     @Override
+    public int damageDropped(int meta) {
+        return meta;
+    }
+
+    @Override
     public boolean canReplace(World world, int x, int y, int z, int side, ItemStack stack) {
         int damage = stack.getItemDamage();
-        if (damage == 1 && (y < 1 || world.getBlock(x, y - 1, z) != RegisteredBlocks.blockAuraPylon) && (y < 1 || world.getBlockMetadata(x, y - 1, z) != 0)) {
+        if (damage == 1 && (y < 1 || world.getBlock(x, y - 1, z) != RegisteredBlocks.blockAuraPylon || world.getBlockMetadata(x, y - 1, z) != 0)) {
             return false;
         }
         return super.canReplace(world, x, y, z, side, stack);

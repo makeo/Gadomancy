@@ -16,6 +16,8 @@ public class ItemBlockAuraPylon extends ItemBlock {
 
     public ItemBlockAuraPylon(Block block) {
         super(block);
+        setMaxDamage(0);
+        setHasSubtypes(true);
     }
 
     @Override
