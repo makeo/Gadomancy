@@ -2,14 +2,18 @@ package makeo.gadomancy.common.events;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
 import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.familiar.FamiliarAIController;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
+import net.minecraft.entity.boss.IBossDisplayData;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
@@ -33,6 +37,20 @@ public class EventHandlerEntity {
             //e.entity.registerExtendedProperties(Gadomancy.MODID, new ExtendedPlayerProperties((EntityPlayer) e.entity));
         }
     }
+
+    @SubscribeEvent
+    public void on(EnderTeleportEvent e) {
+        if(!(e.entityLiving instanceof EntityPlayer) && !(e.entityLiving instanceof IBossDisplayData)) {
+            if(TileBlockProtector.isSpotProtected(e.entityLiving.worldObj, e.entityLiving)) {
+                e.setCanceled(true);
+            }
+        }
+    }
+
+    /*@SubscribeEvent
+    public void on( e) {
+
+    }*/
 
     @SubscribeEvent
     public void on(LivingSetAttackTargetEvent targetEvent) {

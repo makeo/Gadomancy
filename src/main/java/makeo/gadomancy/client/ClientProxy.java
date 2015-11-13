@@ -21,31 +21,9 @@ import makeo.gadomancy.client.renderers.item.ItemRenderRemoteJar;
 import makeo.gadomancy.client.renderers.item.ItemRenderStoneMachine;
 import makeo.gadomancy.client.renderers.item.ItemRenderTileEntity;
 import makeo.gadomancy.client.renderers.item.ItemRenderTileEntityMulti;
-import makeo.gadomancy.client.renderers.tile.RenderTileArcaneDropper;
-import makeo.gadomancy.client.renderers.tile.RenderTileAuraPylon;
-import makeo.gadomancy.client.renderers.tile.RenderTileCapEldritch;
-import makeo.gadomancy.client.renderers.tile.RenderTileExtendedNode;
-import makeo.gadomancy.client.renderers.tile.RenderTileExtendedNodeJar;
-import makeo.gadomancy.client.renderers.tile.RenderTileInfusionClaw;
-import makeo.gadomancy.client.renderers.tile.RenderTileManipulationFocus;
-import makeo.gadomancy.client.renderers.tile.RenderTileManipulatorPillar;
-import makeo.gadomancy.client.renderers.tile.RenderTileNodeManipulator;
-import makeo.gadomancy.client.renderers.tile.RenderTileObelisk;
-import makeo.gadomancy.client.renderers.tile.RenderTileRemoteJar;
-import makeo.gadomancy.client.renderers.tile.RenderTileStickyJar;
+import makeo.gadomancy.client.renderers.tile.*;
 import makeo.gadomancy.common.CommonProxy;
-import makeo.gadomancy.common.blocks.tiles.TileAdditionalEldritchPortal;
-import makeo.gadomancy.common.blocks.tiles.TileArcaneDropper;
-import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
-import makeo.gadomancy.common.blocks.tiles.TileAuraPylonTop;
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
-import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
-import makeo.gadomancy.common.blocks.tiles.TileManipulationFocus;
-import makeo.gadomancy.common.blocks.tiles.TileManipulatorPillar;
-import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
-import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
-import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
+import makeo.gadomancy.common.blocks.tiles.*;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.Injector;
@@ -126,6 +104,9 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileAuraPylon.class, renderTileAuraPylon);
         ClientRegistry.bindTileEntitySpecialRenderer(TileAuraPylonTop.class, renderTileAuraPylon);
 
+        RenderTileBlockProtector renderTileBlockProtector = new RenderTileBlockProtector();
+        ClientRegistry.bindTileEntitySpecialRenderer(TileBlockProtector.class, renderTileBlockProtector);
+
         //Items
         TileArcaneDropper fakeTile = new TileArcaneDropper();
         fakeTile.blockMetadata = 8 | ForgeDirection.SOUTH.ordinal();
@@ -148,6 +129,9 @@ public class ClientProxy extends CommonProxy {
         TileManipulationFocus tileManipulationFocus = new TileManipulationFocus();
         tileManipulationFocus.blockMetadata = 3;
         itemRenderStoneMachine.registerRenderer(3, tileManipulationFocus, renderTileManipulationFocus);
+        TileBlockProtector tileBlockProtector = new TileBlockProtector();
+        tileBlockProtector.facing = 3;
+        itemRenderStoneMachine.registerRenderer(2, tileBlockProtector, renderTileBlockProtector);
 
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemFamiliar, new ItemRenderFamiliar());
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemCreativeNode, new ItemCreativeNodeRenderer());

@@ -1,6 +1,9 @@
 package makeo.gadomancy.common.blocks.tiles;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
@@ -8,6 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IEssentiaTransport;
+import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.tiles.TileJarFillable;
 
 import java.util.ArrayList;
@@ -22,9 +26,8 @@ import java.util.List;
  * Created by makeo @ 08.11.2015 17:36
  */
 public class TileBlockProtector extends TileJarFillable {
-    private static final int UPDATE_TICKS = 20;
-    private static final int MAX_RANGE = 10;
-    private static final int SATURATION = 0;
+    private static final int UPDATE_TICKS = 15;
+    private static final int MAX_RANGE = 15;
     private static final Aspect ASPECT = Aspect.ORDER;
 
     private int range = 0;
@@ -32,8 +35,30 @@ public class TileBlockProtector extends TileJarFillable {
     private int count = 0;
 
     public TileBlockProtector() {
-        maxAmount = 16;
+        maxAmount = 8;
         aspectFilter = ASPECT;
+    }
+
+    public int getCurrentRange() {
+        return range;
+    }
+
+    public int getPowerLevel() {
+        return Math.min(worldObj.getStrongestIndirectPower(xCoord, yCoord, zCoord), MAX_RANGE);
+    }
+
+    @Override
+    public void readCustomNBT(NBTTagCompound compound) {
+        super.readCustomNBT(compound);
+        aspectFilter = ASPECT;
+        range = compound.getInteger("range");
+    }
+
+    @Override
+    public void writeCustomNBT(NBTTagCompound compound) {
+        super.writeCustomNBT(compound);
+        compound.removeTag("AspectFilter");
+        compound.setInteger("range", range);
     }
 
     @Override
@@ -42,7 +67,7 @@ public class TileBlockProtector extends TileJarFillable {
             protectors.add(this);
         }
 
-        if(!worldObj.isRemote) {
+        if (!worldObj.isRemote) {
             if (++count % 5 == 0 && amount < maxAmount) {
                 fillJar();
             }
@@ -53,15 +78,55 @@ public class TileBlockProtector extends TileJarFillable {
                     return;
                 }
 
-                if(takeFromContainer(ASPECT, 1)) {
-                    if(range < MAX_RANGE) {
-                        range++;
+                int powerLevel = getPowerLevel();
+                boolean executeDecrease = range > powerLevel;
+
+                if(range <= powerLevel) {
+                    executeDecrease = true;
+                    if (takeFromContainer(ASPECT, 1)) {
+
+                        if (range < powerLevel) {
+                            range++;
+                            markDirty();
+                            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+
+                            saturation = 15 - range;
+                        }
+                        executeDecrease = false;
                     }
-                    saturation = SATURATION;
-                } else if(range > 0) {
+                }
+
+                if (executeDecrease) {
                     range--;
+                    markDirty();
+                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                 }
             }
+        } else if(range > 0) {
+            if (this.worldObj.rand.nextInt(9 - Thaumcraft.proxy.particleCount(2)) == 0) {
+                Thaumcraft.proxy.wispFX3(this.worldObj, this.xCoord + 0.5F, this.yCoord + 0.68F, this.zCoord + 0.5F, this.xCoord + 0.3F + this.worldObj.rand.nextFloat() * 0.4F, this.yCoord + 0.68F, this.zCoord + 0.3F + this.worldObj.rand.nextFloat() * 0.4F, 0.3F, 6, true, -0.025F);
+            }
+            if (this.worldObj.rand.nextInt(15 - Thaumcraft.proxy.particleCount(4)) == 0) {
+                Thaumcraft.proxy.wispFX3(this.worldObj, this.xCoord + 0.5F, this.yCoord + 0.68F, this.zCoord + 0.5F, this.xCoord + 0.4F + this.worldObj.rand.nextFloat() * 0.2F, this.yCoord + 0.68F, this.zCoord + 0.4F + this.worldObj.rand.nextFloat() * 0.2F, 0.2F, 6, true, -0.02F);
+            }
+        }
+
+        if(range > 0) {
+            for(EntityLivingBase entity : (List<EntityCreeper>)worldObj.getEntitiesWithinAABB(EntityLivingBase.class, getProtectedAABB())) {
+                if(entity instanceof EntityCreeper) {
+                    ((EntityCreeper) entity).timeSinceIgnited = 0;
+                }
+
+                if(worldObj.isRemote) {
+                    spawnEntityParticles(entity);
+                }
+            }
+        }
+    }
+
+    private void spawnEntityParticles(EntityLivingBase entity) {
+        if(worldObj.rand.nextInt(30) == 0) {
+            //TODO:
         }
     }
 
@@ -109,7 +174,7 @@ public class TileBlockProtector extends TileJarFillable {
 
     @Override
     public boolean canOutputTo(ForgeDirection face) {
-        return face == ForgeDirection.DOWN;
+        return false;
     }
 
     private static List<TileBlockProtector> protectors = new ArrayList<TileBlockProtector>();
@@ -151,12 +216,15 @@ public class TileBlockProtector extends TileJarFillable {
     }
 
     private static boolean isSpotProtected(TileBlockProtector tile, Entity entity) {
-        AxisAlignedBB protectedAABB = AxisAlignedBB.getBoundingBox(tile.xCoord - tile.range, tile.yCoord - tile.range, tile.zCoord - tile.range, tile.xCoord + tile.range, tile.yCoord + tile.range, tile.zCoord + tile.range);
         AxisAlignedBB entityAABB = entity.getBoundingBox();
-        if(entityAABB != null) {
-            return protectedAABB.intersectsWith(entityAABB.addCoord(entity.posX, entity.posY, entity.posZ));
+        if (entityAABB != null) {
+            return tile.getProtectedAABB().intersectsWith(entityAABB.addCoord(entity.posX, entity.posY, entity.posZ));
         }
         return isSpotProtected(tile, entity.posX, entity.posY, entity.posZ);
+    }
+
+    private AxisAlignedBB getProtectedAABB() {
+        return AxisAlignedBB.getBoundingBox(xCoord - range, yCoord - range, zCoord - range, xCoord + range, yCoord + range, zCoord + range);
     }
 
     private static boolean isSpotProtected(TileBlockProtector tile, double x, double y, double z) {
