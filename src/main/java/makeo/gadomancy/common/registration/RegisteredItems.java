@@ -2,13 +2,7 @@ package makeo.gadomancy.common.registration;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.items.ItemCreativeNode;
-import makeo.gadomancy.common.items.ItemExtendedNodeJar;
-import makeo.gadomancy.common.items.ItemFakeGolemPlacer;
-import makeo.gadomancy.common.items.ItemFakeGolemShield;
-import makeo.gadomancy.common.items.ItemFakeModIcon;
-import makeo.gadomancy.common.items.ItemGolemCoreBreak;
-import makeo.gadomancy.common.items.ItemTransformationFocus;
+import makeo.gadomancy.common.items.*;
 import makeo.gadomancy.common.items.baubles.ItemFamiliar;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
@@ -48,6 +42,7 @@ public class RegisteredItems {
     public static Item itemExtendedNodeJar;
     public static Item itemFamiliar;
     public static Item itemCreativeNode;
+    public static Item itemPackage;
 
     public static void preInit() {
         creativeTab = new CreativeTabs(Gadomancy.MODID) {
@@ -78,6 +73,7 @@ public class RegisteredItems {
         itemExtendedNodeJar = registerItem(new ItemExtendedNodeJar());
         itemFamiliar = registerItem(new ItemFamiliar());
         itemCreativeNode = registerItem(new ItemCreativeNode());
+        itemPackage = registerItem(new ItemArcanePackage());
     }
 
     private static <T extends Item> T registerItem(T item, String name) {

@@ -92,7 +92,7 @@ public class TileBlockProtector extends TileJarFillable {
                             markDirty();
                             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 
-                            saturation = 15 - range;
+                            saturation = 16 - range;
                         }
                         executeDecrease = false;
                     }

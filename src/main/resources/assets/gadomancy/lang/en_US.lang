@@ -1,6 +1,7 @@
 item.ItemGolemPlacer.silverwood.name=Silverwood Golem
 item.ItemTransformationFocus.name=[WIP] Wand Focus: Transformation
 item.ItemFamiliar.name=Ethereal Familiar
+item.ItemArcanePackage.name=Arcane Package
 
 itemGroup.gadomancy=Gadomancy
 tc.research_category.gadomancy=Gadomancy
@@ -128,7 +129,7 @@ tile.BlockExtendedNodeJar.name=Node in a Jar
 tile.BlockNodeManipulator.5.name=Node Manipulator
 tile.BlockStoneMachine.0.name=Randomization Focus
 tile.BlockStoneMachine.1.name=Ancient Pedestal
-tile.BlockStoneMachine.2.name=Arcane Enervation Projector
+tile.BlockStoneMachine.2.name=Arcane Enervation Emitter
 tile.BlockStoneMachine.3.name=Redirection Focus
 tile.BlockStoneMachine.11.name=Manipulation Pillar
 tile.BlockStoneMachine.15.name=Manipulation Pillar
@@ -136,6 +137,7 @@ tile.BlockStoneMachine.15.name=Manipulation Pillar
 gadomancy.nodes.GROWING=Growing
 gadomancy.nodes.STARVING=Starving
 
+gadomancy.info.ArcanePackage=Click to open or put it in a unpackager
 gadomancy.info.InfusionClaw.owner=You are now the owner.
 gadomancy.info.InfusionClaw.waila=§7Owner:
 gadomancy.info.InfusionClaw.lock=Keep useable wand

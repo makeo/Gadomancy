@@ -5,6 +5,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import makeo.gadomancy.client.ClientProxy;
+import makeo.gadomancy.common.containers.ContainerArcanePackager;
 import makeo.gadomancy.common.containers.ContainerInfusionClaw;
 import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.events.EventHandlerEntity;
@@ -114,6 +115,8 @@ public class CommonProxy implements IGuiHandler {
                 return new ContainerGolem(player.inventory, ((EntityGolemBase)world.getEntityByID(x)).inventory);
             case 1:
                 return new ContainerInfusionClaw(player.inventory, (IInventory) world.getTileEntity(x, y, z));
+            case 2:
+                return new ContainerArcanePackager(player.inventory, (IInventory) world.getTileEntity(x, y, z));
         }
         return null;
     }

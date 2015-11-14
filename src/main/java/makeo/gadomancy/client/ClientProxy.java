@@ -8,6 +8,7 @@ import cpw.mods.fml.common.FMLLog;
 import makeo.gadomancy.client.events.ClientTickHandler;
 import makeo.gadomancy.client.events.RenderEventHandler;
 import makeo.gadomancy.client.events.ResourceReloadListener;
+import makeo.gadomancy.client.gui.ArcanePackagerGui;
 import makeo.gadomancy.client.gui.InfusionClawGui;
 import makeo.gadomancy.client.renderers.block.BlockExtendedNodeJarRenderer;
 import makeo.gadomancy.client.renderers.block.RenderBlockStoneMachine;
@@ -171,6 +172,8 @@ public class ClientProxy extends CommonProxy {
                 //return new AdditionalGolemGui(player, (EntityGolemBase)world.getEntityByID(x));
             case 1:
                 return new InfusionClawGui(player.inventory, (IInventory) world.getTileEntity(x, y, z));
+            case 2:
+                return new ArcanePackagerGui(player.inventory, (IInventory) world.getTileEntity(x, y, z));
         }
         return null;
     }
