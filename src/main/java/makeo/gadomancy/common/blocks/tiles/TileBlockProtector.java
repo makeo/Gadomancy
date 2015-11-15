@@ -50,6 +50,18 @@ public class TileBlockProtector extends TileJarFillable {
     }
 
     @Override
+    public void writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+        compound.setInteger("ProtectSaturation", saturation);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+        saturation = compound.getInteger("ProtectSaturation");
+    }
+
+    @Override
     public void readCustomNBT(NBTTagCompound compound) {
         super.readCustomNBT(compound);
         aspectFilter = ASPECT;
@@ -87,7 +99,7 @@ public class TileBlockProtector extends TileJarFillable {
                 int powerLevel = getPowerLevel();
                 boolean executeDecrease = range > powerLevel;
 
-                if(range <= powerLevel) {
+                if(range <= powerLevel && powerLevel > 0) {
                     executeDecrease = true;
                     if (takeFromContainer(ASPECT, 1)) {
 
