@@ -7,31 +7,24 @@ tc.research_category.gadomancy=Gadomancy
 
 tc.research_name.GADOMANCY.GOLEMSILVERWOOD=Серебрянодревесные големы
 tc.research_text.GADOMANCY.GOLEMSILVERWOOD=Not a part of golemancy...
-gadomancy.research_page.GOLEMSILVERWOOD.1=
 
 tc.research_name.GADOMANCY.GOLEMRUNICSHIELD=Големическая защита
 tc.research_text.GADOMANCY.GOLEMRUNICSHIELD=Сейчас доступны для ваших крошечных друзей!
-gadomancy.research_page.GOLEMRUNICSHIELD.1=
 
 tc.research_name.GADOMANCY.STICKYJAR=Липкие банки
 tc.research_text.GADOMANCY.STICKYJAR=Почему бы не повернуть банки?
-gadomancy.research_page.STICKYJAR.1=
 
 tc.research_name.GADOMANCY.ARCANEDROPPER=Магический выбрасыватель
 tc.research_text.GADOMANCY.ARCANEDROPPER=Грабеж стива
-gadomancy.research_page.ARCANEDROPPER.1=
 
 tc.research_name.GADOMANCY.GOLEMCOREBREAK=Сердце голема: Ломание
 tc.research_text.GADOMANCY.GOLEMCOREBREAK=Bone-breaking news!
-gadomancy.research_page.GOLEMCOREBREAK.1=
 
 tc.research_name.GADOMANCY.INFUSIONCLAW=Автоматическое наполнение
 tc.research_text.GADOMANCY.INFUSIONCLAW=Плавающий материал!
-gadomancy.research_page.INFUSIONCLAW.1=
 
 tc.research_name.GADOMANCY.REMOTEJAR=Зеркальный банки
 tc.research_text.GADOMANCY.REMOTEJAR=Зеркальная транспортировка
-gadomancy.research_page.REMOTEJAR.1=
 
 tc.research_name.GADOMANCY.GROWING=Растущие узлы
 tc.research_text.GADOMANCY.GROWING=Голодные узлы v2.0
