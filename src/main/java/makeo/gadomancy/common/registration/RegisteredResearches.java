@@ -1,6 +1,7 @@
 package makeo.gadomancy.common.registration;
 
 import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.research.AlternatingResearchItem;
 import makeo.gadomancy.common.research.PseudoResearchItem;
 import makeo.gadomancy.common.research.SimpleResearchItem;
@@ -41,6 +42,9 @@ public class RegisteredResearches {
     public static ResearchItem researchNodeManipulator;
     public static ResearchItem researchEldritchPortalCreator;
     public static ResearchItem researchBlockProtector;
+
+    //Skyblock Helper
+    public static ResearchItem researchAncientStones;
 
     //Growing nodes stuff
     public static ResearchItem researchGrowingNodes;
@@ -129,7 +133,7 @@ public class RegisteredResearches {
                 .setPages(new ResearchPage("gadomancy.research_page.E_PORTAL_CREATOR.1"), new ResearchPage(RegisteredRecipes.recipeAncientPedestal), new ResearchPage("gadomancy.research_page.E_PORTAL_CREATOR.3"), new ResearchPage("gadomancy.research_page.E_PORTAL_CREATOR.4"), new ResearchPage(RegisteredRecipes.recipePortalFocus), new ResearchPage("gadomancy.research_page.E_PORTAL_CREATOR.6"), new ResearchPage(RegisteredRecipes.multiblockEldritchPortalCreator), new ResearchPage("gadomancy.research_page.E_PORTAL_CREATOR.8")).registerResearchItem();
 
         researchBlockProtector = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".BLOCK_PROTECTOR", Gadomancy.MODID,
-                new AspectList(),
+                new AspectList().add(Aspect.ORDER, 10).add(Aspect.ARMOR, 8).add(Aspect.EARTH, 12).add(Aspect.LIGHT, 10).add(Aspect.AURA, 8),
                 0, -8, 2, new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 2))
                 .setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.BLOCK_PROTECTOR.1"), new ResearchPage(RegisteredRecipes.recipeBlockProtector), new ResearchPage("gadomancy.research_page.BLOCK_PROTECTOR.3"), new ResearchPage("gadomancy.research_page.BLOCK_PROTECTOR.4")).registerResearchItem();
@@ -220,6 +224,15 @@ public class RegisteredResearches {
                 .setParents(Gadomancy.MODID.toUpperCase() + ".FAM_RANGE_1", Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_3", researchBathSalts.key, researchPrimalFocus2.key)
                 .setPages(new ResearchPage("gadomancy.research_page.FAM_COOLDOWN_1.1"), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[4])).registerResearchItem();
 
+        if(ModConfig.ancientStoneRecipes)
+            researchAncientStones = new AlternatingResearchItem("ANCIENT_STONES",
+                -12, 1, 3,
+                new AspectList().add(Aspect.ELDRITCH, 10).add(Aspect.EARTH, 8).add(Aspect.EXCHANGE, 6).add(Aspect.ENTROPY, 8),
+                new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11), new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15))
+                .setConcealed()
+                .setParents(researchOculus.key)
+                .setPages(new ResearchPage("gadomancy.research_page.ANCIENT_STONES.1"), new ResearchPage(RegisteredRecipes.recipeAncientStone), new ResearchPage(RegisteredRecipes.recipeAncientStonePedestal)).registerResearchItem();
+
         //Warpy warpy
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_3", 2);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".FAM_COOLDOWN_1", 3);
@@ -232,10 +245,9 @@ public class RegisteredResearches {
     public static void postInit() {
         ResearchItem researchJar = PseudoResearchItem.create("JARLABEL", -3, -7).registerResearchItem();
         ResearchItem researchEssentiaMirror = PseudoResearchItem.create("MIRRORESSENTIA", -6, -2).registerResearchItem();
-        ResearchItem researchTubes = PseudoResearchItem.create("TUBES", -2, -9).registerResearchItem();
 
         if(researchBlockProtector != null) {
-            researchBlockProtector.setParents(researchTubes.key, researchJar.key);
+            researchBlockProtector.setParents(researchJar.key);
         }
 
         researchStickyJar = new AlternatingResearchItem("STICKYJAR", -5, -5, 2,

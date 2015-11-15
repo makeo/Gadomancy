@@ -18,11 +18,11 @@ public class ModConfig {
 
     public static int golemDatawatcherId = 29;
     public static int dimOuterId = -73;
-    public static boolean doLightCalculations;
+    public static boolean doLightCalculations = true;
     public static int maxMazeCount = -1;
 
     //Skyblock stuff
-    public static boolean ancientStoneRecipes;
+    public static boolean ancientStoneRecipes = false;
 
     private ModConfig() {}
 
