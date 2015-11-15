@@ -7,7 +7,6 @@ import makeo.gadomancy.common.items.baubles.ItemFamiliar;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketFamiliar;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
@@ -15,6 +14,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,7 +56,7 @@ public class RegisteredFamiliarAI {
             int rangeInc = ((ItemFamiliar) itemStack.getItem()).getAttackRangeIncrease(itemStack);
 
             List<EntityLivingBase> lastTargetters = getPotentialTargets(world, parent, rangeInc);
-            if(lastTargetters.size() < 1) {
+            if(lastTargetters.size() == 0) {
                 FamiliarAIController.cleanTargetterList(parent);
                 return;
             }
@@ -77,13 +77,17 @@ public class RegisteredFamiliarAI {
 
         private List<EntityLivingBase> getPotentialTargets(World world, EntityPlayer player, int rangeInc) {
             List<EntityLivingBase> validTargets = getCloseEnoughTargetters(world, player, rangeInc);
-            int range = 5 + rangeInc;
-            List mobs = world.getEntitiesWithinAABB(IMob.class, AxisAlignedBB.getBoundingBox(player.posX - 0.5, player.posY - 0.5, player.posZ - 0.5, player.posX + 0.5, player.posY + 0.5, player.posZ + 0.5).expand(range, range, range));
-            for(Object mobObj : mobs) {
-                if(!(mobObj instanceof EntityLivingBase)) continue;
-                EntityLivingBase mob = (EntityLivingBase) mobObj;
-                if(mob.isDead) continue;
-                if(!validTargets.contains(mob)) validTargets.add(mob);
+
+            EntityLivingBase attacker = player.getLastAttacker();
+            int range = 8 + rangeInc;
+            if(attacker != null && !validTargets.contains(attacker) && !attacker.isDead && attacker.getDistanceSq(player.posX, player.posY, player.posZ) <= range * range) {
+                validTargets.add(attacker);
+            }
+
+            Iterator<EntityLivingBase> it = validTargets.iterator();
+            while(it.hasNext()) {
+                EntityLivingBase e = it.next();
+                if(e.isDead || e instanceof EntityPlayer) it.remove();
             }
             return validTargets;
         }

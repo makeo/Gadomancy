@@ -60,7 +60,9 @@ public class PacketUpdateGolemTypeOrder implements IMessage, IMessageHandler<Pac
 
     @Override
     public IMessage onMessage(PacketUpdateGolemTypeOrder message, MessageContext ctx) {
-        GolemEnumHelper.reorderEnum(message.mapping);
+        if(message.mapping != null) {
+            GolemEnumHelper.reorderEnum(message.mapping);
+        }
         return null;
     }
 }

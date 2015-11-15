@@ -21,6 +21,16 @@ public class PacketTCNodeBolt implements IMessage, IMessageHandler<PacketTCNodeB
 
     private float x, y, z;
     private float targetX, targetY, targetZ;
+
+    /**
+     * 0: purple
+     * 1: yellow
+     * 2: dark blue
+     * 3: green
+     * 4: red
+     * 5: dark purple
+     * 6: blue
+     */
     private int type;
     private boolean mightGetLong;
 

@@ -2,7 +2,9 @@ package makeo.gadomancy.common.registration;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.api.ClickBehavior;
+import makeo.gadomancy.common.blocks.BlockAdditionalEldritchPortal;
 import makeo.gadomancy.common.blocks.BlockArcaneDropper;
+import makeo.gadomancy.common.blocks.BlockAuraPylon;
 import makeo.gadomancy.common.blocks.BlockExtendedNodeJar;
 import makeo.gadomancy.common.blocks.BlockInfusionClaw;
 import makeo.gadomancy.common.blocks.BlockNode;
@@ -10,7 +12,11 @@ import makeo.gadomancy.common.blocks.BlockNodeManipulator;
 import makeo.gadomancy.common.blocks.BlockRemoteJar;
 import makeo.gadomancy.common.blocks.BlockStickyJar;
 import makeo.gadomancy.common.blocks.BlockStoneMachine;
+import makeo.gadomancy.common.blocks.tiles.TileAdditionalEldritchPortal;
 import makeo.gadomancy.common.blocks.tiles.TileArcaneDropper;
+import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
+import makeo.gadomancy.common.blocks.tiles.TileAuraPylonTop;
+import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
@@ -19,6 +25,8 @@ import makeo.gadomancy.common.blocks.tiles.TileManipulatorPillar;
 import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
 import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
+import makeo.gadomancy.common.items.ItemBlockAdditionalEldritchPortal;
+import makeo.gadomancy.common.items.ItemBlockAuraPylon;
 import makeo.gadomancy.common.items.ItemBlockRemoteJar;
 import makeo.gadomancy.common.items.ItemBlockStoneMachine;
 import makeo.gadomancy.common.items.ItemNodeManipulator;
@@ -56,6 +64,8 @@ public class RegisteredBlocks {
     public static BlockExtendedNodeJar blockExtendedNodeJar;
     public static BlockNodeManipulator blockNodeManipulator;
     public static BlockStoneMachine blockStoneMachine;
+    public static BlockAdditionalEldritchPortal blockAdditionalEldrichPortal;
+    public static BlockAuraPylon blockAuraPylon;
 
     public static void init() {
         registerBlocks();
@@ -76,6 +86,8 @@ public class RegisteredBlocks {
         blockExtendedNodeJar = registerBlock(new BlockExtendedNodeJar());
         blockNodeManipulator = registerBlock(new BlockNodeManipulator(), ItemNodeManipulator.class);
         blockStoneMachine = registerBlock(new BlockStoneMachine(), ItemBlockStoneMachine.class);
+        blockAdditionalEldrichPortal = registerBlock(new BlockAdditionalEldritchPortal(), ItemBlockAdditionalEldritchPortal.class);
+        //blockAuraPylon = registerBlock(new BlockAuraPylon(), ItemBlockAuraPylon.class);
     }
 
     private static <T extends Block> T registerBlock(String name, T block) {
@@ -111,6 +123,10 @@ public class RegisteredBlocks {
         registerTile(TileNodeManipulator.class);
         registerTile(TileManipulatorPillar.class);
         registerTile(TileManipulationFocus.class);
+        registerTile(TileAdditionalEldritchPortal.class);
+        registerTile(TileBlockProtector.class);
+        //registerTile(TileAuraPylon.class);
+        //registerTile(TileAuraPylonTop.class);
     }
 
     private static void registerTile(Class<? extends TileEntity> tile, String name) {

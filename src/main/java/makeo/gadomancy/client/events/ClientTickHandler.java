@@ -14,10 +14,13 @@ import makeo.gadomancy.client.util.FamiliarHandlerClient;
  */
 public class ClientTickHandler {
 
+    public static int ticks;
+
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
         if(event.phase.equals(TickEvent.Phase.END)) {
             FamiliarHandlerClient.playerTickEvent();
+            ticks++;
         }
     }
 

@@ -5,8 +5,10 @@ import cpw.mods.fml.common.gameevent.PlayerEvent;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketFamiliar;
+import makeo.gadomancy.common.network.packets.PacketSyncConfigs;
 import makeo.gadomancy.common.network.packets.PacketUpdateGolemTypeOrder;
 import makeo.gadomancy.common.utils.GolemEnumHelper;
+import makeo.gadomancy.common.utils.world.TCMazeHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 
@@ -26,6 +28,7 @@ public class EventHandlerNetwork {
             PacketHandler.INSTANCE.sendTo(new PacketUpdateGolemTypeOrder(GolemEnumHelper.getCurrentMapping()), p);
             Gadomancy.proxy.familiarHandler.checkPlayerEquipment(p);
             PacketHandler.INSTANCE.sendTo(new PacketFamiliar.PacketFamiliarSyncCompletely(Gadomancy.proxy.familiarHandler.getCurrentActiveFamiliars()), p);
+            PacketHandler.INSTANCE.sendTo(new PacketSyncConfigs(), p);
         }
     }
 
@@ -33,5 +36,7 @@ public class EventHandlerNetwork {
     public void on(PlayerEvent.PlayerLoggedOutEvent e) {
         EntityPlayer player = e.player;
         Gadomancy.proxy.familiarHandler.notifyUnequip(player.worldObj, player);
+
+        TCMazeHandler.closeSession(e.player, true);
     }
 }

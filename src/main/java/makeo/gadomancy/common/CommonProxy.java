@@ -5,6 +5,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import makeo.gadomancy.client.ClientProxy;
+import makeo.gadomancy.common.containers.ContainerArcanePackager;
 import makeo.gadomancy.common.containers.ContainerInfusionClaw;
 import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.events.EventHandlerEntity;
@@ -21,8 +22,8 @@ import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.registration.RegisteredPotions;
 import makeo.gadomancy.common.registration.RegisteredRecipes;
 import makeo.gadomancy.common.registration.RegisteredResearches;
-import makeo.gadomancy.common.utils.WorldProviderTCEldrich;
 import makeo.gadomancy.common.utils.Injector;
+import makeo.gadomancy.common.utils.world.WorldProviderTCEldrich;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -70,7 +71,9 @@ public class CommonProxy implements IGuiHandler {
 
         MinecraftForge.EVENT_BUS.register(EVENT_HANDLER_GOLEM);
         FMLCommonHandler.instance().bus().register(new EventHandlerNetwork());
-        MinecraftForge.EVENT_BUS.register(new EventHandlerWorld());
+        EventHandlerWorld worldEventHandler = new EventHandlerWorld();
+        MinecraftForge.EVENT_BUS.register(worldEventHandler);
+        FMLCommonHandler.instance().bus().register(worldEventHandler);
         MinecraftForge.EVENT_BUS.register(new EventHandlerEntity());
 
         RegisteredRecipes.init();
@@ -79,8 +82,8 @@ public class CommonProxy implements IGuiHandler {
 
         RegisteredPotions.init();
 
-        //DimensionManager.registerProviderType(ModConfig.dimOuterId, WorldProviderTCEldrich.class, false);
-        //DimensionManager.registerDimension(ModConfig.dimOuterId, ModConfig.dimOuterId);
+        DimensionManager.registerProviderType(ModConfig.dimOuterId, WorldProviderTCEldrich.class, true);
+        DimensionManager.registerDimension(ModConfig.dimOuterId, ModConfig.dimOuterId);
     }
 
     public void postInitalize() {
@@ -112,6 +115,8 @@ public class CommonProxy implements IGuiHandler {
                 return new ContainerGolem(player.inventory, ((EntityGolemBase)world.getEntityByID(x)).inventory);
             case 1:
                 return new ContainerInfusionClaw(player.inventory, (IInventory) world.getTileEntity(x, y, z));
+            case 2:
+                return new ContainerArcanePackager(player.inventory, (IInventory) world.getTileEntity(x, y, z));
         }
         return null;
     }

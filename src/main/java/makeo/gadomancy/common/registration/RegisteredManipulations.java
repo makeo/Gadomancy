@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class RegisteredManipulations {
 
-    public static NodeManipulatorResult resultBreakCompounds = new NodeManipulatorResult(4) {
+    public static NodeManipulatorResult resultBreakCompounds = new NodeManipulatorResult(4, NodeManipulatorResultHandler.ResultType.NEGATIVE) {
         @Override
         public boolean affect(TileExtendedNode node) {
             AspectList baseList = node.getAspectsBase();
@@ -45,7 +45,7 @@ public class RegisteredManipulations {
         }
     };
 
-    public static NodeManipulatorResult resultCombineAspects = new NodeManipulatorResult(5) {
+    public static NodeManipulatorResult resultCombineAspects = new NodeManipulatorResult(5, NodeManipulatorResultHandler.ResultType.POSITIVE) {
         @Override
         public boolean affect(TileExtendedNode node) {
             AspectList base = node.getAspectsBase();
@@ -53,8 +53,9 @@ public class RegisteredManipulations {
                 return false;
             if(base.getAspects().length == 2) {
                 if(!NodeManipulatorResultHandler.canCombine(base.getAspects()[0], base.getAspects()[1])) return false;
-                NodeManipulatorResultHandler.combine(base, base.getAspects()[0], base.getAspects()[1]);
-                NodeManipulatorResultHandler.combine(node.getAspects(), base.getAspects()[0], base.getAspects()[1]);
+                int addition = node.getWorldObj().rand.nextInt(4);
+                NodeManipulatorResultHandler.combine(base, base.getAspects()[0], base.getAspects()[1], addition);
+                NodeManipulatorResultHandler.combine(node.getAspects(), base.getAspects()[0], base.getAspects()[1], addition);
                 return true;
             }
             if(base.getAspects().length > 2) {
@@ -74,8 +75,9 @@ public class RegisteredManipulations {
                             Aspect b = base.getAspects()[indexB];
 
                             if(NodeManipulatorResultHandler.canCombine(a, b)) {
-                                NodeManipulatorResultHandler.combine(base, a, b);
-                                NodeManipulatorResultHandler.combine(node.getAspects(), a, b);
+                                int addition = node.getWorldObj().rand.nextInt(4);
+                                NodeManipulatorResultHandler.combine(base, a, b, addition);
+                                NodeManipulatorResultHandler.combine(node.getAspects(), a, b, addition);
                                 combineCount--;
                                 actuallyCombined++;
                                 continue doLabel;
@@ -93,7 +95,7 @@ public class RegisteredManipulations {
         }
     };
 
-    public static NodeManipulatorResult resultIncreaseModifier = new NodeManipulatorResult(4) {
+    public static NodeManipulatorResult resultIncreaseModifier = new NodeManipulatorResult(4, NodeManipulatorResultHandler.ResultType.POSITIVE) {
 
         @Override
         public boolean canAffect(TileExtendedNode node) {
@@ -120,7 +122,7 @@ public class RegisteredManipulations {
         }
     };
 
-    public static NodeManipulatorResult resultDecreaseModifier = new NodeManipulatorResult(5) {
+    public static NodeManipulatorResult resultDecreaseModifier = new NodeManipulatorResult(5, NodeManipulatorResultHandler.ResultType.NEGATIVE) {
 
         @Override
         public boolean canAffect(TileExtendedNode node) {
@@ -147,27 +149,32 @@ public class RegisteredManipulations {
         }
     };
 
-    public static NodeManipulatorResult resultGainPrimal = new NodeManipulatorResult(3) {
+    public static NodeManipulatorResult resultGainPrimal = new NodeManipulatorResult(3, NodeManipulatorResultHandler.ResultType.POSITIVE) {
         @Override
         public boolean affect(TileExtendedNode node) {
             List<Aspect> primals = Aspect.getPrimalAspects();
+            int visSize = node.getAspectsBase().visSize();
+            int size = node.getAspectsBase().size();
             int modulo = primals.size();
             int index = node.getWorldObj().rand.nextInt(primals.size());
             for (int i = 0; i < primals.size(); i++) {
                 int get = (index + i) % modulo;
                 Aspect rand = primals.get(get);
                 if(node.getAspectsBase().getAmount(rand) <= 0) {
-                    int randGain = node.getWorldObj().rand.nextInt(8) + 3;
-                    node.getAspectsBase().add(rand, randGain);
-                    node.getAspects().add(rand, randGain);
-                    return true;
+                    int randGain = visSize / (size * 2);
+                    if(randGain > 0) {
+                        node.getAspectsBase().add(rand, randGain);
+                        node.getAspects().add(rand, randGain);
+                        return true;
+                    }
+                    return false;
                 }
             }
             return false;
         }
     };
 
-    public static NodeManipulatorResult resultSwitchType = new NodeManipulatorResult(2) {
+    public static NodeManipulatorResult resultSwitchType = new NodeManipulatorResult(2, NodeManipulatorResultHandler.ResultType.NEUTRAL) {
         @Override
         public boolean affect(TileExtendedNode node) {
             NodeType newType = node.getNodeType();
@@ -192,7 +199,7 @@ public class RegisteredManipulations {
         }
     };
 
-    public static NodeManipulatorResult resultApplyGrowing = new NodeManipulatorResult(1) {
+    public static NodeManipulatorResult resultApplyGrowing = new NodeManipulatorResult(1, NodeManipulatorResultHandler.ResultType.POSITIVE) {
         @Override
         public boolean affect(TileExtendedNode node) {
             boolean isGrowingAlready = node.getExtendedNodeType() != null && node.getExtendedNodeType().equals(ExtendedNodeType.GROWING);

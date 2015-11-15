@@ -16,6 +16,8 @@ import net.minecraft.util.IIcon;
 public class ItemBlockStoneMachine extends ItemBlock {
     public ItemBlockStoneMachine(Block block) {
         super(block);
+        setMaxDamage(0);
+        setHasSubtypes(true);
     }
 
     @Override

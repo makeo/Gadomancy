@@ -8,31 +8,23 @@ import cpw.mods.fml.common.FMLLog;
 import makeo.gadomancy.client.events.ClientTickHandler;
 import makeo.gadomancy.client.events.RenderEventHandler;
 import makeo.gadomancy.client.events.ResourceReloadListener;
+import makeo.gadomancy.client.gui.ArcanePackagerGui;
 import makeo.gadomancy.client.gui.InfusionClawGui;
 import makeo.gadomancy.client.renderers.block.BlockExtendedNodeJarRenderer;
 import makeo.gadomancy.client.renderers.block.RenderBlockStoneMachine;
 import makeo.gadomancy.client.renderers.block.RenderBlockTransparent;
 import makeo.gadomancy.client.renderers.entity.RenderAdditionalGolemBase;
-import makeo.gadomancy.client.renderers.item.*;
-import makeo.gadomancy.client.renderers.tile.RenderTileArcaneDropper;
-import makeo.gadomancy.client.renderers.tile.RenderTileExtendedNode;
-import makeo.gadomancy.client.renderers.tile.RenderTileExtendedNodeJar;
-import makeo.gadomancy.client.renderers.tile.RenderTileInfusionClaw;
-import makeo.gadomancy.client.renderers.tile.RenderTileManipulationFocus;
-import makeo.gadomancy.client.renderers.tile.RenderTileManipulatorPillar;
-import makeo.gadomancy.client.renderers.tile.RenderTileNodeManipulator;
-import makeo.gadomancy.client.renderers.tile.RenderTileRemoteJar;
-import makeo.gadomancy.client.renderers.tile.RenderTileStickyJar;
+import makeo.gadomancy.client.renderers.item.ItemCreativeNodeRenderer;
+import makeo.gadomancy.client.renderers.item.ItemExNodeRenderer;
+import makeo.gadomancy.client.renderers.item.ItemJarExtendedNodeRenderer;
+import makeo.gadomancy.client.renderers.item.ItemRenderFamiliar;
+import makeo.gadomancy.client.renderers.item.ItemRenderRemoteJar;
+import makeo.gadomancy.client.renderers.item.ItemRenderStoneMachine;
+import makeo.gadomancy.client.renderers.item.ItemRenderTileEntity;
+import makeo.gadomancy.client.renderers.item.ItemRenderTileEntityMulti;
+import makeo.gadomancy.client.renderers.tile.*;
 import makeo.gadomancy.common.CommonProxy;
-import makeo.gadomancy.common.blocks.tiles.TileArcaneDropper;
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
-import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
-import makeo.gadomancy.common.blocks.tiles.TileManipulationFocus;
-import makeo.gadomancy.common.blocks.tiles.TileManipulatorPillar;
-import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
-import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
-import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
+import makeo.gadomancy.common.blocks.tiles.*;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.Injector;
@@ -50,8 +42,12 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.client.gui.GuiGolem;
 import thaumcraft.client.renderers.entity.RenderGolemBase;
+import thaumcraft.client.renderers.tile.TileEldritchPortalRenderer;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.golems.EntityGolemBase;
+import thaumcraft.common.tiles.TileEldritchAltar;
+import thaumcraft.common.tiles.TileEldritchCap;
+import thaumcraft.common.tiles.TileEldritchObelisk;
 
 import java.util.List;
 
@@ -99,6 +95,19 @@ public class ClientProxy extends CommonProxy {
         RenderTileManipulationFocus renderTileManipulationFocus = new RenderTileManipulationFocus();
         ClientRegistry.bindTileEntitySpecialRenderer(TileManipulationFocus.class, renderTileManipulationFocus);
 
+        ClientRegistry.bindTileEntitySpecialRenderer(TileAdditionalEldritchPortal.class, new TileEldritchPortalRenderer());
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEldritchObelisk.class, new RenderTileObelisk());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEldritchAltar.class, new RenderTileCapEldritch("textures/models/obelisk_cap_altar.png"));
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEldritchCap.class, new RenderTileCapEldritch("textures/models/obelisk_cap.png"));
+
+        RenderTileAuraPylon renderTileAuraPylon = new RenderTileAuraPylon();
+        ClientRegistry.bindTileEntitySpecialRenderer(TileAuraPylon.class, renderTileAuraPylon);
+        ClientRegistry.bindTileEntitySpecialRenderer(TileAuraPylonTop.class, renderTileAuraPylon);
+
+        RenderTileBlockProtector renderTileBlockProtector = new RenderTileBlockProtector();
+        ClientRegistry.bindTileEntitySpecialRenderer(TileBlockProtector.class, renderTileBlockProtector);
+
         //Items
         TileArcaneDropper fakeTile = new TileArcaneDropper();
         fakeTile.blockMetadata = 8 | ForgeDirection.SOUTH.ordinal();
@@ -108,12 +117,22 @@ public class ClientProxy extends CommonProxy {
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ConfigBlocks.blockAiry), new ItemExNodeRenderer());
 
+        //ItemRenderTileEntityMulti multi = new ItemRenderTileEntityMulti(new ItemRenderTileEntityMulti.RenderSet(renderTileAuraPylon, new TileAuraPylon(), 0),
+        //        new ItemRenderTileEntityMulti.RenderSet(renderTileAuraPylon, new TileAuraPylonTop(), 1));
+        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockAuraPylon), multi);
+
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemExtendedNodeJar, new ItemJarExtendedNodeRenderer());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockRemoteJar), new ItemRenderRemoteJar(renderTileRemoteJar));
 
         ItemRenderStoneMachine itemRenderStoneMachine = new ItemRenderStoneMachine();
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockStoneMachine), itemRenderStoneMachine);
         itemRenderStoneMachine.registerRenderer(0, new TileManipulationFocus(), renderTileManipulationFocus);
+        TileManipulationFocus tileManipulationFocus = new TileManipulationFocus();
+        tileManipulationFocus.blockMetadata = 3;
+        itemRenderStoneMachine.registerRenderer(3, tileManipulationFocus, renderTileManipulationFocus);
+        TileBlockProtector tileBlockProtector = new TileBlockProtector();
+        tileBlockProtector.facing = 3;
+        itemRenderStoneMachine.registerRenderer(2, tileBlockProtector, renderTileBlockProtector);
 
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemFamiliar, new ItemRenderFamiliar());
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemCreativeNode, new ItemCreativeNodeRenderer());
@@ -153,6 +172,8 @@ public class ClientProxy extends CommonProxy {
                 //return new AdditionalGolemGui(player, (EntityGolemBase)world.getEntityByID(x));
             case 1:
                 return new InfusionClawGui(player.inventory, (IInventory) world.getTileEntity(x, y, z));
+            case 2:
+                return new ArcanePackagerGui(player.inventory, (IInventory) world.getTileEntity(x, y, z));
         }
         return null;
     }

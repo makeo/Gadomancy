@@ -5,6 +5,7 @@ import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
+import makeo.gadomancy.common.utils.ItemUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,8 +16,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
-import java.util.Random;
-
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
@@ -26,8 +25,6 @@ import java.util.Random;
  * Created by makeo @ 05.10.2015 21:38
  */
 public class BlockInfusionClaw extends BlockTransparent {
-    private static final Random RANDOM = new Random();
-
     public BlockInfusionClaw() {
         super(Material.rock);
         setHardness(3.5f);
@@ -89,15 +86,12 @@ public class BlockInfusionClaw extends BlockTransparent {
         TileInfusionClaw tile = (TileInfusionClaw) world.getTileEntity(x, y, z);
         ItemStack wandStack = tile.getStackInSlot(0);
         if(wandStack != null && wandStack.stackSize > 0) {
-            float f = RANDOM.nextFloat() * 0.8F + 0.1F;
-            float f1 = RANDOM.nextFloat() * 0.8F + 0.1F;
-            float f2 = RANDOM.nextFloat() * 0.8F + 0.1F;
+            float f = world.rand.nextFloat() * 0.8F + 0.1F;
+            float f1 = world.rand.nextFloat() * 0.8F + 0.1F;
+            float f2 = world.rand.nextFloat() * 0.8F + 0.1F;
 
             EntityItem entityItem = new EntityItem(world, x + f, y + f1, z + f2, wandStack.copy());
-            float f3 = 0.05F;
-            entityItem.motionX = RANDOM.nextGaussian() * f3;
-            entityItem.motionY = RANDOM.nextGaussian() * f3 + 0.2F;
-            entityItem.motionZ = RANDOM.nextGaussian() * f3;
+            ItemUtils.applyRandomDropOffset(entityItem, world.rand);
 
             world.spawnEntityInWorld(entityItem);
         }

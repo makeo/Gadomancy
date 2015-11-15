@@ -1,7 +1,8 @@
-package makeo.gadomancy.common.utils;
+package makeo.gadomancy.common.utils.world;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.common.data.ModConfig;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
@@ -9,9 +10,7 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.WorldChunkManagerHell;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
-import thaumcraft.common.config.Config;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
-import thaumcraft.common.lib.world.dim.ChunkProviderOuter;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -58,12 +57,12 @@ public class WorldProviderTCEldrich extends WorldProvider {
 
     public void registerWorldChunkManager() {
         this.worldChunkMgr = new WorldChunkManagerHell(ThaumcraftWorldGenerator.biomeEldritchLands, 0.0F);
-        this.dimensionId = Config.dimensionOuterId;
+        this.dimensionId = ModConfig.dimOuterId;
         this.hasNoSky = true;
     }
 
     public IChunkProvider createChunkGenerator() {
-        return new ChunkProviderOuter(this.worldObj, this.worldObj.getSeed(), true);
+        return new ChunkProviderTCOuter(this.worldObj, this.worldObj.getSeed(), true);
     }
 
     public float calculateCelestialAngle(long p_76563_1_, float p_76563_3_) {

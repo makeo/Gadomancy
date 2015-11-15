@@ -3,7 +3,6 @@ package makeo.gadomancy.common.blocks;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
 import makeo.gadomancy.common.registration.RegisteredItems;
-import makeo.gadomancy.common.registration.RegisteredRecipes;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -82,8 +81,9 @@ public class BlockNodeManipulator extends BlockStoneDevice {
         } else if(!world.isRemote && heldItem != null && heldItem.getItem() instanceof ItemWandCasting) {
             tile.checkMultiblock();
             if (tile.isMultiblockStructurePresent()) {
-                if(!ResearchManager.isResearchComplete(player.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR")) return false;
-                if (ThaumcraftApiHelper.consumeVisFromWandCrafting(player.getCurrentEquippedItem(), player, RegisteredRecipes.costsNodeManipulatorMultiblock, true)) {
+                String research = tile.getMultiblockType().getResearchNeeded();
+                if(!ResearchManager.isResearchComplete(player.getCommandSenderName(), research)) return false;
+                if (ThaumcraftApiHelper.consumeVisFromWandCrafting(player.getCurrentEquippedItem(), player, tile.getMultiblockType().getMultiblockCosts(), true)) {
                     tile.formMultiblock();
                     return true;
                 }
