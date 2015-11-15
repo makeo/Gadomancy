@@ -59,6 +59,7 @@ public class RegisteredRecipes {
     public static IArcaneRecipe recipeArcaneDropper;
     public static IArcaneRecipe recipeRemoteJar;
     public static IArcaneRecipe recipeAncientPedestal;
+    public static IArcaneRecipe recipeBlockProtector;
 
     public static void init() {
         AdditionalGolemType typeSilverwood = RegisteredGolemStuff.typeSilverwood;
@@ -132,6 +133,10 @@ public class RegisteredRecipes {
 
         recipesFamilar = createFamilarRecipes();
         recipesFamiliarAugmentation = createFamiliarAugmentationRecipes();
+
+        recipeBlockProtector =  ThaumcraftApi.addArcaneCraftingRecipe("TODO", new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 2),
+                new AspectList().add(Aspect.ORDER, 120).add(Aspect.EARTH, 120),
+                "WNW", "PJP", "GRG", 'W', new ItemStack(Items.potionitem, 1, 8232), 'V', new ItemStack(Items.potionitem, 1, 8264), 'N', new ItemStack(ConfigItems.itemResource, 1, 1), 'P', new ItemStack(ConfigBlocks.blockTube), 'J', new ItemStack(ConfigBlocks.blockJar), 'G', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'R', new ItemStack(Items.redstone));
     }
 
     private static InfusionRecipe[][] createFamiliarAugmentationRecipes() {

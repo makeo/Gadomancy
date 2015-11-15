@@ -16,6 +16,8 @@ import net.minecraft.world.World;
 import thaumcraft.common.items.ItemLootBag;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -71,14 +73,18 @@ public class ItemArcanePackage extends ItemLootBag {
     }
 
     public void setContents(ItemStack stack, List<ItemStack> items) {
-        NBTTagList stackList = new NBTTagList();
+        items = new ArrayList<ItemStack>(items);
 
-        for (ItemStack item : items) {
-            if (stack != null) {
-                NBTTagCompound nbtStack = new NBTTagCompound();
-                item.writeToNBT(nbtStack);
-                stackList.appendTag(nbtStack);
+        Collections.sort(items, new Comparator<ItemStack>() {
+            @Override
+            public int compare(ItemStack i1, ItemStack i2) {
+                return i1.writeToNBT(new NBTTagCompound()).hashCode() - i2.writeToNBT(new NBTTagCompound()).hashCode();
             }
+        });
+
+        NBTTagList stackList = new NBTTagList();
+        for (ItemStack item : items) {
+            stackList.appendTag(item.writeToNBT(new NBTTagCompound()));
         }
         NBTHelper.getData(stack).setTag("items", stackList);
     }
