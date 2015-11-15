@@ -4,6 +4,7 @@ import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.crafting.InfusionUpgradeRecipe;
 import makeo.gadomancy.common.crafting.RecipeStickyJar;
+import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.items.baubles.ItemFamiliar;
 import makeo.gadomancy.common.research.SimpleResearchItem;
 import makeo.gadomancy.common.utils.NBTHelper;
@@ -13,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
@@ -61,6 +63,9 @@ public class RegisteredRecipes {
     public static IArcaneRecipe recipeAncientPedestal;
     public static IArcaneRecipe recipeBlockProtector;
 
+    public static CrucibleRecipe recipeAncientStonePedestal = null;
+    public static IArcaneRecipe recipeAncientStone = null;
+
     public static void init() {
         AdditionalGolemType typeSilverwood = RegisteredGolemStuff.typeSilverwood;
         recipeGolemSilverwood = ThaumcraftApi.addInfusionCraftingRecipe(SimpleResearchItem.getFullName("GOLEMSILVERWOOD"),
@@ -75,7 +80,6 @@ public class RegisteredRecipes {
 
         recipeStickyJar = new RecipeStickyJar();
         ThaumcraftApi.getCraftingRecipes().add(recipeStickyJar);
-        //GameRegistry.addRecipe(recipeStickyJar);
 
         recipeArcaneDropper = ThaumcraftApi.addArcaneCraftingRecipe(SimpleResearchItem.getFullName("ARCANEDROPPER"), new ItemStack(RegisteredBlocks.blockArcaneDropper), new AspectList().add(Aspect.ORDER, 14).add(Aspect.AIR, 14).add(Aspect.EARTH, 10),
                 "SDS", "BAB", "SSS", 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6), 'D', new ItemStack(Blocks.dropper), 'A', new ItemStack(ConfigBlocks.blockMetalDevice, 1, 9), 'B', new ItemStack(ConfigBlocks.blockWoodenDevice));
@@ -137,6 +141,12 @@ public class RegisteredRecipes {
         recipeBlockProtector =  ThaumcraftApi.addArcaneCraftingRecipe("TODO", new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 2),
                 new AspectList().add(Aspect.ORDER, 120).add(Aspect.EARTH, 120),
                 "WNW", "PJP", "GRG", 'W', new ItemStack(Items.potionitem, 1, 8232), 'V', new ItemStack(Items.potionitem, 1, 8264), 'N', new ItemStack(ConfigItems.itemResource, 1, 1), 'P', new ItemStack(ConfigBlocks.blockTube), 'J', new ItemStack(ConfigBlocks.blockJar), 'G', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'R', new ItemStack(Items.redstone));
+
+        if(ModConfig.ancientStoneRecipes) {
+            recipeAncientStone = ThaumcraftApi.addArcaneCraftingRecipe("TODO", new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11), new AspectList().add(Aspect.ENTROPY, 16).add(Aspect.EARTH, 8),
+                    "SSS", "SES", "SSS", 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6), 'E', new ItemStack(ConfigItems.itemEldritchObject));
+            recipeAncientStonePedestal = ThaumcraftApi.addCrucibleRecipe("TODO", new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15), new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 7), new AspectList().add(Aspect.ELDRITCH, 8).add(Aspect.EXCHANGE, 8).add(Aspect.ENTROPY, 12));
+        }
     }
 
     private static InfusionRecipe[][] createFamiliarAugmentationRecipes() {

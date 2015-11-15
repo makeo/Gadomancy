@@ -3,6 +3,7 @@ package makeo.gadomancy.common.blocks.tiles;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -13,8 +14,14 @@ import net.minecraft.item.ItemStack;
  * <p/>
  * Created by makeo @ 14.11.2015 12:22
  */
-public class TileArcanePackager extends SynchronizedTileEntity implements IInventory {
-    private ItemStack[] contents = new ItemStack[10];
+public class TileArcanePackager extends SynchronizedTileEntity implements IInventory, ISidedInventory {
+    private ItemStack[] contents = new ItemStack[12];
+
+    //0 - 46
+    public int progress = 20;
+    public boolean autoStart = false;
+    public boolean useEssentia = false;
+
 
     @Override
     public int getSizeInventory() {
@@ -95,13 +102,28 @@ public class TileArcanePackager extends SynchronizedTileEntity implements IInven
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        if(slot == 0) {
-            return stack.getItem() == Items.string;
-        } else if(slot == 1) {
+        if(slot == 9) {
             return stack.getItem() == Items.leather;
-        } else if(slot == 2) {
+        } else if(slot == 10) {
+            return stack.getItem() == Items.string;
+        } else if(slot == 11) {
             return false;
         }
+        return true;
+    }
+
+    @Override
+    public int[] getAccessibleSlotsFromSide(int side) {
+        return new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+    }
+
+    @Override
+    public boolean canInsertItem(int slot, ItemStack stack, int side) {
+        return true;
+    }
+
+    @Override
+    public boolean canExtractItem(int slot, ItemStack stack, int side) {
         return true;
     }
 }

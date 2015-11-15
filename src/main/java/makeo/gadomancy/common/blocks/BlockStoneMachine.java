@@ -1,6 +1,7 @@
 package makeo.gadomancy.common.blocks;
 
 import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.blocks.tiles.TileArcanePackager;
 import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
 import makeo.gadomancy.common.blocks.tiles.TileManipulationFocus;
 import makeo.gadomancy.common.blocks.tiles.TileManipulatorPillar;
@@ -84,7 +85,7 @@ public class BlockStoneMachine extends Block {
 
     @Override
     public boolean hasTileEntity(int metadata) {
-        return metadata == 15 || metadata == 0 || metadata == 1 || metadata == 2 || metadata == 3;
+        return metadata == 15 || metadata == 0 || metadata == 1 || metadata == 2 || metadata == 3;// || metadata == 4;
     }
 
     @Override
@@ -93,6 +94,7 @@ public class BlockStoneMachine extends Block {
         list.add(new ItemStack(item, 1, 1));
         list.add(new ItemStack(item, 1, 2));
         list.add(new ItemStack(item, 1, 3));
+        //list.add(new ItemStack(item, 1, 4));
     }
 
     @Override
@@ -117,7 +119,9 @@ public class BlockStoneMachine extends Block {
             return new TileBlockProtector();
         } else if (metadata == 3) {
             return new TileManipulationFocus();
-        }
+        }/* else if(metadata == 4) {
+            return new TileArcanePackager();
+        }*/
         return null;
     }
 
@@ -181,6 +185,16 @@ public class BlockStoneMachine extends Block {
     }
 
     @Override
+    public int getLightValue(IBlockAccess world, int x, int y, int z) {
+        int metadata = world.getBlockMetadata(x, y, z);
+        if(metadata == 2) {
+            TileBlockProtector protector = (TileBlockProtector) world.getTileEntity(x, y, z);
+            return protector.getCurrentRange();
+        }
+        return super.getLightValue(world, x, y, z);
+    }
+
+    @Override
     public boolean hasComparatorInputOverride() {
         return true;
     }
@@ -205,7 +219,10 @@ public class BlockStoneMachine extends Block {
             }
         } else if (metadata == 1) {
             return ConfigBlocks.blockStoneDevice.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
-        }
+        } /*else if(metadata == 4) {
+            player.openGui(Gadomancy.instance, 2, world, x, y, z);
+            return true;
+        }*/
 
         return super.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
     }
