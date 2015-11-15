@@ -53,14 +53,14 @@ public class TileBlockProtector extends TileJarFillable {
     public void readCustomNBT(NBTTagCompound compound) {
         super.readCustomNBT(compound);
         aspectFilter = ASPECT;
-        range = compound.getInteger("range");
+        range = compound.getInteger("ProtectRange");
     }
 
     @Override
     public void writeCustomNBT(NBTTagCompound compound) {
         super.writeCustomNBT(compound);
         compound.removeTag("AspectFilter");
-        compound.setInteger("range", range);
+        compound.setInteger("ProtectRange", range);
     }
 
     @Override
@@ -75,6 +75,10 @@ public class TileBlockProtector extends TileJarFillable {
             }
 
             if (count % UPDATE_TICKS == 0) {
+                if(range == 0) {
+                    saturation = 0;
+                }
+
                 if (saturation > 0) {
                     saturation--;
                     return;
@@ -98,7 +102,7 @@ public class TileBlockProtector extends TileJarFillable {
                     }
                 }
 
-                if (executeDecrease) {
+                if (executeDecrease && range > 0) {
                     range--;
                     markDirty();
                     worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
