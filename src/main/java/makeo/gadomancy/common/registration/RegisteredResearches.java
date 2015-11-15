@@ -40,6 +40,7 @@ public class RegisteredResearches {
     public static ResearchItem researchRemoteJar;
     public static ResearchItem researchNodeManipulator;
     public static ResearchItem researchEldritchPortalCreator;
+    public static ResearchItem researchBlockProtector;
 
     //Growing nodes stuff
     public static ResearchItem researchGrowingNodes;
@@ -125,7 +126,13 @@ public class RegisteredResearches {
                 -10, 0, 2, new ItemStack(RegisteredBlocks.blockAdditionalEldrichPortal, 1, 0))
                 .setConcealed().setSpecial()
                 .setParents(researchNodeManipulator.key, researchOculus.key)
-                .setPages(new ResearchPage("gadomancy.research_page.E_PORTAL_CREATOR.1"), new ResearchPage(RegisteredRecipes.recipeAncientPedestal), new ResearchPage("gadomancy.research_page.E_PORTAL_CREATOR.3"), new ResearchPage(RegisteredRecipes.recipePortalFocus), new ResearchPage("gadomancy.research_page.E_PORTAL_CREATOR.5"), new ResearchPage(RegisteredRecipes.multiblockEldritchPortalCreator)).registerResearchItem();
+                .setPages(new ResearchPage("gadomancy.research_page.E_PORTAL_CREATOR.1"), new ResearchPage(RegisteredRecipes.recipeAncientPedestal), new ResearchPage("gadomancy.research_page.E_PORTAL_CREATOR.3"), new ResearchPage("gadomancy.research_page.E_PORTAL_CREATOR.4"), new ResearchPage(RegisteredRecipes.recipePortalFocus), new ResearchPage("gadomancy.research_page.E_PORTAL_CREATOR.6"), new ResearchPage(RegisteredRecipes.multiblockEldritchPortalCreator), new ResearchPage("gadomancy.research_page.E_PORTAL_CREATOR.8")).registerResearchItem();
+
+        researchBlockProtector = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".BLOCK_PROTECTOR", Gadomancy.MODID,
+                new AspectList(),
+                0, -8, 2, new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 2))
+                .setConcealed()
+                .setPages(new ResearchPage("gadomancy.research_page.BLOCK_PROTECTOR.1"), new ResearchPage(RegisteredRecipes.recipeBlockProtector), new ResearchPage("gadomancy.research_page.BLOCK_PROTECTOR.3"), new ResearchPage("gadomancy.research_page.BLOCK_PROTECTOR.4")).registerResearchItem();
 
         researchGrowingNodes = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING", Gadomancy.MODID, new AspectList(), -8, -1, 5, new ResourceLocation("thaumcraft", "textures/misc/r_nodes.png"))
                 .setSpecial().setLost().setConcealed()
@@ -219,12 +226,17 @@ public class RegisteredResearches {
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR", 4);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTHCLUE", 3);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".FAMILIAR", 1);
-        ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".E_PORTAL_CREATOR", 3);
+        ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".E_PORTAL_CREATOR", 4);
     }
 
     public static void postInit() {
         ResearchItem researchJar = PseudoResearchItem.create("JARLABEL", -3, -7).registerResearchItem();
         ResearchItem researchEssentiaMirror = PseudoResearchItem.create("MIRRORESSENTIA", -6, -2).registerResearchItem();
+        ResearchItem researchTubes = PseudoResearchItem.create("TUBES", -2, -9).registerResearchItem();
+
+        if(researchBlockProtector != null) {
+            researchBlockProtector.setParents(researchTubes.key, researchJar.key);
+        }
 
         researchStickyJar = new AlternatingResearchItem("STICKYJAR", -5, -5, 2,
                 new AspectList().add(Aspect.SLIME, 8).add(Aspect.EARTH, 8),

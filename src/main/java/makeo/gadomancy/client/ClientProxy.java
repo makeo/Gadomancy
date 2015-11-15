@@ -117,9 +117,9 @@ public class ClientProxy extends CommonProxy {
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ConfigBlocks.blockAiry), new ItemExNodeRenderer());
 
-        ItemRenderTileEntityMulti multi = new ItemRenderTileEntityMulti(new ItemRenderTileEntityMulti.RenderSet(renderTileAuraPylon, new TileAuraPylon(), 0),
-                new ItemRenderTileEntityMulti.RenderSet(renderTileAuraPylon, new TileAuraPylonTop(), 1));
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockAuraPylon), multi);
+        //ItemRenderTileEntityMulti multi = new ItemRenderTileEntityMulti(new ItemRenderTileEntityMulti.RenderSet(renderTileAuraPylon, new TileAuraPylon(), 0),
+        //        new ItemRenderTileEntityMulti.RenderSet(renderTileAuraPylon, new TileAuraPylonTop(), 1));
+        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockAuraPylon), multi);
 
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemExtendedNodeJar, new ItemJarExtendedNodeRenderer());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockRemoteJar), new ItemRenderRemoteJar(renderTileRemoteJar));
