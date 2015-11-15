@@ -17,6 +17,9 @@ public class WorldUtil {
 
     public static void teleportToFakeOuter(EntityPlayerMP player) {
         MinecraftServer mServer = FMLCommonHandler.instance().getMinecraftServerInstance();
+        if(player.worldObj.provider.dimensionId != 0) {
+            mServer.getConfigurationManager().transferPlayerToDimension(player, 0, new TeleporterNothing(mServer.worldServerForDimension(0)));
+        }
         mServer.getConfigurationManager().transferPlayerToDimension(player, ModConfig.dimOuterId, new TeleporterNothing(mServer.worldServerForDimension(ModConfig.dimOuterId)));
     }
 

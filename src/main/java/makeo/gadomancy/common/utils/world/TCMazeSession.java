@@ -3,6 +3,7 @@ package makeo.gadomancy.common.utils.world;
 import makeo.gadomancy.common.data.ModConfig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Vec3;
@@ -68,7 +69,7 @@ public class TCMazeSession {
     }
 
     final void startSession() {
-        WorldServer ws = DimensionManager.getWorld(ModConfig.dimOuterId);
+        WorldServer ws = MinecraftServer.getServer().worldServerForDimension(ModConfig.dimOuterId);
 
         for(CellLoc loc : chunksAffected.keySet()) {
             long k = ChunkCoordIntPair.chunkXZ2Int(loc.x, loc.z);
@@ -78,7 +79,7 @@ public class TCMazeSession {
         }
 
         if(portalCell == null) {
-            LogManager.getLogger().error("Thaumcraft didn't generate a portal! Stopping instance!", new IllegalStateException());
+            LogManager.getLogger().error("Thaumcraft didn't generate a portal! Stopping instance! PLEASE REPORT THIS ERROR!", new IllegalStateException());
             closeSession(false);
             player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Thaumcraft didn't generate a portal in the Eldritch dimension. Sorry, we can't teleport you.."));
         } else {

@@ -58,6 +58,7 @@ public class EventHandlerWorld {
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void on(WorldEvent.Load e) {
         if (!e.world.isRemote && e.world.provider.dimensionId == 0) {
+            System.out.println("initWorld");
             Gadomancy.loadModData();
 
             GolemEnumHelper.validateSavedMapping();
