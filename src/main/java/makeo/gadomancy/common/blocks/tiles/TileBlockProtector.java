@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.ThaumcraftApiHelper;
@@ -65,7 +66,13 @@ public class TileBlockProtector extends TileJarFillable {
     public void readCustomNBT(NBTTagCompound compound) {
         super.readCustomNBT(compound);
         aspectFilter = ASPECT;
+
+        int oldRange = range;
         range = compound.getInteger("ProtectRange");
+
+        if(worldObj != null && worldObj.isRemote && oldRange != range) {
+            worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
+        }
     }
 
     @Override
@@ -116,16 +123,18 @@ public class TileBlockProtector extends TileJarFillable {
 
                 if (executeDecrease && range > 0) {
                     range--;
+
                     markDirty();
                     worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                 }
             }
         } else if(range > 0) {
+            float sizeMod = 1 - (range / 15f);
             if (this.worldObj.rand.nextInt(9 - Thaumcraft.proxy.particleCount(2)) == 0) {
-                Thaumcraft.proxy.wispFX3(this.worldObj, this.xCoord + 0.5F, this.yCoord + 0.68F, this.zCoord + 0.5F, this.xCoord + 0.3F + this.worldObj.rand.nextFloat() * 0.4F, this.yCoord + 0.68F, this.zCoord + 0.3F + this.worldObj.rand.nextFloat() * 0.4F, 0.3F, 6, true, -0.025F);
+                Thaumcraft.proxy.wispFX3(this.worldObj, this.xCoord + 0.5F, this.yCoord + 0.68F, this.zCoord + 0.5F, this.xCoord + 0.3F + this.worldObj.rand.nextFloat() * 0.4F, this.yCoord + 0.68F, this.zCoord + 0.3F + this.worldObj.rand.nextFloat() * 0.4F, 0.3F - (0.15f*sizeMod), 6, true, -0.025F);
             }
             if (this.worldObj.rand.nextInt(15 - Thaumcraft.proxy.particleCount(4)) == 0) {
-                Thaumcraft.proxy.wispFX3(this.worldObj, this.xCoord + 0.5F, this.yCoord + 0.68F, this.zCoord + 0.5F, this.xCoord + 0.4F + this.worldObj.rand.nextFloat() * 0.2F, this.yCoord + 0.68F, this.zCoord + 0.4F + this.worldObj.rand.nextFloat() * 0.2F, 0.2F, 6, true, -0.02F);
+                Thaumcraft.proxy.wispFX3(this.worldObj, this.xCoord + 0.5F, this.yCoord + 0.68F, this.zCoord + 0.5F, this.xCoord + 0.4F + this.worldObj.rand.nextFloat() * 0.2F, this.yCoord + 0.68F, this.zCoord + 0.4F + this.worldObj.rand.nextFloat() * 0.2F, 0.2F - (0.15f*sizeMod), 6, true, -0.02F);
             }
         }
 
