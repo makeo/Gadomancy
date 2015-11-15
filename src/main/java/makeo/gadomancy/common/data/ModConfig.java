@@ -16,12 +16,15 @@ public class ModConfig {
 
     private static Configuration config;
 
+    @Sync
     public static int golemDatawatcherId = 29;
+    @Sync
     public static int dimOuterId = -73;
     public static boolean doLightCalculations = true;
     public static int maxMazeCount = -1;
 
     //Skyblock stuff
+    @Sync
     public static boolean ancientStoneRecipes = false;
 
     private ModConfig() {}

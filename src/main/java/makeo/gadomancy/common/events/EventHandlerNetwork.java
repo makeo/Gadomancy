@@ -5,6 +5,7 @@ import cpw.mods.fml.common.gameevent.PlayerEvent;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketFamiliar;
+import makeo.gadomancy.common.network.packets.PacketSyncConfigs;
 import makeo.gadomancy.common.network.packets.PacketUpdateGolemTypeOrder;
 import makeo.gadomancy.common.utils.GolemEnumHelper;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
@@ -27,6 +28,7 @@ public class EventHandlerNetwork {
             PacketHandler.INSTANCE.sendTo(new PacketUpdateGolemTypeOrder(GolemEnumHelper.getCurrentMapping()), p);
             Gadomancy.proxy.familiarHandler.checkPlayerEquipment(p);
             PacketHandler.INSTANCE.sendTo(new PacketFamiliar.PacketFamiliarSyncCompletely(Gadomancy.proxy.familiarHandler.getCurrentActiveFamiliars()), p);
+            PacketHandler.INSTANCE.sendTo(new PacketSyncConfigs(), p);
         }
     }
 

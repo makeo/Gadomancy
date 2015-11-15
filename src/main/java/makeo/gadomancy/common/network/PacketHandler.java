@@ -4,12 +4,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.network.packets.PacketAnimationAbsorb;
-import makeo.gadomancy.common.network.packets.PacketFamiliar;
-import makeo.gadomancy.common.network.packets.PacketStartAnimation;
-import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
-import makeo.gadomancy.common.network.packets.PacketTCWispyLine;
-import makeo.gadomancy.common.network.packets.PacketUpdateGolemTypeOrder;
+import makeo.gadomancy.common.network.packets.*;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -34,5 +29,7 @@ public class PacketHandler {
         INSTANCE.registerMessage(PacketFamiliar.PacketFamiliarBolt.class, PacketFamiliar.PacketFamiliarBolt.class, id++, Side.CLIENT);
         INSTANCE.registerMessage(PacketFamiliar.PacketFamiliarSyncCompletely.class, PacketFamiliar.PacketFamiliarSyncCompletely.class, id++, Side.CLIENT);
         INSTANCE.registerMessage(PacketFamiliar.PacketFamiliarSyncSingle.class, PacketFamiliar.PacketFamiliarSyncSingle.class, id++, Side.CLIENT);
+
+        INSTANCE.registerMessage(PacketSyncConfigs.class, PacketSyncConfigs.class, id++, Side.CLIENT);
     }
 }
