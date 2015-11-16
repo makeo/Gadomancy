@@ -1,15 +1,12 @@
 package makeo.gadomancy.common.integration.thaumichorizions;
 
-import com.google.common.collect.BiMap;
 import com.kentington.thaumichorizons.client.renderer.entity.RenderGolemTH;
 import com.kentington.thaumichorizons.common.entities.EntityGolemTH;
-import com.kentington.thaumichorizons.common.items.ItemGolemBellTH;
 import com.kentington.thaumichorizons.common.tiles.TileVat;
 import com.kentington.thaumichorizons.common.tiles.TileVatMatrix;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.registry.ExistingSubstitutionException;
-import cpw.mods.fml.common.registry.FMLControlledNamespacedRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import makeo.gadomancy.api.ClickBehavior;
 import makeo.gadomancy.client.ClientProxy;
@@ -17,14 +14,13 @@ import makeo.gadomancy.common.CommonProxy;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.integration.IntegrationMod;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
-import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
-import thaumcraft.common.config.ConfigItems;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -76,31 +72,21 @@ public class IntegrationThaumicHorizions extends IntegrationMod {
             });
         }
 
-        undoSubstitution("Thaumcraft:GolemBell");
-
-        ItemGolemBellOverride override = new ItemGolemBellOverride();
-        try {
-            GameRegistry.addSubstitutionAlias("Thaumcraft:GolemBell", GameRegistry.Type.ITEM, override);
-        } catch (ExistingSubstitutionException ignored) { }
-        ConfigItems.itemGolemBell = override;
-
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private void undoSubstitution(String name) {
-        Injector registry = new Injector(GameRegistry.Type.ITEM.getRegistry(), FMLControlledNamespacedRegistry.class);
-        BiMap map = registry.invokeMethod("getPersistentSubstitutions");
-        map.remove(name);
-    }
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void on(AttackEntityEvent e) {
+        EntityPlayer player = e.entityPlayer;
+        if(!e.target.worldObj.isRemote && e.target instanceof EntityGolemTH
+                && player.isSneaking()) {
+            e.setCanceled(true);
 
-    public static class ItemGolemBellOverride extends ItemGolemBellTH {
-        @Override
-        public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
-            boolean result = super.onLeftClickEntity(stack, player, entity);
-            if(result && !entity.worldObj.isRemote && entity instanceof EntityGolemTH
-                    && entity.isDead && player.isSneaking()) {
-                CommonProxy.EVENT_HANDLER_GOLEM.on(new PlaySoundAtEntityEvent(entity, "thaumcraft:zap", 0.5f, 1.0f));
+            ItemStack stack = player.getCurrentEquippedItem();
+            if (stack != null && stack.getItem().onLeftClickEntity(stack, player, e.target)
+                    && e.target.isDead) {
+                CommonProxy.EVENT_HANDLER_GOLEM.on(new PlaySoundAtEntityEvent(e.target, "thaumcraft:zap", 0.5f, 1.0f));
             }
-            return result;
         }
     }
 }
