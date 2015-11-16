@@ -3,11 +3,13 @@ package makeo.gadomancy.common;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
 import makeo.gadomancy.client.ClientProxy;
 import makeo.gadomancy.common.containers.ContainerArcanePackager;
 import makeo.gadomancy.common.containers.ContainerInfusionClaw;
 import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.entities.fake.EntityPermNoClipItem;
 import makeo.gadomancy.common.events.EventHandlerEntity;
 import makeo.gadomancy.common.events.EventHandlerGolem;
 import makeo.gadomancy.common.events.EventHandlerNetwork;
@@ -84,6 +86,8 @@ public class CommonProxy implements IGuiHandler {
 
         DimensionManager.registerProviderType(ModConfig.dimOuterId, WorldProviderTCEldrich.class, true);
         DimensionManager.registerDimension(ModConfig.dimOuterId, ModConfig.dimOuterId);
+
+        EntityRegistry.registerModEntity(EntityPermNoClipItem.class, "EntityPermItem", EntityRegistry.findGlobalUniqueEntityId(), Gadomancy.instance, 32, 10, true);
     }
 
     public void postInitalize() {

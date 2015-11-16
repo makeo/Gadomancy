@@ -68,21 +68,36 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
             Aspect a = ((TileAuraPylonTop) tile).getAspect();
             if(a == null) a = Aspect.WEATHER;
             Color c = new Color(a.getColor());
-            if(tile.getWorldObj().rand.nextInt(9) == 0) spawnWispParticles((TileAuraPylonTop) tile, c, 0.5F, false);
+            if(tile.getWorldObj().rand.nextInt(9) == 0) {
+                if(a == Aspect.ENTROPY || a == Aspect.DARKNESS || a == Aspect.UNDEAD) {
+                    spawnWispParticles((TileAuraPylonTop) tile, 5, 0.5F, false);
+                } else {
+                    spawnWispParticles((TileAuraPylonTop) tile, c, 0.5F, false);
+                }
+            }
             c = c.darker().darker();
-            if(tile.getWorldObj().rand.nextInt(15) == 0) spawnWispParticles((TileAuraPylonTop) tile, c, 0.25F, true);
+            if(tile.getWorldObj().rand.nextInt(15) == 0) {
+                if(a == Aspect.ENTROPY || a == Aspect.DARKNESS || a == Aspect.UNDEAD) {
+                    spawnWispParticles((TileAuraPylonTop) tile, 5, 0.25F, false);
+                } else {
+                    spawnWispParticles((TileAuraPylonTop) tile, c, 0.25F, false);
+                }
+            }
         }
 
-        if(tile instanceof TileAuraPylon && ((TileAuraPylon) tile).isInputTile() && ((TileAuraPylon) tile).isPartOfMultiblock() && ((TileAuraPylon) tile).getAspectType() != null) {
-            Aspect a = ((TileAuraPylon) tile).getAspectType();
-            TileAuraPylon master = ((TileAuraPylon) tile).getMasterTile();
-            if(master == null) return;
-            if(a == null) return;
-            FXEssentiaTrail essentiaTrail = new FXEssentiaTrail(tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord, master.xCoord, master.yCoord, master.zCoord, 1, a.getColor(), 0.2F);
-            essentiaTrail.noClip = true;
-            ParticleEngine.instance.addEffect(tile.getWorldObj(), essentiaTrail);
-        }
+    }
 
+    private void spawnWispParticles(TileAuraPylonTop tile, int type, float size, boolean inner) {
+        World worldObj = tile.getWorldObj();
+        int xCoord = tile.xCoord;
+        int yCoord = tile.yCoord;
+        int zCoord = tile.zCoord;
+        float offset1 = inner ? 0.4F : 0.3F;
+        float offset2 = inner ? 0.2F : 0.4F;
+        FXWisp ef = new FXWisp(worldObj, xCoord + 0.55F, yCoord + 0.7F, zCoord + 0.55F, xCoord + offset1 + worldObj.rand.nextFloat() * offset2, yCoord + 0.7F, zCoord + offset1 + worldObj.rand.nextFloat() * offset2, size, type);
+        ef.setGravity(-0.04F);
+        ef.shrink = true;
+        ParticleEngine.instance.addEffect(worldObj, ef);
     }
 
     private void spawnWispParticles(TileAuraPylonTop tile, Color c, float size, boolean inner) {
@@ -92,7 +107,10 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
         int zCoord = tile.zCoord;
         float offset1 = inner ? 0.4F : 0.3F;
         float offset2 = inner ? 0.2F : 0.4F;
-        FXWisp ef = new FXWisp(worldObj, xCoord + 0.55F, yCoord + 0.7F, zCoord + 0.55F, xCoord + offset1 + worldObj.rand.nextFloat() * offset2, yCoord + 0.7F, zCoord + offset1 + worldObj.rand.nextFloat() * offset2, size, c.getRed(), c.getGreen(), c.getBlue());
+        float red = c.getRed() / 255F;
+        float green = c.getGreen() / 255F;
+        float blue = c.getBlue() / 255F;
+        FXWisp ef = new FXWisp(worldObj, xCoord + 0.55F, yCoord + 0.7F, zCoord + 0.55F, xCoord + offset1 + worldObj.rand.nextFloat() * offset2, yCoord + 0.7F, zCoord + offset1 + worldObj.rand.nextFloat() * offset2, size, red, green, blue);
         ef.setGravity(-0.04F);
         ef.shrink = true;
         ParticleEngine.instance.addEffect(worldObj, ef);

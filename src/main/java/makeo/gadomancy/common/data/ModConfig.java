@@ -17,6 +17,15 @@ public class ModConfig {
     private static Configuration config;
 
     @Sync
+    public static int entityNoClipItemDatawatcherMasterId = 19;
+    @Sync
+    public static int entityNoClipItemDatawatcherFixedXId = 20;
+    @Sync
+    public static int entityNoClipItemDatawatcherFixedYId = 21;
+    @Sync
+    public static int entityNoClipItemDatawatcherFixedZId = 22;
+
+    @Sync
     public static int golemDatawatcherId = 29;
     @Sync
     public static int dimOuterId = -73;
@@ -40,6 +49,11 @@ public class ModConfig {
     }
 
     private static void loadFromConfig() {
+        entityNoClipItemDatawatcherMasterId = config.getInt("itemNoClipDatawatcherMasterId", "entities", 19, 0, 31, "Do not edit unless you know what are you doing! - Datawatcher ID of the Master-Coordinates for EntityNoClipItem");
+        entityNoClipItemDatawatcherFixedXId = config.getInt("itemNoClipDatawatchetFixXId", "entities", 20, 0, 31, "Do not edit unless you know what are you doing! - Datawatcher ID of the X-Coordinates for EntityNoClipItem");
+        entityNoClipItemDatawatcherFixedYId = config.getInt("itemNoClipDatawatchetFixYId", "entities", 21, 0, 31, "Do not edit unless you know what are you doing! - Datawatcher ID of the Y-Coordinates for EntityNoClipItem");
+        entityNoClipItemDatawatcherFixedZId = config.getInt("itemNoClipDatawatchetFixZId", "entities", 22, 0, 31, "Do not edit unless you know what are you doing! - Datawatcher ID of the Z-Coordinates for EntityNoClipItem");
+
         golemDatawatcherId = config.getInt("datawatcherId", "golem", 29, 0, 31, "Do not edit unless you know what are you doing!");
         dimOuterId = config.getInt("dimOuterId", "dimension", -73, Integer.MIN_VALUE, Integer.MAX_VALUE, "Dimension Id for the eldrich mazes accessed via Node Manipulator");
         doLightCalculations = config.getBoolean("calculateEldritchLight", "dimension", true, "TRUE = Calculating Light values for the Gadomancy-Eldritch Mazes; FALSE = No calculation, but some Light Bugs - Calculating the Light takes ~2 seconds -> Can be measured when trying to enter the eldritch mazed via Gadomancy Eldritch portal.");

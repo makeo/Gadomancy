@@ -11,7 +11,7 @@ import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.GolemEnumHelper;
-import makeo.gadomancy.common.utils.JarMultiblockHandler;
+import makeo.gadomancy.common.utils.WandHandler;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -58,7 +58,6 @@ public class EventHandlerWorld {
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void on(WorldEvent.Load e) {
         if (!e.world.isRemote && e.world.provider.dimensionId == 0) {
-            System.out.println("initWorld");
             Gadomancy.loadModData();
 
             GolemEnumHelper.validateSavedMapping();
@@ -184,7 +183,7 @@ public class EventHandlerWorld {
         if (e.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
             ItemStack i = e.entityPlayer.getHeldItem();
             if (i != null && (i.getItem() instanceof ItemWandCasting)) {
-                JarMultiblockHandler.handleWandInteract(e.world, e.x, e.y, e.z, e.entityPlayer, i);
+                WandHandler.handleWandInteract(e.world, e.x, e.y, e.z, e.entityPlayer, i);
             }
         }
     }

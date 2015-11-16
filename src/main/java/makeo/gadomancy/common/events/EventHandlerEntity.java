@@ -2,14 +2,18 @@ package makeo.gadomancy.common.events;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
 import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
 import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.entities.fake.EntityPermNoClipItem;
 import makeo.gadomancy.common.familiar.FamiliarAIController;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -69,8 +73,12 @@ public class EventHandlerEntity {
     @SubscribeEvent
     public void on(EntityItemPickupEvent event) {
         if(!event.entityPlayer.worldObj.isRemote) {
-            if(event.item != null && event.item instanceof EntityPermanentItem) {
-                //TODO inform TileAuraPylon...
+            if(event.item != null && event.item instanceof EntityPermNoClipItem) {
+                EntityPermNoClipItem item = (EntityPermNoClipItem) event.item;
+                ChunkCoordinates master = (ChunkCoordinates) item.getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherMasterId).getObject();
+                TileEntity te = event.entityPlayer.worldObj.getTileEntity(master.posX, master.posY, master.posZ);
+                if(te == null || !(te instanceof TileAuraPylon)) return;
+                ((TileAuraPylon) te).informItemPickup();
             }
         }
     }

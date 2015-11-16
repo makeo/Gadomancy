@@ -19,6 +19,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.common.items.wands.ItemWandCasting;
@@ -64,6 +65,15 @@ public class BlockAuraPylon extends BlockContainer implements IBlockTransparent 
     }
 
     @Override
+    public int getLightValue(IBlockAccess world, int x, int y, int z) {
+        int meta = world.getBlockMetadata(x, y, z);
+        if(meta == 1) {
+            return 10;
+        }
+        return super.getLightValue(world, x, y, z);
+    }
+
+    @Override
     public int damageDropped(int meta) {
         return meta;
     }
@@ -96,7 +106,7 @@ public class BlockAuraPylon extends BlockContainer implements IBlockTransparent 
                     ThaumcraftApiHelper.consumeVisFromWandCrafting(player.getCurrentEquippedItem(), player, RegisteredRecipes.costsAuraPylonMultiblock, true)) {
                 TileAuraPylon ta = (TileAuraPylon) world.getTileEntity(x, y - 1, z);
                 ta.setTileInformation(true, false);
-                ta = (TileAuraPylon) world.getTileEntity(x, y - 4, z);
+                ta = (TileAuraPylon) world.getTileEntity(x, y - 3, z);
                 ta.setTileInformation(false, true);
                 int count = 1;
                 TileEntity iter = world.getTileEntity(x, y - count, z);

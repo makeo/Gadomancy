@@ -39,6 +39,5 @@ public class RegisteredMultiblocks {
     public static final MultiblockHelper.MultiblockPattern auraPylonPattern = new MultiblockHelper.MultiblockPattern(RegisteredBlocks.blockAuraPylon, 1)
             .addBlock(0, -1, 0, RegisteredBlocks.blockAuraPylon, 0)
             .addBlock(0, -2, 0, RegisteredBlocks.blockAuraPylon, 0)
-            .addBlock(0, -3, 0, RegisteredBlocks.blockAuraPylon, 0)
-            .addBlock(0, -4, 0, RegisteredBlocks.blockAuraPylon, 0);
+            .addBlock(0, -3, 0, RegisteredBlocks.blockAuraPylon, 0);
 }

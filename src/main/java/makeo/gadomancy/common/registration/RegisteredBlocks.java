@@ -87,7 +87,7 @@ public class RegisteredBlocks {
         blockNodeManipulator = registerBlock(new BlockNodeManipulator(), ItemNodeManipulator.class);
         blockStoneMachine = registerBlock(new BlockStoneMachine(), ItemBlockStoneMachine.class);
         blockAdditionalEldrichPortal = registerBlock(new BlockAdditionalEldritchPortal(), ItemBlockAdditionalEldritchPortal.class);
-        //blockAuraPylon = registerBlock(new BlockAuraPylon(), ItemBlockAuraPylon.class);
+        blockAuraPylon = registerBlock(new BlockAuraPylon(), ItemBlockAuraPylon.class);
     }
 
     private static <T extends Block> T registerBlock(String name, T block) {
@@ -125,8 +125,8 @@ public class RegisteredBlocks {
         registerTile(TileManipulationFocus.class);
         registerTile(TileAdditionalEldritchPortal.class);
         registerTile(TileBlockProtector.class);
-        //registerTile(TileAuraPylon.class);
-        //registerTile(TileAuraPylonTop.class);
+        registerTile(TileAuraPylon.class);
+        registerTile(TileAuraPylonTop.class);
     }
 
     private static void registerTile(Class<? extends TileEntity> tile, String name) {

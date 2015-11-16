@@ -16,7 +16,7 @@ gadomancy.research_page.GOLEMRUNICSHIELD.1=After further experimenting with prot
 
 tc.research_name.GADOMANCY.STICKYJAR=Sticky Jars
 tc.research_text.GADOMANCY.STICKYJAR=Stick 'em up!
-gadomancy.research_page.STICKYJAR.1=Warded jars are any thaumaturge's bread and butter, but they can be a bit difficult to arrange when large tangles of essentia tubes are involved. You decided to alleviate this minor difficulty by applying some adhesive to the bottom of the jar. Any jar that has its base coated will stick to the surface it is placed on, even if that surface is facing sideways or upside down. Breaking the jar does not remove the adhesive, allowing sticky jars to be reused. Also, many other types of essentia containing jars other than basic warded jars can accept this alteration.
+gadomancy.research_page.STICKYJAR.1=Warded jars are any thaumaturge's bread and butter, but they can be a bit difficult to arrange when large tangles of essentia tubes get involved. You decided to alleviate this minor difficulty by applying some adhesive to the bottom of the jar. Any jar that has its base coated will stick to the surface it is placed on, even if that surface is facing sideways or upside down. Breaking the jar does not remove the adhesive, allowing sticky jars to be reused. Also, many other types of essentia containing jars other than basic warded jars can accept this alteration.
 
 tc.research_name.GADOMANCY.ARCANEDROPPER=Arcane Dropper
 tc.research_text.GADOMANCY.ARCANEDROPPER=When the pimps in the crib, ma
@@ -43,7 +43,7 @@ gadomancy.research_page.REMOTEJAR.2=If a network already exists, then the jar wi
 tc.research_name.GADOMANCY.FAMILIAR=Ethereal Familiar
 tc.research_text.GADOMANCY.FAMILIAR=A arcane follower
 gadomancy.research_page.FAMILIAR.1=Wisps have intrigued you for some time now. Many of these sentient bits of ethereal magic seem to be  passive, but when attacked, they retaliate with surprising speed and efficiency. Not only that, but sometimes just approaching a wisp too quickly will provoke an attack.<LINE>This behavior gave you an unexpected inspiration. By exploiting the unusually responsive nature of a wisp, it may be possible to bend its defensive instincts to act as a personal protector. Unfortunately, wild wisps have proven to be far to unpredictable to capture.
-gadomancy.research_page.FAMILIAR.3=By infusing large amounts of magic and a few binding agents into a sample of ethereal essence, an artificial wisp can be created. This Ethereal "Familiar" will anchor to its wearer's aura and act similarly to a turret when it is held in the amulet slot, shooting sparks any hostile entities that get too close. It is considerably weaker and slower than its wild counterparts, however you feel that there are definitely methods of strengthening it.
+gadomancy.research_page.FAMILIAR.3=By infusing large amounts of magic and a few binding agents into a sample of ethereal essence, an artificial wisp can be created. This Ethereal "Familiar" will anchor to its wearer's aura and act similarly to a turret when it is held in the amulet slot, shooting sparks any hostile entities that attack its wearer. It is considerably weaker and slower than its wild counterparts, however you feel that there are definitely methods of strengthening it.
 
 tc.research_name.GADOMANCY.FAM_ATTACK_1=Attack Enhancement
 tc.research_text.GADOMANCY.FAM_ATTACK_1=Increasing the damage
@@ -69,7 +69,7 @@ tc.research_name.GADOMANCY.NODE_MANIPULATOR=Node Manipulator
 tc.research_text.GADOMANCY.NODE_MANIPULATOR=Almost like roulette
 gadomancy.research_page.NODE_MANIPULATOR.1=Aura nodes have intrigued you for the longest time. Where do they come from? Why are there so many varieties? After some time, you found yourself asking another question entirely; would it be possible to change how a node functions? After journeying far across the world and into the depths of the ancient eldritch mazes, you found a set of materials capable of changing the way aura behaves. After carefully developing these materials, and using them to augment the only device you found to be capable of channeling pure vis directly from a node, one of the most dangerous machines you could fathom finally fell within your grasp.
 gadomancy.research_page.NODE_MANIPULATOR.3=The Node Manipulator is a device that essentially works in a manner opposite to that of a wand recharge pedestal. By drawing vis from a wand or staff and channeling it back into the node, the node manipulator will force a node to destabilize slightly.<LINE> The manipulator's main pedestal is not stable enough to alter nodes on its own. By adding a specially modified focus to hold the wand/staff in place for vis extraction and a set of pillars to channel the extracted vis into the node, the device is finally ready for use. Just place a wand/staff on the pedestal, and the node manipulator will start automatically.
-gadomancy.research_page.NODE_MANIPULATOR.6=The Node Manipulator needs at least 70 of all six primal aspects to begin manipulating a node, but allowing more that 70 seems to yield greater effects. <BR>Despite all of your research into node behavior, you still haven't the slightest idea what the node manipulator will actually do to aura nodes. The only way to find out seems to be testing it out...
+gadomancy.research_page.NODE_MANIPULATOR.6=The Node Manipulator needs at least 70 of all six primal aspects to begin manipulating a node, but allowing more that 70 seems to yield greater results. <BR>Despite all of your research into node behavior, you still haven't the slightest idea what the node manipulator will actually do to aura nodes. The only way to find out seems to be testing it out...
 
 tc.research_name.GADOMANCY.E_PORTAL_CREATOR=Gate of the Voidwalkers
 tc.research_text.GADOMANCY.E_PORTAL_CREATOR=Into the abyss...
@@ -83,11 +83,11 @@ tc.research_name.GADOMANCY.BLOCK_PROTECTOR=Enervation Field Emitter
 tc.research_text.GADOMANCY.BLOCK_PROTECTOR=ENOUGH OF THESE DAMN CREEPERS ALREADY!!!!!
 gadomancy.research_page.BLOCK_PROTECTOR.1=EVERYONE. HATES. CREEPERS. It is practically a given that at some point in a builder's career, one of these indescribably rage inducing freaks will sneak up from behind, above, below, or even right in front of them and explode, ruining the project in progress completely.<LINE>Almost by chance, you discovered an interesting way to solve this problem with essential gas. By exposing gunpowder to a small trace of ordo essentia, you found could completely nullify its ability to explode when ignited.
 gadomancy.research_page.BLOCK_PROTECTOR.3=Turning essentia into gas directly without having it dissolve into flux is all but impossible, but some careful tinkering with various alchemical machinery components and redstone yields a device that can use a slightly different process to acquire the same effects as liquid essentia. <BR>The Arcane Enervation Emitter diffuses a light aura of ordo across a limited area. Any creepers in that affected area will be unable to explode. The emitter is slow to start, and when it receives fuel in the form of ordo essentia and a redstone signal, it will gradually expand its area of effect until it reaches maximum size.
-gadomancy.research_page.BLOCK_PROTECTOR.4=The size of its area can be controlled by changing the strength of the redstone signal used to activate the device, and monitored by placing a comparator running out of the device.<BR>After using this device for some time, you noticed, much to your delight, that the field that the Arcane Enervation Emitter emits is strong enough to affect other mobs than just creepers. It appears to stop other mobs from breaking blocks. It isn’t strong enough to affect players though…
+gadomancy.research_page.BLOCK_PROTECTOR.4=The size of its area can be controlled by changing the strength of the redstone signal used to activate the device, and monitored by placing a comparator running out of the device.<BR>After using this device for some time, you noticed, much to your delight, that the field that the Arcane Enervation Emitter emits is strong enough to affect more than just creepers. It appears to stop a variety of destructive mob behaviors as well as inhibiting enderman teleportation. It isn’t strong enough to affect players though…
 
 tc.research_name.GADOMANCY.ANCIENT_STONES=Ancient Stones
 tc.research_text.GADOMANCY.ANCIENT_STONES=Decorations of the Eldritch
-gadomancy.research_page.ANCIENT_STONES.1=Entering the mazes of the Eldritch is not only what an experienced thaumaturge such as yourself wants; the eldritch might not be the best room designers, but the stones they used to build show enormous magic potential.<BR>Exposing your everyday arcane stones to eldritch energies might alter the stones magical properties to react more like their eldritch relatives.
+gadomancy.research_page.ANCIENT_STONES.1=There is more to the mazes of the eldritch than meets the eye. The eldritch might not be the best room designers, but the stones they used to build show enormous magic potential.<BR>Exposing your everyday arcane stones to eldritch energies alter the stones magical properties to react more like their eldritch relatives.
 
 tc.research_name.GADOMANCY.GROWING=Growing Nodes
 tc.research_text.GADOMANCY.GROWING=Feed me Semour
@@ -145,6 +145,15 @@ tile.BlockStoneMachine.15.name=Manipulation Pillar
 
 gadomancy.nodes.GROWING=Growing
 gadomancy.nodes.STARVING=Starving
+
+gadomancy.auracore.blank=Blank
+gadomancy.auracore.aer=Aer
+gadomancy.auracore.ignis=Ignis
+gadomancy.auracore.aqua=Aqua
+gadomancy.auracore.terra=Terra
+gadomancy.auracore.ordo=Ordo
+gadomancy.auracore.perditio=Perditio
+gadomancy.auracore.balanced=Balanced
 
 gadomancy.info.ArcanePackage=Click to open or put it in a unpackager
 gadomancy.info.InfusionClaw.owner=You are now the owner.

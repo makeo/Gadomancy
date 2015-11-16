@@ -2,15 +2,18 @@ package makeo.gadomancy.common.utils;
 
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
+import makeo.gadomancy.common.items.ItemAuraCore;
 import makeo.gadomancy.common.node.ExtendedNodeType;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredIntegrations;
 import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import thaumcraft.api.ThaumcraftApiHelper;
@@ -26,6 +29,7 @@ import thaumcraft.common.tiles.TileJarNode;
 import thaumcraft.common.tiles.TileOwned;
 import thaumcraft.common.tiles.TileWarded;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -33,13 +37,15 @@ import java.util.List;
  * Gadomancy is Open Source and distributed under the
  * GNU LESSER GENERAL PUBLIC LICENSE
  * for more read the LICENSE file
- * <p/>
+ *
  * Created by HellFirePvP @ 24.10.2015 18:09
  */
-public class JarMultiblockHandler {
+public class WandHandler {
 
+    //All wand interacts are redirected to this.
     public static void handleWandInteract(World world, int x, int y, int z, EntityPlayer entityPlayer, ItemStack i) {
         Block target = world.getBlock(x, y, z);
+        if(target == null) return;
         if (target.equals(Blocks.glass)) {
             if (ResearchManager.isResearchComplete(entityPlayer.getCommandSenderName(), "NODEJAR")) {
                 tryTCJarNodeCreation(i, entityPlayer, world, x, y, z);
@@ -49,11 +55,56 @@ public class JarMultiblockHandler {
                     ResearchManager.isResearchComplete(entityPlayer.getCommandSenderName(), "ADVNODEJAR")) {
                 tryAutomagyJarNodeCreation(i, entityPlayer, world, x, y, z);
             }
+        } else if(target.equals(ConfigBlocks.blockCrystal)) {
+            List items = world.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(4, 4, 4));
+            Iterator it = items.iterator();
+            EntityItem itemAuraCore = null;
+            while(itemAuraCore == null && it.hasNext()) {
+                Object item = it.next();
+                if(item != null && item instanceof EntityItem && !((EntityItem) item).isDead) {
+                    EntityItem entityItem = (EntityItem) item;
+                    if(entityItem.getEntityItem() != null && entityItem.getEntityItem().getItem() != null && entityItem.getEntityItem().getItem() instanceof ItemAuraCore) {
+                        if(((ItemAuraCore) entityItem.getEntityItem().getItem()).isBlank(entityItem.getEntityItem())) itemAuraCore = entityItem;
+                    }
+                }
+            }
+
+            if(itemAuraCore == null) return;
+
+            int meta = world.getBlockMetadata(x, y, z);
+            if(meta <= 6) {
+                AspectList aspects = new AspectList();
+                switch (meta) {
+                    case 0:
+                        aspects.add(Aspect.AIR, 6);
+                        break;
+                    case 1:
+                        aspects.add(Aspect.FIRE, 6);
+                        break;
+                    case 2:
+                        aspects.add(Aspect.WATER, 6);
+                        break;
+                    case 3:
+                        aspects.add(Aspect.EARTH, 6);
+                        break;
+                    case 4:
+                        aspects.add(Aspect.ORDER, 6);
+                        break;
+                    case 5:
+                        aspects.add(Aspect.ENTROPY, 6);
+                        break;
+                    case 6:
+                        aspects.add(Aspect.AIR, 1).add(Aspect.EARTH, 1).add(Aspect.FIRE, 1).add(Aspect.WATER, 1).add(Aspect.ORDER, 1).add(Aspect.ENTROPY, 1);
+                        break;
+                }
+
+                //TODO replace entityitem with entityAuraCore and attach starting aspects.
+            }
         }
     }
 
     private static void tryTCJarNodeCreation(ItemStack wandStack, EntityPlayer player, World world, int x, int y, int z) {
-        JarMultiblockHandler.JarPieceEvaluationRunnable slabRunnable = new JarMultiblockHandler.JarPieceEvaluationRunnable() {
+        WandHandler.JarPieceEvaluationRunnable slabRunnable = new WandHandler.JarPieceEvaluationRunnable() {
             @Override
             public boolean isValidPieceAt(World world, int absX, int absY, int absZ, EntityPlayer player) {
                 Block block = world.getBlock(absX, absY, absZ);
@@ -61,13 +112,13 @@ public class JarMultiblockHandler {
                 return containsMatch(false, OreDictionary.getOres("slabWood"), new ItemStack(block, 1, md));
             }
         };
-        JarMultiblockHandler.JarPieceEvaluationRunnable glassRunnable = new JarMultiblockHandler.JarPieceEvaluationRunnable() {
+        WandHandler.JarPieceEvaluationRunnable glassRunnable = new WandHandler.JarPieceEvaluationRunnable() {
             @Override
             public boolean isValidPieceAt(World world, int absX, int absY, int absZ, EntityPlayer player) {
                 return world.getBlock(absX, absY, absZ) == Blocks.glass;
             }
         };
-        JarMultiblockHandler.JarPieceEvaluationRunnable nodeRunnable = new JarMultiblockHandler.JarPieceEvaluationRunnable() {
+        WandHandler.JarPieceEvaluationRunnable nodeRunnable = new WandHandler.JarPieceEvaluationRunnable() {
             @Override
             public boolean isValidPieceAt(World world, int absX, int absY, int absZ, EntityPlayer player) {
                 TileEntity tile = world.getTileEntity(absX, absY, absZ);
@@ -77,7 +128,7 @@ public class JarMultiblockHandler {
                 return true;
             }
         };
-        int[] result = JarMultiblockHandler.evaluateIfValidJarIsPresent(world, x, y, z, player, slabRunnable, glassRunnable, nodeRunnable);
+        int[] result = WandHandler.evaluateIfValidJarIsPresent(world, x, y, z, player, slabRunnable, glassRunnable, nodeRunnable);
 
         if (result == null){
             return;
@@ -91,7 +142,7 @@ public class JarMultiblockHandler {
     }
 
     private static void tryAutomagyJarNodeCreation(ItemStack wandStack, EntityPlayer player, World world, int x, int y, int z) {
-        JarMultiblockHandler.JarPieceEvaluationRunnable silverWoodRunnable = new JarMultiblockHandler.JarPieceEvaluationRunnable() {
+        WandHandler.JarPieceEvaluationRunnable silverWoodRunnable = new WandHandler.JarPieceEvaluationRunnable() {
             @Override
             public boolean isValidPieceAt(World world, int absX, int absY, int absZ, EntityPlayer player) {
                 TileEntity te = world.getTileEntity(absX, absY, absZ);
@@ -104,7 +155,7 @@ public class JarMultiblockHandler {
                 return false;
             }
         };
-        JarMultiblockHandler.JarPieceEvaluationRunnable glassRunnable = new JarMultiblockHandler.JarPieceEvaluationRunnable() {
+        WandHandler.JarPieceEvaluationRunnable glassRunnable = new WandHandler.JarPieceEvaluationRunnable() {
             @Override
             public boolean isValidPieceAt(World world, int absX, int absY, int absZ, EntityPlayer player) {
                 if ((world.getBlock(absX, absY, absZ) == ConfigBlocks.blockCosmeticOpaque) && (world.getBlockMetadata(absX, absY, absZ) == 2)) {
@@ -116,7 +167,7 @@ public class JarMultiblockHandler {
                 return false;
             }
         };
-        JarMultiblockHandler.JarPieceEvaluationRunnable nodeRunnable = new JarMultiblockHandler.JarPieceEvaluationRunnable() {
+        WandHandler.JarPieceEvaluationRunnable nodeRunnable = new WandHandler.JarPieceEvaluationRunnable() {
             @Override
             public boolean isValidPieceAt(World world, int absX, int absY, int absZ, EntityPlayer player) {
                 TileEntity tile = world.getTileEntity(absX, absY, absZ);
@@ -126,7 +177,7 @@ public class JarMultiblockHandler {
                 return true;
             }
         };
-        int[] result = JarMultiblockHandler.evaluateIfValidJarIsPresent(world, x, y, z, player, silverWoodRunnable, glassRunnable, nodeRunnable);
+        int[] result = WandHandler.evaluateIfValidJarIsPresent(world, x, y, z, player, silverWoodRunnable, glassRunnable, nodeRunnable);
 
         if (result == null){
             return;
