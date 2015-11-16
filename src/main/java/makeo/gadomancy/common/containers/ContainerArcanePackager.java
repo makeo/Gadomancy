@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.containers;
 
+import makeo.gadomancy.common.blocks.tiles.TileArcanePackager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -44,6 +45,24 @@ public class ContainerArcanePackager extends Container {
         for (int i = 0; i < 9; i++) {
             addSlotToContainer(new Slot(this.playerInv, i, 16 + i * 18, 209));
         }
+    }
+
+    @Override
+    public boolean enchantItem(EntityPlayer player, int id) {
+        TileArcanePackager tile = (TileArcanePackager) packagerInv;
+
+        switch (id) {
+            case 0: tile.useEssentia = true; break;
+            case 1: tile.useEssentia = false; break;
+            case 2: tile.autoStart = true; break;
+            case 3: tile.autoStart = false; break;
+            case 4: tile.disguise = true; break;
+            case 5: tile.disguise = false; break;
+        }
+
+        tile.markForUpdate();
+
+        return false;
     }
 
     @Override

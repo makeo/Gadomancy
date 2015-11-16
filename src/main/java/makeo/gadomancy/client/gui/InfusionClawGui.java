@@ -96,10 +96,10 @@ public class InfusionClawGui extends GuiContainer {
         int checkX = x - baseX - 114;
         int checkY = y - baseY - 36;
 
-        if(checkX >= 0 && checkX <= 8 && checkY >= 0 && checkY <= 8) {
+        if(checkX >= 0 && checkX < 8 && checkY >= 0 && checkY < 8) {
             TileInfusionClaw tile = ((TileInfusionClaw)container.clawInv);
             this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, tile.isLocked() ? 0 : 1);
-            tile.setIsLocked(tile.isLocked());
+            tile.setIsLocked(!tile.isLocked());
         }
     }
 }

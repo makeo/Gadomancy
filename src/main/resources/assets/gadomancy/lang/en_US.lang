@@ -140,6 +140,7 @@ tile.BlockStoneMachine.0.name=Randomization Focus
 tile.BlockStoneMachine.1.name=Ancient Pedestal
 tile.BlockStoneMachine.2.name=Arcane Enervation Emitter
 tile.BlockStoneMachine.3.name=Redirection Focus
+tile.BlockStoneMachine.4.name=Arcane Packager
 tile.BlockStoneMachine.11.name=Manipulation Pillar
 tile.BlockStoneMachine.15.name=Manipulation Pillar
 
@@ -155,10 +156,14 @@ gadomancy.auracore.ordo=Ordo
 gadomancy.auracore.perditio=Perditio
 gadomancy.auracore.balanced=Balanced
 
-gadomancy.info.ArcanePackage=Click to open or put it in a unpackager
 gadomancy.info.InfusionClaw.owner=You are now the owner.
 gadomancy.info.InfusionClaw.waila=§7Owner:
 gadomancy.info.InfusionClaw.lock=Keep useable wand
+
+gadomancy.info.ArcanePackage=Click to open
+gadomancy.info.ArcanePackager.useEssentia=Use essentia
+gadomancy.info.ArcanePackager.autoStart=Automatically start
+gadomancy.info.ArcanePackager.disguisePackage=Disguise as loot bag
 
 gadomancy.info.RemoteJar.new=Created new jar network
 gadomancy.info.RemoteJar.clear=Disconnected from current jar network

@@ -5,6 +5,7 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -18,10 +19,35 @@ public class TileArcanePackager extends SynchronizedTileEntity implements IInven
     private ItemStack[] contents = new ItemStack[12];
 
     //0 - 46
-    public int progress = 20;
+    public byte progress = 20;
     public boolean autoStart = false;
     public boolean useEssentia = false;
+    public boolean disguise = false;
 
+    @Override
+    public void readCustomNBT(NBTTagCompound compound) {
+        progress = compound.getByte("progress");
+
+        byte settings = compound.getByte("settings");
+        autoStart = (settings & 1) == 1;
+        useEssentia = (settings & 2) == 2;
+        disguise = (settings & 4) == 4;
+    }
+
+    @Override
+    public void writeCustomNBT(NBTTagCompound compound) {
+        compound.setByte("progress", progress);
+
+        byte settings = (byte) (autoStart ? 1 : 0);
+        settings |= useEssentia ? 2 : 0;
+        settings |= disguise ? 4 : 0;
+        compound.setByte("settings", settings);
+    }
+
+    public void markForUpdate() {
+        markDirty();
+        getWorldObj().markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
 
     @Override
     public int getSizeInventory() {
