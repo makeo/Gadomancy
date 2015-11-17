@@ -31,6 +31,7 @@ public class ModConfig {
     public static int dimOuterId = -73;
     public static boolean doLightCalculations = true;
     public static int maxMazeCount = -1;
+    public static int renderParticleDistance = 100;
 
     //Skyblock stuff
     @Sync
@@ -55,10 +56,13 @@ public class ModConfig {
         entityNoClipItemDatawatcherFixedZId = config.getInt("itemNoClipDatawatchetFixZId", "entities", 22, 0, 31, "Do not edit unless you know what are you doing! - Datawatcher ID of the Z-Coordinates for EntityNoClipItem");
 
         golemDatawatcherId = config.getInt("datawatcherId", "golem", 29, 0, 31, "Do not edit unless you know what are you doing!");
+
         dimOuterId = config.getInt("dimOuterId", "dimension", -73, Integer.MIN_VALUE, Integer.MAX_VALUE, "Dimension Id for the eldrich mazes accessed via Node Manipulator");
         doLightCalculations = config.getBoolean("calculateEldritchLight", "dimension", true, "TRUE = Calculating Light values for the Gadomancy-Eldritch Mazes; FALSE = No calculation, but some Light Bugs - Calculating the Light takes ~2 seconds -> Can be measured when trying to enter the eldritch mazed via Gadomancy Eldritch portal.");
         maxMazeCount = config.getInt("maxMazeCount", "dimension", -1, -1, Integer.MAX_VALUE, "Defines how many Eldritch mazes may exist at the same time using the Gadomancy Eldritch ritual. (-1 = infinite) Note that 1 maze = 1 player; Once the player finishes the maze, the maze closes itself and teleports the player out.");
 
         ancientStoneRecipes = config.getBoolean("ancientStoneRecipes", "skyblock", false, "TRUE = Adds recipes for Ancient Stone and Ancient Stone Pedestal (This may be usefull for severs and skyblock packs to craft the Node Manipulator and get more primodial pearls)");
+
+        renderParticleDistance = config.getInt("particleRenderDistance", "general", 100, 5, 1000, "Defines, how close a player has to be towards the particle origin to see the particles created by it.");
     }
 }

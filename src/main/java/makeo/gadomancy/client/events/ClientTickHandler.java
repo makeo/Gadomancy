@@ -2,6 +2,7 @@ package makeo.gadomancy.client.events;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
 
 /**
@@ -21,6 +22,8 @@ public class ClientTickHandler {
         if(event.phase.equals(TickEvent.Phase.END)) {
             FamiliarHandlerClient.playerTickEvent();
             ticks++;
+
+            EffectHandler.getInstance().tick();
         }
     }
 
