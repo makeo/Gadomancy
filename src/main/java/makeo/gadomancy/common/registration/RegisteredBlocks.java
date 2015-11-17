@@ -12,19 +12,7 @@ import makeo.gadomancy.common.blocks.BlockNodeManipulator;
 import makeo.gadomancy.common.blocks.BlockRemoteJar;
 import makeo.gadomancy.common.blocks.BlockStickyJar;
 import makeo.gadomancy.common.blocks.BlockStoneMachine;
-import makeo.gadomancy.common.blocks.tiles.TileAdditionalEldritchPortal;
-import makeo.gadomancy.common.blocks.tiles.TileArcaneDropper;
-import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
-import makeo.gadomancy.common.blocks.tiles.TileAuraPylonTop;
-import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
-import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
-import makeo.gadomancy.common.blocks.tiles.TileManipulationFocus;
-import makeo.gadomancy.common.blocks.tiles.TileManipulatorPillar;
-import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
-import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
-import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
+import makeo.gadomancy.common.blocks.tiles.*;
 import makeo.gadomancy.common.items.ItemBlockAdditionalEldritchPortal;
 import makeo.gadomancy.common.items.ItemBlockAuraPylon;
 import makeo.gadomancy.common.items.ItemBlockRemoteJar;
@@ -127,6 +115,7 @@ public class RegisteredBlocks {
         registerTile(TileBlockProtector.class);
         registerTile(TileAuraPylon.class);
         registerTile(TileAuraPylonTop.class);
+        registerTile(TileArcanePackager.class);
     }
 
     private static void registerTile(Class<? extends TileEntity> tile, String name) {

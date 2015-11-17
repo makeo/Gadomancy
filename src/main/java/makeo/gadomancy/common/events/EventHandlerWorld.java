@@ -30,6 +30,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.tiles.TileJarFillable;
@@ -198,6 +199,21 @@ public class EventHandlerWorld {
         if (e.toolTip.size() > 0 && e.itemStack.hasTagCompound()) {
             if (e.itemStack.stackTagCompound.getBoolean("isStickyJar")) {
                 e.toolTip.add(1, "\u00a7a" + StatCollector.translateToLocal("gadomancy.lore.stickyjar"));
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onLow(ItemTooltipEvent e) {
+        if(e.itemStack.getItem() == RegisteredItems.itemPackage) {
+            if((e.itemStack.getItemDamage() & 1) == 1) {
+                for(int i = 0; i < e.toolTip.size(); i++) {
+                    String line = e.toolTip.get(i);
+                    if(line.contains(Gadomancy.NAME)) {
+                        line = line.replace(Gadomancy.NAME, Thaumcraft.MODNAME);
+                        e.toolTip.set(i, line);
+                    }
+                }
             }
         }
     }

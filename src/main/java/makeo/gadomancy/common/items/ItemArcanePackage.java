@@ -1,10 +1,12 @@
 package makeo.gadomancy.common.items;
 
 import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.NBTHelper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,6 +16,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import thaumcraft.common.items.ItemLootBag;
+import thaumcraft.common.lib.utils.InventoryUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,7 +34,7 @@ import java.util.List;
 public class ItemArcanePackage extends ItemLootBag {
     public ItemArcanePackage() {
         setCreativeTab(null);
-        setUnlocalizedName("ItemLootBag");
+        setUnlocalizedName("ItemArcanePackage");
     }
 
     @Override
@@ -66,14 +69,28 @@ public class ItemArcanePackage extends ItemLootBag {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        if ((stack.getItemDamage() & 1) == 0) {
-            return "item.ItemArcanePackage";
+        if ((stack.getItemDamage() & 1) == 1) {
+            return "item.ItemLootBag." + (stack.getItemDamage() >> 1);
         }
-        return super.getUnlocalizedName(stack);
+        return super.getUnlocalizedName();
     }
 
-    public void setContents(ItemStack stack, List<ItemStack> items) {
-        items = new ArrayList<ItemStack>(items);
+    public boolean setContents(ItemStack stack, List<ItemStack> items) {
+        InventoryBasic tempInv = new InventoryBasic("", false, items.size());
+        for (ItemStack item : items) {
+            if (item != null) {
+                InventoryUtils.insertStack(tempInv, item.copy(), 0, true);
+            }
+        }
+
+        items = new ArrayList<ItemStack>(tempInv.getSizeInventory());
+
+        for(int i = 0; i < tempInv.getSizeInventory(); i++) {
+            ItemStack item = tempInv.getStackInSlot(i);
+            if(item != null) {
+                items.add(item);
+            }
+        }
 
         Collections.sort(items, new Comparator<ItemStack>() {
             @Override
@@ -84,9 +101,25 @@ public class ItemArcanePackage extends ItemLootBag {
 
         NBTTagList stackList = new NBTTagList();
         for (ItemStack item : items) {
-            stackList.appendTag(item.writeToNBT(new NBTTagCompound()));
+            //Prevent depth of more then 2 packages
+            if(item.getItem() == RegisteredItems.itemPackage) {
+                List<ItemStack> packedItems = getContents(item);
+                for(ItemStack packedItem : packedItems) {
+                    if(packedItem.getItem() == RegisteredItems.itemPackage) {
+                        return false;
+                    }
+                }
+            }
+
+            //If the compound is too long it will not work to prevent lag
+            NBTTagCompound itemTag = item.writeToNBT(new NBTTagCompound());
+            if(itemTag.toString().length() > 8000) {
+                return false;
+            }
+            stackList.appendTag(itemTag);
         }
         NBTHelper.getData(stack).setTag("items", stackList);
+        return true;
     }
 
     public List<ItemStack> getContents(ItemStack stack) {

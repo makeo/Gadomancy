@@ -5,6 +5,7 @@ import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
 import makeo.gadomancy.common.containers.ContainerArcanePackager;
 import makeo.gadomancy.common.utils.ColorHelper;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -26,11 +27,13 @@ public class ArcanePackagerGui extends GuiContainer {
     private static final ResourceLocation TEXTURE = new SimpleResourceLocation("gui/gui_packager.png");
 
     private final TileArcanePackager tile;
+    private final InventoryPlayer playerInv;
 
     public ArcanePackagerGui(InventoryPlayer playerInv, IInventory inventory) {
         super(new ContainerArcanePackager(playerInv, inventory));
 
         this.tile = (TileArcanePackager) inventory;
+        this.playerInv = playerInv;
 
         this.ySize = 234;
         this.xSize = 190;
@@ -38,10 +41,17 @@ public class ArcanePackagerGui extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
+        if(tile.isInvalid()) {
+            Minecraft.getMinecraft().displayGuiScreen(null);
+            return;
+        }
+
         GL11.glEnable(GL11.GL_BLEND);
         this.mc.renderEngine.bindTexture(TEXTURE);
 
-        drawTexturedModalRect(89, 67, 210, 0, tile.progress, 9);
+        if(tile.progress > 0) {
+            drawTexturedModalRect(89, 67, 210, 0, tile.progress, 9);
+        }
 
         if(tile.useEssentia) {
             drawTexturedModalRect(91, 97, 249, 10, 8, 8);

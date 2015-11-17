@@ -42,7 +42,7 @@ public class RegisteredItems {
     public static Item itemExtendedNodeJar;
     public static Item itemFamiliar;
     public static Item itemCreativeNode;
-    public static Item itemPackage;
+    public static ItemArcanePackage itemPackage;
 
     public static void preInit() {
         creativeTab = new CreativeTabs(Gadomancy.MODID) {

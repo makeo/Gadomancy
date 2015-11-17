@@ -1,11 +1,18 @@
 package makeo.gadomancy.common.blocks.tiles;
 
+import makeo.gadomancy.common.registration.RegisteredItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.common.tiles.TileJarFillable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -15,17 +22,132 @@ import net.minecraft.nbt.NBTTagCompound;
  * <p/>
  * Created by makeo @ 14.11.2015 12:22
  */
-public class TileArcanePackager extends SynchronizedTileEntity implements IInventory, ISidedInventory {
+public class TileArcanePackager extends TileJarFillable implements IInventory, ISidedInventory {
+    private static final Aspect ASPECT = Aspect.CLOTH;
+
     private ItemStack[] contents = new ItemStack[12];
 
     //0 - 46
-    public byte progress = 20;
+    public byte progress = -1;
     public boolean autoStart = false;
     public boolean useEssentia = false;
     public boolean disguise = false;
 
+    private int count = 0;
+
+    public TileArcanePackager() {
+        aspectFilter = ASPECT;
+    }
+
+    @Override
+    public void updateEntity() {
+        super.updateEntity();
+        if(worldObj.isRemote) {
+            if(progress >= 0 && progress < 46) {
+                progress++;
+            }
+        } else {
+            if(progress >= 47) {
+                doPack();
+                progress = -1;
+                markForUpdate();
+                count = 1;
+            }
+
+            if(progress >= 0) {
+                progress++;
+            } else if(count++ % 5 == 0) {
+                if(autoStart && canPack()) {
+                    progress = 0;
+                    markForUpdate();
+                }
+            }
+        }
+    }
+
+    private boolean canPack() {
+        if(getStackInSlot(11) != null) {
+            return false;
+        }
+
+        boolean check = false;
+        for(int i = 0; i < 9; i++) {
+            if(getStackInSlot(i) != null) {
+                check = true;
+                break;
+            }
+        }
+
+        if(!check) {
+           return false;
+        }
+
+        if(useEssentia) {
+            if(amount < 4) {
+                return false;
+            }
+        } else {
+            ItemStack leather = getStackInSlot(9);
+            if(leather == null || leather.stackSize < 1 || leather.getItem() != Items.leather) {
+                return false;
+            }
+
+            ItemStack string = getStackInSlot(10);
+            if(string == null || string.stackSize < 1 || string.getItem() != Items.string) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean startPack() {
+        if(canPack()) {
+
+        }
+        return false;
+    }
+
+    private void doPack() {
+        if(canPack()) {
+            List<ItemStack> contents = new ArrayList<ItemStack>();
+            for(int i = 0; i < 9; i++) {
+                ItemStack stack = getStackInSlot(i);
+                if(stack != null) {
+                    contents.add(stack);
+                }
+            }
+
+            int metadata = disguise ? 1 : 0;
+            metadata |= useEssentia ? 2 : 0;
+            ItemStack pack = new ItemStack(RegisteredItems.itemPackage, 1, metadata);
+
+            boolean success = RegisteredItems.itemPackage.setContents(pack, contents);
+
+            if(success) {
+                if(useEssentia) {
+                    amount -= 4;
+                } else {
+                    decrStackSize(9, 1);
+                    decrStackSize(10, 1);
+                }
+                setInventorySlotContents(11, pack);
+
+                for(int i = 0; i < 9; i++) {
+                    setInventorySlotContents(i, null);
+                }
+            } else {
+                worldObj.newExplosion(null, xCoord, yCoord, zCoord, 4, false, true);
+                worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+            }
+        }
+    }
+
     @Override
     public void readCustomNBT(NBTTagCompound compound) {
+        super.readCustomNBT(compound);
+        aspectFilter = ASPECT;
+
         progress = compound.getByte("progress");
 
         byte settings = compound.getByte("settings");
@@ -36,6 +158,9 @@ public class TileArcanePackager extends SynchronizedTileEntity implements IInven
 
     @Override
     public void writeCustomNBT(NBTTagCompound compound) {
+        super.writeCustomNBT(compound);
+        compound.removeTag("AspectFilter");
+
         compound.setByte("progress", progress);
 
         byte settings = (byte) (autoStart ? 1 : 0);
@@ -94,6 +219,16 @@ public class TileArcanePackager extends SynchronizedTileEntity implements IInven
             stack.stackSize = this.getInventoryStackLimit();
         }
         this.markDirty();
+    }
+
+    @Override
+    public int getMinimumSuction() {
+        return super.getMinimumSuction() * 2;
+    }
+
+    @Override
+    public int getSuctionAmount(ForgeDirection loc) {
+        return super.getSuctionAmount(loc) * 2;
     }
 
     @Override
