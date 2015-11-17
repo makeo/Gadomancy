@@ -70,6 +70,15 @@ public class EntityPermNoClipItem extends EntityPermanentItem {
         if (getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherFixedXId).getObject() == null)
             return;
 
+        if((ticksExisted & 1) == 0) {
+            ChunkCoordinates cc = (ChunkCoordinates) getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherMasterId).getObject();
+            if(cc == null) return;
+            TileEntity te = worldObj.getTileEntity(cc.posX, cc.posY, cc.posZ);
+            if(te != null && te instanceof TileAuraPylon) {
+                ((TileAuraPylon) te).timeSinceLastItemInfo = 0;
+            }
+        }
+
         float fX = getDataWatcher().getWatchableObjectFloat(ModConfig.entityNoClipItemDatawatcherFixedXId);
         float fY = getDataWatcher().getWatchableObjectFloat(ModConfig.entityNoClipItemDatawatcherFixedYId);
         float fZ = getDataWatcher().getWatchableObjectFloat(ModConfig.entityNoClipItemDatawatcherFixedZId);

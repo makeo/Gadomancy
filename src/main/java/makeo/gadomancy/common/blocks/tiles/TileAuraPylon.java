@@ -52,6 +52,8 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
     private ItemStack crystalEssentiaStack = null;
     private boolean isPartOfMultiblock = false;
 
+    public int timeSinceLastItemInfo = 0; //0-5, update interval = 2
+
     private int ticksExisted = 0;
     private Aspect holdingAspect;
     private int amount = 0;
@@ -63,6 +65,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
     @Override
     public void updateEntity() {
         ticksExisted++;
+        timeSinceLastItemInfo++;
 
         if (!worldObj.isRemote) {
             if ((ticksExisted & 7) == 0) {
@@ -80,6 +83,9 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
                         doAuraEffects(holdingAspect);
                         drainEssentia(io);
                     }
+                }
+                if(holdingAspect != null && timeSinceLastItemInfo > 8) {
+                    informItemPickup();
                 }
             }
         } else {
@@ -189,10 +195,13 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
             item.age = entity.age;
             item.noClip = true;
 
+            timeSinceLastItemInfo = 0;
+
             holdingAspect = ((ItemCrystalEssence) crystalEssentiaStack.getItem()).getAspects(crystalEssentiaStack).getAspects()[0];
             distributeAspectInformation();
 
             entity.setDead();
+            item.delayBeforeCanPickup = 60;
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             markDirty();
         } else {

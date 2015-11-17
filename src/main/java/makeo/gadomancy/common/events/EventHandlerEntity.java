@@ -33,12 +33,12 @@ import thaumcraft.common.items.armor.Hover;
  */
 public class EventHandlerEntity {
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
+    /*@SubscribeEvent(priority = EventPriority.LOWEST)
     public void on(EntityEvent.EntityConstructing e) {
         if (e.entity instanceof EntityPlayer) {
             //e.entity.registerExtendedProperties(Gadomancy.MODID, new ExtendedPlayerProperties((EntityPlayer) e.entity));
         }
-    }
+    }*/
 
     @SubscribeEvent
     public void on(EnderTeleportEvent e) {
@@ -48,11 +48,6 @@ public class EventHandlerEntity {
             }
         }
     }
-
-    /*@SubscribeEvent
-    public void on( e) {
-
-    }*/
 
     @SubscribeEvent
     public void on(LivingSetAttackTargetEvent targetEvent) {
@@ -72,7 +67,6 @@ public class EventHandlerEntity {
     public void on(EntityItemPickupEvent event) {
         if(!event.entityPlayer.worldObj.isRemote) {
             if(event.item != null && event.item instanceof EntityPermNoClipItem) {
-                //TODO does not inform correctly?
                 EntityPermNoClipItem item = (EntityPermNoClipItem) event.item;
                 ChunkCoordinates master = (ChunkCoordinates) item.getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherMasterId).getObject();
                 TileEntity te = event.entityPlayer.worldObj.getTileEntity(master.posX, master.posY, master.posZ);

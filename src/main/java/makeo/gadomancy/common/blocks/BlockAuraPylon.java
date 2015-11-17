@@ -1,9 +1,12 @@
 package makeo.gadomancy.common.blocks;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
 import makeo.gadomancy.common.blocks.tiles.TileAuraPylonTop;
 import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
+import makeo.gadomancy.common.network.PacketHandler;
+import makeo.gadomancy.common.network.packets.PacketStartAnimation;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.registration.RegisteredMultiblocks;
@@ -104,6 +107,9 @@ public class BlockAuraPylon extends BlockContainer implements IBlockTransparent 
             //TODO check for research!
             if(MultiblockHelper.isMultiblockPresent(world, x, y, z, RegisteredMultiblocks.auraPylonPattern) &&
                     ThaumcraftApiHelper.consumeVisFromWandCrafting(player.getCurrentEquippedItem(), player, RegisteredRecipes.costsAuraPylonMultiblock, true)) {
+                PacketStartAnimation pkt = new PacketStartAnimation(PacketStartAnimation.ID_SPARKLE_SPREAD, x, y, z);
+                NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 32);
+                PacketHandler.INSTANCE.sendToAllAround(pkt, point);
                 TileAuraPylon ta = (TileAuraPylon) world.getTileEntity(x, y - 1, z);
                 ta.setTileInformation(true, false);
                 ta = (TileAuraPylon) world.getTileEntity(x, y - 3, z);
@@ -114,6 +120,8 @@ public class BlockAuraPylon extends BlockContainer implements IBlockTransparent 
                     ((TileAuraPylon) iter).setPartOfMultiblock(true);
                     world.markBlockForUpdate(x, y - count, z);
                     iter.markDirty();
+                    pkt = new PacketStartAnimation(PacketStartAnimation.ID_SPARKLE_SPREAD, x, y - count, z);
+                    PacketHandler.INSTANCE.sendToAllAround(pkt, point);
                     count++;
                     iter = world.getTileEntity(x, y - count, z);
                 }
