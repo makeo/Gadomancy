@@ -1,8 +1,7 @@
 package makeo.gadomancy.common.blocks.tiles;
 
-import makeo.gadomancy.common.blocks.BlockAuraPylon;
-import makeo.gadomancy.common.entities.fake.EntityPermNoClipItem;
-import makeo.gadomancy.common.utils.ItemUtils;
+import makeo.gadomancy.common.entities.EntityPermNoClipItem;
+import makeo.gadomancy.common.utils.AuraEffectHandler;
 import makeo.gadomancy.common.utils.NBTHelper;
 import net.minecraft.block.Block;
 import net.minecraft.command.IEntitySelector;
@@ -12,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.ThaumcraftApiHelper;
@@ -22,7 +20,6 @@ import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.client.fx.ParticleEngine;
 import thaumcraft.client.fx.particles.FXEssentiaTrail;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.EntityPermanentItem;
 import thaumcraft.common.entities.EntitySpecialItem;
 import thaumcraft.common.items.ItemCrystalEssence;
@@ -77,8 +74,12 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
             }
 
             if (isMasterTile()) {
-                if(holdingAspect != null) {
-                    handleEffectDistribution();
+                TileAuraPylon io = getInputTile();
+                if(io != null && io.amount > 0) {
+                    if ((ticksExisted & 31) == 0) {
+                        doAuraEffects(holdingAspect);
+                        drainEssentia(io);
+                    }
                 }
             }
         } else {
@@ -95,6 +96,20 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
         }
     }
 
+    private void doAuraEffects(Aspect aspect) {
+        if(aspect == null) return;
+        if(!isMasterTile()) return;
+        if(worldObj.isRemote) return;
+        AuraEffectHandler.distributeEffects(aspect, worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 8);
+    }
+
+    private void drainEssentia(TileAuraPylon io) {
+        if(!isMasterTile()) return;
+        io.amount--;
+        worldObj.markBlockForUpdate(io.xCoord, io.yCoord, io.zCoord);
+        io.markDirty();
+    }
+
     //Client-Side input tile only!
     private void doEssentiaTrail() {
         if((ticksExisted & 1) == 0) return;
@@ -102,20 +117,22 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
         if(tile == null) return;
         TileAuraPylon inputTile = getInputTile();
         if(inputTile == null) return;
-        Aspect a = getAspectType();
+        Aspect a = inputTile.getAspectType();
         if(a == null) return;
+        if(inputTile.amount <= 0) return;
 
         int count = 5;
         FXEssentiaTrail essentiaTrail = new FXEssentiaTrail(tile.getWorldObj(), inputTile.xCoord + 0.5, inputTile.yCoord + 0.2, inputTile.zCoord + 0.5, tile.xCoord + 0.5, tile.yCoord + 1.7, tile.zCoord + 0.5, count, a.getColor(), 1);
         essentiaTrail.noClip = true;
         essentiaTrail.motionY = (0.1F + MathHelper.sin(count / 3.0F) * 0.01F);
         essentiaTrail.motionX = (MathHelper.sin(count / 10.0F) * 0.001F + worldObj.rand.nextGaussian() * 0.002000000094994903D);
-        essentiaTrail.motionX = (MathHelper.sin(count / 10.0F) * 0.001F + worldObj.rand.nextGaussian() * 0.002000000094994903D);
+        essentiaTrail.motionZ = (MathHelper.sin(count / 10.0F) * 0.001F + worldObj.rand.nextGaussian() * 0.002000000094994903D);
         ParticleEngine.instance.addEffect(tile.getWorldObj(), essentiaTrail);
     }
 
     //Special to masterTile only!
-    private void handleEffectDistribution() {
+    private void distributeAspectInformation() {
+        if(!isMasterTile()) return;
         int count = 1;
         TileEntity iter = worldObj.getTileEntity(xCoord, yCoord - count, zCoord);
         while(iter != null && iter instanceof TileAuraPylon) {
@@ -132,10 +149,10 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
         TileAuraPylon io = getInputTile();
         if (io == null) return;
         int masterY = yCoord + 1;
-        int dst = (masterY - io.yCoord) / 2;
-        ChunkCoordinates rel = new ChunkCoordinates(xCoord, masterY - dst, zCoord);
+        float dst = ((float) (masterY - io.yCoord)) / 2F;
+        float yC = masterY - dst;
         List entityItems = worldObj.selectEntitiesWithinAABB(EntityItem.class,
-                AxisAlignedBB.getBoundingBox(rel.posX - 0.5, rel.posY - 0.5, rel.posZ - 0.5, rel.posX + 0.5, rel.posY + 0.5, rel.posZ + 0.5).expand(8, 8, 8), new IEntitySelector() {
+                AxisAlignedBB.getBoundingBox(xCoord - 0.5, yC - 0.5, zCoord - 0.5, xCoord + 0.5, yC + 0.5, zCoord + 0.5).expand(8, 8, 8), new IEntitySelector() {
                     @Override
                     public boolean isEntityApplicable(Entity e) {
                         return !(e instanceof EntityPermanentItem) && !(e instanceof EntitySpecialItem) &&
@@ -144,9 +161,9 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
                     }
                 });
         Entity dummy = new EntityItem(worldObj);
-        dummy.posX = rel.posX + 0.5;
-        dummy.posY = rel.posY + 0.5;
-        dummy.posZ = rel.posZ + 0.5;
+        dummy.posX = xCoord + 0.5;
+        dummy.posY = yC + 0.5;
+        dummy.posZ = zCoord + 0.5;
 
         //MC code.
         EntityItem entity = null;
@@ -162,10 +179,10 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
             }
         }
         if(entity == null) return;
-        if(dummy.getDistanceToEntity(entity) < 3 && !worldObj.isRemote) {
+        if(dummy.getDistanceToEntity(entity) < 1 && !worldObj.isRemote) {
             this.crystalEssentiaStack = entity.getEntityItem();
 
-            EntityPermNoClipItem item = new EntityPermNoClipItem(entity.worldObj, rel.posX + 0.5F, rel.posY + 0.5F, rel.posZ + 0.5F, crystalEssentiaStack, xCoord, yCoord, zCoord);
+            EntityPermNoClipItem item = new EntityPermNoClipItem(entity.worldObj, xCoord + 0.5F, yC + 0.3F, zCoord + 0.5F, crystalEssentiaStack, xCoord, yCoord, zCoord);
             entity.worldObj.spawnEntityInWorld(item);
             item.setVelocity(0, 0, 0);
             item.hoverStart = entity.hoverStart;
@@ -173,6 +190,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
             item.noClip = true;
 
             holdingAspect = ((ItemCrystalEssence) crystalEssentiaStack.getItem()).getAspects(crystalEssentiaStack).getAspects()[0];
+            distributeAspectInformation();
 
             entity.setDead();
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -200,7 +218,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
 
     //Special to inputTile only!
     private void handleIO() {
-        if ((!worldObj.isRemote) && ((ticksExisted & 7) == 0) && (getEssentiaAmount() < getMaxAmount())) {
+        if ((!worldObj.isRemote) && ((ticksExisted & 15) == 0) && (getEssentiaAmount() < getMaxAmount())) {
             TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.DOWN);
             if (te != null) {
                 IEssentiaTransport ic = (IEssentiaTransport) te;
@@ -219,7 +237,14 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
         if(!isMasterTile()) return;
         this.crystalEssentiaStack = null;
         this.holdingAspect = null;
-        handleEffectDistribution();
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        markDirty();
+        distributeAspectInformation();
+        TileAuraPylon io = getInputTile();
+        if(io == null) return;
+        io.amount = 0;
+        worldObj.markBlockForUpdate(io.xCoord, io.yCoord, io.zCoord);
+        io.markDirty();
     }
 
     //Individual.
@@ -355,6 +380,8 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
         String tag = compound.getString("aspect");
         if (tag != null && !tag.equals("")) {
             this.holdingAspect = Aspect.getAspect(tag);
+        } else {
+            this.holdingAspect = null;
         }
         this.amount = compound.getInteger("amount");
         this.maxAmount = compound.getInteger("maxAmount");
@@ -412,8 +439,8 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
         if (!isInputTile()) return 0;
         if (aspect == null) return 0;
 
-        if (holdingAspect != null && this.amount < maxAmount && aspect == holdingAspect) {
-            int added = Math.min(amount, this.maxAmount - this.amount);
+        if (holdingAspect != null && this.amount < getMaxAmount() && aspect == holdingAspect) {
+            int added = Math.min(amount, getMaxAmount() - this.amount);
             this.amount += added;
             amount -= added;
             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);

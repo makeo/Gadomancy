@@ -4,6 +4,7 @@ import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.api.internal.IApiHandler;
 import net.minecraft.item.ItemStack;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.EnumGolemType;
 
@@ -61,6 +62,10 @@ public abstract class GadomancyApi {
 
     public static boolean registerAdditionalGolemCore(String name, AdditionalGolemCore core) {
         return handler.registerAdditionalGolemCore(name, core);
+    }
+
+    public static void registerAdditionalAuraEffect(Aspect aspect, AuraEffect effect) {
+        handler.registerAdditionalAuraEffect(aspect, effect);
     }
 
     public static List<AdditionalGolemCore> getAdditionalGolemCores() {

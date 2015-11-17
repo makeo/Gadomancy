@@ -25,7 +25,7 @@ import makeo.gadomancy.client.renderers.item.ItemRenderTileEntityMulti;
 import makeo.gadomancy.client.renderers.tile.*;
 import makeo.gadomancy.common.CommonProxy;
 import makeo.gadomancy.common.blocks.tiles.*;
-import makeo.gadomancy.common.entities.fake.EntityPermNoClipItem;
+import makeo.gadomancy.common.entities.EntityPermNoClipItem;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.Injector;

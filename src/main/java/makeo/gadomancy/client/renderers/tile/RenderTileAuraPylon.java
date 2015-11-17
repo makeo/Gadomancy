@@ -68,7 +68,7 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
             Aspect a = ((TileAuraPylonTop) tile).getAspect();
             if(a == null) a = Aspect.WEATHER;
             Color c = new Color(a.getColor());
-            if(tile.getWorldObj().rand.nextInt(9) == 0) {
+            if(tile.getWorldObj().rand.nextInt(12) == 0) {
                 if(a == Aspect.ENTROPY || a == Aspect.DARKNESS || a == Aspect.UNDEAD) {
                     spawnWispParticles((TileAuraPylonTop) tile, 5, 0.5F, false);
                 } else {
@@ -76,7 +76,7 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
                 }
             }
             c = c.darker().darker();
-            if(tile.getWorldObj().rand.nextInt(15) == 0) {
+            if(tile.getWorldObj().rand.nextInt(20) == 0) {
                 if(a == Aspect.ENTROPY || a == Aspect.DARKNESS || a == Aspect.UNDEAD) {
                     spawnWispParticles((TileAuraPylonTop) tile, 5, 0.25F, false);
                 } else {

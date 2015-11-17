@@ -5,11 +5,10 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
 import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
 import makeo.gadomancy.common.data.ModConfig;
-import makeo.gadomancy.common.entities.fake.EntityPermNoClipItem;
+import makeo.gadomancy.common.entities.EntityPermNoClipItem;
 import makeo.gadomancy.common.familiar.FamiliarAIController;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
 import net.minecraft.entity.boss.IBossDisplayData;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
@@ -22,7 +21,6 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
-import thaumcraft.common.entities.EntityPermanentItem;
 import thaumcraft.common.items.armor.Hover;
 
 /**
@@ -74,6 +72,7 @@ public class EventHandlerEntity {
     public void on(EntityItemPickupEvent event) {
         if(!event.entityPlayer.worldObj.isRemote) {
             if(event.item != null && event.item instanceof EntityPermNoClipItem) {
+                //TODO does not inform correctly?
                 EntityPermNoClipItem item = (EntityPermNoClipItem) event.item;
                 ChunkCoordinates master = (ChunkCoordinates) item.getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherMasterId).getObject();
                 TileEntity te = event.entityPlayer.worldObj.getTileEntity(master.posX, master.posY, master.posZ);

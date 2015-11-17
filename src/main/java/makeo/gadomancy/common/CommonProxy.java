@@ -9,7 +9,7 @@ import makeo.gadomancy.client.ClientProxy;
 import makeo.gadomancy.common.containers.ContainerArcanePackager;
 import makeo.gadomancy.common.containers.ContainerInfusionClaw;
 import makeo.gadomancy.common.data.ModConfig;
-import makeo.gadomancy.common.entities.fake.EntityPermNoClipItem;
+import makeo.gadomancy.common.entities.EntityPermNoClipItem;
 import makeo.gadomancy.common.events.EventHandlerEntity;
 import makeo.gadomancy.common.events.EventHandlerGolem;
 import makeo.gadomancy.common.events.EventHandlerNetwork;
@@ -87,7 +87,7 @@ public class CommonProxy implements IGuiHandler {
         DimensionManager.registerProviderType(ModConfig.dimOuterId, WorldProviderTCEldrich.class, true);
         DimensionManager.registerDimension(ModConfig.dimOuterId, ModConfig.dimOuterId);
 
-        EntityRegistry.registerModEntity(EntityPermNoClipItem.class, "EntityPermItem", EntityRegistry.findGlobalUniqueEntityId(), Gadomancy.instance, 32, 10, true);
+        EntityRegistry.registerModEntity(EntityPermNoClipItem.class, "EntityPermItem", EntityRegistry.findGlobalUniqueEntityId(), Gadomancy.instance, 32, 40, false);
     }
 
     public void postInitalize() {

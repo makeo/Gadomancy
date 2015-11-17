@@ -143,6 +143,8 @@ tile.BlockStoneMachine.3.name=Redirection Focus
 tile.BlockStoneMachine.4.name=Arcane Packager
 tile.BlockStoneMachine.11.name=Manipulation Pillar
 tile.BlockStoneMachine.15.name=Manipulation Pillar
+tile.BlockAuraPylon.0.name=Aura Pylon
+tile.BlockAuraPylon.1.name=Aura Pylon Peak
 
 gadomancy.nodes.GROWING=Growing
 gadomancy.nodes.STARVING=Starving

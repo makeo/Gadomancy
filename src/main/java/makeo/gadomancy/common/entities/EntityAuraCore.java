@@ -1,4 +1,4 @@
-package makeo.gadomancy.common.entities.fake;
+package makeo.gadomancy.common.entities;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;

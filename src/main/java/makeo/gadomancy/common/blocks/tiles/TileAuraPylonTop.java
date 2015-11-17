@@ -8,6 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.IAspectContainer;
 
 import java.util.ArrayList;
 
@@ -19,7 +21,7 @@ import java.util.ArrayList;
  *
  * Created by HellFirePvP @ 13.11.2015 00:01
  */
-public class TileAuraPylonTop extends SynchronizedTileEntity {
+public class TileAuraPylonTop extends SynchronizedTileEntity implements IAspectContainer {
 
     private boolean shouldRender = false;
 
@@ -71,4 +73,48 @@ public class TileAuraPylonTop extends SynchronizedTileEntity {
         return true;
     }
 
+    @Override
+    public AspectList getAspects() {
+        TileEntity master = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
+        if(master == null || !(master instanceof TileAuraPylon)) return null;
+        return ((TileAuraPylon) master).getAspects();
+    }
+
+    @Override
+    public void setAspects(AspectList aspectList) {}
+
+    @Override
+    public boolean doesContainerAccept(Aspect aspect) {
+        return false;
+    }
+
+    @Override
+    public int addToContainer(Aspect aspect, int i) {
+        return 0;
+    }
+
+    @Override
+    public boolean takeFromContainer(Aspect aspect, int i) {
+        return false;
+    }
+
+    @Override
+    public boolean takeFromContainer(AspectList aspectList) {
+        return false;
+    }
+
+    @Override
+    public boolean doesContainerContainAmount(Aspect aspect, int i) {
+        return false;
+    }
+
+    @Override
+    public boolean doesContainerContain(AspectList aspectList) {
+        return false;
+    }
+
+    @Override
+    public int containerContains(Aspect aspect) {
+        return 0;
+    }
 }

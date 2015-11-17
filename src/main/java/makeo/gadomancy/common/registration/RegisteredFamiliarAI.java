@@ -61,7 +61,7 @@ public class RegisteredFamiliarAI {
                 return;
             }
             EntityLivingBase mob = lastTargetters.get(world.rand.nextInt(lastTargetters.size()));
-            if(mob.isDead) {
+            if(mob.isDead || mob instanceof EntityPlayer) {
                 FamiliarAIController.cleanTargetterList(parent);
                 return;
             }
