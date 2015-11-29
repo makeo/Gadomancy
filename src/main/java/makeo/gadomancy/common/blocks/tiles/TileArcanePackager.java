@@ -273,14 +273,24 @@ public class TileArcanePackager extends TileJarFillable implements IInventory, I
         return true;
     }
 
+    private static final int[] ORIENTATION_MAPPING = new int[]{-1, -1, 0, 2, 1, 3};
+
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
-        return new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+        if(side == 0) {
+            return new int[]{11};
+        }
+
+        if(ORIENTATION_MAPPING[side] == super.facing) {
+            return new int[]{9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8};
+        }
+
+        return new int[0];
     }
 
     @Override
     public boolean canInsertItem(int slot, ItemStack stack, int side) {
-        return true;
+        return !(useEssentia && (slot == 9 || slot == 10));
     }
 
     @Override

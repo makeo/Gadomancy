@@ -178,7 +178,7 @@ public class BlockStoneMachine extends Block {
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase ent, ItemStack stack) {
         int metadata = world.getBlockMetadata(x, y, z);
-        if (metadata == 2) {
+        if (metadata == 2 || metadata == 4) {
             ((TileJarFillable) world.getTileEntity(x, y, z)).facing = MathHelper.floor_double(-ent.rotationYaw * 4.0F / 360.0F + 0.5D) & 0x3;
         }
     }
@@ -260,6 +260,8 @@ public class BlockStoneMachine extends Block {
             setBlockBounds(0.25f, 0, 0.25f, 0.75f, 0.99f, 0.75f);
         } else if(metadata == 2) {
             setBlockBounds(0, 0, 0, 1, 3/16f, 1);
+        } else if(metadata == 4) {
+             setBlockBounds(0, 0, 0, 1, 12/16f, 1);
         }
         super.setBlockBoundsBasedOnState(world, x, y, z);
     }

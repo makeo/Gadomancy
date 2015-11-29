@@ -111,6 +111,9 @@ public class ClientProxy extends CommonProxy {
         RenderTileBlockProtector renderTileBlockProtector = new RenderTileBlockProtector();
         ClientRegistry.bindTileEntitySpecialRenderer(TileBlockProtector.class, renderTileBlockProtector);
 
+        RenderTileArcanePackager renderTileArcanePackager = new RenderTileArcanePackager();
+        ClientRegistry.bindTileEntitySpecialRenderer(TileArcanePackager.class, renderTileArcanePackager);
+
         //Items
         TileArcaneDropper fakeTile = new TileArcaneDropper();
         fakeTile.blockMetadata = 8 | ForgeDirection.SOUTH.ordinal();
@@ -136,6 +139,7 @@ public class ClientProxy extends CommonProxy {
         TileBlockProtector tileBlockProtector = new TileBlockProtector();
         tileBlockProtector.facing = 3;
         itemRenderStoneMachine.registerRenderer(2, tileBlockProtector, renderTileBlockProtector);
+        itemRenderStoneMachine.registerRenderer(4, new TileArcanePackager(), renderTileArcanePackager);
 
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemFamiliar, new ItemRenderFamiliar());
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemCreativeNode, new ItemCreativeNodeRenderer());

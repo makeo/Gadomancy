@@ -33,8 +33,9 @@ public class ModConfig {
     public static int maxMazeCount = -1;
     public static int renderParticleDistance = 100;
 
+    public static boolean enableAdditionalNodeTypes;
+
     //Skyblock stuff
-    @Sync
     public static boolean ancientStoneRecipes = false;
 
     private ModConfig() {}
@@ -61,8 +62,9 @@ public class ModConfig {
         doLightCalculations = config.getBoolean("calculateEldritchLight", "dimension", true, "TRUE = Calculating Light values for the Gadomancy-Eldritch Mazes; FALSE = No calculation, but some Light Bugs - Calculating the Light takes ~2 seconds -> Can be measured when trying to enter the eldritch mazed via Gadomancy Eldritch portal.");
         maxMazeCount = config.getInt("maxMazeCount", "dimension", -1, -1, Integer.MAX_VALUE, "Defines how many Eldritch mazes may exist at the same time using the Gadomancy Eldritch ritual. (-1 = infinite) Note that 1 maze = 1 player; Once the player finishes the maze, the maze closes itself and teleports the player out.");
 
-        ancientStoneRecipes = config.getBoolean("ancientStoneRecipes", "skyblock", false, "TRUE = Adds recipes for Ancient Stone and Ancient Stone Pedestal (This may be usefull for severs and skyblock packs to craft the Node Manipulator and get more primodial pearls)");
+        ancientStoneRecipes = config.getBoolean("ancientStoneRecipes", "skyblock", false, "TRUE = Adds recipes for Ancient Stone and Ancient Stone Pedestal (This may be usefull for severs and skyblock packs to craft the Node Manipulator and get more primodial pearls). You have to change this client- and server-side!");
 
         renderParticleDistance = config.getInt("particleRenderDistance", "general", 100, 5, 1000, "Defines, how close a player has to be towards the particle origin to see the particles created by it.");
+        enableAdditionalNodeTypes = config.getBoolean("disableAdditionalNodeTypes", "general", true, "Enables our custom node types. This might solve some compatibility issues (e.g. WitchingGadgets). You have to change this client- and server-side!");
     }
 }

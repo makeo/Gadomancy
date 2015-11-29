@@ -214,9 +214,12 @@ public class EventHandlerGolem {
                         }
                     }
 
-                    if(core != null) {
+                    if(core != null && heldItem.stackSize > 0) {
                         GadomancyApi.setAdditionalGolemCore(golem, core);
                         event.setCanceled(true);
+                        if(!event.entityPlayer.capabilities.isCreativeMode) {
+                            heldItem.stackSize--;
+                        }
                     }
                 }
             } else {
