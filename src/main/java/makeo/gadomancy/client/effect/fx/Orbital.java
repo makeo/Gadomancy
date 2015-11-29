@@ -12,16 +12,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * HellFirePvP@Admin
- * Date: 01.07.2015 / 19:28
- * on SoulSorcery
- * Orbital
+ * This class is part of the Gadomancy Mod
+ * Gadomancy is Open Source and distributed under the
+ * GNU LESSER GENERAL PUBLIC LICENSE
+ * for more read the LICENSE file
+ * <p/>
+ * Created by HellFirePvP @ 17.11.2015 18:41
  */
 public final class Orbital {
 
     private Vector3 center;
     private final World world;
     private int orbitalCounter = 0;
+    public boolean registered = false;
 
     private List<OrbitalRenderProperties> orbitals = new ArrayList<OrbitalRenderProperties>();
 
@@ -38,6 +41,14 @@ public final class Orbital {
         if(!orbitals.contains(properties)) {
             orbitals.add(properties);
         }
+    }
+
+    public int orbitalsSize() {
+        return orbitals.size();
+    }
+
+    public void clearOrbitals() {
+        orbitals.clear();
     }
 
     public void doRender(float partialTicks) {

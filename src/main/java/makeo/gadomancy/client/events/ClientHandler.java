@@ -2,6 +2,7 @@ package makeo.gadomancy.client.events;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent;
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
 
@@ -10,10 +11,10 @@ import makeo.gadomancy.client.util.FamiliarHandlerClient;
  * Gadomancy is Open Source and distributed under the
  * GNU LESSER GENERAL PUBLIC LICENSE
  * for more read the LICENSE file
- * <p/>
+ *
  * Created by HellFirePvP @ 01.11.2015 10:41
  */
-public class ClientTickHandler {
+public class ClientHandler {
 
     public static int ticks;
 
@@ -25,6 +26,11 @@ public class ClientTickHandler {
 
             EffectHandler.getInstance().tick();
         }
+    }
+
+    @SubscribeEvent
+    public void onDc(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+        EffectHandler.getInstance().clear();
     }
 
 }

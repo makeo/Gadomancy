@@ -17,10 +17,12 @@ import java.awt.*;
 import java.util.*;
 
 /**
- * HellFirePvP@Admin
- * Date: 01.07.2015 / 09:22
- * on SoulSorcery
- * EntityFXFlow
+ * This class is part of the Gadomancy Mod
+ * Gadomancy is Open Source and distributed under the
+ * GNU LESSER GENERAL PUBLIC LICENSE
+ * for more read the LICENSE file
+ * <p/>
+ * Created by HellFirePvP @ 17.11.2015 18:45
  */
 public class EntityFXFlow extends EntityThrowable {
 
@@ -312,23 +314,23 @@ public class EntityFXFlow extends EntityThrowable {
 
         private static Queue<FXFlowBase> fxQueue = new ArrayDeque<FXFlowBase>();
 
-        private int partBlue, partGreen, partRed, partAlpha;
+        private float partBlue, partGreen, partRed, partAlpha;
 
         //Queue variables
         private float partialTicks;
         private float rendArg1, rendArg2, rendArg3, rendArg4, rendArg5;
         private int rendBrightness;
 
-        private ResourceLocation texture = new SimpleResourceLocation("effect/flow_large.png");
-        private float buffQuadLife, buffParticleScale;
+        private ResourceLocation texture = new SimpleResourceLocation("fx/flow_large.png");
+        private float buffHalfLife, buffParticleScale;
 
         public FXFlowBase(World world, double x, double y, double z, Color color, float size, int multiplier, int brightness) {
             super(world, x, y, z);
             if(color != null) {
-                this.partBlue = color.getBlue();
-                this.partGreen = color.getGreen();
-                this.partRed = color.getRed();
-                this.partAlpha = color.getAlpha();
+                this.partBlue = color.getBlue() / 255F;
+                this.partGreen = color.getGreen() / 255F;
+                this.partRed = color.getRed() / 255F;
+                this.partAlpha = color.getAlpha() / 255F;
             }
             this.motionX = this.motionY = this.motionZ = 0;
             this.particleScale *= size;
@@ -341,7 +343,7 @@ public class EntityFXFlow extends EntityThrowable {
             this.prevPosZ = this.posZ;
             this.particleTextureIndexX = 0;
             this.particleTextureIndexY = 0;
-            this.buffQuadLife = (this.particleMaxAge / 2);
+            this.buffHalfLife = (this.particleMaxAge / 2);
             this.buffParticleScale = this.particleScale;
             this.rendBrightness = brightness;
             this.noClip = true;
@@ -378,11 +380,11 @@ public class EntityFXFlow extends EntityThrowable {
 
         private void renderEssenceBase(Tessellator tessellator) {
             tessellator.setBrightness(rendBrightness);
-            GL11.glColor4f(partRed, partGreen, partBlue, partAlpha);
+            GL11.glColor4f(partRed , partGreen, partBlue, partAlpha);
             Minecraft.getMinecraft().renderEngine.bindTexture(texture);
             if(particleAge >= particleMaxAge) return;
-            float agescale = (float) particleAge / buffQuadLife;
-            if(agescale >= 1.0F) agescale = 4 - agescale;
+            float agescale = (float) particleAge / buffHalfLife;
+            if(agescale >= 1.0F) agescale = 2 - agescale;
             particleScale = buffParticleScale * agescale;
             float f10 = 0.5F * particleScale;
             float f11 = (float)(prevPosX + (posX - prevPosX) * partialTicks - interpPosX);

@@ -1,11 +1,14 @@
 package makeo.gadomancy.client.renderers.tile;
 
+import makeo.gadomancy.client.effect.EffectHandler;
+import makeo.gadomancy.client.effect.fx.Orbital;
 import makeo.gadomancy.client.models.ModelAuraPylon;
 import makeo.gadomancy.client.models.ModelAuraPylonBottom;
 import makeo.gadomancy.client.models.ModelAuraPylonTop;
 import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
 import makeo.gadomancy.common.blocks.tiles.TileAuraPylonTop;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
+import makeo.gadomancy.common.utils.Vector3;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -17,6 +20,7 @@ import thaumcraft.client.fx.particles.FXEssentiaTrail;
 import thaumcraft.client.fx.particles.FXWisp;
 
 import java.awt.*;
+import java.util.Random;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -64,27 +68,58 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
         GL11.glPopMatrix();
         GL11.glPopMatrix();
 
-        if(tile instanceof TileAuraPylonTop && ((TileAuraPylonTop) tile).shouldRenderEffect()) {
-            Aspect a = ((TileAuraPylonTop) tile).getAspect();
-            if(a == null) a = Aspect.WEATHER;
-            Color c = new Color(a.getColor());
-            if(tile.getWorldObj().rand.nextInt(12) == 0) {
-                if(a == Aspect.ENTROPY || a == Aspect.DARKNESS || a == Aspect.UNDEAD) {
-                    spawnWispParticles((TileAuraPylonTop) tile, 5, 0.5F, false);
-                } else {
-                    spawnWispParticles((TileAuraPylonTop) tile, c, 0.5F, false);
+        if(tile instanceof TileAuraPylonTop) {
+            if(((TileAuraPylonTop) tile).orbital == null && tile.getWorldObj() != null) {
+                ((TileAuraPylonTop) tile).orbital = new Orbital(new Vector3(tile.xCoord + 0.5, tile.yCoord + 0.7, tile.zCoord + 0.5), tile.getWorldObj());
+                EffectHandler.getInstance().registerOrbital(((TileAuraPylonTop) tile).orbital);
+            }
+
+            if(((TileAuraPylonTop) tile).shouldRenderEffect()) {
+                Aspect a = ((TileAuraPylonTop) tile).getAspect();
+                if(a == null) a = Aspect.WEATHER;
+                Color c = new Color(a.getColor());
+                if(tile.getWorldObj().rand.nextInt(12) == 0) {
+                    if(a == Aspect.ENTROPY || a == Aspect.DARKNESS || a == Aspect.UNDEAD) {
+                        spawnWispParticles((TileAuraPylonTop) tile, 5, 0.5F, false);
+                    } else {
+                        spawnWispParticles((TileAuraPylonTop) tile, c, 0.5F, false);
+                    }
+                }
+                c = c.darker().darker();
+                if(tile.getWorldObj().rand.nextInt(20) == 0) {
+                    if(a == Aspect.ENTROPY || a == Aspect.DARKNESS || a == Aspect.UNDEAD) {
+                        spawnWispParticles((TileAuraPylonTop) tile, 5, 0.25F, false);
+                    } else {
+                        spawnWispParticles((TileAuraPylonTop) tile, c, 0.25F, false);
+                    }
                 }
             }
-            c = c.darker().darker();
-            if(tile.getWorldObj().rand.nextInt(20) == 0) {
-                if(a == Aspect.ENTROPY || a == Aspect.DARKNESS || a == Aspect.UNDEAD) {
-                    spawnWispParticles((TileAuraPylonTop) tile, 5, 0.25F, false);
-                } else {
-                    spawnWispParticles((TileAuraPylonTop) tile, c, 0.25F, false);
+
+            if(((TileAuraPylonTop) tile).shouldRenderEffect() && ((TileAuraPylonTop) tile).getAspect() != null) {
+                if(((TileAuraPylonTop) tile).orbital != null && ((TileAuraPylonTop) tile).orbital.orbitalsSize() == 0) {
+                    Aspect a = ((TileAuraPylonTop) tile).getAspect();
+                    if(a != null) {
+                        int col = a.getColor();
+                        col |= (0x44 << 24);
+                        Color c = new Color(col, true);
+                        Random rand = tile.getWorldObj().rand;
+                        addNewOrbitalPoint(((TileAuraPylonTop) tile).orbital, rand, c);
+                        addNewOrbitalPoint(((TileAuraPylonTop) tile).orbital, rand, c);
+                        addNewOrbitalPoint(((TileAuraPylonTop) tile).orbital, rand, c);
+                    }
+                }
+            } else {
+                if(((TileAuraPylonTop) tile).orbital != null && ((TileAuraPylonTop) tile).orbital.orbitalsSize() > 0) {
+                    ((TileAuraPylonTop) tile).orbital.clearOrbitals();
                 }
             }
         }
+    }
 
+    private void addNewOrbitalPoint(Orbital orbital, Random rand, Color color) {
+        Orbital.OrbitalRenderProperties properties = new Orbital.OrbitalRenderProperties(Orbital.Axis.persisentRandomAxis(), (rand.nextDouble() * 2) + 1);
+        properties.setColor(color).setTicksForFullCircle(80).setOffsetTicks(rand.nextInt(80));
+        orbital.addOrbitalPoint(properties);
     }
 
     private void spawnWispParticles(TileAuraPylonTop tile, int type, float size, boolean inner) {

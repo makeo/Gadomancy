@@ -1,6 +1,9 @@
 package makeo.gadomancy.common.blocks.tiles;
 
+import makeo.gadomancy.client.effect.EffectHandler;
+import makeo.gadomancy.client.effect.fx.Orbital;
 import makeo.gadomancy.common.utils.ItemUtils;
+import makeo.gadomancy.common.utils.Vector3;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -23,6 +26,7 @@ import java.util.ArrayList;
  */
 public class TileAuraPylonTop extends SynchronizedTileEntity implements IAspectContainer {
 
+    public Orbital orbital;
     private boolean shouldRender = false;
 
     @Override
@@ -55,7 +59,6 @@ public class TileAuraPylonTop extends SynchronizedTileEntity implements IAspectC
             ArrayList<ItemStack> stacks = pylon.getDrops(worldObj, xCoord, yCoord, zCoord, meta, 0);
             for(ItemStack i : stacks) {
                 EntityItem item = new EntityItem(worldObj, xCoord, yCoord, zCoord, i);
-                ItemUtils.applyRandomDropOffset(item, worldObj.rand);
                 worldObj.spawnEntityInWorld(item);
             }
         }
@@ -66,6 +69,14 @@ public class TileAuraPylonTop extends SynchronizedTileEntity implements IAspectC
 
     public boolean shouldRenderEffect() {
         return shouldRender;
+    }
+
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        if(orbital != null && orbital.registered) {
+            EffectHandler.getInstance().unregisterOrbital(orbital);
+        }
     }
 
     @Override

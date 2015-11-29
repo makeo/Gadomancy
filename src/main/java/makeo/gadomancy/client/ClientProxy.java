@@ -6,7 +6,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import makeo.gadomancy.client.effect.EffectHandler;
-import makeo.gadomancy.client.events.ClientTickHandler;
+import makeo.gadomancy.client.events.ClientHandler;
 import makeo.gadomancy.client.events.RenderEventHandler;
 import makeo.gadomancy.client.events.ResourceReloadListener;
 import makeo.gadomancy.client.gui.ArcanePackagerGui;
@@ -159,7 +159,7 @@ public class ClientProxy extends CommonProxy {
         MinecraftForge.EVENT_BUS.register(EffectHandler.getInstance());
         MinecraftForge.EVENT_BUS.register(new RenderEventHandler());
 
-        FMLCommonHandler.instance().bus().register(new ClientTickHandler());
+        FMLCommonHandler.instance().bus().register(new ClientHandler());
 
         super.postInitalize();
     }

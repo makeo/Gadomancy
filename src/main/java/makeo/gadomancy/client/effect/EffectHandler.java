@@ -56,6 +56,7 @@ public class EffectHandler {
                 orbitalsRWLock.lock();
                 try {
                     orbitals.add(orbital);
+                    orbital.registered = true;
                 } finally {
                     orbitalsRWLock.unlock();
                 }
@@ -70,6 +71,7 @@ public class EffectHandler {
                 orbitalsRWLock.lock();
                 try {
                     orbitals.remove(orbital);
+                    orbital.registered = false;
                 } finally {
                     orbitalsRWLock.unlock();
                 }
@@ -79,6 +81,20 @@ public class EffectHandler {
 
     public void tick() {
         Orbital.tickOrbitals(orbitals);
+    }
+
+    public void clear() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                orbitalsRWLock.lock();
+                try {
+                    orbitals.clear();
+                } finally {
+                    orbitalsRWLock.unlock();
+                }
+            }
+        }).start();
     }
 
     public static class NonReentrantReentrantLock extends ReentrantLock {

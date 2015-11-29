@@ -7,10 +7,12 @@ import java.awt.*;
 import java.util.Random;
 
 /**
- * HellFirePvP@Admin
- * Date: 01.07.2015 / 18:27
- * on SoulSorcery
- * EntityFXFlowPolicy
+ * This class is part of the Gadomancy Mod
+ * Gadomancy is Open Source and distributed under the
+ * GNU LESSER GENERAL PUBLIC LICENSE
+ * for more read the LICENSE file
+ * <p/>
+ * Created by HellFirePvP @ 17.11.2015 18:42
  */
 public abstract class EntityFXFlowPolicy {
 

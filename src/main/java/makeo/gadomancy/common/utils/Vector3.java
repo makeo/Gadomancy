@@ -5,10 +5,12 @@ import java.util.Locale;
 import java.util.Random;
 
 /**
- * HellFirePvP@Admin
- * Date: 25.06.2015 / 19:15
- * on SoulSorcery
- * Vector3
+ * This class is part of the Gadomancy Mod
+ * Gadomancy is Open Source and distributed under the
+ * GNU LESSER GENERAL PUBLIC LICENSE
+ * for more read the LICENSE file
+ * <p/>
+ * Created by HellFirePvP @ 17.11.2015 18:40
  */
 public class Vector3 {
 

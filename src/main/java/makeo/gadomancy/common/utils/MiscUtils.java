@@ -11,10 +11,12 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * HellFirePvP@Admin
- * Date: 17.06.2015 / 13:59
- * on SoulSorcery
- * MiscUtils
+ * This class is part of the Gadomancy Mod
+ * Gadomancy is Open Source and distributed under the
+ * GNU LESSER GENERAL PUBLIC LICENSE
+ * for more read the LICENSE file
+ * <p/>
+ * Created by HellFirePvP @ 17.11.2015 18:39
  */
 public final class MiscUtils {
 
@@ -30,7 +32,7 @@ public final class MiscUtils {
         return "th";
     }
 
-    public static EntityPlayer getOnlinePlayerByUUID(UUID playerUUID) {
+    public static EntityPlayer getOnlinePlayerByUUIDClient(UUID playerUUID) {
         List<EntityPlayerMP> players = Minecraft.getMinecraft().getIntegratedServer().getConfigurationManager().playerEntityList;
         for(EntityPlayerMP player : players) {
             if(player.getGameProfile().getId().equals(playerUUID)) {
