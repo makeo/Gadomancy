@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -29,7 +30,10 @@ public class RenderEntityItem extends Render {
     public void doRender(Entity entity, double x, double y, double z, float parf1, float parf2) {
         if(!(entity instanceof EntityAuraCore)) return;
 
-
+        EntityItem ei = new EntityItem(entity.worldObj, x, y, z, ((EntityAuraCore) entity).getEntityItem());
+        ei.age = ((EntityAuraCore) entity).age;
+        ei.hoverStart = ((EntityAuraCore) entity).hoverStart;
+        ri.doRender(ei, x, y, z, parf1, parf2);
     }
 
     @Override

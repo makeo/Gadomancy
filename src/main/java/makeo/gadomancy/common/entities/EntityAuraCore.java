@@ -1,5 +1,7 @@
 package makeo.gadomancy.common.entities;
 
+import makeo.gadomancy.common.data.ModConfig;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
@@ -15,17 +17,32 @@ import thaumcraft.common.entities.EntitySpecialItem;
  *
  * Created by HellFirePvP @ 16.11.2015 14:42
  */
-public class EntityAuraCore extends EntitySpecialItem {
+public class EntityAuraCore extends EntityItem {
 
     private int ticksExisted = 0;
     private AspectList internalAuraList = new AspectList();
+    private Aspect dominatingAspect = null;
 
     public EntityAuraCore(World world) {
         super(world);
     }
 
     @Override
-    public void onUpdate() {}
+    protected void entityInit() {
+        super.entityInit();
+
+        getDataWatcher().addObjectByDataType(ModConfig.entityAuraCoreDatawatcherAspectId, 4);
+
+        getDataWatcher().updateObject(ModConfig.entityAuraCoreDatawatcherAspectId, "");
+    }
+
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+        if (this.age + 5 >= this.lifespan) {
+            this.age = 0;
+        }
+    }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
@@ -39,6 +56,8 @@ public class EntityAuraCore extends EntitySpecialItem {
                 internalAuraList.add(Aspect.getAspect(cmp.getString("tag")), cmp.getInteger("amt"));
             }
         }
+        String tag = compound.getString("domAspect");
+        dominatingAspect = Aspect.getAspect(tag);
     }
 
     @Override
@@ -48,12 +67,14 @@ public class EntityAuraCore extends EntitySpecialItem {
         compound.setInteger("ticksExisted", ticksExisted);
         NBTTagList list = new NBTTagList();
         for(Aspect a : internalAuraList.getAspects()) {
+            if(a == null) continue;
             NBTTagCompound aspectCompound = new NBTTagCompound();
             aspectCompound.setString("tag", a.getTag());
             aspectCompound.setInteger("amt", internalAuraList.getAmount(a));
             list.appendTag(aspectCompound);
         }
         compound.setTag("auraList", list);
+        compound.setString("domAspect", dominatingAspect == null ? "" : dominatingAspect.getTag());
     }
 
 }

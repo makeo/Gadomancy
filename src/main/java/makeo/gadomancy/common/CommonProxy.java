@@ -9,6 +9,7 @@ import makeo.gadomancy.client.ClientProxy;
 import makeo.gadomancy.common.containers.ContainerArcanePackager;
 import makeo.gadomancy.common.containers.ContainerInfusionClaw;
 import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.entities.EntityAuraCore;
 import makeo.gadomancy.common.entities.EntityPermNoClipItem;
 import makeo.gadomancy.common.events.EventHandlerEntity;
 import makeo.gadomancy.common.events.EventHandlerGolem;
@@ -27,6 +28,7 @@ import makeo.gadomancy.common.registration.RegisteredResearches;
 import makeo.gadomancy.common.utils.Injector;
 import makeo.gadomancy.common.utils.world.WorldProviderTCEldrich;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.world.World;
@@ -87,7 +89,14 @@ public class CommonProxy implements IGuiHandler {
         DimensionManager.registerProviderType(ModConfig.dimOuterId, WorldProviderTCEldrich.class, true);
         DimensionManager.registerDimension(ModConfig.dimOuterId, ModConfig.dimOuterId);
 
-        EntityRegistry.registerModEntity(EntityPermNoClipItem.class, "EntityPermItem", EntityRegistry.findGlobalUniqueEntityId(), Gadomancy.instance, 32, 40, false);
+        registerEntity(EntityPermNoClipItem.class, "EntityPermItem", 32, 40, false);
+        registerEntity(EntityAuraCore.class, "EntityAuraCore", 32, 10, true);
+    }
+
+    private void registerEntity(Class<? extends Entity> entityClass, String name, int trackingRange, int updateFreq, boolean sendVelUpdates) {
+        int id = EntityRegistry.findGlobalUniqueEntityId();
+        EntityRegistry.registerGlobalEntityID(entityClass, name, id);
+        EntityRegistry.registerModEntity(entityClass, name, id, Gadomancy.instance, trackingRange, updateFreq, sendVelUpdates);
     }
 
     public void postInitalize() {

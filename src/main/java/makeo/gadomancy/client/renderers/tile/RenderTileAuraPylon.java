@@ -117,8 +117,8 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
     }
 
     private void addNewOrbitalPoint(Orbital orbital, Random rand, Color color) {
-        Orbital.OrbitalRenderProperties properties = new Orbital.OrbitalRenderProperties(Orbital.Axis.persisentRandomAxis(), (rand.nextDouble() * 2) + 1);
-        properties.setColor(color).setTicksForFullCircle(80).setOffsetTicks(rand.nextInt(80));
+        Orbital.OrbitalRenderProperties properties = new Orbital.OrbitalRenderProperties(Orbital.Axis.persisentRandomAxis(), rand.nextDouble() + 2D);
+        properties.setColor(color).setTicksForFullCircle(60 + rand.nextInt(40)).setOffsetTicks(rand.nextInt(80));
         orbital.addOrbitalPoint(properties);
     }
 

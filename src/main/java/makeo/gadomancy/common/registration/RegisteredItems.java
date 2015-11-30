@@ -43,6 +43,7 @@ public class RegisteredItems {
     public static Item itemFamiliar;
     public static Item itemCreativeNode;
     public static ItemArcanePackage itemPackage;
+    public static Item itemAuraCore;
 
     public static void preInit() {
         creativeTab = new CreativeTabs(Gadomancy.MODID) {
@@ -74,6 +75,7 @@ public class RegisteredItems {
         itemFamiliar = registerItem(new ItemFamiliar());
         itemCreativeNode = registerItem(new ItemCreativeNode());
         itemPackage = registerItem(new ItemArcanePackage());
+        itemAuraCore = registerItem(new ItemAuraCore());
     }
 
     private static <T extends Item> T registerItem(T item, String name) {

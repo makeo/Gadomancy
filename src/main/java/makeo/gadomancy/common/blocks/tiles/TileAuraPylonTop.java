@@ -40,7 +40,7 @@ public class TileAuraPylonTop extends SynchronizedTileEntity implements IAspectC
             TileAuraPylon pylon = (TileAuraPylon) te;
             if(pylon.isPartOfMultiblock() && !pylon.isMasterTile()) breakTile();
         } else {
-            shouldRender = !(te == null || !(te instanceof TileAuraPylon));
+            shouldRender = !(te == null || !(te instanceof TileAuraPylon) || !((TileAuraPylon) te).isPartOfMultiblock());
         }
     }
 

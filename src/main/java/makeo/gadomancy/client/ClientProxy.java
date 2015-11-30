@@ -147,6 +147,7 @@ public class ClientProxy extends CommonProxy {
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemFamiliar, new ItemRenderFamiliar());
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemCreativeNode, new ItemCreativeNodeRenderer());
 
+        //Entities
         RenderingRegistry.registerEntityRenderingHandler(EntityPermNoClipItem.class, new RenderSpecialItem());
         RenderingRegistry.registerEntityRenderingHandler(EntityAuraCore.class, new RenderEntityItem());
 

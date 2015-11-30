@@ -230,7 +230,7 @@ public class RegisteredResearches {
                 new AspectList(),
                 10, 10, 0, new ItemStack(RegisteredItems.itemFakeModIcon, 1, 0))
                 .setAutoUnlock()
-                .setPages(new ResearchPage("gadomancy.research_page.AURA_EFFECTS_1.1")).registerResearchItem();
+                .setPages(new ResearchPage("gadomancy.research_page.AURA_EFFECTS.1")).registerResearchItem();
 
         if(ModConfig.ancientStoneRecipes)
             researchAncientStones = new AlternatingResearchItem("ANCIENT_STONES",

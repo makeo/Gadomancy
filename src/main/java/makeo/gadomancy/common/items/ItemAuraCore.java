@@ -1,8 +1,10 @@
 package makeo.gadomancy.common.items;
 
+import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.NBTHelper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -21,8 +23,16 @@ import java.util.List;
 public class ItemAuraCore extends Item {
 
     public ItemAuraCore() {
+        setUnlocalizedName("ItemAuraCore");
         setMaxDamage(0);
+        setMaxStackSize(1);
         setHasSubtypes(true);
+        setCreativeTab(RegisteredItems.creativeTab);
+    }
+
+    @Override
+    public EnumRarity getRarity(ItemStack p_77613_1_) {
+        return RegisteredItems.raritySacred;
     }
 
     @Override

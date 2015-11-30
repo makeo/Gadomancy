@@ -1,6 +1,7 @@
 item.ItemGolemPlacer.silverwood.name=Silverwood Golem
 item.ItemTransformationFocus.name=[WIP] Wand Focus: Transformation
 item.ItemFamiliar.name=Ethereal Familiar
+item.ItemAuraCore.name=Aura Core
 item.ItemArcanePackage.name=Arcane Package
 
 itemGroup.gadomancy=Gadomancy

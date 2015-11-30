@@ -71,32 +71,6 @@ public class EventHandlerWorld {
         rules.theGameRules.put("mobGriefing", new ValueOverride(this, String.valueOf(rules.getGameRuleBooleanValue("mobGriefing"))));
     }
 
-    private static class ValueOverride extends GameRules.Value {
-        private final EventHandlerWorld handler;
-        public ValueOverride(EventHandlerWorld handler, String value) {
-            super(value);
-            this.handler = handler;
-        }
-
-        @Override
-        public boolean getGameRuleBooleanValue() {
-            boolean mobGriefing = super.getGameRuleBooleanValue();
-            if(mobGriefing) {
-                Entity lastUpdated = handler.lastUpdated;
-                if(lastUpdated != null) {
-                    StackTraceElement[] elements = Thread.currentThread().getStackTrace();
-                    for(StackTraceElement element : elements) {
-                        if(element.getClassName().equals(EntityLivingBase.class.getName())
-                                && (element.getMethodName().equals("func_70071_h") || element.getMethodName().equals("onUpdate"))) {
-                            return !TileBlockProtector.isSpotProtected(lastUpdated.worldObj, lastUpdated);
-                        }
-                    }
-                }
-            }
-            return mobGriefing;
-        }
-    }
-
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void on(ExplosionEvent.Start e) {
         Explosion expl = e.explosion;
@@ -215,6 +189,32 @@ public class EventHandlerWorld {
                     }
                 }
             }
+        }
+    }
+
+    private static class ValueOverride extends GameRules.Value {
+        private final EventHandlerWorld handler;
+        public ValueOverride(EventHandlerWorld handler, String value) {
+            super(value);
+            this.handler = handler;
+        }
+
+        @Override
+        public boolean getGameRuleBooleanValue() {
+            boolean mobGriefing = super.getGameRuleBooleanValue();
+            if(mobGriefing) {
+                Entity lastUpdated = handler.lastUpdated;
+                if(lastUpdated != null) {
+                    StackTraceElement[] elements = Thread.currentThread().getStackTrace();
+                    for(StackTraceElement element : elements) {
+                        if(element.getClassName().equals(EntityLivingBase.class.getName())
+                                && (element.getMethodName().equals("func_70071_h") || element.getMethodName().equals("onUpdate"))) {
+                            return !TileBlockProtector.isSpotProtected(lastUpdated.worldObj, lastUpdated);
+                        }
+                    }
+                }
+            }
+            return mobGriefing;
         }
     }
 }

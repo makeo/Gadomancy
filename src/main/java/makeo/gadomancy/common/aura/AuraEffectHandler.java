@@ -24,7 +24,6 @@ public class AuraEffectHandler {
 
     public static Map<Aspect, AuraEffect> registeredEffects = new HashMap<Aspect, AuraEffect>();
 
-    //Called once every 8 ticks!
     public static void distributeEffects(Aspect aspect, World worldObj, double x, double y, double z, double range, int tick) {
         if(!registeredEffects.containsKey(aspect) || worldObj.isRemote) return;
         AuraEffect effect = registeredEffects.get(aspect);
@@ -34,7 +33,10 @@ public class AuraEffectHandler {
         Iterator it = entitiesInRange.iterator();
         while(it.hasNext()) {
             Entity e = (Entity) it.next();
-            if(e.isDead) it.remove();
+            if(e.isDead) {
+                it.remove();
+                continue;
+            }
             if(!effect.isEntityApplicable(e)) it.remove();
         }
         for(Object e : entitiesInRange) {

@@ -18,7 +18,7 @@ import java.util.List;
  * Gadomancy is Open Source and distributed under the
  * GNU LESSER GENERAL PUBLIC LICENSE
  * for more read the LICENSE file
- * <p/>
+ *
  * Created by HellFirePvP @ 16.11.2015 19:59
  */
 public class EntityPermNoClipItem extends EntityPermanentItem {
@@ -42,9 +42,11 @@ public class EntityPermNoClipItem extends EntityPermanentItem {
 
         ChunkCoordinates masterCoords = new ChunkCoordinates(this.masterX, this.masterY, this.masterZ);
         getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherMasterId, masterCoords);
-        getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherFixedXId, x);
-        getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherFixedYId, y);
-        getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherFixedZId, z);
+        int fixX = Float.floatToIntBits(x);
+        int fixY = Float.floatToIntBits(y);
+        int fixZ = Float.floatToIntBits(z);
+        ChunkCoordinates fixCoords = new ChunkCoordinates(fixX, fixY, fixZ);
+        getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherFixedId, fixCoords);
     }
 
     @Override
@@ -52,14 +54,10 @@ public class EntityPermNoClipItem extends EntityPermanentItem {
         super.entityInit();
 
         getDataWatcher().addObjectByDataType(ModConfig.entityNoClipItemDatawatcherMasterId, 6);
-        getDataWatcher().addObjectByDataType(ModConfig.entityNoClipItemDatawatcherFixedXId, 3);
-        getDataWatcher().addObjectByDataType(ModConfig.entityNoClipItemDatawatcherFixedYId, 3);
-        getDataWatcher().addObjectByDataType(ModConfig.entityNoClipItemDatawatcherFixedZId, 3);
+        getDataWatcher().addObjectByDataType(ModConfig.entityNoClipItemDatawatcherFixedId, 6);
 
         getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherMasterId, new ChunkCoordinates(0, 0, 0));
-        getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherFixedXId, -1F);
-        getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherFixedYId, -1F);
-        getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherFixedZId, -1F);
+        getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherFixedId, new ChunkCoordinates(0, 0, 0));
     }
 
     @Override
@@ -67,7 +65,7 @@ public class EntityPermNoClipItem extends EntityPermanentItem {
         noClip = true;
         super.onUpdate();
         setVelocity(0, 0, 0);
-        if (getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherFixedXId).getObject() == null)
+        if (getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherFixedId).getObject() == null)
             return;
 
         if((ticksExisted & 1) == 0) {
@@ -79,9 +77,10 @@ public class EntityPermNoClipItem extends EntityPermanentItem {
             }
         }
 
-        float fX = getDataWatcher().getWatchableObjectFloat(ModConfig.entityNoClipItemDatawatcherFixedXId);
-        float fY = getDataWatcher().getWatchableObjectFloat(ModConfig.entityNoClipItemDatawatcherFixedYId);
-        float fZ = getDataWatcher().getWatchableObjectFloat(ModConfig.entityNoClipItemDatawatcherFixedZId);
+        ChunkCoordinates fixC = (ChunkCoordinates) getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherFixedId).getObject();
+        float fX = Float.intBitsToFloat(fixC.posX);
+        float fY = Float.intBitsToFloat(fixC.posY);
+        float fZ = Float.intBitsToFloat(fixC.posZ);
         setPositionAndRotation(fX, fY, fZ, 0, 0);
 
         if ((ticksExisted & 7) == 0 && !worldObj.isRemote) {
@@ -114,9 +113,8 @@ public class EntityPermNoClipItem extends EntityPermanentItem {
         this.masterZ = com.getInteger("mZ");
 
         getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherMasterId, new ChunkCoordinates(masterX, masterY, masterZ));
-        getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherFixedXId, fixPosX);
-        getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherFixedYId, fixPosY);
-        getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherFixedZId, fixPosZ);
+        ChunkCoordinates cc = new ChunkCoordinates(Float.floatToIntBits(fixPosX), Float.floatToIntBits(fixPosY), Float.floatToIntBits(fixPosZ));
+        getDataWatcher().updateObject(ModConfig.entityNoClipItemDatawatcherFixedId, cc);
     }
 
     @Override

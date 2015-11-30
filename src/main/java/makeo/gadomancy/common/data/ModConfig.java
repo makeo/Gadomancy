@@ -19,11 +19,10 @@ public class ModConfig {
     @Sync
     public static int entityNoClipItemDatawatcherMasterId = 19;
     @Sync
-    public static int entityNoClipItemDatawatcherFixedXId = 20;
+    public static int entityNoClipItemDatawatcherFixedId = 20;
+
     @Sync
-    public static int entityNoClipItemDatawatcherFixedYId = 21;
-    @Sync
-    public static int entityNoClipItemDatawatcherFixedZId = 22;
+    public static int entityAuraCoreDatawatcherAspectId = 21;
 
     @Sync
     public static int golemDatawatcherId = 29;
@@ -52,9 +51,9 @@ public class ModConfig {
 
     private static void loadFromConfig() {
         entityNoClipItemDatawatcherMasterId = config.getInt("itemNoClipDatawatcherMasterId", "entities", 19, 0, 31, "Do not edit unless you know what are you doing! - Datawatcher ID of the Master-Coordinates for EntityNoClipItem");
-        entityNoClipItemDatawatcherFixedXId = config.getInt("itemNoClipDatawatchetFixXId", "entities", 20, 0, 31, "Do not edit unless you know what are you doing! - Datawatcher ID of the X-Coordinates for EntityNoClipItem");
-        entityNoClipItemDatawatcherFixedYId = config.getInt("itemNoClipDatawatchetFixYId", "entities", 21, 0, 31, "Do not edit unless you know what are you doing! - Datawatcher ID of the Y-Coordinates for EntityNoClipItem");
-        entityNoClipItemDatawatcherFixedZId = config.getInt("itemNoClipDatawatchetFixZId", "entities", 22, 0, 31, "Do not edit unless you know what are you doing! - Datawatcher ID of the Z-Coordinates for EntityNoClipItem");
+        entityNoClipItemDatawatcherFixedId = config.getInt("itemNoClipDatawatcherFixId", "entities", 20, 0, 31, "Do not edit unless you know what are you doing! - Datawatcher ID of the Fixed-Coordinates for EntityNoClipItem");
+
+        entityAuraCoreDatawatcherAspectId = config.getInt("auraCoreDatawatcherAuraId", "entities", 21, 0, 31, "Do not edit unless you know what are you doing! - Datawatcher ID of the Auracore's current main aspect");
 
         golemDatawatcherId = config.getInt("datawatcherId", "golem", 29, 0, 31, "Do not edit unless you know what are you doing!");
 

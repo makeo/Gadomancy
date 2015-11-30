@@ -68,7 +68,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
         timeSinceLastItemInfo++;
 
         if (!worldObj.isRemote) {
-            if ((ticksExisted & 7) == 0) {
+            if ((ticksExisted & 3) == 0) {
                 if (checkComponents()) return;
             }
 
@@ -163,7 +163,8 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
                     public boolean isEntityApplicable(Entity e) {
                         return !(e instanceof EntityPermanentItem) && !(e instanceof EntitySpecialItem) &&
                                 e instanceof EntityItem && ((EntityItem) e).getEntityItem() != null &&
-                                ((EntityItem) e).getEntityItem().getItem() instanceof ItemCrystalEssence;
+                                ((EntityItem) e).getEntityItem().getItem() instanceof ItemCrystalEssence &&
+                                ((ItemCrystalEssence) ((EntityItem) e).getEntityItem().getItem()).getAspects(((EntityItem) e).getEntityItem()) != null;
                     }
                 });
         Entity dummy = new EntityItem(worldObj);
