@@ -188,7 +188,9 @@ public class GrowingNodeBehavior {
                     EntityAspectOrb aspectOrb = new EntityAspectOrb(world, fx + 0.5D, fy + 0.5D, fz + 0.5D, a, 1);
                     Vec3 dir = Vec3.createVectorHelper(fx + 0.5D, fy + 0.5D, fz + 0.5D).subtract(Vec3.createVectorHelper(ox + 0.5D, oy + 0.5D, oz + 0.5D)).normalize();
                     dir.addVector(randOffset(), randOffset(), randOffset()).normalize();
-                    aspectOrb.setVelocity(dir.xCoord, dir.yCoord, dir.zCoord);
+                    aspectOrb.motionX = dir.xCoord;
+                    aspectOrb.motionY = dir.yCoord;
+                    aspectOrb.motionZ = dir.zCoord;
                     fixedNode.getWorldObj().spawnEntityInWorld(aspectOrb);
 
                     NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(world.provider.dimensionId, ox + 0.5F, oy + 0.5F, oz + 0.5F, 32);

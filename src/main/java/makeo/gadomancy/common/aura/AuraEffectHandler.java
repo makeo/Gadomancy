@@ -1,7 +1,8 @@
-package makeo.gadomancy.common.utils;
+package makeo.gadomancy.common.aura;
 
 import makeo.gadomancy.api.AuraEffect;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
@@ -23,10 +24,12 @@ public class AuraEffectHandler {
 
     public static Map<Aspect, AuraEffect> registeredEffects = new HashMap<Aspect, AuraEffect>();
 
-    //Called once every 32 ticks!
-    public static void distributeEffects(Aspect aspect, World worldObj, double x, double y, double z, double range) {
-        if(!registeredEffects.containsKey(aspect)) return;
+    //Called once every 8 ticks!
+    public static void distributeEffects(Aspect aspect, World worldObj, double x, double y, double z, double range, int tick) {
+        if(!registeredEffects.containsKey(aspect) || worldObj.isRemote) return;
         AuraEffect effect = registeredEffects.get(aspect);
+        if(tick % effect.getTickInterval() != 0) return;
+
         List entitiesInRange = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(x - 0.5, y - 0.5, z - 0.5, x + 0.5, y + 0.5, z + 0.5).expand(range, range, range));
         Iterator it = entitiesInRange.iterator();
         while(it.hasNext()) {
@@ -36,7 +39,16 @@ public class AuraEffectHandler {
         }
         for(Object e : entitiesInRange) {
             effect.applyEffect((Entity) e);
+            if(e instanceof EntityPlayer) {
+                AuraResearchManager.tryUnlockAuraEffect((EntityPlayer) e, aspect);
+            }
         }
+    }
+
+    static {
+
+        registeredEffects.put(Aspect.HEAL, AuraEffects.DUMMY_SANO);
+
     }
 
 }

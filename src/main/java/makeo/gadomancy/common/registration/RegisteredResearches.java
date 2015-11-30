@@ -43,6 +43,8 @@ public class RegisteredResearches {
     public static ResearchItem researchEldritchPortalCreator;
     public static ResearchItem researchBlockProtector;
 
+    public static ResearchItem researchAuraEffects;
+
     //Skyblock Helper
     public static ResearchItem researchAncientStones;
 
@@ -223,6 +225,12 @@ public class RegisteredResearches {
                 .setConcealed()
                 .setParents(Gadomancy.MODID.toUpperCase() + ".FAM_RANGE_1", Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_3", researchBathSalts.key, researchPrimalFocus2.key)
                 .setPages(new ResearchPage("gadomancy.research_page.FAM_COOLDOWN_1.1"), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[4])).registerResearchItem();
+
+        researchAuraEffects = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".AURA_EFFECTS", Gadomancy.MODID,
+                new AspectList(),
+                10, 10, 0, new ItemStack(RegisteredItems.itemFakeModIcon, 1, 0))
+                .setAutoUnlock()
+                .setPages(new ResearchPage("gadomancy.research_page.AURA_EFFECTS_1.1")).registerResearchItem();
 
         if(ModConfig.ancientStoneRecipes)
             researchAncientStones = new AlternatingResearchItem("ANCIENT_STONES",

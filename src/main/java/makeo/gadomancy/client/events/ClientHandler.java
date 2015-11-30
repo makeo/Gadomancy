@@ -5,6 +5,7 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
+import net.minecraft.client.Minecraft;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -20,7 +21,7 @@ public class ClientHandler {
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
-        if(event.phase.equals(TickEvent.Phase.END)) {
+        if(event.phase.equals(TickEvent.Phase.END) && !Minecraft.getMinecraft().isGamePaused()) {
             FamiliarHandlerClient.playerTickEvent();
             ticks++;
 

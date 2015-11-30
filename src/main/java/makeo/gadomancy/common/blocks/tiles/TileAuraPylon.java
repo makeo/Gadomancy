@@ -1,7 +1,7 @@
 package makeo.gadomancy.common.blocks.tiles;
 
 import makeo.gadomancy.common.entities.EntityPermNoClipItem;
-import makeo.gadomancy.common.utils.AuraEffectHandler;
+import makeo.gadomancy.common.aura.AuraEffectHandler;
 import makeo.gadomancy.common.utils.NBTHelper;
 import net.minecraft.block.Block;
 import net.minecraft.command.IEntitySelector;
@@ -80,9 +80,9 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
                 TileAuraPylon io = getInputTile();
                 if(io != null && io.amount > 0) {
                     if ((ticksExisted & 31) == 0) {
-                        doAuraEffects(holdingAspect);
                         drainEssentia(io);
                     }
+                    doAuraEffects(holdingAspect);
                 }
                 if(holdingAspect != null && timeSinceLastItemInfo > 8) {
                     informItemPickup();
@@ -106,7 +106,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
         if(aspect == null) return;
         if(!isMasterTile()) return;
         if(worldObj.isRemote) return;
-        AuraEffectHandler.distributeEffects(aspect, worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 8);
+        AuraEffectHandler.distributeEffects(aspect, worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 8, ticksExisted);
     }
 
     private void drainEssentia(TileAuraPylon io) {

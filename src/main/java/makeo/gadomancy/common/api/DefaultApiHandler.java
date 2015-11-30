@@ -11,7 +11,7 @@ import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.entities.golems.ItemAdditionalGolemPlacer;
 import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
-import makeo.gadomancy.common.utils.AuraEffectHandler;
+import makeo.gadomancy.common.aura.AuraEffectHandler;
 import makeo.gadomancy.common.utils.GolemEnumHelper;
 import makeo.gadomancy.common.utils.NBTHelper;
 import makeo.gadomancy.common.utils.StringHelper;

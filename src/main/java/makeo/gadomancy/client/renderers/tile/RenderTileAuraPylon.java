@@ -100,7 +100,7 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
                     Aspect a = ((TileAuraPylonTop) tile).getAspect();
                     if(a != null) {
                         int col = a.getColor();
-                        col |= (0x44 << 24);
+                        col |= (0x55 << 24);
                         Color c = new Color(col, true);
                         Random rand = tile.getWorldObj().rand;
                         addNewOrbitalPoint(((TileAuraPylonTop) tile).orbital, rand, c);

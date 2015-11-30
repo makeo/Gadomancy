@@ -1,30 +1,44 @@
 package makeo.gadomancy.client.events;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import makeo.gadomancy.client.gui.GuiResearchRecipeAuraEffects;
 import makeo.gadomancy.client.util.ExtendedTypeDisplayManager;
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
 import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.aura.ResearchPageAuraAspects;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
+import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.IArchitect;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.research.ResearchItem;
+import thaumcraft.api.research.ResearchPage;
 import thaumcraft.api.wands.ItemFocusBasic;
+import thaumcraft.client.gui.GuiResearchRecipe;
 import thaumcraft.client.lib.REHWandHandler;
 import thaumcraft.common.items.relics.ItemThaumometer;
 import thaumcraft.common.items.wands.ItemWandCasting;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -81,6 +95,17 @@ public class RenderEventHandler {
                     if(nodeJar.getExtendedNodeType() == null) return;
                     ExtendedTypeDisplayManager.notifyDisplayTick(nodeJar.getId(), nodeJar.getNodeType(), nodeJar.getExtendedNodeType());
                 }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void guiOpen(GuiOpenEvent event) {
+        if(event.gui != null && event.gui instanceof GuiResearchRecipe) {
+            GuiResearchRecipe gui = (GuiResearchRecipe) event.gui;
+            ResearchItem research = new Injector(gui).getField("research");
+            if(research.key.equals(Gadomancy.MODID.toUpperCase() + ".AURA_EFFECTS") && !(gui instanceof GuiResearchRecipeAuraEffects)) {
+                event.gui = GuiResearchRecipeAuraEffects.create(gui);
             }
         }
     }

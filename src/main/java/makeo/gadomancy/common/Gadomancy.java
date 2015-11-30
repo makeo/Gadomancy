@@ -11,6 +11,8 @@ import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.common.api.DefaultApiHandler;
 import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.data.ModData;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import thaumcraft.common.Thaumcraft;
 
 /**
@@ -37,6 +39,7 @@ public class Gadomancy {
     @SidedProxy(clientSide = PROXY_CLIENT, serverSide = PROXY_SERVER)
     public static CommonProxy proxy;
 
+    public static Logger log = LogManager.getLogger("Gadomancy");
     private static ModData modData = null;
 
     public static ModData getModData() {

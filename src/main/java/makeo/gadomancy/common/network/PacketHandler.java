@@ -20,16 +20,23 @@ public class PacketHandler {
     public static void init() {
         int id = 0;
 
+        //Random stuff
         INSTANCE.registerMessage(PacketUpdateGolemTypeOrder.class, PacketUpdateGolemTypeOrder.class, id++, Side.CLIENT);
         INSTANCE.registerMessage(PacketStartAnimation.class, PacketStartAnimation.class, id++, Side.CLIENT);
         INSTANCE.registerMessage(PacketAnimationAbsorb.class, PacketAnimationAbsorb.class, id++, Side.CLIENT);
+
+        //Using TC Clientside content
         INSTANCE.registerMessage(PacketTCNodeBolt.class, PacketTCNodeBolt.class, id++, Side.CLIENT);
         INSTANCE.registerMessage(PacketTCWispyLine.class, PacketTCWispyLine.class, id++, Side.CLIENT);
+        INSTANCE.registerMessage(PacketTCNotificationText.class, PacketTCNotificationText.class, id++, Side.CLIENT);
 
+        //Familiar
         INSTANCE.registerMessage(PacketFamiliar.PacketFamiliarBolt.class, PacketFamiliar.PacketFamiliarBolt.class, id++, Side.CLIENT);
         INSTANCE.registerMessage(PacketFamiliar.PacketFamiliarSyncCompletely.class, PacketFamiliar.PacketFamiliarSyncCompletely.class, id++, Side.CLIENT);
         INSTANCE.registerMessage(PacketFamiliar.PacketFamiliarSyncSingle.class, PacketFamiliar.PacketFamiliarSyncSingle.class, id++, Side.CLIENT);
 
+        //Sync data
         INSTANCE.registerMessage(PacketSyncConfigs.class, PacketSyncConfigs.class, id++, Side.CLIENT);
+        INSTANCE.registerMessage(PacketSyncAuraKnowledge.class, PacketSyncAuraKnowledge.class, id++, Side.CLIENT);
     }
 }

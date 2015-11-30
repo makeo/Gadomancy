@@ -68,9 +68,7 @@ public class ItemAuraCore extends Item {
         WATER("Aqua", "aqua"),
         EARTH("Terra", "terra"),
         ORDER("Ordo", "ordo"),
-        ENTROPY("Perditio", "perditio"),
-
-        BALANCE("Balanced", "balanced");
+        ENTROPY("Perditio", "perditio");
 
         public final String unlocName, fallback;
 

@@ -1,7 +1,7 @@
 package makeo.gadomancy.common.events;
 
-import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import makeo.gadomancy.common.aura.AuraResearchManager;
 import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
 import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
 import makeo.gadomancy.common.data.ModConfig;
@@ -15,13 +15,15 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import thaumcraft.common.items.armor.Hover;
+
+import java.io.File;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -91,6 +93,18 @@ public class EventHandlerEntity {
                 player.addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.GRAY + msg));
             }
         }
+    }
+
+    @SubscribeEvent
+    public void onLoad(PlayerEvent.LoadFromFile loadEvent) {
+        File auraData = loadEvent.getPlayerFile("auraDat");
+        AuraResearchManager.loadDataFromFile(loadEvent.entityPlayer.getCommandSenderName(), loadEvent.entityPlayer.getUniqueID(), auraData);
+    }
+
+    @SubscribeEvent
+    public void onSave(PlayerEvent.SaveToFile saveEvent) {
+        File auraData = saveEvent.getPlayerFile("auraDat");
+        AuraResearchManager.saveDataToFile(saveEvent.entityPlayer.getCommandSenderName(), saveEvent.entityPlayer.getUniqueID(), auraData);
     }
 
 }
