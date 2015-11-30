@@ -53,6 +53,7 @@ public class BlockStoneMachine extends Block {
     public IIcon pedestalSideIcon;
     public IIcon pedestalTopIcon;
     public IIcon protectorIcon;
+    public IIcon packagerIcon;
 
     @Override
     public void registerBlockIcons(IIconRegister ir) {
@@ -61,6 +62,7 @@ public class BlockStoneMachine extends Block {
         pedestalTopIcon = ir.registerIcon(Gadomancy.MODID + ":manipulator_bot");
         pedestalSideIcon = ir.registerIcon(Gadomancy.MODID + ":ancient_pedestal_side");
         protectorIcon = ir.registerIcon("thaumcraft:pipe_1");
+        packagerIcon = ir.registerIcon("thaumcraft:planks_greatwood");
     }
 
     @Override
@@ -77,6 +79,8 @@ public class BlockStoneMachine extends Block {
             }
         } else if (metadata == 2) {
             return protectorIcon;
+        } else if(metadata == 4) {
+            return packagerIcon;
         }
 
         return super.getIcon(side, metadata);

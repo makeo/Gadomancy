@@ -1,12 +1,15 @@
 package makeo.gadomancy.common.blocks.tiles;
 
 import makeo.gadomancy.common.registration.RegisteredItems;
+import makeo.gadomancy.common.utils.ItemUtils;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.tiles.TileJarFillable;
@@ -40,24 +43,57 @@ public class TileArcanePackager extends TileJarFillable implements IInventory, I
     }
 
     @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+
+        contents = new ItemStack[getSizeInventory()];
+        NBTTagList list = compound.getTagList("Items", 10);
+
+        for (int i = 0; i < list.tagCount(); ++i) {
+            NBTTagCompound slot = list.getCompoundTagAt(i);
+            int j = slot.getByte("Slot") & 255;
+
+            if (j >= 0 && j < contents.length) {
+                contents[j] = ItemStack.loadItemStackFromNBT(slot);
+            }
+        }
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+
+        NBTTagList list = new NBTTagList();
+        for (int i = 0; i < contents.length; ++i) {
+            if (contents[i] != null) {
+                NBTTagCompound slot = new NBTTagCompound();
+                slot.setByte("Slot", (byte) i);
+                contents[i].writeToNBT(slot);
+                list.appendTag(slot);
+            }
+        }
+        compound.setTag("Items", list);
+    }
+
+    @Override
     public void updateEntity() {
         super.updateEntity();
-        if(worldObj.isRemote) {
-            if(progress >= 0 && progress < 46) {
+        if (worldObj.isRemote) {
+            if (progress >= 0 && progress < 46) {
                 progress++;
             }
         } else {
-            if(progress >= 47) {
+            if (progress >= 47) {
                 doPack();
                 progress = -1;
                 markForUpdate();
                 count = 1;
             }
 
-            if(progress >= 0) {
+            if (progress >= 0) {
                 progress++;
-            } else if(count++ % 5 == 0) {
-                if(autoStart && canPack()) {
+            } else if (count++ % 5 == 0) {
+                if (autoStart && canPack()) {
                     progress = 0;
                     markForUpdate();
                 }
@@ -66,34 +102,34 @@ public class TileArcanePackager extends TileJarFillable implements IInventory, I
     }
 
     private boolean canPack() {
-        if(getStackInSlot(11) != null) {
+        if (getStackInSlot(11) != null) {
             return false;
         }
 
         boolean check = false;
-        for(int i = 0; i < 9; i++) {
-            if(getStackInSlot(i) != null) {
+        for (int i = 0; i < 9; i++) {
+            if (getStackInSlot(i) != null) {
                 check = true;
                 break;
             }
         }
 
-        if(!check) {
-           return false;
+        if (!check) {
+            return false;
         }
 
-        if(useEssentia) {
-            if(amount < 4) {
+        if (useEssentia) {
+            if (amount < 4) {
                 return false;
             }
         } else {
             ItemStack leather = getStackInSlot(9);
-            if(leather == null || leather.stackSize < 1 || leather.getItem() != Items.leather) {
+            if (leather == null || leather.stackSize < 1 || leather.getItem() != Items.leather) {
                 return false;
             }
 
             ItemStack string = getStackInSlot(10);
-            if(string == null || string.stackSize < 1 || string.getItem() != Items.string) {
+            if (string == null || string.stackSize < 1 || string.getItem() != Items.string) {
                 return false;
             }
         }
@@ -102,18 +138,18 @@ public class TileArcanePackager extends TileJarFillable implements IInventory, I
     }
 
     private boolean startPack() {
-        if(canPack()) {
+        if (canPack()) {
 
         }
         return false;
     }
 
     private void doPack() {
-        if(canPack()) {
+        if (canPack()) {
             List<ItemStack> contents = new ArrayList<ItemStack>();
-            for(int i = 0; i < 9; i++) {
+            for (int i = 0; i < 9; i++) {
                 ItemStack stack = getStackInSlot(i);
-                if(stack != null) {
+                if (stack != null) {
                     contents.add(stack);
                 }
             }
@@ -124,8 +160,8 @@ public class TileArcanePackager extends TileJarFillable implements IInventory, I
 
             boolean success = RegisteredItems.itemPackage.setContents(pack, contents);
 
-            if(success) {
-                if(useEssentia) {
+            if (success) {
+                if (useEssentia) {
                     amount -= 4;
                 } else {
                     decrStackSize(9, 1);
@@ -133,12 +169,24 @@ public class TileArcanePackager extends TileJarFillable implements IInventory, I
                 }
                 setInventorySlotContents(11, pack);
 
-                for(int i = 0; i < 9; i++) {
+                for (int i = 0; i < 9; i++) {
                     setInventorySlotContents(i, null);
                 }
             } else {
-                worldObj.newExplosion(null, xCoord, yCoord, zCoord, 4, false, true);
-                worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+                worldObj.newExplosion(null, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 1, false, false);
+
+                for(int i = 0; i < 9; i++) {
+                    ItemStack stack = this.contents[i];
+                    if(stack != null) {
+                        EntityItem entityItem = new EntityItem(worldObj, xCoord + 0.5, yCoord + (13/16f), zCoord + 0.5, stack);
+                        ItemUtils.applyRandomDropOffset(entityItem, worldObj.rand);
+                        worldObj.spawnEntityInWorld(entityItem);
+                        this.contents[i] = null;
+                    }
+                }
+
+                progress = -1;
+                markForUpdate();
             }
         }
     }
@@ -263,11 +311,11 @@ public class TileArcanePackager extends TileJarFillable implements IInventory, I
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        if(slot == 9) {
+        if (slot == 9) {
             return stack.getItem() == Items.leather;
-        } else if(slot == 10) {
+        } else if (slot == 10) {
             return stack.getItem() == Items.string;
-        } else if(slot == 11) {
+        } else if (slot == 11) {
             return false;
         }
         return true;
@@ -277,11 +325,11 @@ public class TileArcanePackager extends TileJarFillable implements IInventory, I
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
-        if(side == 0) {
+        if (side == 0) {
             return new int[]{11};
         }
 
-        if(ORIENTATION_MAPPING[side] == super.facing) {
+        if (ORIENTATION_MAPPING[side] == super.facing) {
             return new int[]{9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8};
         }
 
