@@ -150,13 +150,8 @@ tile.BlockAuraPylon.1.name=Aura Pylon Peak
 gadomancy.nodes.GROWING=Growing
 gadomancy.nodes.STARVING=Starving
 
+gadomancy.auracore.unused=(Unused at the moment)
 gadomancy.auracore.blank=Blank
-gadomancy.auracore.aer=Aer
-gadomancy.auracore.ignis=Ignis (Unused at the moment)
-gadomancy.auracore.aqua=Aqua (Unused at the moment)
-gadomancy.auracore.terra=Terra (Unused at the moment)
-gadomancy.auracore.ordo=Ordo
-gadomancy.auracore.perditio=Perditio (Unused at the moment)
 
 gadomancy.aura.research.unlock=You've researched the aura of %s
 

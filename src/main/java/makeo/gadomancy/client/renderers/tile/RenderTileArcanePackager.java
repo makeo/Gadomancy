@@ -23,7 +23,8 @@ public class RenderTileArcanePackager extends TileEntitySpecialRenderer {
     private static final ModelArcanePackager MODEL = new ModelArcanePackager();
 
     private static final ResourceLocation TEXTURE_PISTON = new SimpleResourceLocation("/models/packager_piston.png");
-    private static final ModelPackagerPiston MODEL_PISTON = new ModelPackagerPiston();
+    private static final ModelPackagerPiston MODEL_PISTON = new ModelPackagerPiston(false);
+    private static final ModelPackagerPiston MODEL_PISTON_CUT = new ModelPackagerPiston(true);
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks) {
@@ -49,13 +50,20 @@ public class RenderTileArcanePackager extends TileEntitySpecialRenderer {
         }
 
         GL11.glTranslatef(0, pistonOffset, 0);
-        bindTexture(TEXTURE_PISTON);
-        MODEL_PISTON.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-
-        GL11.glPopMatrix();
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+        bindTexture(TEXTURE_PISTON);
+
+        if(pistonOffset < 1/16f) {
+            MODEL_PISTON_CUT.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+        } else {
+            MODEL_PISTON.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+        }
+
+        GL11.glPopMatrix();
+
         bindTexture(TEXTURE);
         MODEL.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glDisable(GL11.GL_BLEND);

@@ -1,14 +1,19 @@
 package makeo.gadomancy.common.items;
 
+import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.registration.RegisteredItems;
-import makeo.gadomancy.common.utils.NBTHelper;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
+import org.lwjgl.opengl.GL11;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.common.blocks.BlockCustomOreItem;
 
 import java.util.List;
 
@@ -52,16 +57,55 @@ public class ItemAuraCore extends Item {
         }
     }
 
-    public void setCoreType(ItemStack itemStack, AuraCoreType type) {
-        if(itemStack == null || !(itemStack.getItem() instanceof ItemAuraCore)) return;
-        if(type == null) return;
-        NBTHelper.getData(itemStack).setInteger("type", type.ordinal());
+    private IIcon coreBlankIcon;
+    private IIcon coreIcon;
+    private IIcon borderIcon;
+
+    @Override
+    public void registerIcons(IIconRegister ir) {
+        coreBlankIcon = ir.registerIcon(Gadomancy.MODID + ":core_core_blank");
+        coreIcon = ir.registerIcon(Gadomancy.MODID + ":core_core");
+        borderIcon = ir.registerIcon(Gadomancy.MODID + ":core_border");
+    }
+
+    @Override
+    public IIcon getIcon(ItemStack stack, int pass) {
+        //shhhhh don't tell it anyone!
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+        if(getCoreType(stack) == AuraCoreType.BLANK && pass == 0) {
+            return coreBlankIcon;
+        }
+        return pass == 0 ? coreIcon : borderIcon;
+    }
+
+    @Override
+    public boolean requiresMultipleRenderPasses() {
+        return true;
+    }
+
+    @Override
+    public int getColorFromItemStack(ItemStack stack, int pass) {
+        if(pass == 0) {
+            AuraCoreType type = getCoreType(stack);
+            if(type.isAspect()) {
+                if(type.ordinal() < 7) {
+                    return BlockCustomOreItem.colors[type.ordinal()];
+                }
+                return type.getAspect().getColor();
+            }
+        }
+        return super.getColorFromItemStack(stack, pass);
+    }
+
+    public ItemStack setCoreType(ItemStack itemStack, AuraCoreType type) {
+        itemStack.setItemDamage(type.ordinal());
+        return itemStack;
     }
 
     public AuraCoreType getCoreType(ItemStack itemStack) {
-        if(itemStack == null || !(itemStack.getItem() instanceof ItemAuraCore)) return null;
-        int ordinal = NBTHelper.getData(itemStack).getInteger("type");
-        return AuraCoreType.values()[ordinal];
+        return AuraCoreType.values()[itemStack.getItemDamage()];
     }
 
     public boolean isBlank(ItemStack itemStack) {
@@ -70,26 +114,49 @@ public class ItemAuraCore extends Item {
     }
 
     public static enum AuraCoreType {
+        BLANK("blank"),
 
-        BLANK("Blank", "blank"),
+        AIR(Aspect.AIR),
+        FIRE(Aspect.FIRE, true),
+        WATER(Aspect.WATER, true),
+        EARTH(Aspect.EARTH, true),
+        ORDER(Aspect.ORDER),
+        ENTROPY(Aspect.ENTROPY, true);
 
-        AIR("Aer", "aer"),
-        FIRE("Ignis", "ignis"),
-        WATER("Aqua", "aqua"),
-        EARTH("Terra", "terra"),
-        ORDER("Ordo", "ordo"),
-        ENTROPY("Perditio", "perditio");
+        private final Aspect aspect;
+        private final String unlocName;
+        private final boolean unused;
 
-        public final String unlocName, fallback;
+        AuraCoreType(String unlocName) {
+            this.unlocName = unlocName;
+            this.aspect = null;
+            this.unused = false;
+        }
 
-        AuraCoreType(String fallback, String unlocName) {
-            this.unlocName = "gadomancy.auracore." + unlocName;
-            this.fallback = fallback;
+        AuraCoreType(Aspect aspect) {
+            this(aspect, false);
+        }
+
+        AuraCoreType(Aspect aspect, boolean unused) {
+            this.aspect = aspect;
+            this.unlocName = null;
+            this.unused = unused;
+        }
+
+        public boolean isAspect() {
+            return aspect != null;
+        }
+
+        public Aspect getAspect() {
+            return aspect;
         }
 
         public String getLocalizedName() {
-            return StatCollector.canTranslate(unlocName) ? StatCollector.translateToLocal(unlocName) : fallback;
+            String name = isAspect() ? aspect.getName() : StatCollector.translateToLocal("gadomancy.auracore." + unlocName);
+            if(unused) {
+                name += " " + StatCollector.translateToLocal("gadomancy.auracore.unused");
+            }
+            return name;
         }
     }
-
 }

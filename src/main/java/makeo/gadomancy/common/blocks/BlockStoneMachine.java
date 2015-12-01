@@ -275,11 +275,11 @@ public class BlockStoneMachine extends Block {
         int metadata = world.getBlockMetadata(x, y, z);
         if (metadata == 11 || metadata == 15 || metadata == 1) {
             setBlockBounds(0, 0, 0, 1, 1, 1);
-        } else if (metadata == 0 || metadata == 3) {
-            setBlockBoundsBasedOnState(world, x, y, z);
         } else if(metadata == 2) {
             setBlockBounds(3 / 16f, 0, 3 / 16f, 1 - (3 / 16f), 9.5f/16f, 1 - (3 / 16f));
             super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
+            setBlockBoundsBasedOnState(world, x, y, z);
+        } else {
             setBlockBoundsBasedOnState(world, x, y, z);
         }
         super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
