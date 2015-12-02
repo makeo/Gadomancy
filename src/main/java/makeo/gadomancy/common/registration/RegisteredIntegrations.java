@@ -2,10 +2,7 @@ package makeo.gadomancy.common.registration;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
-import makeo.gadomancy.common.integration.IntegrationAutomagy;
-import makeo.gadomancy.common.integration.IntegrationMod;
-import makeo.gadomancy.common.integration.IntegrationMorph;
-import makeo.gadomancy.common.integration.IntegrationThaumicExploration;
+import makeo.gadomancy.common.integration.*;
 import makeo.gadomancy.common.utils.Injector;
 
 /**
@@ -20,6 +17,7 @@ public class RegisteredIntegrations {
     public static IntegrationMorph morph;
     public static IntegrationThaumicExploration thaumicExploration;
     public static IntegrationAutomagy automagy;
+    public static IntegrationNEI nei;
 
     private RegisteredIntegrations() {}
 
@@ -27,6 +25,7 @@ public class RegisteredIntegrations {
         morph = registerUndependent(IntegrationMorph.class);
         thaumicExploration = registerUndependent(IntegrationThaumicExploration.class);
         automagy = registerUndependent(IntegrationAutomagy.class);
+        nei = registerUndependent(IntegrationNEI.class);
 
         registerDependent("ThaumicHorizons", "makeo.gadomancy.common.integration.thaumichorizions.IntegrationThaumicHorizions");
         registerDependent("Waila", "makeo.gadomancy.common.integration.waila.IntegrationWaila");
