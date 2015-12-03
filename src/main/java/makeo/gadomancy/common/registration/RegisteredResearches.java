@@ -3,6 +3,7 @@ package makeo.gadomancy.common.registration;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.aura.AuraResearchManager;
 import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.items.ItemAuraCore;
 import makeo.gadomancy.common.research.AlternatingResearchItem;
 import makeo.gadomancy.common.research.PseudoResearchItem;
 import makeo.gadomancy.common.research.SimpleResearchItem;
@@ -44,6 +45,9 @@ public class RegisteredResearches {
     public static ResearchItem researchEldritchPortalCreator;
     public static ResearchItem researchBlockProtector;
 
+    public static ResearchItem researchAuraCore;
+    public static ResearchItem researchArcanePackager;
+    public static ResearchItem researchAuraPylon;
     public static ResearchItem researchAuraEffects;
 
     //Skyblock Helper
@@ -227,12 +231,6 @@ public class RegisteredResearches {
                 .setParents(Gadomancy.MODID.toUpperCase() + ".FAM_RANGE_1", Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_3", researchBathSalts.key, researchPrimalFocus2.key)
                 .setPages(new ResearchPage("gadomancy.research_page.FAM_COOLDOWN_1.1"), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[4])).registerResearchItem();
 
-        researchAuraEffects = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".AURA_EFFECTS", Gadomancy.MODID,
-                new AspectList(),
-                10, 10, 0, new ItemStack(RegisteredItems.itemFakeModIcon, 1, 0))
-                .setAutoUnlock()
-                .setPages(new ResearchPage("gadomancy.research_page.AURA_EFFECTS.1")).registerResearchItem();
-
         if(ModConfig.ancientStoneRecipes)
             researchAncientStones = new AlternatingResearchItem("ANCIENT_STONES",
                 -12, 1, 3,
@@ -241,6 +239,38 @@ public class RegisteredResearches {
                 .setConcealed()
                 .setParents(researchOculus.key)
                 .setPages(new ResearchPage("gadomancy.research_page.ANCIENT_STONES.1"), new ResearchPage(RegisteredRecipes.recipeAncientStone), new ResearchPage(RegisteredRecipes.recipeAncientStonePedestal)).registerResearchItem();
+
+        researchAuraCore = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".AURA_CORE", Gadomancy.MODID,
+                new AspectList(),
+                0, 6, 2, new ItemStack(RegisteredItems.itemAuraCore))
+                .setConcealed().setAutoUnlock()
+                .setPages(new ResearchPage("gadomancy.research_page.AURA_CORE.1")).registerResearchItem();
+
+        researchAuraPylon = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".AURA_PYLON", Gadomancy.MODID,
+                new AspectList(),
+                1, 9, 2, new ItemStack(RegisteredBlocks.blockAuraPylon, 1, 1))
+                .setSpecial()
+                .setParents(researchAuraCore.key)
+                        //TODO item Trigger doesn't work?
+                .setItemTriggers(new ItemStack(RegisteredItems.itemAuraCore, 1, ItemAuraCore.AuraCoreType.ORDER.ordinal()))
+                .setPages(new ResearchPage("gadomancy.research_page.AURA_PYLON.1"), new ResearchPage(RegisteredRecipes.multiblockAuraPylon)).registerResearchItem();
+
+        researchAuraEffects = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".AURA_EFFECTS", Gadomancy.MODID,
+                new AspectList(),
+                2, 10, 0,
+                new ResourceLocation("thaumcraft", "textures/misc/r_aspects.png"))
+                .setConcealed()
+                .setParents(researchAuraPylon.key)
+                .setPages(new ResearchPage("gadomancy.research_page.AURA_EFFECTS.1")).registerResearchItem();
+
+        researchArcanePackager = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".ARCANE_PACKAGER", Gadomancy.MODID,
+                new AspectList(),
+                3, 7, 2, new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 4))
+                .setSpecial()
+                .setParents(researchAuraCore.key)
+                        //TODO item Trigger doesn't work?
+                .setItemTriggers(new ItemStack(RegisteredItems.itemAuraCore, 1, ItemAuraCore.AuraCoreType.AIR.ordinal()))
+                .setPages(new ResearchPage("gadomancy.research_page.ARCANE_PACKAGER.1")).registerResearchItem();
 
         //Warpy warpy
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_3", 2);

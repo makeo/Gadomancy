@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.EnumHelper;
 import thaumcraft.api.ThaumcraftApi;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
@@ -94,6 +95,16 @@ public class RegisteredItems {
 
         ThaumcraftApi.registerObjectTag(new ItemStack(Item.getItemFromBlock(RegisteredBlocks.blockStoneMachine)), new int[]{11, 15}, new AspectList());
         ThaumcraftApi.registerObjectTag(new ItemStack(Item.getItemFromBlock(RegisteredBlocks.blockStoneMachine)), new int[]{0}, oldAspects);
+
+        AspectList aspect = new AspectList();
+        aspect.add(Aspect.MAGIC, 6).add(Aspect.AURA, 12).add(Aspect.ELDRITCH, 4).add(Aspect.VOID, 10);
+        ThaumcraftApi.registerObjectTag(new ItemStack(RegisteredItems.itemAuraCore), new int[]{0}, aspect.copy());
+        ThaumcraftApi.registerObjectTag(new ItemStack(RegisteredItems.itemAuraCore), new int[]{1}, aspect.copy().add(Aspect.AIR, 26));
+        ThaumcraftApi.registerObjectTag(new ItemStack(RegisteredItems.itemAuraCore), new int[]{2}, aspect.copy().add(Aspect.FIRE, 26));
+        ThaumcraftApi.registerObjectTag(new ItemStack(RegisteredItems.itemAuraCore), new int[]{3}, aspect.copy().add(Aspect.WATER, 26));
+        ThaumcraftApi.registerObjectTag(new ItemStack(RegisteredItems.itemAuraCore), new int[]{4}, aspect.copy().add(Aspect.EARTH, 26));
+        ThaumcraftApi.registerObjectTag(new ItemStack(RegisteredItems.itemAuraCore), new int[]{5}, aspect.copy().add(Aspect.ORDER, 26));
+        ThaumcraftApi.registerObjectTag(new ItemStack(RegisteredItems.itemAuraCore), new int[]{6}, aspect.copy().add(Aspect.ENTROPY, 26));
     }
 
     //Sticky jars
