@@ -34,16 +34,17 @@ public class RegisteredItems {
 
     public static CreativeTabs creativeTab;
 
-    public static Item itemFakeModIcon;
-    public static Item itemFakeGolemShield;
-    public static Item itemFakeGolemPlacer;
-    public static Item itemTransformationFocus;
-    public static Item itemGolemCoreBreak;
-    public static Item itemExtendedNodeJar;
-    public static Item itemFamiliar;
-    public static Item itemCreativeNode;
+    public static ItemFakeModIcon itemFakeModIcon;
+    public static ItemFakeGolemShield itemFakeGolemShield;
+    public static ItemFakeGolemPlacer itemFakeGolemPlacer;
+
+    public static ItemTransformationFocus itemTransformationFocus;
+    public static ItemGolemCoreBreak itemGolemCoreBreak;
+    public static ItemExtendedNodeJar itemExtendedNodeJar;
+    public static ItemFamiliar itemFamiliar;
+    public static ItemCreativeNode itemCreativeNode;
     public static ItemArcanePackage itemPackage;
-    public static Item itemAuraCore;
+    public static ItemAuraCore itemAuraCore;
 
     public static void preInit() {
         creativeTab = new CreativeTabs(Gadomancy.MODID) {
@@ -66,16 +67,17 @@ public class RegisteredItems {
 
     //Items
     private static void registerItems() {
-        itemFakeModIcon = registerItem(new ItemFakeModIcon());
-        itemFakeGolemPlacer = registerItem(new ItemFakeGolemPlacer());
-        itemFakeGolemShield = registerItem(new ItemFakeGolemShield());
         itemTransformationFocus = registerItem(new ItemTransformationFocus());
         itemGolemCoreBreak = registerItem(new ItemGolemCoreBreak());
-        itemExtendedNodeJar = registerItem(new ItemExtendedNodeJar());
         itemFamiliar = registerItem(new ItemFamiliar());
+        itemAuraCore = registerItem(new ItemAuraCore());
+
         itemCreativeNode = registerItem(new ItemCreativeNode());
         itemPackage = registerItem(new ItemArcanePackage());
-        itemAuraCore = registerItem(new ItemAuraCore());
+        itemFakeGolemPlacer = registerItem(new ItemFakeGolemPlacer());
+        itemFakeGolemShield = registerItem(new ItemFakeGolemShield());
+        itemExtendedNodeJar = registerItem(new ItemExtendedNodeJar());
+        itemFakeModIcon = registerItem(new ItemFakeModIcon());
     }
 
     private static <T extends Item> T registerItem(T item, String name) {

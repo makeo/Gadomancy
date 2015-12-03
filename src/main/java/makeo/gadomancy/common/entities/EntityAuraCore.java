@@ -5,18 +5,24 @@ import makeo.gadomancy.client.effect.fx.EntityFXFlowPolicy;
 import makeo.gadomancy.client.effect.fx.FXFlow;
 import makeo.gadomancy.client.effect.fx.Orbital;
 import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.items.ItemAuraCore;
+import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.MiscUtils;
+import makeo.gadomancy.common.utils.PrimalAspectList;
 import makeo.gadomancy.common.utils.Vector3;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.WeightedRandom;
 import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 
-import java.awt.*;
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -37,14 +43,13 @@ public class EntityAuraCore extends EntityItem {
     public static final int CLUSTER_RANGE = 10; //Defines how close the clicked cluster has to be.
 
     private int ticksExisted = 0;
-    public AspectList internalAuraList = new AspectList();
+    public PrimalAspectList internalAuraList = new PrimalAspectList();
     public Orbital auraOrbital = null;
 
     //Effect stuff ResidentSleeper
     private Aspect[] effectAspects = new Aspect[6];
     private Orbital.OrbitalRenderProperties[] effectProperties = new Orbital.OrbitalRenderProperties[6];
     private FXFlow[] flows = new FXFlow[6];
-    private boolean orbitalFilled = false;
 
     private String oldAspectDataSent = null;
     public ChunkCoordinates activationLocation = null;
@@ -110,9 +115,10 @@ public class EntityAuraCore extends EntityItem {
         if(!worldObj.isRemote) {
             getDataWatcher().updateObject(ModConfig.entityAuraCoreDatawatcherTickId, ticksExisted);
             if(ticksExisted > GATHER_EFFECT_LENGTH) {
-                //TODO spawn EntityItem of type auraCore with dominating aspect + random aspect offset..
+                finishCore();
             } else if(ticksExisted > PRE_GATHER_EFFECT_LENGTH) {
-                //TODO gather aura and call updateAndSendAspectData() once sth. was gathered.
+                if(auraGatherCycle())
+                    updateAndSendAspectData();
             }
         } else {
             ticksExisted = getDataWatcher().getWatchableObjectInt(ModConfig.entityAuraCoreDatawatcherTickId);
@@ -139,7 +145,7 @@ public class EntityAuraCore extends EntityItem {
                             v, new FXFlow.EntityFlowProperties().setPolicy(EntityFXFlowPolicy.Policies.DEFAULT)
                                     .setTarget(auraOrbital.getOrbitalStartPoints(node)[0])
                                     .setColor(new Color(effectAspects[i].getColor())).setFading(getSubParticleColor(effectAspects[i])));
-                    flows[i].setLivingTicks(PRE_GATHER_EFFECT_LENGTH - ticksExisted + 20);
+                    flows[i].setLivingTicks(PRE_GATHER_EFFECT_LENGTH - ticksExisted);
                 }
 
                 if(flows[i] != null) flows[i].applyTarget(auraOrbital.getOrbitalStartPoints(node)[0]);
@@ -157,7 +163,7 @@ public class EntityAuraCore extends EntityItem {
                     }
                 }
             }
-            if(ticksExisted > PRE_GATHER_EFFECT_LENGTH) {
+            if(ticksExisted >= (PRE_GATHER_EFFECT_LENGTH - 1)) {
                 if(auraOrbital.orbitalsSize() == 0) {
                     for (int i = 0; i < 6; i++) {
                         Orbital.OrbitalRenderProperties node = effectProperties[i];
@@ -172,6 +178,58 @@ public class EntityAuraCore extends EntityItem {
                 }
             }
         }
+    }
+
+    private void finishCore() {
+        double avg = ((double) this.internalAuraList.visSize()) / ((double) this.internalAuraList.size());
+        Aspect[] sortedHtL = this.internalAuraList.getAspectsSortedAmount();
+        AspectList al = new AspectList();
+        for(Aspect a : sortedHtL) {
+            if(a == null) return;
+            int am = this.internalAuraList.getAmount(a);
+            if(am >= avg) {
+                al.add(a, am);
+            }
+        }
+
+        List<AspectWRItem> rand = new ArrayList<AspectWRItem>();
+        for(Aspect a : al.getAspects()) {
+            if(a == null) continue;
+            rand.add(new AspectWRItem(al.getAmount(a), a));
+        }
+
+        Aspect aura = ((AspectWRItem) WeightedRandom.getRandomItem(worldObj.rand, rand)).getAspect();
+
+        ItemStack auraCore = new ItemStack(RegisteredItems.itemAuraCore, 1, 0);
+
+        if(aura.equals(Aspect.AIR)) {
+            RegisteredItems.itemAuraCore.setCoreType(auraCore, ItemAuraCore.AuraCoreType.AIR);
+        } else if(aura.equals(Aspect.WATER)) {
+            RegisteredItems.itemAuraCore.setCoreType(auraCore, ItemAuraCore.AuraCoreType.WATER);
+        } else if(aura.equals(Aspect.EARTH)) {
+            RegisteredItems.itemAuraCore.setCoreType(auraCore, ItemAuraCore.AuraCoreType.EARTH);
+        } else if(aura.equals(Aspect.FIRE)) {
+            RegisteredItems.itemAuraCore.setCoreType(auraCore, ItemAuraCore.AuraCoreType.FIRE);
+        } else if(aura.equals(Aspect.ORDER)) {
+            RegisteredItems.itemAuraCore.setCoreType(auraCore, ItemAuraCore.AuraCoreType.ORDER);
+        } else if(aura.equals(Aspect.ENTROPY)) {
+            RegisteredItems.itemAuraCore.setCoreType(auraCore, ItemAuraCore.AuraCoreType.ENTROPY);
+        }
+
+        //TODO finishing effects...?
+
+        EntityItem ei = new EntityItem(worldObj, posX, posY, posZ, auraCore);
+        ei.motionX = 0;
+        ei.motionY = 0;
+        ei.motionZ = 0;
+        worldObj.spawnEntityInWorld(ei);
+        setDead();
+    }
+
+    //True, if something was gathered, false if not.
+    private boolean auraGatherCycle() {
+        //TODO gather surrounding aura
+        return false;
     }
 
     private Color getSubParticleColor(Aspect a) {
@@ -229,15 +287,19 @@ public class EntityAuraCore extends EntityItem {
         double perc = ((double) al.visSize()) / 6D;
         Aspect[] arr = new Aspect[6];
         sortedHtL = al.getAspectsSortedAmount();
+        //TODO find sth. better...?
+        //TODO find sth. that doesn't crash xD
         int pt = 0;
         for(Aspect a : sortedHtL) {
             while(al.getAmount(a) - perc >= 0) {
+                if(pt == 6) break;
                 arr[pt] = a;
                 pt++;
                 if(!al.reduce(a, (int) perc)) {
                     al.remove(a);
                 }
             }
+            if(pt == 6) break;
         }
 
         StringBuilder sb = new StringBuilder();
@@ -258,6 +320,8 @@ public class EntityAuraCore extends EntityItem {
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
+
+        this.internalAuraList = new PrimalAspectList();
 
         ticksExisted = compound.getInteger("ticksExisted");
         NBTTagList list = compound.getTagList("auraList", compound.getId());
@@ -300,4 +364,19 @@ public class EntityAuraCore extends EntityItem {
             compound.setInteger("activationVecZ", activationLocation.posZ);
         }
     }
+
+    public static final class AspectWRItem extends WeightedRandom.Item {
+
+        private final Aspect aspect;
+
+        public AspectWRItem(int weight, Aspect aspect) {
+            super(weight);
+            this.aspect = aspect;
+        }
+
+        public Aspect getAspect() {
+            return aspect;
+        }
+    }
+
 }
