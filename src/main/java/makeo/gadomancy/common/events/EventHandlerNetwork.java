@@ -3,10 +3,8 @@ package makeo.gadomancy.common.events;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.aura.AuraResearchManager;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketFamiliar;
-import makeo.gadomancy.common.network.packets.PacketSyncAuraKnowledge;
 import makeo.gadomancy.common.network.packets.PacketSyncConfigs;
 import makeo.gadomancy.common.network.packets.PacketUpdateGolemTypeOrder;
 import makeo.gadomancy.common.utils.GolemEnumHelper;
@@ -23,6 +21,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
  * Created by makeo @ 30.07.2015 18:26
  */
 public class EventHandlerNetwork {
+
+    //TODO Restore old client configs on server leave again.
     @SubscribeEvent
     public void on(PlayerEvent.PlayerLoggedInEvent e) {
         EntityPlayerMP p = (EntityPlayerMP) e.player;
@@ -31,7 +31,6 @@ public class EventHandlerNetwork {
             Gadomancy.proxy.familiarHandler.checkPlayerEquipment(p);
             PacketHandler.INSTANCE.sendTo(new PacketFamiliar.PacketFamiliarSyncCompletely(Gadomancy.proxy.familiarHandler.getCurrentActiveFamiliars()), p);
             PacketHandler.INSTANCE.sendTo(new PacketSyncConfigs(), p);
-            PacketHandler.INSTANCE.sendTo(new PacketSyncAuraKnowledge(AuraResearchManager.getKnowledge(p)), p);
         }
     }
 

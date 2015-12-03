@@ -1,5 +1,6 @@
 package makeo.gadomancy.client.effect.fx;
 
+import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
@@ -7,14 +8,13 @@ import makeo.gadomancy.common.utils.Vector3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -24,7 +24,7 @@ import java.util.*;
  * <p/>
  * Created by HellFirePvP @ 17.11.2015 18:45
  */
-public class EntityFXFlow extends EntityThrowable {
+public class FXFlow {
 
     private Color color;
     private Color fadingColor;
@@ -36,103 +36,111 @@ public class EntityFXFlow extends EntityThrowable {
 
     private int livingTicks = -1;
 
+    private World origin;
     private double motionBufferX, motionBufferY, motionBufferZ;
+    private double lastTickPosX, lastTickPosY, lastTickPosZ;
+    private double posX, posY, posZ;
     private float motionMultiplier = 1;
     private float mainParticleSize = 0.2F;
     private float surroundingParticleSize = 0.1F;
     private float surroundingDistance = 0.8F;
     private double unmodMotionBufX, unmodMotionBufY, unmodMotionBufZ;
+    public long lastUpdateCall = System.currentTimeMillis();
 
-    public EntityFXFlow(World world) {
-        super(world);
-        setSize(0.0F, 0.0F); //Not visible
+    public FXFlow(World originWorld) {
+        this.origin = originWorld;
         this.policy = EntityFXFlowPolicy.Policies.DEFAULT.getPolicy();
     }
 
-    public EntityFXFlow applyTarget(Vector3 target) {
+    public FXFlow applyTarget(Vector3 target) {
         this.target = target;
         return this;
     }
 
-    public EntityFXFlow setSurroundingDistance(float surroundingDistance) {
+    public FXFlow setSurroundingDistance(float surroundingDistance) {
         this.surroundingDistance = (1 / surroundingDistance);
         return this;
     }
 
-    public EntityFXFlow setMainParticleSize(float newSize) {
+    public FXFlow setMainParticleSize(float newSize) {
         this.mainParticleSize = newSize;
         return this;
     }
 
-    public EntityFXFlow setSurroundingParticleSize(float newSize) {
+    public FXFlow setSurroundingParticleSize(float newSize) {
         this.surroundingParticleSize = newSize;
         return this;
     }
 
-    public EntityFXFlow setLivingTicks(int livingTicks) {
+    public FXFlow setLivingTicks(int livingTicks) {
         this.livingTicks = livingTicks;
         return this;
     }
 
-    public EntityFXFlow setColor(Color newColor) {
+    public FXFlow setColor(Color newColor) {
         this.fadingColor = this.color;
         this.color = newColor;
         return this;
+    }
+
+    public FXFlow setPosition(double x, double y, double z) {
+        this.posX = x;
+        this.posY = y;
+        this.posZ = z;
+        return this;
+    }
+
+    public FXFlow setPosition(Vector3 vec) {
+        return setPosition(vec.getX(), vec.getY(), vec.getZ());
     }
 
     public void setMotionMultiplier(float motionMultiplier) {
         this.motionMultiplier = motionMultiplier;
     }
 
-    public EntityFXFlow setMotion(double motionX, double motionY, double motionZ) {
+    public FXFlow setMotion(double motionX, double motionY, double motionZ) {
         this.unmodMotionBufX = motionX;
         this.unmodMotionBufY = motionY;
         this.unmodMotionBufZ = motionZ;
         motionX *= motionMultiplier;
         motionY *= motionMultiplier;
         motionZ *= motionMultiplier;
-        this.motionX = motionX;
-        this.motionY = motionY;
-        this.motionZ = motionZ;
         this.motionBufferX = motionX;
         this.motionBufferY = motionY;
         this.motionBufferZ = motionZ;
         return this;
     }
 
-    @Override
-    public void onUpdate() {
+    public void tick() {
+
+        livingTicks--;
+        if (livingTicks <= 0) {
+            EffectHandler.getInstance().unregisterFlow(this);
+            return;
+        }
 
         this.calculateVelocity();
 
-        setVelocity(motionBufferX, motionBufferY, motionBufferZ);
+        this.lastTickPosX = this.posX;
+        this.lastTickPosY = this.posY;
+        this.lastTickPosZ = this.posZ;
+        this.posX += this.motionBufferX;
+        this.posY += this.motionBufferY;
+        this.posZ += this.motionBufferZ;
 
-        if(target == null) {
-            livingTicks--;
-            if (livingTicks <= 0) setDead();
-        } else {
-            if(target.distanceSquared(getPositionVector()) < 1) {
-                setDead();
-            }
-        }
-
-        super.onUpdate();
-        this.inGround = false;
-
-        if (!isDead && worldObj.isRemote) {
-            policyCounter += 1;
-            doParticles();
-        }
+        policyCounter += 1;
+        doParticles();
     }
 
     private void calculateVelocity() {
         if(target == null) return;
+        if(livingTicks <= 0) return; //Never happens..
 
         Vector3 pos = getPositionVector();
         double motDirX = target.getX() - pos.getX();
         double motDirY = target.getY() - pos.getY();
         double motDirZ = target.getZ() - pos.getZ();
-        Vector3 mot = new Vector3(motDirX, motDirY, motDirZ).normalize().divide(4);
+        Vector3 mot = new Vector3(motDirX, motDirY, motDirZ).divide(livingTicks);
         setMotion(mot.getX(), mot.getY(), mot.getZ());
     }
 
@@ -149,21 +157,25 @@ public class EntityFXFlow extends EntityThrowable {
     }
 
     private void doParticles() {
-        FXFlowBase flow = new FXFlowBase(worldObj, posX, posY, posZ, color, mainParticleSize, 9, 240);
+        if(Minecraft.getMinecraft().theWorld == null) {
+            EffectHandler.getInstance().unregisterFlow(this);
+            return;
+        }
+        if(Minecraft.getMinecraft().theWorld.provider.dimensionId != origin.provider.dimensionId) {
+            EffectHandler.getInstance().unregisterFlow(this);
+            return;
+        }
+
+        FXFlowBase flow = new FXFlowBase(Minecraft.getMinecraft().theWorld, posX, posY, posZ, color, mainParticleSize, 9, 240);
         Minecraft.getMinecraft().effectRenderer.addEffect(flow); //Initial position.
         double lastPosX = posX - (posX - lastTickPosX) / 2.0D;
         double lastPosY = posY - (posY - lastTickPosY) / 2.0D;
         double lastPosZ = posZ - (posZ - lastTickPosZ) / 2.0D;
-        FXFlowBase flow2 = new FXFlowBase(worldObj, lastPosX, lastPosY, lastPosZ, color, (float) (mainParticleSize * 0.8), 8, 240);
+        FXFlowBase flow2 = new FXFlowBase(Minecraft.getMinecraft().theWorld, lastPosX, lastPosY, lastPosZ, color, (float) (mainParticleSize * 0.8), 8, 240);
         Minecraft.getMinecraft().effectRenderer.addEffect(flow2); //Consistency to last position
 
         if(policy != null)
             policy.doSubParticles(this, policyCounter, posX, posY, posZ, lastPosX, lastPosY, lastPosZ);
-    }
-
-    @Override
-    public float getGravityVelocity() {
-        return 0.0F;
     }
 
     public Color getColor() {
@@ -190,10 +202,6 @@ public class EntityFXFlow extends EntityThrowable {
         return motionMultiplier;
     }
 
-    public Random getRand() {
-        return rand;
-    }
-
     public boolean isMovementVectorNullLength() {
         return new Vector3(motionBufferX, motionBufferY, motionBufferZ).lengthSquared() == 0;
     }
@@ -203,15 +211,15 @@ public class EntityFXFlow extends EntityThrowable {
     }
 
     public Vector3 getMovementVector() {
-        Vector3 motion = new Vector3(motionBufferX, motionBufferY, motionBufferZ);
-        if(motion.lengthSquared() == 0) return new Vector3(unmodMotionBufX, unmodMotionBufY, unmodMotionBufZ);
-        return motion;
+        if(isMovementVectorNullLength()) return new Vector3(unmodMotionBufX, unmodMotionBufY, unmodMotionBufZ);
+        return new Vector3(motionBufferX, motionBufferY, motionBufferZ);
     }
 
-    @Override
-    public void onImpact(MovingObjectPosition obj) {}
+    public Random getRand() {
+        return origin.rand;
+    }
 
-    public void applyProperties(EntityFlowProperties properties) {
+    public FXFlow applyProperties(EntityFlowProperties properties) {
         if(properties != null) {
             if(properties.hasTarget) {
                 applyTarget(properties.target);
@@ -242,6 +250,21 @@ public class EntityFXFlow extends EntityThrowable {
             if(properties.policy != null) {
                 setPolicy(properties.policy);
             }
+        }
+        return this;
+    }
+
+    public static void tickFlows(List<FXFlow> fxFlows) {
+        EffectHandler.flowRWLock.lock();
+        try {
+            for(FXFlow flow : fxFlows) {
+                if((System.currentTimeMillis() - flow.lastUpdateCall) > 1000L) {
+                    EffectHandler.getInstance().unregisterFlow(flow);
+                }
+                flow.tick();
+            }
+        } finally {
+            EffectHandler.flowRWLock.unlock();
         }
     }
 

@@ -10,13 +10,14 @@ import net.minecraft.world.World;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
  * GNU LESSER GENERAL PUBLIC LICENSE
  * for more read the LICENSE file
- * <p/>
+ *
  * Created by HellFirePvP @ 17.11.2015 18:41
  */
 public final class Orbital {
@@ -25,6 +26,8 @@ public final class Orbital {
     private final World world;
     private int orbitalCounter = 0;
     public boolean registered = false;
+    //INFO: Needs to be updated when its "owner" gets rendered.
+    public long lastRenderCall = System.currentTimeMillis();
 
     private List<OrbitalRenderProperties> orbitals = new ArrayList<OrbitalRenderProperties>();
 
@@ -68,10 +71,55 @@ public final class Orbital {
                 orbitalNode.getRunnable().onRender(point, orbitalNode, partialTicks);
             }
 
-            EntityFXFlow.FXFlowBase flow = new EntityFXFlow.FXFlowBase(world, point.getX(), point.getY(), point.getZ(),
+            FXFlow.FXFlowBase flow = new FXFlow.FXFlowBase(world, point.getX(), point.getY(), point.getZ(),
                     orbitalNode.getColor(), orbitalNode.getParticleSize(), orbitalNode.getMultiplier(), orbitalNode.getBrightness());
+
+            if(orbitalNode.getSubParticleColor() != null && world.rand.nextInt(3) == 0) {
+                Vector3 subOffset = genSubOffset(world.rand, 0.8F);
+                Color c = (world.rand.nextBoolean()) ? orbitalNode.getSubParticleColor() : orbitalNode.getColor();
+                FXFlow.FXFlowBase flow2 = new FXFlow.FXFlowBase(world,
+                        point.getX() + subOffset.getX(), point.getY() + subOffset.getY(), point.getZ() + subOffset.getZ(),
+                        c, 0.1F + (world.rand.nextBoolean() ? 0.0F : 0.1F), 6, 240);
+
+                Minecraft.getMinecraft().effectRenderer.addEffect(flow2);
+            }
+
             Minecraft.getMinecraft().effectRenderer.addEffect(flow);
         }
+    }
+
+    private Vector3 genSubOffset(Random rand, float surroundingDistance) {
+        float x = ((rand.nextFloat() / 4F) * surroundingDistance) * (rand.nextBoolean() ? 1 : -1);
+        float y = ((rand.nextFloat() / 4F) * surroundingDistance) * (rand.nextBoolean() ? 1 : -1);
+        float z = ((rand.nextFloat() / 4F) * surroundingDistance) * (rand.nextBoolean() ? 1 : -1);
+        return new Vector3(x, y, z);
+    }
+
+    public void reduceAllOffsets(float percent) {
+        for(OrbitalRenderProperties node : orbitals) {
+            node.reduceOffset(percent);
+        }
+    }
+
+    public Vector3[] getOrbitalStartPoints(OrbitalRenderProperties... properties) {
+        Vector3[] arr = new Vector3[properties.length];
+        for (int i = 0; i < properties.length; i++) {
+            OrbitalRenderProperties property = properties[i];
+            if(property == null) {
+                arr[i] = null;
+                continue;
+            }
+
+            Axis axis = property.getAxis();
+            int counterOffset = property.getOffsetTicks() % property.getTicksForFullCircle();
+
+            int currentDividedPolicyTick = (orbitalCounter + counterOffset) % property.getTicksForFullCircle();
+            float currentDegree = 360F * (((float) currentDividedPolicyTick) / ((float) property.getTicksForFullCircle()));
+            double currentRad = Math.toRadians(currentDegree);
+
+            arr[i] = axis.getAxis().clone().perpendicular().normalize().multiply(property.getOffset()).rotate(currentRad, axis.getAxis()).add(center);
+        }
+        return arr;
     }
 
     public static void sheduleRenders(List<Orbital> orbitals, float partialTicks) {
@@ -88,7 +136,14 @@ public final class Orbital {
     public static void tickOrbitals(List<Orbital> orbitals) {
         EffectHandler.orbitalsRWLock.lock();
         try {
-            for(Orbital orbital : orbitals) orbital.orbitalCounter++;
+            for(Orbital orbital : orbitals) {
+                if((System.currentTimeMillis() - orbital.lastRenderCall) > 1000L) {
+                    orbital.clearOrbitals();
+                    EffectHandler.getInstance().unregisterOrbital(orbital);
+                } else {
+                    orbital.orbitalCounter++;
+                }
+            }
         } finally {
             EffectHandler.orbitalsRWLock.unlock();
         }
@@ -97,7 +152,7 @@ public final class Orbital {
     public static class OrbitalRenderProperties {
 
         private Axis axis;
-        private double offset;
+        private double originalOffset, offset;
         private Color color = Color.WHITE;
         private int ticksForFullCircle = 40;
         private OrbitalRenderRunnable runnable = null;
@@ -106,8 +161,10 @@ public final class Orbital {
         private float particleSize = 0.2F;
         private int offsetTicks = 0;
 
+        private Color subParticleColor = null;
+
         public OrbitalRenderProperties(Axis axis, double offsetLength) {
-            this.offset = offsetLength;
+            this.offset = this.originalOffset = offsetLength;
             this.axis = axis;
         }
 
@@ -146,6 +203,16 @@ public final class Orbital {
             return this;
         }
 
+        public OrbitalRenderProperties setSubParticleColor(Color subParticleColor) {
+            this.subParticleColor = subParticleColor;
+            return this;
+        }
+
+        //Percent from 0.0F to 1.0F
+        public void reduceOffset(float percent) {
+            this.offset = this.originalOffset * percent;
+        }
+
         public float getParticleSize() {
             return particleSize;
         }
@@ -160,6 +227,10 @@ public final class Orbital {
 
         public double getOffset() {
             return offset;
+        }
+
+        public Color getSubParticleColor() {
+            return subParticleColor;
         }
 
         public int getTicksForFullCircle() {

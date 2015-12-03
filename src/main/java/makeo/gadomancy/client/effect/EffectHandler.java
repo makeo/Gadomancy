@@ -1,7 +1,7 @@
 package makeo.gadomancy.client.effect;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import makeo.gadomancy.client.effect.fx.EntityFXFlow;
+import makeo.gadomancy.client.effect.fx.FXFlow;
 import makeo.gadomancy.client.effect.fx.Orbital;
 import makeo.gadomancy.common.utils.Vector3;
 import net.minecraft.client.renderer.Tessellator;
@@ -26,8 +26,10 @@ public class EffectHandler {
     public static final EffectHandler instance = new EffectHandler();
 
     public static List<Orbital> orbitals = new ArrayList<Orbital>();
+    public static List<FXFlow> fxFlows = new ArrayList<FXFlow>();
 
     public static Lock orbitalsRWLock = new NonReentrantReentrantLock();
+    public static Lock flowRWLock = new NonReentrantReentrantLock();
 
     public static EffectHandler getInstance() {
         return instance;
@@ -37,16 +39,43 @@ public class EffectHandler {
     public void onRender(RenderWorldLastEvent event) {
         Tessellator tessellator = Tessellator.instance;
 
-        EntityFXFlow.FXFlowBase.sheduleRender(tessellator);
+        FXFlow.FXFlowBase.sheduleRender(tessellator);
         Orbital.sheduleRenders(orbitals, event.partialTicks);
     }
 
-    public EntityFXFlow effectFlow(World world, Vector3 origin, EntityFXFlow.EntityFlowProperties properties) {
-        EntityFXFlow flow = new EntityFXFlow(world);
-        flow.applyProperties(properties);
-        flow.setPosition(origin.getX(), origin.getY(), origin.getZ());
-        world.spawnEntityInWorld(flow);
+    public FXFlow effectFlow(World world, Vector3 origin, FXFlow.EntityFlowProperties properties) {
+        FXFlow flow = new FXFlow(world);
+        flow.applyProperties(properties).setPosition(origin);
+        registerFlow(flow);
         return flow;
+    }
+
+    public void registerFlow(final FXFlow flow) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                flowRWLock.lock();
+                try {
+                    fxFlows.add(flow);
+                } finally {
+                    flowRWLock.unlock();
+                }
+            }
+        }).start();
+    }
+
+    public void unregisterFlow(final FXFlow flow) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                flowRWLock.lock();
+                try {
+                    fxFlows.remove(flow);
+                } finally {
+                    flowRWLock.unlock();
+                }
+            }
+        }).start();
     }
 
     public void registerOrbital(final Orbital orbital) {
@@ -81,6 +110,7 @@ public class EffectHandler {
 
     public void tick() {
         Orbital.tickOrbitals(orbitals);
+        FXFlow.tickFlows(fxFlows);
     }
 
     public void clear() {

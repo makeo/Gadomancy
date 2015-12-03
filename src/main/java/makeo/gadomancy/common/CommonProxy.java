@@ -3,14 +3,11 @@ package makeo.gadomancy.common;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
 import makeo.gadomancy.client.ClientProxy;
 import makeo.gadomancy.common.containers.ContainerArcanePackager;
 import makeo.gadomancy.common.containers.ContainerInfusionClaw;
 import makeo.gadomancy.common.data.ModConfig;
-import makeo.gadomancy.common.entities.EntityAuraCore;
-import makeo.gadomancy.common.entities.EntityPermNoClipItem;
 import makeo.gadomancy.common.events.EventHandlerEntity;
 import makeo.gadomancy.common.events.EventHandlerGolem;
 import makeo.gadomancy.common.events.EventHandlerNetwork;
@@ -19,6 +16,7 @@ import makeo.gadomancy.common.familiar.FamiliarHandlerServer;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.registration.ModSubstitutions;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
+import makeo.gadomancy.common.registration.RegisteredEntities;
 import makeo.gadomancy.common.registration.RegisteredGolemStuff;
 import makeo.gadomancy.common.registration.RegisteredIntegrations;
 import makeo.gadomancy.common.registration.RegisteredItems;
@@ -28,7 +26,6 @@ import makeo.gadomancy.common.registration.RegisteredResearches;
 import makeo.gadomancy.common.utils.Injector;
 import makeo.gadomancy.common.utils.world.WorldProviderTCEldrich;
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.world.World;
@@ -86,17 +83,10 @@ public class CommonProxy implements IGuiHandler {
 
         RegisteredPotions.init();
 
+        RegisteredEntities.init();
+
         DimensionManager.registerProviderType(ModConfig.dimOuterId, WorldProviderTCEldrich.class, true);
         DimensionManager.registerDimension(ModConfig.dimOuterId, ModConfig.dimOuterId);
-
-        registerEntity(EntityPermNoClipItem.class, "EntityPermItem", 32, 40, false);
-        registerEntity(EntityAuraCore.class, "EntityAuraCore", 32, 10, true);
-    }
-
-    private void registerEntity(Class<? extends Entity> entityClass, String name, int trackingRange, int updateFreq, boolean sendVelUpdates) {
-        int id = EntityRegistry.findGlobalUniqueEntityId();
-        EntityRegistry.registerGlobalEntityID(entityClass, name, id);
-        EntityRegistry.registerModEntity(entityClass, name, id, Gadomancy.instance, trackingRange, updateFreq, sendVelUpdates);
     }
 
     public void postInitalize() {

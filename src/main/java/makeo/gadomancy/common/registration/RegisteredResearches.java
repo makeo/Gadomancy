@@ -1,6 +1,7 @@
 package makeo.gadomancy.common.registration;
 
 import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.aura.AuraResearchManager;
 import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.research.AlternatingResearchItem;
 import makeo.gadomancy.common.research.PseudoResearchItem;
@@ -269,5 +270,8 @@ public class RegisteredResearches {
                 new AspectList().add(Aspect.WATER, 4).add(Aspect.MECHANISM, 8).add(Aspect.EARTH, 4).add(Aspect.ORDER, 8))
                 .setParents(researchJar.key, researchEssentiaMirror.key).setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.REMOTEJAR.1"), new ResearchPage(RegisteredRecipes.recipeRemoteJar), new ResearchPage("gadomancy.research_page.REMOTEJAR.2")).registerResearchItem();
+
+        //Aura researches
+        AuraResearchManager.registerAuraResearches();
     }
 }

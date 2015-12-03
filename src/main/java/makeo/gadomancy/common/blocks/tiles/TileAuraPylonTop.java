@@ -2,6 +2,7 @@ package makeo.gadomancy.common.blocks.tiles;
 
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.client.effect.fx.Orbital;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.utils.ItemUtils;
 import makeo.gadomancy.common.utils.Vector3;
 import net.minecraft.block.Block;
@@ -28,6 +29,7 @@ public class TileAuraPylonTop extends SynchronizedTileEntity implements IAspectC
 
     public Orbital orbital;
     private boolean shouldRender = false;
+    private boolean shouldRenderAura = false;
 
     @Override
     public void updateEntity() {
@@ -37,10 +39,15 @@ public class TileAuraPylonTop extends SynchronizedTileEntity implements IAspectC
                 breakTile();
                 return;
             }
+            if(worldObj.getBlock(xCoord, yCoord - 1, zCoord) != RegisteredBlocks.blockAuraPylon || worldObj.getBlockMetadata(xCoord, yCoord - 1, zCoord) != 0) {
+                breakTile();
+                return;
+            }
             TileAuraPylon pylon = (TileAuraPylon) te;
             if(pylon.isPartOfMultiblock() && !pylon.isMasterTile()) breakTile();
         } else {
-            shouldRender = !(te == null || !(te instanceof TileAuraPylon) || !((TileAuraPylon) te).isPartOfMultiblock());
+            shouldRender = te != null && te instanceof TileAuraPylon && ((TileAuraPylon) te).isPartOfMultiblock();
+            shouldRenderAura = te != null && te instanceof TileAuraPylon && ((TileAuraPylon) te).getEssentiaAmount() > 0;
         }
     }
 
@@ -71,11 +78,17 @@ public class TileAuraPylonTop extends SynchronizedTileEntity implements IAspectC
         return shouldRender;
     }
 
+    public boolean shouldRenderAuraEffect() {
+        return shouldRenderAura;
+    }
+
     @Override
     public void invalidate() {
         super.invalidate();
-        if(orbital != null && orbital.registered) {
-            EffectHandler.getInstance().unregisterOrbital(orbital);
+        if(orbital != null) {
+            orbital.clearOrbitals();
+            if(orbital.registered)
+                EffectHandler.getInstance().unregisterOrbital(orbital);
         }
     }
 

@@ -69,13 +69,17 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
         GL11.glPopMatrix();
 
         if(tile instanceof TileAuraPylonTop) {
-            if(((TileAuraPylonTop) tile).orbital == null && tile.getWorldObj() != null) {
-                ((TileAuraPylonTop) tile).orbital = new Orbital(new Vector3(tile.xCoord + 0.5, tile.yCoord + 0.7, tile.zCoord + 0.5), tile.getWorldObj());
-                EffectHandler.getInstance().registerOrbital(((TileAuraPylonTop) tile).orbital);
+            TileAuraPylonTop ta = (TileAuraPylonTop) tile;
+            if(ta.orbital == null && tile.getWorldObj() != null) {
+                ta.orbital = new Orbital(new Vector3(tile.xCoord + 0.5, tile.yCoord + 0.7, tile.zCoord + 0.5), tile.getWorldObj());
             }
 
-            if(((TileAuraPylonTop) tile).shouldRenderEffect()) {
-                Aspect a = ((TileAuraPylonTop) tile).getAspect();
+            if(ta.orbital != null && !ta.orbital.registered) {
+                EffectHandler.getInstance().registerOrbital(ta.orbital);
+            }
+
+            if(ta.shouldRenderEffect()) {
+                Aspect a = ta.getAspect();
                 if(a == null) a = Aspect.WEATHER;
                 Color c = new Color(a.getColor());
                 if(tile.getWorldObj().rand.nextInt(12) == 0) {
@@ -95,22 +99,24 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
                 }
             }
 
-            if(((TileAuraPylonTop) tile).shouldRenderEffect() && ((TileAuraPylonTop) tile).getAspect() != null) {
-                if(((TileAuraPylonTop) tile).orbital != null && ((TileAuraPylonTop) tile).orbital.orbitalsSize() == 0) {
-                    Aspect a = ((TileAuraPylonTop) tile).getAspect();
+            if(ta.orbital != null) ta.orbital.lastRenderCall = System.currentTimeMillis();
+
+            if(ta.shouldRenderAuraEffect() && ta.getAspect() != null) {
+                if(ta.orbital != null && ta.orbital.orbitalsSize() == 0) {
+                    Aspect a = ta.getAspect();
                     if(a != null) {
                         int col = a.getColor();
                         col |= (0x55 << 24);
                         Color c = new Color(col, true);
                         Random rand = tile.getWorldObj().rand;
-                        addNewOrbitalPoint(((TileAuraPylonTop) tile).orbital, rand, c);
-                        addNewOrbitalPoint(((TileAuraPylonTop) tile).orbital, rand, c);
-                        addNewOrbitalPoint(((TileAuraPylonTop) tile).orbital, rand, c);
+                        addNewOrbitalPoint(ta.orbital, rand, c);
+                        addNewOrbitalPoint(ta.orbital, rand, c);
+                        addNewOrbitalPoint(ta.orbital, rand, c);
                     }
                 }
             } else {
-                if(((TileAuraPylonTop) tile).orbital != null && ((TileAuraPylonTop) tile).orbital.orbitalsSize() > 0) {
-                    ((TileAuraPylonTop) tile).orbital.clearOrbitals();
+                if(ta.orbital != null && ta.orbital.orbitalsSize() > 0) {
+                    ta.orbital.clearOrbitals();
                 }
             }
         }

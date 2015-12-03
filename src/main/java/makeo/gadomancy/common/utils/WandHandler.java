@@ -1,11 +1,16 @@
 package makeo.gadomancy.common.utils;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
+import makeo.gadomancy.common.entities.EntityAuraCore;
 import makeo.gadomancy.common.items.ItemAuraCore;
+import makeo.gadomancy.common.network.PacketHandler;
+import makeo.gadomancy.common.network.packets.PacketStartAnimation;
 import makeo.gadomancy.common.node.ExtendedNodeType;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredIntegrations;
+import makeo.gadomancy.common.registration.RegisteredRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import thaumcraft.api.ThaumcraftApiHelper;
@@ -56,50 +62,80 @@ public class WandHandler {
                 tryAutomagyJarNodeCreation(i, entityPlayer, world, x, y, z);
             }
         } else if(target.equals(ConfigBlocks.blockCrystal)) {
-            List items = world.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(4, 4, 4));
-            Iterator it = items.iterator();
-            EntityItem itemAuraCore = null;
-            while(itemAuraCore == null && it.hasNext()) {
-                Object item = it.next();
-                if(item != null && item instanceof EntityItem && !((EntityItem) item).isDead) {
-                    EntityItem entityItem = (EntityItem) item;
-                    if(entityItem.getEntityItem() != null && entityItem.getEntityItem().getItem() != null && entityItem.getEntityItem().getItem() instanceof ItemAuraCore) {
-                        if(((ItemAuraCore) entityItem.getEntityItem().getItem()).isBlank(entityItem.getEntityItem())) itemAuraCore = entityItem;
-                    }
+            //TODO 1 line down from here :3
+            //if (ResearchManager.isResearchComplete(entityPlayer.getCommandSenderName(), "INSERT_STH_HERE"))
+                tryAuraCoreCreation(i, entityPlayer, world, x, y, z);
+        }
+    }
+
+    private static void tryAuraCoreCreation(ItemStack i, EntityPlayer entityPlayer, World world, int x, int y, int z) {
+        if(world.isRemote) return;
+
+        List items = world.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1)
+                .expand(EntityAuraCore.CLUSTER_RANGE, EntityAuraCore.CLUSTER_RANGE, EntityAuraCore.CLUSTER_RANGE));
+        Iterator it = items.iterator();
+        EntityItem itemAuraCore = null;
+        while(itemAuraCore == null && it.hasNext()) {
+            Object item = it.next();
+            if(item != null && item instanceof EntityItem && !((EntityItem) item).isDead) {
+                EntityItem entityItem = (EntityItem) item;
+                if(entityItem.getEntityItem() != null && entityItem.getEntityItem().getItem() != null
+                        && entityItem.getEntityItem().getItem() instanceof ItemAuraCore && !(item instanceof EntityAuraCore)) {
+                    if(((ItemAuraCore) entityItem.getEntityItem().getItem()).isBlank(entityItem.getEntityItem())) itemAuraCore = entityItem;
                 }
             }
+        }
 
-            if(itemAuraCore == null) return;
+        if(itemAuraCore == null) return;
 
-            int meta = world.getBlockMetadata(x, y, z);
-            if(meta <= 6) {
-                AspectList aspects = new AspectList();
-                switch (meta) {
-                    case 0:
-                        aspects.add(Aspect.AIR, 6);
-                        break;
-                    case 1:
-                        aspects.add(Aspect.FIRE, 6);
-                        break;
-                    case 2:
-                        aspects.add(Aspect.WATER, 6);
-                        break;
-                    case 3:
-                        aspects.add(Aspect.EARTH, 6);
-                        break;
-                    case 4:
-                        aspects.add(Aspect.ORDER, 6);
-                        break;
-                    case 5:
-                        aspects.add(Aspect.ENTROPY, 6);
-                        break;
-                    case 6:
-                        aspects.add(Aspect.AIR, 1).add(Aspect.EARTH, 1).add(Aspect.FIRE, 1).add(Aspect.WATER, 1).add(Aspect.ORDER, 1).add(Aspect.ENTROPY, 1);
-                        break;
-                }
-
-                //TODO replace entityitem with entityAuraCore and attach starting aspects.
+        int meta = world.getBlockMetadata(x, y, z);
+        if(meta <= 6) {
+            Aspect[] aspects;
+            switch (meta) {
+                case 0:
+                    aspects = new Aspect[]{Aspect.AIR};
+                    break;
+                case 1:
+                    aspects = new Aspect[]{Aspect.FIRE};
+                    break;
+                case 2:
+                    aspects = new Aspect[]{Aspect.WATER};
+                    break;
+                case 3:
+                    aspects = new Aspect[]{Aspect.EARTH};
+                    break;
+                case 4:
+                    aspects = new Aspect[]{Aspect.ORDER};
+                    break;
+                case 5:
+                    aspects = new Aspect[]{Aspect.ENTROPY};
+                    break;
+                case 6:
+                    aspects = new Aspect[]{Aspect.AIR, Aspect.FIRE, Aspect.EARTH, Aspect.WATER, Aspect.ORDER, Aspect.ENTROPY};
+                    break;
+                default:
+                    return;
             }
+
+            if(!ThaumcraftApiHelper.consumeVisFromWandCrafting(i, entityPlayer, RegisteredRecipes.costsAuraCoreStart, true))
+                return;
+
+
+            PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_BURST, x, y, z);
+            PacketHandler.INSTANCE.sendToAllAround(packet, new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 32.0D));
+            world.createExplosion(null, x + 0.5D, y + 0.5D, z + 0.5D, 1.5F, false);
+            world.setBlockToAir(x, y, z);
+
+            EntityAuraCore ea =
+                    new EntityAuraCore(itemAuraCore.worldObj, itemAuraCore.posX, itemAuraCore.posY, itemAuraCore.posZ,
+                            itemAuraCore.getEntityItem(), new ChunkCoordinates(x, y, z), aspects);
+            ea.age = itemAuraCore.age;
+            ea.hoverStart = itemAuraCore.hoverStart;
+            ea.motionX = itemAuraCore.motionX;
+            ea.motionY = itemAuraCore.motionY;
+            ea.motionZ = itemAuraCore.motionZ;
+            itemAuraCore.worldObj.spawnEntityInWorld(ea);
+            itemAuraCore.setDead();
         }
     }
 

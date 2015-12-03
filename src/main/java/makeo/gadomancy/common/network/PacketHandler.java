@@ -37,6 +37,5 @@ public class PacketHandler {
 
         //Sync data
         INSTANCE.registerMessage(PacketSyncConfigs.class, PacketSyncConfigs.class, id++, Side.CLIENT);
-        INSTANCE.registerMessage(PacketSyncAuraKnowledge.class, PacketSyncAuraKnowledge.class, id++, Side.CLIENT);
     }
 }

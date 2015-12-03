@@ -2,6 +2,7 @@ package makeo.gadomancy.client.effect.fx;
 
 import makeo.gadomancy.common.utils.Vector3;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.World;
 
 import java.awt.*;
 import java.util.Random;
@@ -16,7 +17,7 @@ import java.util.Random;
  */
 public abstract class EntityFXFlowPolicy {
 
-    public abstract void doSubParticles(EntityFXFlow fxFlow, int policyCounter, double posX, double posY, double posZ, double lastPosX, double lastPosY, double lastPosZ);
+    public abstract void doSubParticles(FXFlow fxFlow, int policyCounter, double posX, double posY, double posZ, double lastPosX, double lastPosY, double lastPosZ);
 
     public enum Policies {
 
@@ -40,16 +41,16 @@ public abstract class EntityFXFlowPolicy {
     static class DefaultPolicy extends EntityFXFlowPolicy {
 
         @Override
-        public void doSubParticles(EntityFXFlow fxFlow, int policyCounter, double posX, double posY, double posZ, double lastPosX, double lastPosY, double lastPosZ) {
+        public void doSubParticles(FXFlow fxFlow, int policyCounter, double posX, double posY, double posZ, double lastPosX, double lastPosY, double lastPosZ) {
             doParticles(fxFlow, policyCounter, posX, posY, posZ, fxFlow.getRand().nextInt(3) + 1);
         }
 
-        public void doParticles(EntityFXFlow fxFlow, int policyCounter, double posX, double posY, double posZ, int count) {
+        public void doParticles(FXFlow fxFlow, int policyCounter, double posX, double posY, double posZ, int count) {
             Random rand = fxFlow.getRand();
             for (int i = 0; i < count; i++) {
                 Vector3 subOffset = genSubOffset(rand, fxFlow.getSurroundingDistance());
                 Color c = (fxFlow.getFadingColor() != null && rand.nextBoolean()) ? fxFlow.getFadingColor() : fxFlow.getColor();
-                EntityFXFlow.FXFlowBase flow = new EntityFXFlow.FXFlowBase(fxFlow.worldObj, posX + subOffset.getX(), posY + subOffset.getY(), posZ + subOffset.getZ(), c, rand.nextInt(1) + fxFlow.getSurroundingParticleSize(), 6, 240);
+                FXFlow.FXFlowBase flow = new FXFlow.FXFlowBase(Minecraft.getMinecraft().theWorld, posX + subOffset.getX(), posY + subOffset.getY(), posZ + subOffset.getZ(), c, rand.nextInt(1) + fxFlow.getSurroundingParticleSize(), 6, 240);
                 Minecraft.getMinecraft().effectRenderer.addEffect(flow);
             }
         }
@@ -67,7 +68,7 @@ public abstract class EntityFXFlowPolicy {
         public static final int TICKS_PER_FULL_TURN = 40;
 
         @Override
-        public void doSubParticles(EntityFXFlow fxFlow, int policyCounter, double posX, double posY, double posZ, double lastPosX, double lastPosY, double lastPosZ) {
+        public void doSubParticles(FXFlow fxFlow, int policyCounter, double posX, double posY, double posZ, double lastPosX, double lastPosY, double lastPosZ) {
             Vector3 rotationAxis = fxFlow.getMovementVector();
 
             Vector3 perpendicular = rotationAxis.clone().perpendicular().normalize().multiply(fxFlow.getSurroundingDistance());
@@ -80,10 +81,11 @@ public abstract class EntityFXFlowPolicy {
             perpendicular = perpendicular.rotate(currentRad, rotationAxis);
             counterSide = counterSide.rotate(currentRad, rotationAxis);
 
+            World w = Minecraft.getMinecraft().theWorld;
             Color c = (fxFlow.getFadingColor() != null) ? fxFlow.getFadingColor() : fxFlow.getColor();
-            EntityFXFlow.FXFlowBase flow = new EntityFXFlow.FXFlowBase(fxFlow.worldObj, posX + perpendicular.getX(), posY + perpendicular.getY(), posZ + perpendicular.getZ(), c, fxFlow.getSurroundingParticleSize(), 6, 240);
+            FXFlow.FXFlowBase flow = new FXFlow.FXFlowBase(w, posX + perpendicular.getX(), posY + perpendicular.getY(), posZ + perpendicular.getZ(), c, fxFlow.getSurroundingParticleSize(), 6, 240);
             Minecraft.getMinecraft().effectRenderer.addEffect(flow);
-            EntityFXFlow.FXFlowBase flow2 = new EntityFXFlow.FXFlowBase(fxFlow.worldObj, posX + counterSide.getX(), posY + counterSide.getY(), posZ + counterSide.getZ(), c, fxFlow.getSurroundingParticleSize(), 6, 240);
+            FXFlow.FXFlowBase flow2 = new FXFlow.FXFlowBase(w, posX + counterSide.getX(), posY + counterSide.getY(), posZ + counterSide.getZ(), c, fxFlow.getSurroundingParticleSize(), 6, 240);
             Minecraft.getMinecraft().effectRenderer.addEffect(flow2);
         }
 
@@ -92,7 +94,7 @@ public abstract class EntityFXFlowPolicy {
     static class CircularMixPolicy extends CircularPolicy {
 
         @Override
-        public void doSubParticles(EntityFXFlow fxFlow, int policyCounter, double posX, double posY, double posZ, double lastPosX, double lastPosY, double lastPosZ) {
+        public void doSubParticles(FXFlow fxFlow, int policyCounter, double posX, double posY, double posZ, double lastPosX, double lastPosY, double lastPosZ) {
             super.doSubParticles(fxFlow, policyCounter, posX, posY, posZ, lastPosX, lastPosY, lastPosZ);
 
             ((DefaultPolicy) Policies.DEFAULT.getPolicy()).doParticles(fxFlow, policyCounter, posX, posY, posZ, fxFlow.getRand().nextInt(2));

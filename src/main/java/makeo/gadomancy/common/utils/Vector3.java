@@ -16,6 +16,8 @@ public class Vector3 {
 
     private static final Random RAND = new Random();
 
+    public static final Vector3 ZERO = new Vector3(0, 0, 0);
+
     protected double x;
     protected double y;
     protected double z;

@@ -2,26 +2,17 @@ package makeo.gadomancy.common.aura;
 
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.network.PacketHandler;
-import makeo.gadomancy.common.network.packets.PacketSyncAuraKnowledge;
 import makeo.gadomancy.common.network.packets.PacketTCNotificationText;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.StatCollector;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.research.ResearchItem;
+import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.lib.research.ResearchManager;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -33,28 +24,17 @@ import java.util.UUID;
  */
 public class AuraResearchManager {
 
-    private static Map<UUID, List<String>> auraMap = new HashMap<UUID, List<String>>();
+    public static final String TC_AURA_RESEARCH_STR = "GADOMANCY.AURA.%s";
 
     public static void tryUnlockAuraEffect(EntityPlayer player, Aspect aspect) {
-        UUID playerUUID = player.getUniqueID();
         if(!AuraEffectHandler.registeredEffects.containsKey(aspect)) return;
-        if(!auraMap.containsKey(playerUUID)) {
-            auraMap.put(playerUUID, new ArrayList<String>());
-        }
-        if(auraMap.get(playerUUID).contains(aspect.getTag())) return;
-        auraMap.get(playerUUID).add(aspect.getTag());
+
+        String res = String.format(TC_AURA_RESEARCH_STR, aspect.getTag());
+        if(ResearchManager.isResearchComplete(player.getCommandSenderName(), res)) return;
+        Thaumcraft.proxy.getResearchManager().completeResearch(player, res);
 
         PacketTCNotificationText text = new PacketTCNotificationText("gadomancy.aura.research.unlock", aspect.getTag());
         PacketHandler.INSTANCE.sendTo(text, (EntityPlayerMP) player);
-
-        PacketSyncAuraKnowledge sync = new PacketSyncAuraKnowledge(auraMap.get(playerUUID));
-        PacketHandler.INSTANCE.sendTo(sync, (EntityPlayerMP) player);
-    }
-
-    //Side: CLIENT!!!
-    public static void recieveServerData(List<String> aspectTags) {
-        UUID ourPlayer = Minecraft.getMinecraft().thePlayer.getUniqueID();
-        auraMap.put(ourPlayer, aspectTags);
     }
 
     public static List<String> getLines(String aspectTag) {
@@ -73,62 +53,18 @@ public class AuraResearchManager {
     }
 
     public static List<String> getKnowledge(EntityPlayer player) {
-        return getKnowledge(player.getUniqueID());
-    }
-
-    public static List<String> getKnowledge(UUID playerUUID) {
-        return auraMap.get(playerUUID);
-    }
-
-    public static void loadDataFromFile(String playerName, UUID uniqueID, File auraData) {
-        if(!auraData.exists()) {
-            auraMap.put(uniqueID, new ArrayList<String>());
-            return;
-        }
-        NBTTagCompound compound;
-        try {
-            compound = CompressedStreamTools.read(auraData);
-        } catch (IOException e) {
-            Gadomancy.log.warn("Unable to load aura data for " + uniqueID + "/" + playerName);
-            auraMap.put(uniqueID, new ArrayList<String>());
-            return;
-        }
-
-        List<String> tags = new ArrayList<String>();
-        NBTTagList aspects = compound.getTagList("aspects", new NBTTagString().getId());
-        for (int i = 0; i < aspects.tagCount(); i++) {
-            String aspect = aspects.getStringTagAt(i);
-            if(Aspect.getAspect(aspect) != null) {
-                tags.add(aspect);
+        List<String> lines = new ArrayList<String>();
+        for(Aspect a : AuraEffectHandler.registeredEffects.keySet()) {
+            if(ResearchManager.isResearchComplete(player.getCommandSenderName(), String.format(TC_AURA_RESEARCH_STR, a.getTag()))) {
+                lines.add(a.getTag());
             }
         }
-        auraMap.put(uniqueID, tags);
+        return lines;
     }
 
-    public static void saveDataToFile(String commandSenderName, UUID uniqueID, File auraData) {
-        if(!auraMap.containsKey(uniqueID)) return;
-        if(!auraData.exists()) {
-            try {
-                auraData.createNewFile();
-            } catch (IOException e) {
-                Gadomancy.log.error("Could not create aura data for " + uniqueID + "/" + commandSenderName);
-                return;
-            }
-        }
-
-        List<String> tags = auraMap.get(uniqueID);
-        NBTTagList list = new NBTTagList();
-        for(String s : tags) {
-            list.appendTag(new NBTTagString(s));
-        }
-        NBTTagCompound cmp = new NBTTagCompound();
-        cmp.setTag("aspects", list);
-        try {
-            CompressedStreamTools.write(cmp, auraData);
-        } catch (IOException e) {
-            Gadomancy.log.error("Could not write aura data for " + uniqueID + "/" + commandSenderName);
-            return;
+    public static void registerAuraResearches() {
+        for(Aspect a : AuraEffectHandler.registeredEffects.keySet()) {
+            new ResearchItem(String.format(TC_AURA_RESEARCH_STR, a.getTag()), Gadomancy.MODID).registerResearchItem();
         }
     }
-
 }

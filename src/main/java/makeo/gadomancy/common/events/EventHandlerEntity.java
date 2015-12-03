@@ -72,30 +72,6 @@ public class EventHandlerEntity {
     }
 
     @SubscribeEvent
-    public void onJoin(EntityJoinWorldEvent event) {
-        if(event.entity != null && event.entity instanceof EntityItem) {
-            ItemStack stack = ((EntityItem) event.entity).getEntityItem();
-            if(stack == null) return;
-            if(event.entity instanceof EntityAuraCore) return;
-            Item i = stack.getItem();
-            if(i instanceof ItemAuraCore) {
-                event.setCanceled(true);
-                if(event.world.isRemote) return;
-                EntityAuraCore e = new EntityAuraCore(event.world);
-                e.setEntityItemStack(((EntityItem) event.entity).getEntityItem());
-                e.setPosition(event.entity.posX, event.entity.posY, event.entity.posZ);
-                e.age = ((EntityItem) event.entity).age;
-                e.hoverStart = ((EntityItem) event.entity).hoverStart;
-                e.delayBeforeCanPickup = ((EntityItem) event.entity).delayBeforeCanPickup;
-                e.motionX = event.entity.motionX;
-                e.motionY = event.entity.motionY;
-                e.motionZ = event.entity.motionZ;
-                event.world.spawnEntityInWorld(e);
-            }
-        }
-    }
-
-    @SubscribeEvent
     public void on(EntityItemPickupEvent event) {
         if(!event.entityPlayer.worldObj.isRemote) {
             if(event.item != null && event.item instanceof EntityPermNoClipItem) {
@@ -123,18 +99,6 @@ public class EventHandlerEntity {
                 player.addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.GRAY + msg));
             }
         }
-    }
-
-    @SubscribeEvent
-    public void onLoad(PlayerEvent.LoadFromFile loadEvent) {
-        File auraData = loadEvent.getPlayerFile("auraDat");
-        AuraResearchManager.loadDataFromFile(loadEvent.entityPlayer.getCommandSenderName(), loadEvent.entityPlayer.getUniqueID(), auraData);
-    }
-
-    @SubscribeEvent
-    public void onSave(PlayerEvent.SaveToFile saveEvent) {
-        File auraData = saveEvent.getPlayerFile("auraDat");
-        AuraResearchManager.saveDataToFile(saveEvent.entityPlayer.getCommandSenderName(), saveEvent.entityPlayer.getUniqueID(), auraData);
     }
 
 }

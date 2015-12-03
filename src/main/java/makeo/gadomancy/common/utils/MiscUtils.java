@@ -2,6 +2,7 @@ package makeo.gadomancy.common.utils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -57,7 +58,11 @@ public final class MiscUtils {
     }
 
     public static Vector3 getPositionVector(Entity e) {
-        return new Vector3(e.posX, e.posY, e.posZ);
+        Vector3 v = new Vector3(e.posX, e.posY, e.posZ);
+        if(e instanceof EntityItem) {
+            v.setY(v.getY() + 0.2F);
+        }
+        return v;
     }
 
 }

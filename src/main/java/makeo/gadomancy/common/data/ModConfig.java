@@ -22,7 +22,11 @@ public class ModConfig {
     public static int entityNoClipItemDatawatcherFixedId = 20;
 
     @Sync
-    public static int entityAuraCoreDatawatcherAspectId = 21;
+    public static int entityAuraCoreDatawatcherAspectsId = 21;
+    @Sync
+    public static int entityAuraCoreDatawatcherCoordId = 22;
+    @Sync
+    public static int entityAuraCoreDatawatcherTickId = 23;
 
     @Sync
     public static int golemDatawatcherId = 29;
@@ -53,7 +57,9 @@ public class ModConfig {
         entityNoClipItemDatawatcherMasterId = config.getInt("itemNoClipDatawatcherMasterId", "entities", 19, 0, 31, "Do not edit unless you know what are you doing! - Datawatcher ID of the Master-Coordinates for EntityNoClipItem");
         entityNoClipItemDatawatcherFixedId = config.getInt("itemNoClipDatawatcherFixId", "entities", 20, 0, 31, "Do not edit unless you know what are you doing! - Datawatcher ID of the Fixed-Coordinates for EntityNoClipItem");
 
-        entityAuraCoreDatawatcherAspectId = config.getInt("auraCoreDatawatcherAuraId", "entities", 21, 0, 31, "Do not edit unless you know what are you doing! - Datawatcher ID of the Auracore's current main aspect");
+        entityAuraCoreDatawatcherAspectsId = config.getInt("auraCoreDatawatcherAuraId", "entities", 21, 0, 31, "Do not edit unless you know what are you doing! - Datawatcher ID of the Auracore's current aspects");
+        entityAuraCoreDatawatcherCoordId = config.getInt("auraCoreDatawatcherCoordId", "entities", 22, 0, 31, "Do not edit unless you know what are you doing! - Datawatcher ID of the Auracore's starting crystal cluster coords");
+        entityAuraCoreDatawatcherTickId = config.getInt("auraCoreDatawatcherTickId", "entities", 23, 0, 31, "Do not edit unless you know what are you doing! - Datawatcher ID of the Auracore's interal effect tick to keep the core synced");
 
         golemDatawatcherId = config.getInt("datawatcherId", "golem", 29, 0, 31, "Do not edit unless you know what are you doing!");
 

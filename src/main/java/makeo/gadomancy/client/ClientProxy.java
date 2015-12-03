@@ -15,6 +15,7 @@ import makeo.gadomancy.client.renderers.block.BlockExtendedNodeJarRenderer;
 import makeo.gadomancy.client.renderers.block.RenderBlockStoneMachine;
 import makeo.gadomancy.client.renderers.block.RenderBlockTransparent;
 import makeo.gadomancy.client.renderers.entity.RenderAdditionalGolemBase;
+import makeo.gadomancy.client.renderers.entity.RenderEntityAuraCore;
 import makeo.gadomancy.client.renderers.entity.RenderEntityItem;
 import makeo.gadomancy.client.renderers.item.ItemCreativeNodeRenderer;
 import makeo.gadomancy.client.renderers.item.ItemExNodeRenderer;
@@ -149,7 +150,7 @@ public class ClientProxy extends CommonProxy {
 
         //Entities
         RenderingRegistry.registerEntityRenderingHandler(EntityPermNoClipItem.class, new RenderSpecialItem());
-        RenderingRegistry.registerEntityRenderingHandler(EntityAuraCore.class, new RenderEntityItem());
+        RenderingRegistry.registerEntityRenderingHandler(EntityAuraCore.class, new RenderEntityAuraCore());
 
         //Blocks
         RegisteredBlocks.rendererTransparentBlock = registerBlockRenderer(new RenderBlockTransparent());
