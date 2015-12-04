@@ -166,12 +166,12 @@ public class FXFlow {
             return;
         }
 
-        FXFlowBase flow = new FXFlowBase(Minecraft.getMinecraft().theWorld, posX, posY, posZ, color, mainParticleSize, 9, 240);
+        FXFlowBase flow = new FXFlowBase(origin, posX, posY, posZ, color, mainParticleSize, 9, 240);
         Minecraft.getMinecraft().effectRenderer.addEffect(flow); //Initial position.
         double lastPosX = posX - (posX - lastTickPosX) / 2.0D;
         double lastPosY = posY - (posY - lastTickPosY) / 2.0D;
         double lastPosZ = posZ - (posZ - lastTickPosZ) / 2.0D;
-        FXFlowBase flow2 = new FXFlowBase(Minecraft.getMinecraft().theWorld, lastPosX, lastPosY, lastPosZ, color, (float) (mainParticleSize * 0.8), 8, 240);
+        FXFlowBase flow2 = new FXFlowBase(origin, lastPosX, lastPosY, lastPosZ, color, (float) (mainParticleSize * 0.8), 8, 240);
         Minecraft.getMinecraft().effectRenderer.addEffect(flow2); //Consistency to last position
 
         if(policy != null)
