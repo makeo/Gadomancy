@@ -46,11 +46,11 @@ public abstract class EntityFXFlowPolicy {
         }
 
         public void doParticles(FXFlow fxFlow, int policyCounter, double posX, double posY, double posZ, int count) {
-            Random rand = fxFlow.getRand();
+            Random rand = fxFlow.getOriginWorld().rand;
             for (int i = 0; i < count; i++) {
                 Vector3 subOffset = genSubOffset(rand, fxFlow.getSurroundingDistance());
                 Color c = (fxFlow.getFadingColor() != null && rand.nextBoolean()) ? fxFlow.getFadingColor() : fxFlow.getColor();
-                FXFlow.FXFlowBase flow = new FXFlow.FXFlowBase(Minecraft.getMinecraft().theWorld, posX + subOffset.getX(), posY + subOffset.getY(), posZ + subOffset.getZ(), c, rand.nextInt(1) + fxFlow.getSurroundingParticleSize(), 6, 240);
+                FXFlow.FXFlowBase flow = new FXFlow.FXFlowBase(fxFlow.getOriginWorld(), posX + subOffset.getX(), posY + subOffset.getY(), posZ + subOffset.getZ(), c, rand.nextInt(1) + fxFlow.getSurroundingParticleSize(), 6, 240);
                 Minecraft.getMinecraft().effectRenderer.addEffect(flow);
             }
         }
@@ -81,7 +81,7 @@ public abstract class EntityFXFlowPolicy {
             perpendicular = perpendicular.rotate(currentRad, rotationAxis);
             counterSide = counterSide.rotate(currentRad, rotationAxis);
 
-            World w = Minecraft.getMinecraft().theWorld;
+            World w = fxFlow.getOriginWorld();
             Color c = (fxFlow.getFadingColor() != null) ? fxFlow.getFadingColor() : fxFlow.getColor();
             FXFlow.FXFlowBase flow = new FXFlow.FXFlowBase(w, posX + perpendicular.getX(), posY + perpendicular.getY(), posZ + perpendicular.getZ(), c, fxFlow.getSurroundingParticleSize(), 6, 240);
             Minecraft.getMinecraft().effectRenderer.addEffect(flow);
