@@ -209,6 +209,10 @@ public class FXFlow {
     public Vector3 getTarget() {
         return target;
     }
+    
+    public World getOriginWorld() {
+        return origin;
+    }
 
     public Vector3 getMovementVector() {
         if(isMovementVectorNullLength()) return new Vector3(unmodMotionBufX, unmodMotionBufY, unmodMotionBufZ);
