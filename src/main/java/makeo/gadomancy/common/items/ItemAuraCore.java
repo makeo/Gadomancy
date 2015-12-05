@@ -143,6 +143,10 @@ public class ItemAuraCore extends Item {
             this.unused = unused;
         }
 
+        public boolean isUnused() {
+            return unused;
+        }
+
         public boolean isAspect() {
             return aspect != null;
         }

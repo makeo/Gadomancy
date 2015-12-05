@@ -205,6 +205,11 @@ public class BlockStoneMachine extends Block {
                 dropBlockAsItem(world, x, y, z, metadata, 0);
                 world.setBlockToAir(x, y, z);
             }
+        } else if(metadata == 4) {
+            if(!world.isRemote) {
+                TileArcanePackager tile = (TileArcanePackager) world.getTileEntity(x, y, z);
+                tile.updateRedstone(world.isBlockIndirectlyGettingPowered(x, y, z));
+            }
         }
     }
 

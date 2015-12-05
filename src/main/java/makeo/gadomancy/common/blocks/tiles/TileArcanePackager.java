@@ -35,6 +35,7 @@ public class TileArcanePackager extends TileJarFillable implements IInventory, I
     public boolean autoStart = false;
     public boolean useEssentia = false;
     public boolean disguise = false;
+    private Boolean redstoneState = null;
 
     private int count = 0;
 
@@ -45,6 +46,8 @@ public class TileArcanePackager extends TileJarFillable implements IInventory, I
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
+
+        redstoneState = compound.getBoolean("");
 
         contents = new ItemStack[getSizeInventory()];
         NBTTagList list = compound.getTagList("Items", 10);
@@ -83,6 +86,10 @@ public class TileArcanePackager extends TileJarFillable implements IInventory, I
                 progress++;
             }
         } else {
+            if (redstoneState == null) {
+                redstoneState = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+            }
+
             if (progress >= 47) {
                 doPack();
                 progress = -1;
@@ -99,6 +106,16 @@ public class TileArcanePackager extends TileJarFillable implements IInventory, I
                 }
             }
         }
+    }
+
+    public void updateRedstone(boolean state) {
+        if(redstoneState != null && state && !redstoneState) {
+            if (canPack()) {
+                progress = 0;
+                markForUpdate();
+            }
+        }
+        redstoneState = state;
     }
 
     private boolean canPack() {
@@ -135,13 +152,6 @@ public class TileArcanePackager extends TileJarFillable implements IInventory, I
         }
 
         return true;
-    }
-
-    private boolean startPack() {
-        if (canPack()) {
-
-        }
-        return false;
     }
 
     private void doPack() {

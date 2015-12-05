@@ -49,6 +49,8 @@ public class ArcanePackagerGui extends GuiContainer {
         GL11.glEnable(GL11.GL_BLEND);
         this.mc.renderEngine.bindTexture(TEXTURE);
 
+        GL11.glColor3f(1, 1, 1);
+
         if(tile.progress > 0) {
             drawTexturedModalRect(89, 67, 210, 0, tile.progress, 9);
         }

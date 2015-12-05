@@ -1,16 +1,20 @@
 package makeo.gadomancy.common.registration;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.crafting.InfusionUpgradeRecipe;
 import makeo.gadomancy.common.crafting.RecipeStickyJar;
 import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.items.ItemAuraCore;
 import makeo.gadomancy.common.items.baubles.ItemFamiliar;
 import makeo.gadomancy.common.research.SimpleResearchItem;
 import makeo.gadomancy.common.utils.NBTHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -67,6 +71,10 @@ public class RegisteredRecipes {
 
     public static CrucibleRecipe recipeAncientStonePedestal = null;
     public static IArcaneRecipe recipeAncientStone = null;
+
+    public static CrucibleRecipe[] recipesWashAuraCore;
+    public static IRecipe[] recipesUndoAuraCore;
+
 
     public static void init() {
         AdditionalGolemType typeSilverwood = RegisteredGolemStuff.typeSilverwood;
@@ -157,12 +165,29 @@ public class RegisteredRecipes {
                     "SSS", "SES", "SSS", 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6), 'E', new ItemStack(ConfigItems.itemEldritchObject));
             recipeAncientStonePedestal = ThaumcraftApi.addCrucibleRecipe(Gadomancy.MODID.toUpperCase() + ".ANCIENT_STONES", new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15), new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 7), new AspectList().add(Aspect.ELDRITCH, 8).add(Aspect.EXCHANGE, 8).add(Aspect.ENTROPY, 12));
         }
+
+        ItemAuraCore.AuraCoreType[] auraCoreTypes = ItemAuraCore.AuraCoreType.values();
+        recipesWashAuraCore = new CrucibleRecipe[auraCoreTypes.length - 1];
+        List<IRecipe> recipesUndoAuraCore = new ArrayList<IRecipe>();
+
+        for(int i = 1; i < auraCoreTypes.length; i++) {
+            recipesWashAuraCore[i-1] = ThaumcraftApi.addCrucibleRecipe(SimpleResearchItem.getFullName("GOLEMCOREBREAK"), new ItemStack(RegisteredItems.itemAuraCore), new ItemStack(RegisteredItems.itemAuraCore, 1, i), new AspectList().add(Aspect.MAGIC, 3).add(Aspect.WATER, 2).add(Aspect.HEAL, 4));
+
+            if(auraCoreTypes[i].isUnused()) {
+                GameRegistry.addShapelessRecipe(new ItemStack(RegisteredItems.itemAuraCore), new ItemStack(RegisteredItems.itemAuraCore, 1, i));
+
+                List list = CraftingManager.getInstance().getRecipeList();
+                recipesUndoAuraCore.add((IRecipe)list.get(list.size() - 1));
+            }
+        }
+
+        RegisteredRecipes.recipesUndoAuraCore = recipesUndoAuraCore.toArray(new IRecipe[recipesUndoAuraCore.size()]);
     }
 
     private static InfusionRecipe[][] createFamiliarAugmentationRecipes() {
         InfusionRecipe[][] recipes = new InfusionRecipe[5][];
         ItemWispEssence wispEssence = (ItemWispEssence) ConfigItems.itemWispEssence;
-        ItemFamiliar familiar = (ItemFamiliar) RegisteredItems.itemFamiliar;
+        ItemFamiliar familiar = RegisteredItems.itemFamiliar;
 
         List<Aspect> aspects = new ArrayList<Aspect>(Aspect.aspects.values());
         InfusionRecipe[] upgradeArrayStr1 = new InfusionRecipe[aspects.size()];
