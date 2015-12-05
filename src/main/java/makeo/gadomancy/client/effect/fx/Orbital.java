@@ -79,7 +79,7 @@ public final class Orbital {
                 Color c = (world.rand.nextBoolean()) ? orbitalNode.getSubParticleColor() : orbitalNode.getColor();
                 FXFlow.FXFlowBase flow2 = new FXFlow.FXFlowBase(world,
                         point.getX() + subOffset.getX(), point.getY() + subOffset.getY(), point.getZ() + subOffset.getZ(),
-                        c, 0.1F + (world.rand.nextBoolean() ? 0.0F : 0.1F), 6, 240);
+                        c, 0.05F + (world.rand.nextBoolean() ? 0.0F : 0.025F), 6, 240);
 
                 Minecraft.getMinecraft().effectRenderer.addEffect(flow2);
             }

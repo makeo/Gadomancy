@@ -20,7 +20,7 @@ public class PrimalAspectList extends AspectList {
 
     @Override
     public AspectList add(AspectList in) {
-        ResearchManager.reduceToPrimals(in);
+        in = ResearchManager.reduceToPrimals(in);
         return super.add(in);
     }
 
@@ -28,7 +28,7 @@ public class PrimalAspectList extends AspectList {
     public AspectList add(Aspect aspect, int amount) {
         AspectList al = new AspectList();
         al.add(aspect, amount);
-        ResearchManager.reduceToPrimals(al);
+        al = ResearchManager.reduceToPrimals(al);
         for(Aspect a : al.getAspects()) {
             super.add(a, al.getAmount(a));
         }
