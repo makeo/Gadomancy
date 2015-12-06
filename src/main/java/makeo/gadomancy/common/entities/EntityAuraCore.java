@@ -8,6 +8,8 @@ import makeo.gadomancy.client.effect.fx.FXFlow;
 import makeo.gadomancy.client.effect.fx.Orbital;
 import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.items.ItemAuraCore;
+import makeo.gadomancy.common.network.PacketHandler;
+import makeo.gadomancy.common.network.packets.PacketStartAnimation;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.PrimalAspectList;
@@ -15,16 +17,21 @@ import makeo.gadomancy.common.utils.Vector3;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ScanResult;
 import thaumcraft.common.lib.research.ScanManager;
+import thaumcraft.common.lib.utils.BlockUtils;
 
 import java.awt.Color;
 import java.util.*;
@@ -134,6 +141,12 @@ public class EntityAuraCore extends EntityItem implements IEntityAdditionalSpawn
                     Color c = getSubParticleColor(effectAspects[i]);
                     node.setSubParticleColor(c);
                     node.setParticleSize(0.1f);
+                    node.setSubSizeRunnable(new Orbital.OrbitalSubSizeRunnable() {
+                        @Override
+                        public float getSubParticleSize(Random rand, int orbitalExisted) {
+                            return 0.05F + (rand.nextBoolean() ? 0.0F : 0.025F);
+                        }
+                    });
                     //node.setMultiplier()
                     effectProperties[i] = node;
                 }
@@ -181,6 +194,7 @@ public class EntityAuraCore extends EntityItem implements IEntityAdditionalSpawn
 
     private void finishCore() {
         ItemStack auraCore = new ItemStack(RegisteredItems.itemAuraCore, 1, 0);
+        boolean success = false;
         if(blockCount >= REQUIRED_BLOCKS) {
             double avg = ((double) this.internalAuraList.visSize()) / ((double) this.internalAuraList.size());
             Aspect[] sortedHtL = this.internalAuraList.getAspectsSortedAmount();
@@ -203,11 +217,18 @@ public class EntityAuraCore extends EntityItem implements IEntityAdditionalSpawn
             for(ItemAuraCore.AuraCoreType type : ItemAuraCore.AuraCoreType.values()) {
                 if(type.isAspect() && type.getAspect().equals(aura)) {
                     RegisteredItems.itemAuraCore.setCoreType(auraCore, type);
+                    success = true;
                 }
             }
-        } else {
-            //TODO: Failure animation
         }
+
+        PacketStartAnimation animationPacket;
+        if(!success) {
+            animationPacket = new PacketStartAnimation(PacketStartAnimation.ID_SMOKE_SPREAD, (int) posX, (int) posY, (int) posZ, Float.floatToIntBits(2F));
+        } else {
+            animationPacket = new PacketStartAnimation(PacketStartAnimation.ID_SPARKLE_SPREAD, (int) posX, (int) posY, (int) posZ, (byte) 0);
+        }
+        PacketHandler.INSTANCE.sendToAllAround(animationPacket, MiscUtils.getTargetPoint(worldObj, this, 32));
 
         EntityItem ei = new EntityItem(worldObj, posX, posY, posZ, auraCore);
         ei.motionX = 0;
@@ -250,7 +271,28 @@ public class EntityAuraCore extends EntityItem implements IEntityAdditionalSpawn
                     Block block = worldObj.getBlock(x, y, z);
                     if(block != Blocks.air) {
                         int meta = worldObj.getBlockMetadata(x, y, z);
-                        AspectList aspects = ScanManager.getScanAspects(new ScanResult((byte)1, Block.getIdFromBlock(block), meta, null, null), worldObj);
+                        ScanResult result = null;
+                        MovingObjectPosition pos = new MovingObjectPosition(x, y, z, ForgeDirection.UP.ordinal(),
+                                Vec3.createVectorHelper(0, 0, 0), true);
+                        ItemStack is = block.getPickBlock(pos, worldObj, x, y, z);
+                        try {
+                            if(is == null) {
+                                is = BlockUtils.createStackedBlock(block, meta);
+                            }
+                        }
+                        catch (Exception e) {}
+                        try {
+                            if (is == null) {
+                                result = new ScanResult((byte)1, Block.getIdFromBlock(block), meta, null, "");
+                            } else {
+                                result = new ScanResult((byte)1, Item.getIdFromItem(is.getItem()), is.getItemDamage(), null, "");
+                            }
+                        }
+                        catch (Exception e) {}
+
+                        if(result == null) continue; //We can't scan it BibleThump
+
+                        AspectList aspects = ScanManager.getScanAspects(result, worldObj);
                         if(aspects.size() > 0) {
                             internalAuraList.add(aspects);
                             blockCount++;

@@ -1,5 +1,10 @@
 package makeo.gadomancy.client.util;
 
+import makeo.gadomancy.common.utils.MiscUtils;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.particle.EntitySmokeFX;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import thaumcraft.common.Thaumcraft;
 
@@ -19,7 +24,7 @@ public class UtilsFX {
     private static final Color[] RUNE_COLORS_GREEN = new Color[] { new Color(0x015629), new Color(0x0E9C00), new Color(0x010000), new Color(0x01FF00), new Color(0x014C3E)};
     private static final Color[] RUNE_COLORS_BLUE = new Color[] { new Color(0x060956), new Color(0x012578), new Color(0x0C1556), new Color(0x0100FF), new Color(0x01018C)};
 
-    public static void doRuneEffects(World world, int x, int y, int z, byte colorFlag) {
+    public static void doRuneEffects(World world, int x, int y, int z, int colorFlag) {
         if(world.isRemote) {
             int cnt = 20;
             while(cnt > 0) {
@@ -31,7 +36,7 @@ public class UtilsFX {
         }
     }
 
-    private static Color evaluateRandomColor(Random rand, byte colorFlag) {
+    private static Color evaluateRandomColor(Random rand, int colorFlag) {
         Color[] possibleColors;
         if(colorFlag == 1) {
             possibleColors = RUNE_COLORS_BLUE;
@@ -46,16 +51,31 @@ public class UtilsFX {
     }
 
     public static void doSparkleEffectsAround(World world, int x, int y, int z) {
-        doSparkleEffects(world, x,     y,     z);
-        doSparkleEffects(world, x + 1, y,     z);
-        doSparkleEffects(world, x,     y,     z + 1);
-        doSparkleEffects(world, x - 1, y,     z);
-        doSparkleEffects(world, x,     y,     z - 1);
-        doSparkleEffects(world, x,     y - 1, z);
-        doSparkleEffects(world, x,     y + 1, z);
+        for(ChunkCoordinates cc : MiscUtils.getCoordinatesAround(new ChunkCoordinates(x, y, z))) {
+            doSparkleEffects(world, cc.posX, cc.posY, cc.posZ);
+        }
     }
 
     public static void doSparkleEffects(World world, int x, int y, int z) {
         Thaumcraft.proxy.blockSparkle(world, x, y, z, -9999, 10);
+    }
+
+    public static void doSmokeEffects(World world, int x, int y, int z, float size) {
+        int count = world.rand.nextInt(6) + 2;
+        for (int i = 0; i < count; i++) {
+            Minecraft.getMinecraft().effectRenderer.addEffect(
+                    new EntitySmokeFX(world, x + 0.5 + randEffectOffset(world.rand), y + 0.5 + randEffectOffset(world.rand), z + 0.5 + randEffectOffset(world.rand),
+                            randEffectOffset(world.rand) * 0.01F, randEffectOffset(world.rand) * 0.1F, randEffectOffset(world.rand) * 0.01F, size));
+        }
+    }
+
+    public static void doSmokeEffectsAround(World world, int x, int y, int z, float size) {
+        for(ChunkCoordinates cc : MiscUtils.getCoordinatesAround(new ChunkCoordinates(x, y, z))) {
+            doSmokeEffects(world, cc.posX, cc.posY, cc.posZ, size);
+        }
+    }
+
+    private static double randEffectOffset(Random rand) {
+        return rand.nextDouble() * (rand.nextBoolean() ? -1 : 1);
     }
 }

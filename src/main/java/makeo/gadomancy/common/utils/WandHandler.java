@@ -1,6 +1,7 @@
 package makeo.gadomancy.common.utils;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
+import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
 import makeo.gadomancy.common.entities.EntityAuraCore;
@@ -62,8 +63,7 @@ public class WandHandler {
                 tryAutomagyJarNodeCreation(i, entityPlayer, world, x, y, z);
             }
         } else if(target.equals(ConfigBlocks.blockCrystal)) {
-            //TODO 1 line down from here :3
-            //if (ResearchManager.isResearchComplete(entityPlayer.getCommandSenderName(), "INSERT_STH_HERE"))
+            if (ResearchManager.isResearchComplete(entityPlayer.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".AURA_CORE"))
                 tryAuraCoreCreation(i, entityPlayer, world, x, y, z);
         }
     }

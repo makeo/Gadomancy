@@ -26,6 +26,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.lib.research.ResearchManager;
 
 import java.util.List;
 
@@ -101,10 +102,13 @@ public class BlockAuraPylon extends BlockContainer implements IBlockTransparent 
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9) {
-        if(world.getBlockMetadata(x, y, z) != 1) return false;
+        if(world.getBlockMetadata(x, y, z) != 1) {
+            Block up = world.getBlock(x, y + 1, z);
+            return up instanceof BlockAuraPylon && up.onBlockActivated(world, x, y, z, player, side, par7, par8, par9);
+        }
         ItemStack heldItem = player.getHeldItem();
-        if(!world.isRemote && heldItem != null && heldItem.getItem() instanceof ItemWandCasting) {
-            //TODO check for research!
+        if(!world.isRemote && heldItem != null && heldItem.getItem() instanceof ItemWandCasting &&
+                ResearchManager.isResearchComplete(player.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".AURA_PYLON")) {
             if(MultiblockHelper.isMultiblockPresent(world, x, y, z, RegisteredMultiblocks.auraPylonPattern) &&
                     ThaumcraftApiHelper.consumeVisFromWandCrafting(player.getCurrentEquippedItem(), player, RegisteredRecipes.costsAuraPylonMultiblock, true)) {
                 PacketStartAnimation pkt = new PacketStartAnimation(PacketStartAnimation.ID_SPARKLE_SPREAD, x, y, z);

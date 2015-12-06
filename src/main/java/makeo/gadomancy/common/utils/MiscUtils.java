@@ -1,13 +1,18 @@
 package makeo.gadomancy.common.utils;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,6 +36,30 @@ public final class MiscUtils {
             case 3: return "rd";
         }
         return "th";
+    }
+
+    public static List<ChunkCoordinates> getCoordinatesAround(ChunkCoordinates center) {
+        List<ChunkCoordinates> coords = new ArrayList<ChunkCoordinates>();
+        coords.add(new ChunkCoordinates(center.posX, center.posY, center.posZ));
+        coords.add(new ChunkCoordinates(center.posX + 1, center.posY,     center.posZ));
+        coords.add(new ChunkCoordinates(center.posX,     center.posY,     center.posZ + 1));
+        coords.add(new ChunkCoordinates(center.posX - 1, center.posY,     center.posZ));
+        coords.add(new ChunkCoordinates(center.posX,     center.posY,     center.posZ - 1));
+        coords.add(new ChunkCoordinates(center.posX,     center.posY - 1, center.posZ));
+        coords.add(new ChunkCoordinates(center.posX,     center.posY + 1, center.posZ));
+        return coords;
+    }
+
+    public static NetworkRegistry.TargetPoint getTargetPoint(World world, Entity entity, double range) {
+        return getTargetPoint(world, range, getPositionVector(entity));
+    }
+
+    public static NetworkRegistry.TargetPoint getTargetPoint(World world, TileEntity tileEntity, double range) {
+        return getTargetPoint(world, range, new Vector3(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord));
+    }
+
+    public static NetworkRegistry.TargetPoint getTargetPoint(World world, double range, Vector3 target) {
+        return new NetworkRegistry.TargetPoint(world.provider.dimensionId, target.getX(), target.getY(), target.getZ(), range);
     }
 
     public static EntityPlayer getOnlinePlayerByUUIDClient(UUID playerUUID) {

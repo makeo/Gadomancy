@@ -68,7 +68,7 @@ public final class Orbital {
             Vector3 point = axis.getAxis().clone().perpendicular().normalize().multiply(orbitalNode.getOffset()).rotate(currentRad, axis.getAxis()).add(center);
 
             if(orbitalNode.getRunnable() != null) {
-                orbitalNode.getRunnable().onRender(point, orbitalNode, partialTicks);
+                orbitalNode.getRunnable().onRender(point, orbitalNode, orbitalCounter, partialTicks);
             }
 
             FXFlow.FXFlowBase flow = new FXFlow.FXFlowBase(world, point.getX(), point.getY(), point.getZ(),
@@ -79,7 +79,7 @@ public final class Orbital {
                 Color c = (world.rand.nextBoolean()) ? orbitalNode.getSubParticleColor() : orbitalNode.getColor();
                 FXFlow.FXFlowBase flow2 = new FXFlow.FXFlowBase(world,
                         point.getX() + subOffset.getX(), point.getY() + subOffset.getY(), point.getZ() + subOffset.getZ(),
-                        c, 0.05F + (world.rand.nextBoolean() ? 0.0F : 0.025F), 6, 240);
+                        c, orbitalNode.getSubSizeRunnable().getSubParticleSize(world.rand, orbitalCounter), 6, 240);
 
                 Minecraft.getMinecraft().effectRenderer.addEffect(flow2);
             }
@@ -151,6 +151,13 @@ public final class Orbital {
 
     public static class OrbitalRenderProperties {
 
+        private static final OrbitalSubSizeRunnable subSizeRunnableStatic = new OrbitalSubSizeRunnable() {
+            @Override
+            public float getSubParticleSize(Random rand, int orbitalExisted) {
+                return 0.1F + (rand.nextBoolean() ? 0.0F : 0.1F);
+            }
+        };
+
         private Axis axis;
         private double originalOffset, offset;
         private Color color = Color.WHITE;
@@ -162,14 +169,22 @@ public final class Orbital {
         private int offsetTicks = 0;
 
         private Color subParticleColor = null;
+        private OrbitalSubSizeRunnable subSizeRunnable;
 
         public OrbitalRenderProperties(Axis axis, double offsetLength) {
             this.offset = this.originalOffset = offsetLength;
             this.axis = axis;
+            this.subSizeRunnable = subSizeRunnableStatic;
         }
 
         public OrbitalRenderProperties setColor(Color color) {
             this.color = color;
+            return this;
+        }
+
+        public OrbitalRenderProperties setSubSizeRunnable(OrbitalSubSizeRunnable subSizeRunnable) {
+            if(subSizeRunnable == null) return this;
+            this.subSizeRunnable = subSizeRunnable;
             return this;
         }
 
@@ -241,6 +256,10 @@ public final class Orbital {
             return runnable;
         }
 
+        public OrbitalSubSizeRunnable getSubSizeRunnable() {
+            return subSizeRunnable;
+        }
+
         public int getMultiplier() {
             return multiplier;
         }
@@ -254,8 +273,12 @@ public final class Orbital {
         }
     }
 
+    public static abstract class OrbitalSubSizeRunnable {
+        public abstract float getSubParticleSize(Random rand, int orbitalExisted);
+    }
+
     public static abstract class OrbitalRenderRunnable {
-        public abstract void onRender(Vector3 selectedPosition, OrbitalRenderProperties properties, float partialTicks);
+        public abstract void onRender(Vector3 selectedPosition, OrbitalRenderProperties properties, int orbitalExisted, float partialTicks);
     }
 
     public static class Axis {
