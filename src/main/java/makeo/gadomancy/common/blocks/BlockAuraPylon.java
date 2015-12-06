@@ -104,12 +104,14 @@ public class BlockAuraPylon extends BlockContainer implements IBlockTransparent 
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9) {
         if(world.getBlockMetadata(x, y, z) != 1) {
             Block up = world.getBlock(x, y + 1, z);
-            return up instanceof BlockAuraPylon && up.onBlockActivated(world, x, y, z, player, side, par7, par8, par9);
+            return up != null && up instanceof BlockAuraPylon && up.onBlockActivated(world, x, y + 1, z, player, side, par7, par8, par9);
         }
         ItemStack heldItem = player.getHeldItem();
         if(!world.isRemote && heldItem != null && heldItem.getItem() instanceof ItemWandCasting &&
                 ResearchManager.isResearchComplete(player.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".AURA_PYLON")) {
+            TileAuraPylon tileAuraPylon = (TileAuraPylon) world.getTileEntity(x, y - 1, z);
             if(MultiblockHelper.isMultiblockPresent(world, x, y, z, RegisteredMultiblocks.auraPylonPattern) &&
+                    !tileAuraPylon.isPartOfMultiblock() &&
                     ThaumcraftApiHelper.consumeVisFromWandCrafting(player.getCurrentEquippedItem(), player, RegisteredRecipes.costsAuraPylonMultiblock, true)) {
                 PacketStartAnimation pkt = new PacketStartAnimation(PacketStartAnimation.ID_SPARKLE_SPREAD, x, y, z);
                 NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 32);

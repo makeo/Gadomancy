@@ -187,7 +187,10 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
         }
         if(entity == null) return;
         if(dummy.getDistanceToEntity(entity) < 1 && !worldObj.isRemote) {
-            this.crystalEssentiaStack = entity.getEntityItem();
+            ItemStack inter = entity.getEntityItem();
+            inter.stackSize--;
+            this.crystalEssentiaStack = inter.copy();
+            this.crystalEssentiaStack.stackSize = 1;
 
             EntityPermNoClipItem item = new EntityPermNoClipItem(entity.worldObj, xCoord + 0.5F, yC + 0.3F, zCoord + 0.5F, crystalEssentiaStack, xCoord, yCoord, zCoord);
             entity.worldObj.spawnEntityInWorld(item);
@@ -201,7 +204,8 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
             holdingAspect = ((ItemCrystalEssence) crystalEssentiaStack.getItem()).getAspects(crystalEssentiaStack).getAspects()[0];
             distributeAspectInformation();
 
-            entity.setDead();
+            if(inter.stackSize <= 0) entity.setDead();
+            entity.noClip = false;
             item.delayBeforeCanPickup = 60;
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             markDirty();
