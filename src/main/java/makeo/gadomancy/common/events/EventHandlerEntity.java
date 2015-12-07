@@ -1,38 +1,29 @@
 package makeo.gadomancy.common.events;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import makeo.gadomancy.common.aura.AuraResearchManager;
 import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
 import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
 import makeo.gadomancy.common.data.ModConfig;
-import makeo.gadomancy.common.entities.EntityAuraCore;
 import makeo.gadomancy.common.entities.EntityPermNoClipItem;
 import makeo.gadomancy.common.familiar.FamiliarAIController;
-import makeo.gadomancy.common.items.ItemAuraCore;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.IBossDisplayData;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import thaumcraft.common.items.armor.Hover;
-
-import java.io.File;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -52,7 +43,11 @@ public class EventHandlerEntity {
     }*/
 
     public static int onGetFortuneLevel(EntityLivingBase entity) {
-        return EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, entity.getHeldItem());
+        return 400;
+    }
+
+    public static int onGetEnchantmentLevel(int enchantmentId, ItemStack stack) {
+        return 0;
     }
 
     @SubscribeEvent

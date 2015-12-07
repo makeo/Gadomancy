@@ -2,7 +2,7 @@ package makeo.gadomancy.coremod;
 
 import cpw.mods.fml.common.asm.transformers.AccessTransformer;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
@@ -42,6 +42,15 @@ public class GadomancyTransformer extends AccessTransformer {
                     mn.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0));
                     mn.instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "makeo/gadomancy/common/events/EventHandlerEntity",
                             "onGetFortuneLevel", "(Lnet/minecraft/entity/EntityLivingBase;)I", false));
+                    mn.instructions.add(new InsnNode(Opcodes.IRETURN));
+
+                } else if(mn.name.equals("getEnchantmentLevel") || mn.name.equals("func_77506_a")) {
+                    mn.instructions = new InsnList();
+
+                    mn.instructions.add(new VarInsnNode(Opcodes.ILOAD, 0));
+                    mn.instructions.add(new VarInsnNode(Opcodes.ALOAD, 1));
+                    mn.instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "makeo/gadomancy/common/events/EventHandlerEntity",
+                            "onGetEnchantmentLevel", "(ILnet/minecraft/item/ItemStack;)I", false));
                     mn.instructions.add(new InsnNode(Opcodes.IRETURN));
                 }
             }
