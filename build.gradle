@@ -31,7 +31,9 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'FMLAT': 'gadomancy_at.cfg'
+        attributes 'FMLAT': 'gadomancy_at.cfg',
+                'FMLCorePlugin': 'makeo.gadomancy.coremod.GadomancyCore',
+                'FMLCorePluginContainsFMLMod': 'true'
     }
 }
 
