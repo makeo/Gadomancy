@@ -260,8 +260,8 @@ public class RegisteredResearches {
                 .setPages(new ResearchPage("gadomancy.research_page.AURA_CORE.1")).registerResearchItem();
 
         researchCleanAuraCore = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".CLEAN_AURA_CORE", Gadomancy.MODID,
-                new AspectList().add(Aspect.HEAL, 12).add(Aspect.AURA, 10).add(Aspect.MAGIC, 8),
-                1, 5, 2, new ItemStack(RegisteredItems.itemAuraCore))
+                new AspectList().add(Aspect.HEAL, 8).add(Aspect.AURA, 6).add(Aspect.MAGIC, 8).add(Aspect.WATER, 10),
+                1, 5, 0, new ItemStack(RegisteredItems.itemAuraCore))
                 .setConcealed()
                 .setParents(researchAuraCore.key)
                 .setPages(new ResearchPage("gadomancy.research_page.CLEAN_AURA_CORE.1"), new ResearchPage(RegisteredRecipes.recipesWashAuraCore), new ResearchPage("gadomancy.research_page.CLEAN_AURA_CORE.3"), new ResearchPage(RegisteredRecipes.recipesUndoAuraCore)).registerResearchItem();

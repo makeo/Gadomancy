@@ -29,6 +29,8 @@ public class AuraResearchManager {
     public static void tryUnlockAuraEffect(EntityPlayer player, Aspect aspect) {
         if(!AuraEffectHandler.registeredEffects.containsKey(aspect)) return;
 
+        if(!ResearchManager.isResearchComplete(player.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".AURA_EFFECTS")) return;
+
         String res = String.format(TC_AURA_RESEARCH_STR, aspect.getTag());
         if(ResearchManager.isResearchComplete(player.getCommandSenderName(), res)) return;
         Thaumcraft.proxy.getResearchManager().completeResearch(player, res);
