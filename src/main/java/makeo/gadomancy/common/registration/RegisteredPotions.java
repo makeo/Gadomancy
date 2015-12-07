@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.registration;
 
+import makeo.gadomancy.common.potions.PotionMiningLuck;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.potion.Potion;
 
@@ -12,7 +13,11 @@ import net.minecraft.potion.Potion;
  * Created by makeo @ 31.10.2015 23:09
  */
 public class RegisteredPotions {
+
+    public static PotionMiningLuck POTION_MINING_LUCK;
+
     public static void init() {
+        POTION_MINING_LUCK = registerPotion(PotionMiningLuck.class);
     }
 
     private static <T extends Potion> T registerPotion(Class<T> potionClass) {

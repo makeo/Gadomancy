@@ -190,3 +190,5 @@ gadomancy.info.ArcanePackager.disguisePackage=Disguise as loot bag
 gadomancy.info.RemoteJar.new=Created new jar network
 gadomancy.info.RemoteJar.clear=Disconnected from current jar network
 gadomancy.info.RemoteJar.connected=Connected to existing jar network
+
+potion.miningluck=Mining Luck
