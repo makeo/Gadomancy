@@ -45,7 +45,9 @@ public class RegisteredResearches {
     public static ResearchItem researchEldritchPortalCreator;
     public static ResearchItem researchBlockProtector;
 
+    //Aura core stuff
     public static ResearchItem researchAuraCore;
+    public static ResearchItem researchCleanAuraCore;
     public static ResearchItem researchArcanePackager;
     public static ResearchItem researchAuraPylon;
     public static ResearchItem researchAuraEffects;
@@ -240,35 +242,51 @@ public class RegisteredResearches {
                 .setParents(researchOculus.key)
                 .setPages(new ResearchPage("gadomancy.research_page.ANCIENT_STONES.1"), new ResearchPage(RegisteredRecipes.recipeAncientStone), new ResearchPage(RegisteredRecipes.recipeAncientStonePedestal)).registerResearchItem();
 
-        researchAuraCore = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".AURA_CORE", Gadomancy.MODID,
-                new AspectList(),
-                0, 6, 2, new ItemStack(RegisteredItems.itemAuraCore))
+        ItemAuraCore.AuraCoreType[] coreTypes = ItemAuraCore.AuraCoreType.values();
+        ItemStack[] cores = new ItemStack[coreTypes.length];
+        for (int i = 0; i < coreTypes.length; i++) {
+            ItemStack stack = new ItemStack(RegisteredItems.itemAuraCore, 1, 0);
+            RegisteredItems.itemAuraCore.setCoreType(stack, coreTypes[i]);
+            cores[i] = stack;
+        }
+
+        //Cores and stuff related to it.
+        researchAuraCore = new AlternatingResearchItem("AURA_CORE",
+                -1, 6, 2,
+                new AspectList().add(Aspect.AURA, 22).add(Aspect.MAGIC, 10).add(Aspect.AIR, 8).add(Aspect.WATER, 8)
+                        .add(Aspect.EARTH, 8).add(Aspect.FIRE, 8).add(Aspect.ORDER, 8).add(Aspect.ENTROPY, 8),
+                cores)
                 .setConcealed().setAutoUnlock()
                 .setPages(new ResearchPage("gadomancy.research_page.AURA_CORE.1")).registerResearchItem();
 
-        researchAuraPylon = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".AURA_PYLON", Gadomancy.MODID,
-                new AspectList(),
-                1, 9, 2, new ItemStack(RegisteredBlocks.blockAuraPylon, 1, 1))
-                .setSpecial()
+        researchCleanAuraCore = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".CLEAN_AURA_CORE", Gadomancy.MODID,
+                new AspectList().add(Aspect.HEAL, 12).add(Aspect.AURA, 10).add(Aspect.MAGIC, 8),
+                1, 5, 2, new ItemStack(RegisteredItems.itemAuraCore))
+                .setConcealed()
                 .setParents(researchAuraCore.key)
-                        //TODO item Trigger doesn't work?
+                .setPages(new ResearchPage("gadomancy.research_page.CLEAN_AURA_CORE.1"), new ResearchPage(RegisteredRecipes.recipesWashAuraCore), new ResearchPage("gadomancy.research_page.CLEAN_AURA_CORE.3"), new ResearchPage(RegisteredRecipes.recipesUndoAuraCore)).registerResearchItem();
+
+        researchAuraPylon = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".AURA_PYLON", Gadomancy.MODID,
+                new AspectList().add(Aspect.ORDER, 12).add(Aspect.AURA, 20).add(Aspect.MAGIC, 12).add(Aspect.MECHANISM, 8),
+                0, 9, 2, new ItemStack(RegisteredBlocks.blockAuraPylon, 1, 1))
+                .setHidden()
+                .setParents(researchAuraCore.key)
                 .setItemTriggers(new ItemStack(RegisteredItems.itemAuraCore, 1, ItemAuraCore.AuraCoreType.ORDER.ordinal()))
                 .setPages(new ResearchPage("gadomancy.research_page.AURA_PYLON.1"), new ResearchPage(RegisteredRecipes.multiblockAuraPylon)).registerResearchItem();
 
         researchAuraEffects = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".AURA_EFFECTS", Gadomancy.MODID,
-                new AspectList(),
-                2, 10, 0,
+                new AspectList().add(Aspect.AURA, 10).add(Aspect.MIND, 8).add(Aspect.MAGIC, 4).add(Aspect.MECHANISM, 8),
+                1, 10, 2,
                 new ResourceLocation("thaumcraft", "textures/misc/r_aspects.png"))
                 .setConcealed()
                 .setParents(researchAuraPylon.key)
                 .setPages(new ResearchPage("gadomancy.research_page.AURA_EFFECTS.1")).registerResearchItem();
 
         researchArcanePackager = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".ARCANE_PACKAGER", Gadomancy.MODID,
-                new AspectList(),
-                3, 7, 2, new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 4))
-                .setSpecial()
+                new AspectList().add(Aspect.AIR, 12).add(Aspect.MECHANISM, 16).add(Aspect.VOID, 10).add(Aspect.MAGIC, 10),
+                2, 7, 2, new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 4))
+                .setHidden()
                 .setParents(researchAuraCore.key)
-                        //TODO item Trigger doesn't work?
                 .setItemTriggers(new ItemStack(RegisteredItems.itemAuraCore, 1, ItemAuraCore.AuraCoreType.AIR.ordinal()))
                 .setPages(new ResearchPage("gadomancy.research_page.ARCANE_PACKAGER.1")).registerResearchItem();
 

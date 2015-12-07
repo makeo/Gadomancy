@@ -53,7 +53,7 @@ public class ResearchPageAuraAspects extends ResearchPage {
         Collections.sort(knowledge);
         int startIndex = pageIndex << 2;
         if(knowledge.size() <= startIndex) return new ArrayList<String>(); //Should not happen, because getAdditionalPages should only return indexes within range
-        return knowledge.subList(startIndex, (startIndex + 3 > knowledge.size()) ? knowledge.size() : startIndex + 3);
+        return knowledge.subList(startIndex, (startIndex + 4 > knowledge.size()) ? knowledge.size() : startIndex + 4);
     }
 
     public static AspectList createPageAspectList(List<String> tagList) {

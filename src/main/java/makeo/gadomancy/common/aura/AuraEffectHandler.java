@@ -27,7 +27,7 @@ public class AuraEffectHandler {
     public static void distributeEffects(Aspect aspect, World worldObj, double x, double y, double z, double range, int tick) {
         if(!registeredEffects.containsKey(aspect) || worldObj.isRemote) return;
         AuraEffect effect = registeredEffects.get(aspect);
-        if(tick % effect.getTickInterval() != 0) return;
+        if((tick % effect.getTickInterval()) != 0) return;
 
         List entitiesInRange = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(x - 0.5, y - 0.5, z - 0.5, x + 0.5, y + 0.5, z + 0.5).expand(range, range, range));
         Iterator it = entitiesInRange.iterator();
@@ -45,12 +45,6 @@ public class AuraEffectHandler {
                 AuraResearchManager.tryUnlockAuraEffect((EntityPlayer) e, aspect);
             }
         }
-    }
-
-    static {
-
-        registeredEffects.put(Aspect.HEAL, AuraEffects.DUMMY_SANO);
-
     }
 
 }

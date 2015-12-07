@@ -44,6 +44,7 @@ public abstract class ClickBehavior {
      */
     public abstract boolean isValidForBlock();
 
+    //TODO not handled as expected.
     public boolean hasVisCost() {
         return hasVisCost;
     }

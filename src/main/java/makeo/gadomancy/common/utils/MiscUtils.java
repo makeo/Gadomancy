@@ -38,6 +38,14 @@ public final class MiscUtils {
         return "th";
     }
 
+    public static int ticksForMinutes(int minutes) {
+        return ticksForSeconds(minutes * 60);
+    }
+
+    public static int ticksForSeconds(int seconds) {
+        return seconds * 20;
+    }
+
     public static List<ChunkCoordinates> getCoordinatesAround(ChunkCoordinates center) {
         List<ChunkCoordinates> coords = new ArrayList<ChunkCoordinates>();
         coords.add(new ChunkCoordinates(center.posX, center.posY, center.posZ));

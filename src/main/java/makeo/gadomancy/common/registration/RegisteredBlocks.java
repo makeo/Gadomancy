@@ -182,6 +182,18 @@ public class RegisteredBlocks {
                 return matrix.crafting ? 15 : 0;
             }
         });
+
+        registerClawClickBehavior(new ClickBehavior(true) {
+            @Override
+            public boolean isValidForBlock() {
+                return block.equals(ConfigBlocks.blockCrystal) && metadata <= 6;
+            }
+
+            /*@Override
+            public AspectList getVisCost() {
+                return RegisteredRecipes.costsAuraCoreStart;
+            }*/
+        });
     }
 
     private static List<ClickBehavior> clawBehaviors = new ArrayList<ClickBehavior>();

@@ -57,7 +57,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
     private int ticksExisted = 0;
     private Aspect holdingAspect;
     private int amount = 0;
-    private int maxAmount = 16;
+    private int maxAmount = 5;
     private boolean isMasterTile;
     private boolean isInputTile;
 

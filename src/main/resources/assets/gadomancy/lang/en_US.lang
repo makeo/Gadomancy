@@ -155,9 +155,18 @@ gadomancy.auracore.blank=Blank
 
 gadomancy.aura.research.unlock=You've researched the aura of %s
 
-gadomancy.aura.effect.sano=Provides a healing aura
-gadomancy.aura.effect.dummy_0=This is a multi-
-gadomancy.aura.effect.dummy_1=line description
+gadomancy.aura.effect.aer=Creates a speed aura
+gadomancy.aura.effect.aqua_0=Helps you to
+gadomancy.aura.effect.aqua_1=breath underwater
+gadomancy.aura.effect.terra_0=Increases your
+gadomancy.aura.effect.terra_1=resistances
+gadomancy.aura.effect.ordo_0=Provides a weak
+gadomancy.aura.effect.ordo_1=healing aura
+gadomancy.aura.effect.motus=Increases your speed
+gadomancy.aura.effect.iter_0=Supports a you for a
+gadomancy.aura.effect.iter_1=longer journey
+gadomancy.aura.effect.sano_0=Provides a strong
+gadomancy.aura.effect.sano_1=healing aura
 
 gadomancy.info.InfusionClaw.owner=You are now the owner.
 gadomancy.info.InfusionClaw.waila=§7Owner:

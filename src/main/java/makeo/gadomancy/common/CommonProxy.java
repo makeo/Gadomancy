@@ -5,6 +5,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import makeo.gadomancy.client.ClientProxy;
+import makeo.gadomancy.common.aura.AuraEffects;
 import makeo.gadomancy.common.containers.ContainerArcanePackager;
 import makeo.gadomancy.common.containers.ContainerInfusionClaw;
 import makeo.gadomancy.common.data.ModConfig;
@@ -76,6 +77,8 @@ public class CommonProxy implements IGuiHandler {
         MinecraftForge.EVENT_BUS.register(worldEventHandler);
         FMLCommonHandler.instance().bus().register(worldEventHandler);
         MinecraftForge.EVENT_BUS.register(new EventHandlerEntity());
+
+        AuraEffects.AER.getTickInterval(); //initalize AuraEffects
 
         RegisteredRecipes.init();
 

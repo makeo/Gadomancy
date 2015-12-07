@@ -64,6 +64,6 @@ public class ModConfig {
         ancientStoneRecipes = config.getBoolean("ancientStoneRecipes", "skyblock", false, "TRUE = Adds recipes for Ancient Stone and Ancient Stone Pedestal (This may be usefull for severs and skyblock packs to craft the Node Manipulator and get more primodial pearls). You have to change this client- and server-side!");
 
         renderParticleDistance = config.getInt("particleRenderDistance", "general", 100, 5, 1000, "Defines, how close a player has to be towards the particle origin to see the particles created by it.");
-        enableAdditionalNodeTypes = config.getBoolean("disableAdditionalNodeTypes", "general", true, "Enables our custom node types. This might solve some compatibility issues (e.g. WitchingGadgets). You have to change this client- and server-side!");
+        enableAdditionalNodeTypes = config.getBoolean("disableAdditionalNodeTypes", "general", true, "Enables our custom node types. This might solve some compatibility issues (e.g. WitchingGadgets). You have to change this client- and server-side! Only change when you experience issues with special mods' features ONLY not working when using the mod together with Gadomancy.");
     }
 }
