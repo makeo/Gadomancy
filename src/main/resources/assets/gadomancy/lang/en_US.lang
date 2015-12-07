@@ -167,6 +167,16 @@ gadomancy.aura.effect.iter_0=Supports a you for a
 gadomancy.aura.effect.iter_1=longer journey
 gadomancy.aura.effect.sano_0=Provides a strong
 gadomancy.aura.effect.sano_1=healing aura
+gadomancy.aura.effect.volatus=Increases jump height
+gadomancy.aura.effect.tutamen_0=Increases your
+gadomancy.aura.effect.tutamen_1=resistances a lot
+gadomancy.aura.effect.fames=Makes you feel hungry
+gadomancy.aura.effect.sensus=Lightens up the night
+gadomancy.aura.effect.perditio_0=Creates an
+gadomancy.aura.effect.perditio_1=aura of weakness
+gadomancy.aura.effect.potentia=Increases your strength
+gadomancy.aura.effect.telum_0=Increases your
+gadomancy.aura.effect.telum_1=strength a lot
 
 gadomancy.info.InfusionClaw.owner=You are now the owner.
 gadomancy.info.InfusionClaw.waila=§7Owner:
