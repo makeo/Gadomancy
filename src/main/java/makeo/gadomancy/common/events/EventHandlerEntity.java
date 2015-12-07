@@ -10,6 +10,9 @@ import makeo.gadomancy.common.entities.EntityPermNoClipItem;
 import makeo.gadomancy.common.familiar.FamiliarAIController;
 import makeo.gadomancy.common.items.ItemAuraCore;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -47,6 +50,10 @@ public class EventHandlerEntity {
             //e.entity.registerExtendedProperties(Gadomancy.MODID, new ExtendedPlayerProperties((EntityPlayer) e.entity));
         }
     }*/
+
+    public static int onGetFortuneLevel(EntityLivingBase entity) {
+        return EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, entity.getHeldItem());
+    }
 
     @SubscribeEvent
     public void on(EnderTeleportEvent e) {

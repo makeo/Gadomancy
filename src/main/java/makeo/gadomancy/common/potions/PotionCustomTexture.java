@@ -37,10 +37,10 @@ public abstract class PotionCustomTexture extends Potion {
         tes.startDrawingQuads();
         Color c = new Color(getLiquidColor());
         tes.setColorRGBA(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
-        tes.addVertexWithUV(x + 6,      y + 7,      0, 0, 0);
+        tes.addVertexWithUV(x + 6, y + 7, 0, 0, 0);
         tes.addVertexWithUV(x + 6,      y + 7 + 18, 0, 0, 1);
         tes.addVertexWithUV(x + 6 + 18, y + 7 + 18, 0, 1, 1);
-        tes.addVertexWithUV(x + 6 + 18, y + 7,      0, 1, 0);
+        tes.addVertexWithUV(x + 6 + 18, y + 7, 0, 1, 0);
         tes.draw();
     }
 
