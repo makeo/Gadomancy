@@ -13,6 +13,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
@@ -25,6 +27,8 @@ import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import thaumcraft.common.items.armor.Hover;
 
+import java.util.List;
+
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
@@ -34,7 +38,6 @@ import thaumcraft.common.items.armor.Hover;
  * Created by HellFirePvP @ 31.10.2015 15:28
  */
 public class EventHandlerEntity {
-
     /*@SubscribeEvent(priority = EventPriority.LOWEST)
     public void on(EntityEvent.EntityConstructing e) {
         if (e.entity instanceof EntityPlayer) {
@@ -43,17 +46,46 @@ public class EventHandlerEntity {
     }*/
 
     public static int onGetFortuneLevel(EntityLivingBase entity) {
-        return 400;
+        return getRealEnchantmentLevel(Enchantment.fortune.effectId, entity.getHeldItem()) + 1000;
     }
 
     public static int onGetEnchantmentLevel(int enchantmentId, ItemStack stack) {
-        return 0;
+        if(stack != null && Enchantment.fortune.effectId == enchantmentId) {
+            MinecraftServer server = MinecraftServer.getServer();
+            if(server != null) {
+                for(EntityPlayer player : (List<EntityPlayer>)server.getConfigurationManager().playerEntityList) {
+                    if(player.getHeldItem() == stack) {
+                        return onGetFortuneLevel(player);
+                    }
+                }
+            }
+        }
+        return getRealEnchantmentLevel(enchantmentId, stack);
+    }
+
+    private static int getRealEnchantmentLevel(int enchantmentId, ItemStack stack) {
+        if (stack == null) {
+            return 0;
+        } else {
+            NBTTagList nbttaglist = stack.getEnchantmentTagList();
+            if (nbttaglist == null) {
+                return 0;
+            } else {
+                for (int j = 0; j < nbttaglist.tagCount(); ++j) {
+                    short id = nbttaglist.getCompoundTagAt(j).getShort("id");
+                    if (id == enchantmentId) {
+                        return nbttaglist.getCompoundTagAt(j).getShort("lvl");
+                    }
+                }
+                return 0;
+            }
+        }
     }
 
     @SubscribeEvent
     public void on(EnderTeleportEvent e) {
-        if(!(e.entityLiving instanceof EntityPlayer) && !(e.entityLiving instanceof IBossDisplayData)) {
-            if(TileBlockProtector.isSpotProtected(e.entityLiving.worldObj, e.entityLiving)) {
+        if (!(e.entityLiving instanceof EntityPlayer) && !(e.entityLiving instanceof IBossDisplayData)) {
+            if (TileBlockProtector.isSpotProtected(e.entityLiving.worldObj, e.entityLiving)) {
                 e.setCanceled(true);
             }
         }
@@ -61,26 +93,26 @@ public class EventHandlerEntity {
 
     @SubscribeEvent
     public void on(LivingSetAttackTargetEvent targetEvent) {
-        if(targetEvent.target instanceof EntityPlayer) {
+        if (targetEvent.target instanceof EntityPlayer) {
             FamiliarAIController.notifyTargetEvent(targetEvent.entityLiving, (EntityPlayer) targetEvent.target);
         }
     }
 
     @SubscribeEvent
     public void on(LivingDeathEvent event) {
-        if(!event.entity.worldObj.isRemote && event.entityLiving instanceof EntityPlayer) {
+        if (!event.entity.worldObj.isRemote && event.entityLiving instanceof EntityPlayer) {
             TCMazeHandler.closeSession((EntityPlayer) event.entityLiving, false);
         }
     }
 
     @SubscribeEvent
     public void on(EntityItemPickupEvent event) {
-        if(!event.entityPlayer.worldObj.isRemote) {
-            if(event.item != null && event.item instanceof EntityPermNoClipItem) {
+        if (!event.entityPlayer.worldObj.isRemote) {
+            if (event.item != null && event.item instanceof EntityPermNoClipItem) {
                 EntityPermNoClipItem item = (EntityPermNoClipItem) event.item;
                 ChunkCoordinates master = (ChunkCoordinates) item.getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherMasterId).getObject();
                 TileEntity te = event.entityPlayer.worldObj.getTileEntity(master.posX, master.posY, master.posZ);
-                if(te == null || !(te instanceof TileAuraPylon)) return;
+                if (te == null || !(te instanceof TileAuraPylon)) return;
                 ((TileAuraPylon) te).informItemPickup();
             }
         }
@@ -88,14 +120,14 @@ public class EventHandlerEntity {
 
     @SubscribeEvent
     public void on(LivingEvent.LivingUpdateEvent event) {
-        if(event.entityLiving == null || !(event.entityLiving instanceof EntityPlayer)) return;
-        EntityPlayer player = (EntityPlayer)event.entity;
-        if ((event.entity.worldObj.provider.dimensionId == ModConfig.dimOuterId) && ((player.ticksExisted & 7) == 0) && ((player.capabilities.isFlying) || (Hover.getHover(player.getEntityId())))){
+        if (event.entityLiving == null || !(event.entityLiving instanceof EntityPlayer)) return;
+        EntityPlayer player = (EntityPlayer) event.entity;
+        if ((event.entity.worldObj.provider.dimensionId == ModConfig.dimOuterId) && ((player.ticksExisted & 7) == 0) && ((player.capabilities.isFlying) || (Hover.getHover(player.getEntityId())))) {
             player.capabilities.isFlying = false;
             Hover.setHover(player.getEntityId(), false);
-            if(!((EntityPlayer) event.entityLiving).worldObj.isRemote) {
+            if (!((EntityPlayer) event.entityLiving).worldObj.isRemote) {
                 String msg = StatCollector.translateToLocal("tc.break.fly");
-                if(player.capabilities.isCreativeMode) {
+                if (player.capabilities.isCreativeMode) {
                     msg += " " + StatCollector.translateToLocal("gadomancy.eldritch.noflyCreative");
                 }
                 player.addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.GRAY + msg));
