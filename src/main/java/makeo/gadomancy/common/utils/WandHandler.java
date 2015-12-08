@@ -117,7 +117,7 @@ public class WandHandler {
                     return;
             }
 
-            if(!ThaumcraftApiHelper.consumeVisFromWandCrafting(i, entityPlayer, RegisteredRecipes.costsAuraCoreStart, true))
+            if(!ThaumcraftApiHelper.consumeVisFromWandCrafting(i, entityPlayer, (AspectList)RegisteredRecipes.auraCoreRecipes[meta].get(0), true))
                 return;
 
 

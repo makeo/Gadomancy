@@ -5,6 +5,7 @@ import makeo.gadomancy.common.aura.AuraResearchManager;
 import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.items.ItemAuraCore;
 import makeo.gadomancy.common.research.AlternatingResearchItem;
+import makeo.gadomancy.common.research.MultiResearchPage;
 import makeo.gadomancy.common.research.PseudoResearchItem;
 import makeo.gadomancy.common.research.SimpleResearchItem;
 import makeo.gadomancy.common.utils.NBTHelper;
@@ -257,7 +258,7 @@ public class RegisteredResearches {
                         .add(Aspect.EARTH, 8).add(Aspect.FIRE, 8).add(Aspect.ORDER, 8).add(Aspect.ENTROPY, 8),
                 cores)
                 .setConcealed().setAutoUnlock()
-                .setPages(new ResearchPage("gadomancy.research_page.AURA_CORE.1")).registerResearchItem();
+                .setPages(new ResearchPage("gadomancy.research_page.AURA_CORE.1"), new MultiResearchPage(RegisteredRecipes.auraCoreRecipes)).registerResearchItem();
 
         researchCleanAuraCore = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".CLEAN_AURA_CORE", Gadomancy.MODID,
                 new AspectList().add(Aspect.HEAL, 8).add(Aspect.AURA, 6).add(Aspect.MAGIC, 8).add(Aspect.WATER, 10),

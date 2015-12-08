@@ -44,11 +44,12 @@ public class RegisteredRecipes {
     public static AspectList costsNodeManipulatorMultiblock = new AspectList().add(Aspect.FIRE, 100).add(Aspect.WATER, 100).add(Aspect.EARTH, 100).add(Aspect.AIR, 100).add(Aspect.ORDER, 100).add(Aspect.ENTROPY, 100);
     public static AspectList costsEldritchPortalCreatorMultiblock = new AspectList().add(Aspect.FIRE, 150).add(Aspect.WATER, 150).add(Aspect.EARTH, 150).add(Aspect.AIR, 150).add(Aspect.ORDER, 150).add(Aspect.ENTROPY, 150);
     public static AspectList costsAuraPylonMultiblock = new AspectList().add(Aspect.FIRE, 150).add(Aspect.WATER, 150).add(Aspect.EARTH, 150).add(Aspect.AIR, 150).add(Aspect.ORDER, 150).add(Aspect.ENTROPY, 150);
-    public static AspectList costsAuraCoreStart = new AspectList().add(Aspect.FIRE, 70).add(Aspect.WATER, 70).add(Aspect.EARTH, 70).add(Aspect.AIR, 70).add(Aspect.ORDER, 70).add(Aspect.ENTROPY, 70);
+    //public static AspectList costsAuraCoreStart = new AspectList().add(Aspect.FIRE, 70).add(Aspect.WATER, 70).add(Aspect.EARTH, 70).add(Aspect.AIR, 70).add(Aspect.ORDER, 70).add(Aspect.ENTROPY, 70);
 
     public static List multiblockNodeManipulator;
     public static List multiblockEldritchPortalCreator;
     public static List multiblockAuraPylon;
+    public static List[] auraCoreRecipes;
 
     public static InfusionRecipe recipeGolemSilverwood;
     public static InfusionRecipe[] recipesGolemRunicShield;
@@ -182,6 +183,32 @@ public class RegisteredRecipes {
         }
 
         RegisteredRecipes.recipesUndoAuraCore = recipesUndoAuraCore.toArray(new IRecipe[recipesUndoAuraCore.size()]);
+
+        auraCoreRecipes = createAuraCoreRecipes();
+    }
+
+    private static List[] createAuraCoreRecipes() {
+        List[] recipes = new List[7];
+        for(int i = 0; i < 7; i++) {
+            AspectList cost = new AspectList();
+            switch (i) {
+                case 0: cost.add(Aspect.AIR, 84); break;
+                case 1: cost.add(Aspect.FIRE, 84); break;
+                case 2: cost.add(Aspect.WATER, 84); break;
+                case 3: cost.add(Aspect.EARTH, 84); break;
+                case 4: cost.add(Aspect.ORDER, 84); break;
+                case 5: cost.add(Aspect.ENTROPY, 84); break;
+                case 6: cost.add(Aspect.AIR, 14).add(Aspect.FIRE, 14).add(Aspect.WATER, 14)
+                        .add(Aspect.EARTH, 14).add(Aspect.ORDER, 14).add(Aspect.ENTROPY, 14);
+            }
+
+            recipes[i] = Arrays.asList(cost, 3, 1, 3,
+                    Arrays.asList(
+                            null, null, null, null, new ItemStack(ConfigBlocks.blockCrystal, 1, i),
+                            new ItemStack(RegisteredItems.itemAuraCore), null, null, null
+                    ));
+        }
+        return recipes;
     }
 
     private static InfusionRecipe[][] createFamiliarAugmentationRecipes() {

@@ -246,7 +246,8 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements IInvento
                 im.setWorld((WorldServer) world);
             }
 
-            this.im.activateBlockOrUseItem(fakePlayer, world, new ItemStack(WAND_ITEM), x, y, z, ForgeDirection.UP.ordinal(), 0.5F, 0.5F, 0.5F);
+            fakePlayer.setHeldItem(wandStack);
+            this.im.activateBlockOrUseItem(fakePlayer, world, wandStack, x, y, z, ForgeDirection.UP.ordinal(), 0.5F, 0.5F, 0.5F);
             addInstability(behavior);
         }
     }
