@@ -13,8 +13,8 @@ import thaumcraft.api.aspects.Aspect;
 public class PotionMiningLuck extends PotionCustomTexture {
 
     public PotionMiningLuck(int id) {
-        super(id, false, Aspect.MINE.getColor(), Aspect.MINE.getImage());
-        setPotionName("potion.miningluck");
+        super(id, false, Aspect.GREED.getColor(), Aspect.GREED.getImage());
+        setPotionName("potion.luck");
     }
 
 }

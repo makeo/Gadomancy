@@ -1,5 +1,7 @@
 package makeo.gadomancy.common.utils;
 
+import net.minecraft.util.ChunkCoordinates;
+
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.Random;
@@ -224,6 +226,18 @@ public class Vector3 {
 
     public static Vector3 positiveYRandom() {
         return random().setY(Math.abs(random().getY()));
+    }
+
+    public static Vector3 fromCC(ChunkCoordinates cc) {
+        return new Vector3(cc.posX, cc.posY, cc.posZ);
+    }
+
+    public ChunkCoordinates getAsFloatCC() {
+        return new ChunkCoordinates(Float.floatToIntBits((float) this.x), Float.floatToIntBits((float) this.y), Float.floatToIntBits((float) this.z));
+    }
+
+    public static Vector3 getFromFloatCC(ChunkCoordinates cc) {
+        return new Vector3(Float.intBitsToFloat(cc.posX), Float.intBitsToFloat(cc.posY), Float.intBitsToFloat(cc.posZ));
     }
 
     public boolean isInAABB(Vector3 min, Vector3 max) {

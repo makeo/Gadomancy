@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import thaumcraft.common.entities.EntityPermanentItem;
 
@@ -92,6 +93,12 @@ public class EntityPermNoClipItem extends EntityPermanentItem {
                 setDead();
             }
         }
+    }
+
+    @Override
+    public boolean attackEntityFrom(DamageSource ds, float p_70097_2_) {
+        if(ds.equals(DamageSource.inFire) || ds.equals(DamageSource.onFire)) return false;
+        return super.attackEntityFrom(ds, p_70097_2_);
     }
 
     @Override

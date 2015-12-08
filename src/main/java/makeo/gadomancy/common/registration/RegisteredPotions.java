@@ -14,10 +14,10 @@ import net.minecraft.potion.Potion;
  */
 public class RegisteredPotions {
 
-    public static PotionMiningLuck POTION_MINING_LUCK;
+    public static PotionMiningLuck POTION_LUCK;
 
     public static void init() {
-        POTION_MINING_LUCK = registerPotion(PotionMiningLuck.class);
+        POTION_LUCK = registerPotion(PotionMiningLuck.class);
     }
 
     private static <T extends Potion> T registerPotion(Class<T> potionClass) {

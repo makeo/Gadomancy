@@ -106,7 +106,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
         if(aspect == null) return;
         if(!isMasterTile()) return;
         if(worldObj.isRemote) return;
-        AuraEffectHandler.distributeEffects(aspect, worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 8, ticksExisted);
+        AuraEffectHandler.distributeEffects(aspect, worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, ticksExisted);
     }
 
     private void drainEssentia(TileAuraPylon io) {

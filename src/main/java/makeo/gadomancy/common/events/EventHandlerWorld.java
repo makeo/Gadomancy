@@ -47,6 +47,8 @@ import java.util.Map;
  * Created by makeo @ 05.07.2015 13:20
  */
 public class EventHandlerWorld {
+
+    private int serverTick = 0;
     private Entity lastUpdated;
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -98,6 +100,10 @@ public class EventHandlerWorld {
         if(event.phase != TickEvent.Phase.END) return;
 
         TCMazeHandler.scheduleTick();
+        serverTick++;
+        if((serverTick & 15) == 0) {
+            EventHandlerEntity.registeredLuxPylons.clear();
+        }
     }
 
     private Map<EntityPlayer, Integer> interacts = null;

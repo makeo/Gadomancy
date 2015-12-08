@@ -1,14 +1,17 @@
 package makeo.gadomancy.common.events;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import makeo.gadomancy.common.aura.AuraEffects;
 import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
 import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
 import makeo.gadomancy.common.data.ModConfig;
 import makeo.gadomancy.common.entities.EntityPermNoClipItem;
 import makeo.gadomancy.common.familiar.FamiliarAIController;
+import makeo.gadomancy.common.registration.RegisteredPotions;
+import makeo.gadomancy.common.utils.MiscUtils;
+import makeo.gadomancy.common.utils.Vector3;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,9 +27,11 @@ import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import thaumcraft.common.items.armor.Hover;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,6 +43,9 @@ import java.util.List;
  * Created by HellFirePvP @ 31.10.2015 15:28
  */
 public class EventHandlerEntity {
+
+    public static List<ChunkCoordinates> registeredLuxPylons = new ArrayList<ChunkCoordinates>();
+
     /*@SubscribeEvent(priority = EventPriority.LOWEST)
     public void on(EntityEvent.EntityConstructing e) {
         if (e.entity instanceof EntityPlayer) {
@@ -45,21 +53,47 @@ public class EventHandlerEntity {
         }
     }*/
 
-    public static int onGetFortuneLevel(EntityLivingBase entity) {
-        return getRealEnchantmentLevel(Enchantment.fortune.effectId, entity.getHeldItem()) + 1000;
+    public static int getFortuneLevel(EntityLivingBase entity) {
+        int fortuneLevel = getRealEnchantmentLevel(Enchantment.fortune.effectId, entity.getHeldItem());
+        if(entity.isPotionActive(RegisteredPotions.POTION_LUCK)) {
+            int lvl = entity.getActivePotionEffect(RegisteredPotions.POTION_LUCK).getAmplifier() + 1; //Amplifier 0-indexed
+            fortuneLevel += lvl;
+        }
+        return fortuneLevel;
+    }
+
+    public static int getLootingLevel(EntityLivingBase entity) {
+        int lootingLevel = getRealEnchantmentLevel(Enchantment.looting.effectId, entity.getHeldItem());
+        if(entity.isPotionActive(RegisteredPotions.POTION_LUCK)) {
+            int lvl = entity.getActivePotionEffect(RegisteredPotions.POTION_LUCK).getAmplifier() + 1; //Amplifier 0-indexed
+            lootingLevel += lvl;
+        }
+        return lootingLevel;
     }
 
     public static int onGetEnchantmentLevel(int enchantmentId, ItemStack stack) {
-        if(stack != null && Enchantment.fortune.effectId == enchantmentId) {
+        EntityPlayer possiblePlayer = null;
+        if(stack != null) {
             MinecraftServer server = MinecraftServer.getServer();
             if(server != null) {
                 for(EntityPlayer player : (List<EntityPlayer>)server.getConfigurationManager().playerEntityList) {
                     if(player.getHeldItem() == stack) {
-                        return onGetFortuneLevel(player);
+                        possiblePlayer = player;
                     }
                 }
             }
         }
+
+        if(possiblePlayer != null) {
+
+            if(enchantmentId == Enchantment.fortune.effectId) {
+                return getFortuneLevel(possiblePlayer);
+            } else if(enchantmentId == Enchantment.looting.effectId) {
+                return getLootingLevel(possiblePlayer);
+            }
+
+        }
+
         return getRealEnchantmentLevel(enchantmentId, stack);
     }
 
@@ -78,6 +112,19 @@ public class EventHandlerEntity {
                     }
                 }
                 return 0;
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void on(LivingSpawnEvent.CheckSpawn event) {
+        double rangeSq = AuraEffects.LUX.getRange() * AuraEffects.LUX.getRange();
+        Vector3 entityPos = MiscUtils.getPositionVector(event.entity);
+        for(ChunkCoordinates luxPylons : registeredLuxPylons) {
+            Vector3 pylon = Vector3.fromCC(luxPylons);
+            if(entityPos.distanceSquared(pylon) <= rangeSq) {
+                event.setCanceled(true);
+                return;
             }
         }
     }

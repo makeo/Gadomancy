@@ -41,7 +41,7 @@ public class GadomancyTransformer extends AccessTransformer {
 
                     mn.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0));
                     mn.instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "makeo/gadomancy/common/events/EventHandlerEntity",
-                            "onGetFortuneLevel", "(Lnet/minecraft/entity/EntityLivingBase;)I", false));
+                            "getFortuneLevel", "(Lnet/minecraft/entity/EntityLivingBase;)I", false));
                     mn.instructions.add(new InsnNode(Opcodes.IRETURN));
 
                 } else if(mn.name.equals("getEnchantmentLevel") || mn.name.equals("func_77506_a")) {
