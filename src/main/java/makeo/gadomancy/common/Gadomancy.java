@@ -67,6 +67,7 @@ public class Gadomancy {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         proxy.preInitalize();
+        event.getModMetadata().version = VERSION;
         ModConfig.init(event.getSuggestedConfigurationFile());
     }
 

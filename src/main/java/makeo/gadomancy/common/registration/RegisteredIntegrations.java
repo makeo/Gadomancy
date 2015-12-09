@@ -22,10 +22,10 @@ public class RegisteredIntegrations {
     private RegisteredIntegrations() {}
 
     public static void init() {
-        morph = registerUndependent(IntegrationMorph.class);
-        thaumicExploration = registerUndependent(IntegrationThaumicExploration.class);
-        automagy = registerUndependent(IntegrationAutomagy.class);
-        nei = registerUndependent(IntegrationNEI.class);
+        morph = registerIndependent(IntegrationMorph.class);
+        thaumicExploration = registerIndependent(IntegrationThaumicExploration.class);
+        automagy = registerIndependent(IntegrationAutomagy.class);
+        nei = registerIndependent(IntegrationNEI.class);
 
         registerDependent("ThaumicHorizons", "makeo.gadomancy.common.integration.thaumichorizions.IntegrationThaumicHorizions");
         registerDependent("Waila", "makeo.gadomancy.common.integration.waila.IntegrationWaila");
@@ -48,7 +48,7 @@ public class RegisteredIntegrations {
         }
     }
 
-    private static  <T extends IntegrationMod> T registerUndependent(Class<T> clazz) {
+    private static  <T extends IntegrationMod> T registerIndependent(Class<T> clazz) {
         T integration;
         try {
             integration = clazz.newInstance();

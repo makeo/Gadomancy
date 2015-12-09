@@ -32,13 +32,18 @@ public class AuraEffectHandler {
         if((tick % effect.getTickInterval()) != 0) return;
 
         AuraEffect.EffectType type = effect.getEffectType();
-        switch (type) {
-            case ENTITY_EFFECT:
-                doEntityEffects(effect, worldObj, x, y, z);
-                break;
-            case BLOCK_EFFECT:
-                doBlockEffects(effect, worldObj, x, y, z);
-                break;
+        if(type != null) {
+            switch (type) {
+                case ENTITY_EFFECT:
+                    doEntityEffects(effect, worldObj, x, y, z);
+                    break;
+                case BLOCK_EFFECT:
+                    doBlockEffects(effect, worldObj, x, y, z);
+                    break;
+            }
+        } else {
+            doEntityEffects(effect, worldObj, x, y, z);
+            doBlockEffects(effect, worldObj, x, y, z);
         }
 
         //Distribute research
@@ -78,7 +83,7 @@ public class AuraEffectHandler {
         Iterator it = entitiesInRange.iterator();
         while(it.hasNext()) {
             Entity e = (Entity) it.next();
-            if(e.isDead) {
+            if(e == null || e.isDead) {
                 it.remove();
                 continue;
             }

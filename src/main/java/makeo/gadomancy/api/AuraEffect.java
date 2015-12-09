@@ -25,6 +25,8 @@ public abstract class AuraEffect {
      *
      * EffectType.BLOCK_EFFECT selects random locations within {@link #getRange()}
      *      range and fires {@link #doBlockEffect(net.minecraft.util.ChunkCoordinates, net.minecraft.util.ChunkCoordinates, net.minecraft.world.World)}
+     *
+     * Returning null will cause BOTH effects to happen and thus, both should be implemented.
      */
     public abstract EffectType getEffectType();
 

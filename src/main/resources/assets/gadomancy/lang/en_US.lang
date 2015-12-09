@@ -192,3 +192,4 @@ gadomancy.info.RemoteJar.clear=Disconnected from current jar network
 gadomancy.info.RemoteJar.connected=Connected to existing jar network
 
 potion.luck=Increased Luck
+potion.buffGolem=Golem Buff
