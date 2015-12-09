@@ -16,6 +16,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
@@ -93,12 +94,12 @@ public class AuraEffects {
         @Override
         public void doEntityEffect(ChunkCoordinates originTile, Entity e) {
             EntitySheep sheep = (EntitySheep) e;
-            if(sheep.worldObj.rand.nextInt(20) == 0) sheep.setSheared(false);
+            if(sheep.worldObj.rand.nextInt(10) == 0) sheep.setSheared(false);
         }
 
         @Override
         public int getTickInterval() {
-            return 20;
+            return 10;
         }
     }.register(Aspect.CLOTH);
     public static final AuraEffect LUX = new AuraEffect.EntityAuraEffect() {
@@ -252,7 +253,12 @@ public class AuraEffects {
         public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
             EntityBrainyZombie zombie = new EntityBrainyZombie(world);
             boolean canSpawn = setAndCheckPosition(zombie, selectedBlock, world, true) && zombie.getCanSpawnHere(); //Position for getCanSpawn here is updated.
-            if(canSpawn) world.spawnEntityInWorld(zombie);
+            if(canSpawn) {
+                ChunkCoordinates pos = new ChunkCoordinates((int) zombie.posX, (int) zombie.posY, (int) zombie.posZ);
+                pos = iterateDown(pos, world);
+                zombie.setPosition(pos.posX + 0.5, pos.posY, pos.posZ + 0.5);
+                world.spawnEntityInWorld(zombie);
+            }
         }
 
         @Override
@@ -308,7 +314,7 @@ public class AuraEffects {
 
         @Override
         public int getTickInterval() {
-            return 20;
+            return 40;
         }
     }.register(Aspect.MIND);
     public static final AuraEffect FABRICO = new AuraEffect() {
@@ -339,6 +345,51 @@ public class AuraEffects {
             RegisteredIntegrations.automagy.tryFillGolemCrafttable(selectedBlock, world);
         }
     }.register(Aspect.CRAFT);
+    public static final AuraEffect HERBA = new AuraEffect.BlockAuraEffect() {
+        @Override
+        public int getBlockCount(Random random) {
+            return 120;
+        }
+
+        @Override
+        public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
+            waterLocation(selectedBlock, world);
+        }
+
+        @Override
+        public int getTickInterval() {
+            return 1;
+        }
+    }.register(Aspect.PLANT);
+    public static final AuraEffect ARBOR = new AuraEffect.BlockAuraEffect() {
+        @Override
+        public int getBlockCount(Random random) {
+            return 80;
+        }
+
+        @Override
+        public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
+            waterLocation(selectedBlock, world);
+        }
+
+        @Override
+        public int getTickInterval() {
+            return 3;
+        }
+    }.register(Aspect.TREE);
+    public static final AuraEffect IGNIS = new AuraEffect.EntityAuraEffect() {
+        @Override
+        public boolean isEntityApplicable(Entity e) {
+            return e instanceof EntityLivingBase;
+        }
+
+        @Override
+        public void doEntityEffect(ChunkCoordinates originTile, Entity e) {
+            if(!e.isImmuneToFire()) {
+                e.setFire(10);
+            }
+        }
+    }.register(Aspect.FIRE);
 
     public static class PotionDistributionEffect extends AuraEffect.EntityAuraEffect {
 
@@ -372,6 +423,16 @@ public class AuraEffects {
         }
     }
 
+    private static void waterLocation(ChunkCoordinates coordinates, World world) {
+        Block b = world.getBlock(coordinates.posX, coordinates.posY, coordinates.posZ);
+        b.updateTick(world, coordinates.posX, coordinates.posY, coordinates.posZ, world.rand);
+
+        TileEntity te = world.getTileEntity(coordinates.posX, coordinates.posY, coordinates.posZ);
+        if(te != null && te.canUpdate() && !te.isInvalid()) {
+            te.updateEntity();
+        }
+    }
+
     private static void addOrExtendPotionEffect(Potion potion, EntityLivingBase entityLiving, int cap, int durToAdd, int amplifier, boolean ambient) {
         int activeDuration = 0;
         if(entityLiving.isPotionActive(potion)) {
@@ -387,6 +448,14 @@ public class AuraEffects {
 
     private static void addOrExtendPotionEffect(Potion potion, EntityLivingBase entityLiving, int cap, int durToAdd, int amplifier) {
         addOrExtendPotionEffect(potion, entityLiving, cap, durToAdd, amplifier, true);
+    }
+
+    private static ChunkCoordinates iterateDown(ChunkCoordinates pos, World world) {
+        while(world.isAirBlock(pos.posX, pos.posY, pos.posZ)) {
+            pos.posY -= 1;
+        }
+        pos.posY += 1;
+        return pos;
     }
 
     //Designed for spawning. Looks in 1 block radius for possible location, and if one location is found, teleporting the entity there.
