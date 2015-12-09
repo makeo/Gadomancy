@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.fx.ParticleEngine;
 import thaumcraft.client.fx.particles.FXEssentiaTrail;
@@ -35,13 +36,13 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
     public static final ModelBase MODEL_AURA_PYLON = new ModelAuraPylon();
     public static final ModelBase MODEL_AURA_PYLON_TOP = new ModelAuraPylonTop();
     public static final ModelBase MODEL_AURA_PYLON_BOTTOM = new ModelAuraPylonBottom();
-    public static final SimpleResourceLocation PYLON_TEXTURE = new SimpleResourceLocation("models/aurapylon.png");
+    public static final SimpleResourceLocation PYLON_TEXTURE_TOP = new SimpleResourceLocation("models/aura_pylon_peak.png");
+    public static final SimpleResourceLocation PYLON_TEXTURE = new SimpleResourceLocation("models/aura_pylon.png");
+    public static final SimpleResourceLocation PYLON_TEXTURE_BOTTOM = new SimpleResourceLocation("models/aura_pylon_base.png");
 
     public void renderTileEntity(TileEntity tile, double x, double y, double z, float partTicks) {
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5, y - 0.5, z + 0.5);
-
-        bindTexture(PYLON_TEXTURE);
 
         GL11.glPushMatrix();
         for(int i = 0; i < 4; i++) {
@@ -49,6 +50,7 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
                 GL11.glPushMatrix();
                 GL11.glRotatef(180, 1, 0, 0);
                 GL11.glTranslatef(0, -2F, 0);
+                bindTexture(PYLON_TEXTURE_TOP);
                 MODEL_AURA_PYLON_TOP.render(null, 0, 0, 0, 0, 0, 0.0625f);
                 GL11.glPopMatrix();
             } else {
@@ -56,9 +58,11 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
                     GL11.glPushMatrix();
                     GL11.glRotatef(180, 1, 0, 0);
                     GL11.glTranslatef(0, -2F, 0);
+                    bindTexture(PYLON_TEXTURE_BOTTOM);
                     MODEL_AURA_PYLON_BOTTOM.render(null, 0, 0, 0, 0, 0, 0.0625f);
                     GL11.glPopMatrix();
                 } else {
+                    bindTexture(PYLON_TEXTURE);
                     MODEL_AURA_PYLON.render(null, 0, 0, 0, 0, 0, 0.0625f);
                 }
             }
