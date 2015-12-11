@@ -13,6 +13,7 @@ import makeo.gadomancy.common.utils.Vector3;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -118,13 +119,15 @@ public class EventHandlerEntity {
 
     @SubscribeEvent
     public void on(LivingSpawnEvent.CheckSpawn event) {
-        double rangeSq = AuraEffects.LUX.getRange() * AuraEffects.LUX.getRange();
-        Vector3 entityPos = MiscUtils.getPositionVector(event.entity);
-        for(ChunkCoordinates luxPylons : registeredLuxPylons) {
-            Vector3 pylon = Vector3.fromCC(luxPylons);
-            if(entityPos.distanceSquared(pylon) <= rangeSq) {
-                event.setCanceled(true);
-                return;
+        if(event.entityLiving.isCreatureType(EnumCreatureType.monster, false)) {
+            double rangeSq = AuraEffects.LUX.getRange() * AuraEffects.LUX.getRange();
+            Vector3 entityPos = MiscUtils.getPositionVector(event.entity);
+            for(ChunkCoordinates luxPylons : registeredLuxPylons) {
+                Vector3 pylon = Vector3.fromCC(luxPylons);
+                if(entityPos.distanceSquared(pylon) <= rangeSq) {
+                    event.setCanceled(true);
+                    return;
+                }
             }
         }
     }

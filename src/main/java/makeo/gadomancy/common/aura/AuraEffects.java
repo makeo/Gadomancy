@@ -5,14 +5,18 @@ import makeo.gadomancy.common.events.EventHandlerEntity;
 import makeo.gadomancy.common.registration.RegisteredIntegrations;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.registration.RegisteredPotions;
+import makeo.gadomancy.common.utils.MiscUtils;
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -24,10 +28,14 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.BlockTaintFibres;
 import thaumcraft.common.config.Config;
+import thaumcraft.common.config.ConfigEntities;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.monster.EntityBrainyZombie;
+import thaumcraft.common.entities.monster.boss.EntityThaumcraftBoss;
+import thaumcraft.common.entities.monster.mods.ChampionModifier;
 import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.lib.research.ScanManager;
+import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 
@@ -44,6 +52,7 @@ import static makeo.gadomancy.common.utils.MiscUtils.*;
  * Created by HellFirePvP @ 29.11.2015 19:09
  */
 public class AuraEffects {
+    private static final ItemStack[][] ITEMS_SOUL = {{new ItemStack(Items.bow), new ItemStack(Items.wooden_sword), new ItemStack(Items.stone_sword), new ItemStack(Items.iron_sword), new ItemStack(Items.stone_axe), new ItemStack(Items.iron_axe)},{new ItemStack(Items.leather_boots), new ItemStack(Items.chainmail_boots), new ItemStack(Items.iron_boots)},{new ItemStack(Items.leather_leggings), new ItemStack(Items.chainmail_leggings), new ItemStack(Items.iron_leggings)},{new ItemStack(Items.leather_chestplate), new ItemStack(Items.chainmail_chestplate), new ItemStack(Items.iron_chestplate)},{new ItemStack(Blocks.lit_pumpkin), new ItemStack(Blocks.pumpkin)}};
 
     //Potion amplifiers start with 0 == lvl 1!
 
@@ -390,6 +399,83 @@ public class AuraEffects {
             }
         }
     }.register(Aspect.FIRE);
+    public static final AuraEffect ELDRITCH = new AuraEffect.EntityAuraEffect() {
+        @Override
+        public boolean isEntityApplicable(Entity e) {
+            if(e instanceof EntityMob) {
+                EntityMob mob = (EntityMob) e;
+                if(mob.getEntityAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue() < 0
+                        && mob.getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue() >= 10.0D) {
+                    boolean whitelisted = false;
+                    for (Class clazz : ConfigEntities.championModWhitelist.keySet()) {
+                        if (clazz.isAssignableFrom(e.getClass())) {
+                            whitelisted = true;
+                        }
+                    }
+                    return whitelisted;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public int getTickInterval() {
+            return 20;
+        }
+
+        @Override
+        public void doEntityEffect(ChunkCoordinates originTile, Entity e) {
+            if(e.worldObj.rand.nextInt(4) == 0) {
+                EntityMob mob = (EntityMob) e;
+                PotionEffect effect = mob.getActivePotionEffect(RegisteredPotions.ELDRITCH);
+
+                if(effect != null && effect.getAmplifier() > 4) {
+                    EntityUtils.makeChampion(mob, false);
+                    mob.removePotionEffect(RegisteredPotions.ELDRITCH.getId());
+                } else {
+                    mob.addPotionEffect(new PotionEffect(RegisteredPotions.ELDRITCH.getId(), 6000, effect == null ? 1 : effect.getAmplifier() + 1));
+                }
+            }
+        }
+    }.register(Aspect.ELDRITCH);
+    public static final AuraEffect SOUL = new AuraEffect.BlockAuraEffect() {
+        @Override
+        public int getBlockCount(Random random) {
+            return random.nextInt(60) == 0 ? 1 : 0;
+        }
+
+        @Override
+        public int getTickInterval() {
+            return 4;
+        }
+
+        @Override
+        public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
+            EntityLiving mob = world.rand.nextBoolean() ? new EntitySkeleton(world) : new EntityZombie(world);
+            if(setAndCheckPosition(mob, selectedBlock, world, true)) {
+
+                int totalCount = (world.rand.nextInt(3) == 0 ? 1 : 0) + 2;
+                do {
+                    int slot = mob.getEquipmentInSlot(0) == null ? 0 : mob.getEquipmentInSlot(4) == null ? 4 : world.rand.nextInt(5);
+                    if(mob.getEquipmentInSlot(slot) == null) {
+                        ItemStack[] items = ITEMS_SOUL[slot];
+                        ItemStack stack = items[world.rand.nextInt(items.length)];
+                        if(stack.getItem() != Items.bow || mob instanceof EntitySkeleton) {
+                            totalCount--;
+                            mob.setCurrentItemOrArmor(slot, stack);
+                            mob.setEquipmentDropChance(slot, 0);
+                        }
+                    }
+                } while (totalCount > 0);
+                mob.addPotionEffect(new PotionEffect(Potion.invisibility.getId(), MiscUtils.ticksForMinutes(60*24*365), 1, true));
+
+                ChunkCoordinates pos = new ChunkCoordinates((int) mob.posX, (int) mob.posY, (int) mob.posZ);
+                pos = iterateDown(pos, world);
+                mob.setPosition(pos.posX + 0.5, pos.posY, pos.posZ + 0.5);
+                world.spawnEntityInWorld(mob);
+            }
+        }
+    }.register(Aspect.SOUL);
 
     public static class PotionDistributionEffect extends AuraEffect.EntityAuraEffect {
 
@@ -424,12 +510,9 @@ public class AuraEffects {
     }
 
     private static void waterLocation(ChunkCoordinates coordinates, World world) {
-        Block b = world.getBlock(coordinates.posX, coordinates.posY, coordinates.posZ);
-        b.updateTick(world, coordinates.posX, coordinates.posY, coordinates.posZ, world.rand);
-
-        TileEntity te = world.getTileEntity(coordinates.posX, coordinates.posY, coordinates.posZ);
-        if(te != null && te.canUpdate() && !te.isInvalid()) {
-            te.updateEntity();
+        Block block = world.getBlock(coordinates.posX, coordinates.posY, coordinates.posZ);
+        if (block.getTickRandomly()) {
+            world.scheduleBlockUpdate(coordinates.posX, coordinates.posY, coordinates.posZ, block, world.rand.nextInt(20)+10);
         }
     }
 

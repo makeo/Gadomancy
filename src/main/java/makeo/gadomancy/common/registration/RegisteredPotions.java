@@ -1,6 +1,8 @@
 package makeo.gadomancy.common.registration;
 
+import makeo.gadomancy.common.potions.PotionAchromatic;
 import makeo.gadomancy.common.potions.PotionBuffGolem;
+import makeo.gadomancy.common.potions.PotionLetsGargamelItUp;
 import makeo.gadomancy.common.potions.PotionMiningLuck;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.potion.Potion;
@@ -17,10 +19,14 @@ public class RegisteredPotions {
 
     public static PotionMiningLuck POTION_LUCK;
     public static PotionBuffGolem BUFF_GOLEM;
+    public static PotionAchromatic ACHROMATIC;
+    public static PotionLetsGargamelItUp ELDRITCH;
 
     public static void init() {
         POTION_LUCK = registerPotion(PotionMiningLuck.class);
         BUFF_GOLEM = registerPotion(PotionBuffGolem.class);
+        ACHROMATIC = registerPotion(PotionAchromatic.class);
+        ELDRITCH = registerPotion(PotionLetsGargamelItUp.class);
     }
 
     private static <T extends Potion> T registerPotion(Class<T> potionClass) {
