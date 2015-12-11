@@ -480,6 +480,7 @@ public class AuraEffects {
             entity.setPosition(down.posX, down.posY, down.posZ);
             return true;
         }
+        if(!mayVary) return false;
         ChunkCoordinates hMove = new ChunkCoordinates(cc.posX + 1, cc.posY, cc.posZ    );
         if(setAndCheckPosition(entity, hMove, world, false)) return true;
         hMove =                  new ChunkCoordinates(cc.posX    , cc.posY, cc.posZ + 1);
