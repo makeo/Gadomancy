@@ -37,6 +37,14 @@ public final class MiscUtils {
         }
         return "th";
     }
+    
+    public static int ticksForDays(int days) {
+        return ticksForHours(days * 24);
+    }
+    
+    public static int ticksForHours(int hours) {
+        return ticksForMinutes(hours * 60);
+    }
 
     public static int ticksForMinutes(int minutes) {
         return ticksForSeconds(minutes * 60);
