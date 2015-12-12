@@ -399,7 +399,7 @@ public class AuraEffects {
             }
         }
     }.register(Aspect.FIRE);
-    public static final AuraEffect ELDRITCH = new AuraEffect.EntityAuraEffect() {
+    public static final AuraEffect ALIENIS = new AuraEffect.EntityAuraEffect() {
         @Override
         public boolean isEntityApplicable(Entity e) {
             if(e instanceof EntityMob) {
@@ -438,7 +438,7 @@ public class AuraEffects {
             }
         }
     }.register(Aspect.ELDRITCH);
-    public static final AuraEffect SOUL = new AuraEffect.BlockAuraEffect() {
+    public static final AuraEffect SPIRITUS = new AuraEffect.BlockAuraEffect() {
         @Override
         public int getBlockCount(Random random) {
             return random.nextInt(60) == 0 ? 1 : 0;
