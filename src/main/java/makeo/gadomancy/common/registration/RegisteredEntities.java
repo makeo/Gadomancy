@@ -4,6 +4,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.entities.EntityAuraCore;
 import makeo.gadomancy.common.entities.EntityPermNoClipItem;
+import makeo.gadomancy.common.entities.player.FakePlayerEntity;
 import net.minecraft.entity.Entity;
 
 /**
@@ -19,6 +20,7 @@ public class RegisteredEntities {
     public static void init() {
         registerEntity(EntityPermNoClipItem.class, "EntityPermItem", 32, 40, false);
         registerEntity(EntityAuraCore.class, "EntityAuraCore", 32, 10, true);
+        registerEntity(FakePlayerEntity.class, "FakePlayerEntity", 32, 20, true);
     }
 
     private static void registerEntity(Class<? extends Entity> entityClass, String name, int trackingRange, int updateFreq, boolean sendVelUpdates) {
@@ -26,6 +28,4 @@ public class RegisteredEntities {
         EntityRegistry.registerGlobalEntityID(entityClass, name, id);
         EntityRegistry.registerModEntity(entityClass, name, id, Gadomancy.instance, trackingRange, updateFreq, sendVelUpdates);
     }
-
-
 }

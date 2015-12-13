@@ -399,7 +399,7 @@ public class AuraEffects {
             }
         }
     }.register(Aspect.FIRE);
-    public static final AuraEffect ALIENIS = new AuraEffect.EntityAuraEffect() {
+    public static final AuraEffect ELDRITCH = new AuraEffect.EntityAuraEffect() {
         @Override
         public boolean isEntityApplicable(Entity e) {
             if(e instanceof EntityMob) {
@@ -433,12 +433,12 @@ public class AuraEffects {
                     EntityUtils.makeChampion(mob, false);
                     mob.removePotionEffect(RegisteredPotions.ELDRITCH.getId());
                 } else {
-                    mob.addPotionEffect(new PotionEffect(RegisteredPotions.ELDRITCH.getId(), ticksForMinutes(5), effect == null ? 1 : effect.getAmplifier() + 1));
+                    mob.addPotionEffect(new PotionEffect(RegisteredPotions.ELDRITCH.getId(), MiscUtils.ticksForMinutes(1), effect == null ? 1 : effect.getAmplifier() + 1));
                 }
             }
         }
     }.register(Aspect.ELDRITCH);
-    public static final AuraEffect SPIRITUS = new AuraEffect.BlockAuraEffect() {
+    public static final AuraEffect SOUL = new AuraEffect.BlockAuraEffect() {
         @Override
         public int getBlockCount(Random random) {
             return random.nextInt(60) == 0 ? 1 : 0;
@@ -467,7 +467,7 @@ public class AuraEffects {
                         }
                     }
                 } while (totalCount > 0);
-                mob.addPotionEffect(new PotionEffect(Potion.invisibility.getId(), ticksForDays(365), 1, true));
+                mob.addPotionEffect(new PotionEffect(Potion.invisibility.getId(), MiscUtils.ticksForMinutes(60*24*365), 1, true));
 
                 ChunkCoordinates pos = new ChunkCoordinates((int) mob.posX, (int) mob.posY, (int) mob.posZ);
                 pos = iterateDown(pos, world);
