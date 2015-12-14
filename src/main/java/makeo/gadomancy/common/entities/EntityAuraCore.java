@@ -6,7 +6,7 @@ import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.client.effect.fx.EntityFXFlowPolicy;
 import makeo.gadomancy.client.effect.fx.FXFlow;
 import makeo.gadomancy.client.effect.fx.Orbital;
-import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.items.ItemAuraCore;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketStartAnimation;

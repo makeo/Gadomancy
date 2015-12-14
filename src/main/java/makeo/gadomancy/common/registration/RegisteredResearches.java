@@ -2,7 +2,7 @@ package makeo.gadomancy.common.registration;
 
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.aura.AuraResearchManager;
-import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.items.ItemAuraCore;
 import makeo.gadomancy.common.research.AlternatingResearchItem;
 import makeo.gadomancy.common.research.MultiResearchPage;

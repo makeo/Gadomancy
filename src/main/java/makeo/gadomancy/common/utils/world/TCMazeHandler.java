@@ -1,7 +1,7 @@
 package makeo.gadomancy.common.utils.world;
 
 import makeo.gadomancy.common.blocks.tiles.TileAdditionalEldritchPortal;
-import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.utils.world.fake.FakeWorldTCGeneration;
 import net.minecraft.entity.Entity;

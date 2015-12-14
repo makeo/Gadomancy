@@ -357,7 +357,7 @@ public class AuraEffects {
     public static final AuraEffect HERBA = new AuraEffect.BlockAuraEffect() {
         @Override
         public int getBlockCount(Random random) {
-            return 120;
+            return 90;
         }
 
         @Override
@@ -373,7 +373,7 @@ public class AuraEffects {
     public static final AuraEffect ARBOR = new AuraEffect.BlockAuraEffect() {
         @Override
         public int getBlockCount(Random random) {
-            return 80;
+            return 60;
         }
 
         @Override

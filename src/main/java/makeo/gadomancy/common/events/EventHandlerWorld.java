@@ -7,7 +7,8 @@ import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
 import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
-import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.data.SyncDataHolder;
+import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.GolemEnumHelper;
@@ -100,6 +101,7 @@ public class EventHandlerWorld {
         if(event.phase != TickEvent.Phase.END) return;
 
         TCMazeHandler.scheduleTick();
+        SyncDataHolder.doNecessaryUpdates();
         serverTick++;
         if((serverTick & 15) == 0) {
             EventHandlerEntity.registeredLuxPylons.clear();

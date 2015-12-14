@@ -1,18 +1,15 @@
 package makeo.gadomancy.common.entities;
 
 import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
-import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.data.config.ModConfig;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import thaumcraft.common.entities.EntityPermanentItem;
-
-import java.util.List;
 
 /**
  * This class is part of the Gadomancy Mod

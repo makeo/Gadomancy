@@ -4,7 +4,7 @@ import baubles.api.BaublesApi;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import makeo.gadomancy.common.items.baubles.ItemFamiliar;
-import makeo.gadomancy.common.network.packets.PacketFamiliar;
+import makeo.gadomancy.common.network.packets.PacketFamiliarBolt;
 import makeo.gadomancy.common.utils.world.fake.FakeWorld;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -19,7 +19,6 @@ import thaumcraft.client.renderers.entity.RenderWisp;
 import thaumcraft.common.entities.monster.EntityWisp;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,59 +32,40 @@ import java.util.Map;
  * Created by HellFirePvP @ 31.10.2015 12:13
  */
 public class FamiliarHandlerClient {
+
     private static final EntityWisp ENTITY_WISP;
 
     private static RenderWisp fallbackRenderer;
 
     private static Map<String, PartialEntityFamiliar> clientFamiliars = new HashMap<String, PartialEntityFamiliar>();
-    private static List<String> familiarPlayers = new ArrayList<String>();
 
     @SideOnly(Side.CLIENT)
-    public static void processPacket(PacketFamiliar packet) {
-        if(packet instanceof PacketFamiliar.PacketFamiliarBolt) {
-            PacketFamiliar.PacketFamiliarBolt pkt = (PacketFamiliar.PacketFamiliarBolt) packet;
-            EntityPlayer p = Minecraft.getMinecraft().theWorld.getPlayerEntityByName(pkt.owner);
-            if(p == null || p.getDistanceSqToEntity(Minecraft.getMinecraft().thePlayer) > 1024) return; //32^2
-            PartialEntityFamiliar fam = clientFamiliars.get(p.getCommandSenderName());
-            if(fam == null) return;
-            FXLightningBolt bolt = new FXLightningBolt(Minecraft.getMinecraft().theWorld, (float) fam.posX, (float) fam.posY, (float) fam.posZ, pkt.targetX, pkt.targetY, pkt.targetZ, Minecraft.getMinecraft().theWorld.rand.nextLong(), 10, 4.0F, 5);
-            bolt.defaultFractal();
-            bolt.setType(pkt.type);
-            bolt.finalizeBolt();
-        } else if(packet instanceof PacketFamiliar.PacketFamiliarSyncCompletely) {
-            PacketFamiliar.PacketFamiliarSyncCompletely sync = (PacketFamiliar.PacketFamiliarSyncCompletely) packet;
-            familiarPlayers = sync.playerNamesWithFamiliars;
-        } else if(packet instanceof PacketFamiliar.PacketFamiliarSyncSingle) {
-            PacketFamiliar.PacketFamiliarSyncSingle sync = (PacketFamiliar.PacketFamiliarSyncSingle) packet;
-            String value = sync.name;
-            if(sync.status) {
-                if(!familiarPlayers.contains(value)) {
-                    familiarPlayers.add(value);
-                    clientFamiliars.put(value, new PartialEntityFamiliar(Minecraft.getMinecraft().theWorld.getPlayerEntityByName(value), value));
-                }
-            } else {
-                clientFamiliars.remove(value);
-                familiarPlayers.remove(value);
-            }
-        }
+    public static void processBoltPacket(PacketFamiliarBolt pkt) {
+        EntityPlayer p = Minecraft.getMinecraft().theWorld.getPlayerEntityByName(pkt.owner);
+        if(p == null || p.getDistanceSqToEntity(Minecraft.getMinecraft().thePlayer) > 1024) return; //32^2
+        PartialEntityFamiliar fam = clientFamiliars.get(p.getCommandSenderName());
+        if(fam == null) return;
+        FXLightningBolt bolt = new FXLightningBolt(Minecraft.getMinecraft().theWorld, (float) fam.posX, (float) fam.posY, (float) fam.posZ, pkt.targetX, pkt.targetY, pkt.targetZ, Minecraft.getMinecraft().theWorld.rand.nextLong(), 10, 4.0F, 5);
+        bolt.defaultFractal();
+        bolt.setType(pkt.type);
+        bolt.finalizeBolt();
     }
 
     @SideOnly(Side.CLIENT)
     public static void playerRenderEvent(EntityPlayer player, float partialTicks) {
-        for(String ownerName : clientFamiliars.keySet()) {
-            PartialEntityFamiliar fam = clientFamiliars.get(ownerName);
+        String ownerName = player.getCommandSenderName();
+        if(!clientFamiliars.containsKey(ownerName)) return;
 
-            if(!ownerName.equals(player.getCommandSenderName())) continue;
+        PartialEntityFamiliar fam = clientFamiliars.get(ownerName);
 
-            ItemStack stack = BaublesApi.getBaubles(player).getStackInSlot(0);
-            if(stack == null || !(stack.getItem() instanceof ItemFamiliar)) return;
-            if(((ItemFamiliar) stack.getItem()).hasAspect(stack)) {
-                ENTITY_WISP.setType(((ItemFamiliar) stack.getItem()).getAspect(stack).getTag());
-                ENTITY_WISP.ticksExisted = fam.dummyEntity.ticksExisted;
-                GL11.glPushMatrix();
-                fallbackRenderer.doRender(ENTITY_WISP, fam.renderX, fam.renderY, fam.renderZ, 0, partialTicks);
-                GL11.glPopMatrix();
-            }
+        ItemStack stack = BaublesApi.getBaubles(player).getStackInSlot(0);
+        if(stack == null || !(stack.getItem() instanceof ItemFamiliar)) return;
+        if(((ItemFamiliar) stack.getItem()).hasAspect(stack)) {
+            ENTITY_WISP.setType(((ItemFamiliar) stack.getItem()).getAspect(stack).getTag());
+            ENTITY_WISP.ticksExisted = fam.dummyEntity.ticksExisted;
+            GL11.glPushMatrix();
+            fallbackRenderer.doRender(ENTITY_WISP, fam.renderX, fam.renderY, fam.renderZ, 0, partialTicks);
+            GL11.glPopMatrix();
         }
     }
 
@@ -100,6 +80,18 @@ public class FamiliarHandlerClient {
         fallbackRenderer = new RenderWisp();
         fallbackRenderer.setRenderManager(RenderManager.instance);
         ENTITY_WISP = new EntityWisp(new FakeWorld());
+    }
+
+    public static void handleAdditions(List<String> toAdd) {
+        for(String plName : toAdd) {
+            clientFamiliars.put(plName, new PartialEntityFamiliar(Minecraft.getMinecraft().theWorld.getPlayerEntityByName(plName), plName));
+        }
+    }
+
+    public static void handleRemovals(List<String> toRemove) {
+        for(String plName : toRemove) {
+            clientFamiliars.remove(plName);
+        }
     }
 
     public static class DummyEntityFamiliar extends Entity {

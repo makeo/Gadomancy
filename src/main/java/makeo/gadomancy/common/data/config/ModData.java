@@ -1,4 +1,4 @@
-package makeo.gadomancy.common.data;
+package makeo.gadomancy.common.data.config;
 
 import com.google.gson.Gson;
 import cpw.mods.fml.common.FMLLog;

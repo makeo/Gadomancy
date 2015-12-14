@@ -1,7 +1,7 @@
 package makeo.gadomancy.client.effect.fx;
 
 import makeo.gadomancy.client.effect.EffectHandler;
-import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.Vector3;
 import net.minecraft.client.Minecraft;

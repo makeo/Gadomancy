@@ -2,9 +2,9 @@ package makeo.gadomancy.common.events;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
-import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.data.DataFamiliar;
+import makeo.gadomancy.common.data.SyncDataHolder;
 import makeo.gadomancy.common.network.PacketHandler;
-import makeo.gadomancy.common.network.packets.PacketFamiliar;
 import makeo.gadomancy.common.network.packets.PacketSyncConfigs;
 import makeo.gadomancy.common.network.packets.PacketUpdateGolemTypeOrder;
 import makeo.gadomancy.common.utils.GolemEnumHelper;
@@ -28,8 +28,8 @@ public class EventHandlerNetwork {
         EntityPlayerMP p = (EntityPlayerMP) e.player;
         if(!p.playerNetServerHandler.netManager.isLocalChannel()) {
             PacketHandler.INSTANCE.sendTo(new PacketUpdateGolemTypeOrder(GolemEnumHelper.getCurrentMapping()), p);
-            Gadomancy.proxy.familiarHandler.checkPlayerEquipment(p);
-            PacketHandler.INSTANCE.sendTo(new PacketFamiliar.PacketFamiliarSyncCompletely(Gadomancy.proxy.familiarHandler.getCurrentActiveFamiliars()), p);
+            ((DataFamiliar) SyncDataHolder.getDataServer("FamiliarData")).checkPlayerEquipment(p);
+            SyncDataHolder.syncAllDataTo(p);
             PacketHandler.INSTANCE.sendTo(new PacketSyncConfigs(), p);
         }
     }
@@ -37,7 +37,7 @@ public class EventHandlerNetwork {
     @SubscribeEvent
     public void on(PlayerEvent.PlayerLoggedOutEvent e) {
         EntityPlayer player = e.player;
-        Gadomancy.proxy.familiarHandler.notifyUnequip(player.worldObj, player);
+        ((DataFamiliar) SyncDataHolder.getDataServer("FamiliarData")).handleUnequip(player.worldObj, player);
 
         TCMazeHandler.closeSession(e.player, true);
     }

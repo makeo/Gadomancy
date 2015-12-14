@@ -11,7 +11,7 @@ import thaumcraft.api.aspects.Aspect;
  * Created by makeo @ 11.12.2015 17:32
  */
 public class PotionAchromatic extends PotionCustomTexture {
-    protected PotionAchromatic(int id) {
+    public PotionAchromatic(int id) {
         super(id, false, Aspect.CRYSTAL.getColor(), Aspect.CRYSTAL.getImage());
         setPotionName("potion.achromatic");
     }

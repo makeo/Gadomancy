@@ -3,6 +3,8 @@ package makeo.gadomancy.common.items.baubles;
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.data.DataFamiliar;
+import makeo.gadomancy.common.data.SyncDataHolder;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.NBTHelper;
 import net.minecraft.creativetab.CreativeTabs;
@@ -124,7 +126,8 @@ public class ItemFamiliar extends Item implements IBauble {
     public void onWornTick(ItemStack itemStack, EntityLivingBase entity) {
         if(itemStack == null) return;
         if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar) {
-            Gadomancy.proxy.familiarHandler.equippedTick(((EntityPlayer) entity).worldObj, itemStack, (EntityPlayer) entity);
+            DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
+            familiarData.equipTick(((EntityPlayer) entity).worldObj, (EntityPlayer) entity);
 
             if(((EntityPlayer) entity).worldObj.isRemote) return;
 
@@ -144,7 +147,8 @@ public class ItemFamiliar extends Item implements IBauble {
     public void onEquipped(ItemStack itemStack, EntityLivingBase entity) {
         if(itemStack == null) return;
         if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar) {
-            Gadomancy.proxy.familiarHandler.notifyEquip(((EntityPlayer) entity).worldObj, itemStack, (EntityPlayer) entity);
+            DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
+            familiarData.handleEquip(((EntityPlayer) entity).worldObj, (EntityPlayer) entity);
         }
     }
 
@@ -152,7 +156,8 @@ public class ItemFamiliar extends Item implements IBauble {
     public void onUnequipped(ItemStack itemStack, EntityLivingBase entity) {
         if(itemStack == null) return;
         if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar) {
-            Gadomancy.proxy.familiarHandler.notifyUnequip(((EntityPlayer) entity).worldObj, (EntityPlayer) entity);
+            DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
+            familiarData.handleUnequip(((EntityPlayer) entity).worldObj, (EntityPlayer) entity);
         }
     }
 

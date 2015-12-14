@@ -1,4 +1,4 @@
-package makeo.gadomancy.common.data;
+package makeo.gadomancy.common.data.config;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

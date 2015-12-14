@@ -31,11 +31,10 @@ public class PacketHandler {
         INSTANCE.registerMessage(PacketTCNotificationText.class, PacketTCNotificationText.class, id++, Side.CLIENT);
 
         //Familiar
-        INSTANCE.registerMessage(PacketFamiliar.PacketFamiliarBolt.class, PacketFamiliar.PacketFamiliarBolt.class, id++, Side.CLIENT);
-        INSTANCE.registerMessage(PacketFamiliar.PacketFamiliarSyncCompletely.class, PacketFamiliar.PacketFamiliarSyncCompletely.class, id++, Side.CLIENT);
-        INSTANCE.registerMessage(PacketFamiliar.PacketFamiliarSyncSingle.class, PacketFamiliar.PacketFamiliarSyncSingle.class, id++, Side.CLIENT);
+        INSTANCE.registerMessage(PacketFamiliarBolt.class, PacketFamiliarBolt.class, id++, Side.CLIENT);
 
         //Sync data
         INSTANCE.registerMessage(PacketSyncConfigs.class, PacketSyncConfigs.class, id++, Side.CLIENT);
+        INSTANCE.registerMessage(PacketSyncData.class, PacketSyncData.class, id++, Side.CLIENT);
     }
 }
