@@ -54,69 +54,6 @@ public class EventHandlerEntity {
         }
     }*/
 
-    public static int getFortuneLevel(EntityLivingBase entity) {
-        int fortuneLevel = getRealEnchantmentLevel(Enchantment.fortune.effectId, entity.getHeldItem());
-        if(entity.isPotionActive(RegisteredPotions.POTION_LUCK)) {
-            int lvl = entity.getActivePotionEffect(RegisteredPotions.POTION_LUCK).getAmplifier() + 1; //Amplifier 0-indexed
-            fortuneLevel += lvl;
-        }
-        return fortuneLevel;
-    }
-
-    public static int getLootingLevel(EntityLivingBase entity) {
-        int lootingLevel = getRealEnchantmentLevel(Enchantment.looting.effectId, entity.getHeldItem());
-        if(entity.isPotionActive(RegisteredPotions.POTION_LUCK)) {
-            int lvl = entity.getActivePotionEffect(RegisteredPotions.POTION_LUCK).getAmplifier() + 1; //Amplifier 0-indexed
-            lootingLevel += lvl;
-        }
-        return lootingLevel;
-    }
-
-    public static int onGetEnchantmentLevel(int enchantmentId, ItemStack stack) {
-        EntityPlayer possiblePlayer = null;
-        if(stack != null) {
-            MinecraftServer server = MinecraftServer.getServer();
-            if(server != null) {
-                for(EntityPlayer player : (List<EntityPlayer>)server.getConfigurationManager().playerEntityList) {
-                    if(player.getHeldItem() == stack) {
-                        possiblePlayer = player;
-                    }
-                }
-            }
-        }
-
-        if(possiblePlayer != null) {
-
-            if(enchantmentId == Enchantment.fortune.effectId) {
-                return getFortuneLevel(possiblePlayer);
-            } else if(enchantmentId == Enchantment.looting.effectId) {
-                return getLootingLevel(possiblePlayer);
-            }
-
-        }
-
-        return getRealEnchantmentLevel(enchantmentId, stack);
-    }
-
-    private static int getRealEnchantmentLevel(int enchantmentId, ItemStack stack) {
-        if (stack == null) {
-            return 0;
-        } else {
-            NBTTagList nbttaglist = stack.getEnchantmentTagList();
-            if (nbttaglist == null) {
-                return 0;
-            } else {
-                for (int j = 0; j < nbttaglist.tagCount(); ++j) {
-                    short id = nbttaglist.getCompoundTagAt(j).getShort("id");
-                    if (id == enchantmentId) {
-                        return nbttaglist.getCompoundTagAt(j).getShort("lvl");
-                    }
-                }
-                return 0;
-            }
-        }
-    }
-
     @SubscribeEvent
     public void on(LivingSpawnEvent.CheckSpawn event) {
         if(event.entityLiving.isCreatureType(EnumCreatureType.monster, false)) {

@@ -476,6 +476,7 @@ public class AuraEffects {
             }
         }
     }.register(Aspect.SOUL);
+    public static final AuraEffect PRAECANTATIO = new PotionDistributionEffect(RegisteredPotions.VIS_DISCOUNT, 4, 6, ticksForMinutes(5), 1).register(Aspect.MAGIC);
 
     public static class PotionDistributionEffect extends AuraEffect.EntityAuraEffect {
 
