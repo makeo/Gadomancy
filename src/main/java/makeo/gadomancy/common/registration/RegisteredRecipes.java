@@ -5,7 +5,7 @@ import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.crafting.InfusionUpgradeRecipe;
 import makeo.gadomancy.common.crafting.RecipeStickyJar;
-import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.items.ItemAuraCore;
 import makeo.gadomancy.common.items.baubles.ItemFamiliar;
 import makeo.gadomancy.common.research.SimpleResearchItem;

@@ -8,11 +8,13 @@ import thaumcraft.api.aspects.Aspect;
  * GNU LESSER GENERAL PUBLIC LICENSE
  * for more read the LICENSE file
  * <p/>
- * Created by makeo @ 11.12.2015 17:32
+ * Created by HellFirePvP @ 15.12.2015 19:06
  */
-public class PotionAchromatic extends PotionCustomTexture {
-    public PotionAchromatic(int id) {
-        super(id, false, Aspect.CRYSTAL.getColor(), Aspect.CRYSTAL.getImage());
-        setPotionName("potion.achromatic");
+public class PotionVisAffinity extends PotionCustomTexture {
+
+    public PotionVisAffinity(int id) {
+        super(id, false, Aspect.MAGIC.getColor(), Aspect.MAGIC.getImage());
+        setPotionName("potion.visdiscount");
     }
+
 }

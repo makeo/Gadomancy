@@ -8,12 +8,12 @@ import makeo.gadomancy.client.ClientProxy;
 import makeo.gadomancy.common.aura.AuraEffects;
 import makeo.gadomancy.common.containers.ContainerArcanePackager;
 import makeo.gadomancy.common.containers.ContainerInfusionClaw;
-import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.data.SyncDataHolder;
+import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.events.EventHandlerEntity;
 import makeo.gadomancy.common.events.EventHandlerGolem;
 import makeo.gadomancy.common.events.EventHandlerNetwork;
 import makeo.gadomancy.common.events.EventHandlerWorld;
-import makeo.gadomancy.common.familiar.FamiliarHandlerServer;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.registration.ModSubstitutions;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
@@ -50,7 +50,6 @@ import java.util.List;
  */
 public class CommonProxy implements IGuiHandler {
     public static final EventHandlerGolem EVENT_HANDLER_GOLEM = new EventHandlerGolem();
-    public FamiliarHandlerServer familiarHandler;
 
     public void onConstruct() { }
 
@@ -67,8 +66,6 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void initalize() {
-        familiarHandler = new FamiliarHandlerServer();
-
         NetworkRegistry.INSTANCE.registerGuiHandler(Gadomancy.instance, this);
 
         MinecraftForge.EVENT_BUS.register(EVENT_HANDLER_GOLEM);
@@ -78,13 +75,14 @@ public class CommonProxy implements IGuiHandler {
         FMLCommonHandler.instance().bus().register(worldEventHandler);
         MinecraftForge.EVENT_BUS.register(new EventHandlerEntity());
 
+        RegisteredPotions.init();
+
         AuraEffects.AER.getTickInterval(); //initalize AuraEffects
 
         RegisteredRecipes.init();
 
+        SyncDataHolder.initialize();
         ModSubstitutions.init();
-
-        RegisteredPotions.init();
 
         RegisteredEntities.init();
 
@@ -101,8 +99,6 @@ public class CommonProxy implements IGuiHandler {
         RegisteredItems.postInit();
 
         ModSubstitutions.postInit();
-
-        familiarHandler.setupPostInit();
     }
 
     public static void unregisterWandHandler(String modid, Block block, int metadata) {

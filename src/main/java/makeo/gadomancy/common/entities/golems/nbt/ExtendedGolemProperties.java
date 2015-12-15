@@ -4,7 +4,7 @@ import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.entities.golems.cores.EntityAITasksWrapper;
 import makeo.gadomancy.common.utils.NBTHelper;
 import net.minecraft.entity.Entity;

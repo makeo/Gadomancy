@@ -24,7 +24,6 @@ public class PotionBuffGolem extends PotionCustomTexture {
     public static final double HEALTH_INCREASE = 0.5;
     public static final double DAMAGE_INCREASE = 1;
 
-    //Golem runs 40% faster. Operation 1 == Multiply with current value
     public static final AttributeModifier SPEED_INC_PERCENT = new AttributeModifier(UUID.fromString("9f76335f-2952-46e9-b91a-c555ca983ada"), "POTION_GOLEM_SPEED", SPEED_INCREASE, 1);
     public static final AttributeModifier HEALTH_INC_PERCENT = new AttributeModifier(UUID.fromString("fafcbdc2-9c24-45a1-b832-4b6c4a5df9c7"), "POTION_GOLEM_HEALTH", HEALTH_INCREASE, 1);
     public static final AttributeModifier DAMAGE_INC_PERCENT = new AttributeModifier(UUID.fromString("6e562261-dccf-4421-ac6f-c742989c7dfb"), "POTION_GOLEM_DAMAGE", DAMAGE_INCREASE, 1);

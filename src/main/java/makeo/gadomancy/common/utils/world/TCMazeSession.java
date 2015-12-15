@@ -1,6 +1,6 @@
 package makeo.gadomancy.common.utils.world;
 
-import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.data.config.ModConfig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -9,7 +9,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.DimensionManager;
 import org.apache.logging.log4j.LogManager;
 import thaumcraft.common.lib.world.dim.Cell;
 import thaumcraft.common.lib.world.dim.CellLoc;

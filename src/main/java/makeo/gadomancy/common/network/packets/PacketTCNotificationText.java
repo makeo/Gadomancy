@@ -4,6 +4,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import makeo.gadomancy.common.utils.StringHelper;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -50,30 +51,20 @@ public class PacketTCNotificationText implements IMessage, IMessageHandler<Packe
     public void fromBytes(ByteBuf buf) {
         color = buf.readInt();
 
-        int length = buf.readInt();
-        byte[] strBytes = new byte[length];
-        buf.readBytes(strBytes, 0, length);
-        text = new String(strBytes);
+        text = StringHelper.readFromBuffer(buf);
 
-        length = buf.readInt();
-        strBytes = new byte[length];
-        buf.readBytes(strBytes, 0, length);
-        additionalInfo = new String(strBytes);
+        additionalInfo = StringHelper.readFromBuffer(buf);
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
         buf.writeInt(color);
 
-        byte[] str = text.getBytes();
-        buf.writeInt(str.length);
-        buf.writeBytes(str);
+        StringHelper.writeToBuffer(buf, text);
 
         if(additionalInfo == null) additionalInfo = "";
 
-        str = additionalInfo.getBytes();
-        buf.writeInt(str.length);
-        buf.writeBytes(str);
+        StringHelper.writeToBuffer(buf, additionalInfo);
     }
 
     @Override

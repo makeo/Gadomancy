@@ -7,7 +7,7 @@ import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.api.internal.IApiHandler;
 import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.entities.golems.ItemAdditionalGolemPlacer;
 import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;
 import makeo.gadomancy.common.registration.RegisteredBlocks;

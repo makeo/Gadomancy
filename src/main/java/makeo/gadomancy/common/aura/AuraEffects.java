@@ -357,7 +357,7 @@ public class AuraEffects {
     public static final AuraEffect HERBA = new AuraEffect.BlockAuraEffect() {
         @Override
         public int getBlockCount(Random random) {
-            return 120;
+            return 90;
         }
 
         @Override
@@ -373,7 +373,7 @@ public class AuraEffects {
     public static final AuraEffect ARBOR = new AuraEffect.BlockAuraEffect() {
         @Override
         public int getBlockCount(Random random) {
-            return 80;
+            return 60;
         }
 
         @Override
@@ -476,6 +476,7 @@ public class AuraEffects {
             }
         }
     }.register(Aspect.SOUL);
+    public static final AuraEffect PRAECANTATIO = new PotionDistributionEffect(RegisteredPotions.VIS_DISCOUNT, 4, 6, ticksForMinutes(5), 1).register(Aspect.MAGIC);
 
     public static class PotionDistributionEffect extends AuraEffect.EntityAuraEffect {
 

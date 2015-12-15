@@ -4,6 +4,7 @@ import makeo.gadomancy.common.potions.PotionAchromatic;
 import makeo.gadomancy.common.potions.PotionBuffGolem;
 import makeo.gadomancy.common.potions.PotionLetsGargamelItUp;
 import makeo.gadomancy.common.potions.PotionMiningLuck;
+import makeo.gadomancy.common.potions.PotionVisAffinity;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.potion.Potion;
 
@@ -21,12 +22,15 @@ public class RegisteredPotions {
     public static PotionBuffGolem BUFF_GOLEM;
     public static PotionAchromatic ACHROMATIC;
     public static PotionLetsGargamelItUp ELDRITCH;
+    public static PotionVisAffinity VIS_DISCOUNT;
 
     public static void init() {
         POTION_LUCK = registerPotion(PotionMiningLuck.class);
         BUFF_GOLEM = registerPotion(PotionBuffGolem.class);
         ACHROMATIC = registerPotion(PotionAchromatic.class);
         ELDRITCH = registerPotion(PotionLetsGargamelItUp.class);
+        VIS_DISCOUNT = registerPotion(PotionVisAffinity.class);
+        System.out.println(VIS_DISCOUNT);
     }
 
     private static <T extends Potion> T registerPotion(Class<T> potionClass) {

@@ -8,7 +8,7 @@ import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.api.golems.events.GolemDropPlacerEvent;
 import makeo.gadomancy.api.golems.events.PlacerCreateGolemEvent;
 import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.entities.golems.ItemAdditionalGolemPlacer;
 import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;
 import makeo.gadomancy.common.registration.RegisteredGolemStuff;
