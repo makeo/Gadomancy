@@ -1,0 +1,156 @@
+item.ItemGolemPlacer.silverwood.name=银木傀儡
+item.ItemTransformationFocus.name=[WIP]法杖核心：变形
+item.ItemFamiliar.name=天域使魔
+item.ItemArcanePackage.name=奥法包裹
+
+itemGroup.gadomancy=Gadomancy
+tc.research_category.gadomancy=魔像密经
+
+tc.research_name.GADOMANCY.GOLEMSILVERWOOD=银木傀儡
+tc.research_text.GADOMANCY.GOLEMSILVERWOOD=Just a dash of Chemical X
+gadomancy.research_page.GOLEMSILVERWOOD.1=这种傀儡由银木雕刻而就，继承了银木对魔法亲和的本性，由此可携带更多升级。<BR>§l§nSilverwood Golem Attributes§r<BR>§lDurability:§r Average<BR>§lStrength:§r Low<BR>§lSelf-repair:§r Average<BR>§lCarry Limit:§r 8<BR>§lSpeed:§r Fast<BR>§lUpgrades:§r 3
+
+tc.research_name.GADOMANCY.GOLEMRUNICSHIELD=傀儡守护符文
+tc.research_text.GADOMANCY.GOLEMRUNICSHIELD=现已支持你的小朋友！
+gadomancy.research_page.GOLEMRUNICSHIELD.1=经过进一步对守护魔法的测验，你已发现了为傀儡附加符文护盾的方法。<BR>和在你身上一样，符文护盾会在傀儡身上形成一道魔法壁垒，可以免疫绝大多数类型的伤害。<BR>然而它并不能免疫溺水以及一些自然伤害。
+
+tc.research_name.GADOMANCY.STICKYJAR=粘性罐子
+tc.research_text.GADOMANCY.STICKYJAR=把它们粘起来！
+gadomancy.research_page.STICKYJAR.1=要素罐子之于神秘使，有如黄油之于面包一样重要，但如果还要考虑大量潜在的源质管道，情况就又不一样了。你决定给罐子底部加一些黏合剂来缓解管道布线压力。底部涂过黏合剂的罐子被放下时会粘在表面上，即使是方块的侧面，甚至是底面。破坏罐子并不会影响这种粘性，这样粘性罐子就可以回收使用了。另外，很多其它类型的源质罐子也可以加这种黏合剂。
+
+tc.research_name.GADOMANCY.ARCANEDROPPER=奥术投掷器
+tc.research_text.GADOMANCY.ARCANEDROPPER=When the pimps in the crib, ma
+gadomancy.research_page.ARCANEDROPPER.1=考量过投掷器的性质以及可能的拓展方式后，你对你的投掷器做出了一些修改。<LINE>利用奥术投掷器，你可以在3x3x3的范围内吸收、置入并监视物品，就像它们在内置物品栏里一样。<BR>手持不带核心的法杖可以看到其影响的范围。<BR>奥术投掷器只有平整的那一面可以进行交互。
+
+tc.research_name.GADOMANCY.GOLEMCOREBREAK=傀儡运转核心：破坏
+tc.research_text.GADOMANCY.GOLEMCOREBREAK=大新闻！
+gadomancy.research_page.GOLEMCOREBREAK.1=挂载了这个核心的傀儡会监视并破坏标记过的方块。<BR>你可以于其物品栏中指定其所用工具之种类。<BR>你还可以在其物品栏里放置方块，以指定它所允许破坏的方块之种类。破坏的速度将取决于工具本身的强度和采掘速度。<BR>You can apply the Order Upgrade to specify which tool needs to be used on the associated marked block.<BR>You can apply the Etropy Upgrade to ignore metadata on tools.
+
+tc.research_name.GADOMANCY.GOLEMCOREBODYGUARD=傀儡运转核心：护法
+tc.research_text.GADOMANCY.GOLEMCOREBODYGUARD=绝不攻击主人
+gadomancy.research_page.GOLEMCOREBODYGUARD.1=守护傀儡本身是极好的，但即便是有升级，他们也不能完全懂得如何集中保护主人。给傀儡运转核心：护卫做出一些修改后，这个问题得到了改善。挂载有傀儡运转核心：护法的傀儡会时刻追随其主人，就像被驯化的狼一样忠诚。
+
+tc.research_name.GADOMANCY.INFUSIONCLAW=自动注魔
+tc.research_text.GADOMANCY.INFUSIONCLAW=悬浮的玩意！
+gadomancy.research_page.INFUSIONCLAW.1=很多时候你都在想，如何让注魔的过程自动化，这样就可以不用总是守在符文矩阵旁边了，然后你发现你被法杖充能基座给涮了。你已经证明令基座移动法杖是相当困难的，但并非完全不可能。最终搞出来的设备有极微弱的感知能力，而且似乎和你的灵魂绑定在一起，但是它看起来工作正常就够了！你的眼皮已经颤抖很久了...你确定这是好的...也许吧...
+gadomancy.research_page.INFUSIONCLAW.2=将此设备置于符文矩阵正上方，并通过正上面放置一柄法杖或手杖。若在其GUI内的选项中打勾，那么只有空法杖才会被抽出。这个过程还会向任何由其启动的注魔增加不稳定性，其具体程度将会由法杖或手杖的等级来决定。通常手杖会更稳定，但不稳定性很大程度上还是取决于杖的容量。<BR>你现在便可以通过给予四个侧面的任意一个以红石信号来触发注魔过程。<BR>这个设备还可以用于自动化生产魔导手册和魔法坩锅，使得你魔导手册和坩锅工厂的梦想终于成为可能！
+
+tc.research_name.GADOMANCY.REMOTEJAR=镜像罐子
+tc.research_text.GADOMANCY.REMOTEJAR=镜像运输
+gadomancy.research_page.REMOTEJAR.1=源质镜子可谓是注魔时极好的源质移动方式，但你，却不可思议地认为，它还有未发掘的潜力。两面源质镜子连接在一起时，源质会高效地在两点之间流动。若是将源质镜子置于特殊改装过的源质罐子中，那么罐子中的空间就可以与镜子相连接。要连接两个罐子，只需将一个镜像罐子放下来，并手持魔镜右击即可。
+gadomancy.research_page.REMOTEJAR.2=若已有既存网络，罐子将会加入这个网络中。和源质魔镜不同，镜像罐子网络可以容纳多个罐子。各个罐子彼此共享并平摊其空间，简单来说就是一个有两个罐子的网络会有两个罐子共同持有源质，若有三个罐子那就是三个，以此类推。另外，若镜像罐子满了，它就会试图将源质分摊到同网络中的别的罐子中去。
+
+tc.research_name.GADOMANCY.FAMILIAR=天域使魔
+tc.research_text.GADOMANCY.FAMILIAR=奥法追随者
+gadomancy.research_page.FAMILIAR.1=那些飞舞的鬼火已经吸引你好久了。一般来说这样的永恒魔力都应该是被动的，但这些小精灵受到攻击时却会以惊人的速度和效率发起反击。不仅如此，甚至仅仅是快速接近小精灵都会惹怒她们。<LINE>然而这种行为却给了你不一样的启发。通过开发小精灵的这种天性，你也许可以将其改造为一个随身的护卫。不幸的是，野生的小精灵行踪诡异，极难捕捉。
+gadomancy.research_page.FAMILIAR.3=向天域之华注以大量魔力以及少量绑定试剂，你成功造出了人造精灵。天域“使魔”将会自动跟随佩带者(主人)的气场，并以类似浮游炮台的方式向靠近佩带者的敌对生物发起攻击。很明显，人造的小精灵相比于天然的小精灵来说还是很虚弱，并且移动速度也不快，但你确信有办法可以增强她。
+
+tc.research_name.GADOMANCY.FAM_ATTACK_1=使魔升级：攻击增强
+tc.research_text.GADOMANCY.FAM_ATTACK_1=只是伤害提升
+gadomancy.research_page.FAM_ATTACK_1.1=继续浓缩精灵的魔力，她的攻击力得以翻倍。
+
+tc.research_name.GADOMANCY.FAM_ATTACK_2=使魔升级：深度攻击强化
+tc.research_text.GADOMANCY.FAM_ATTACK_2=What does the scouter say about its power level?
+gadomancy.research_page.FAM_ATTACK_2.1=再次深度浓缩精灵的魔力，并辅以邪术能量，精灵的攻击力再次成功翻番。你偶尔可以听到你精灵奇怪的低声细语，但是这声音确实很低，低到你认为并不是大问题。
+
+tc.research_name.GADOMANCY.FAM_ATTACK_3=使魔升级：最大化伤害
+tc.research_text.GADOMANCY.FAM_ATTACK_3=超9000！！！
+gadomancy.research_page.FAM_ATTACK_3.1=在观察一段时间的元始珍珠后，你发现了进一步提升使魔攻击力的方法。将元始珍珠的共振能量赋予给使魔，你再次将她的攻击提升为原来的两倍。但，之前那几乎听不到的细语，现在却变得响亮了。你开始不安起来，怀疑是否被什么人监视...
+
+tc.research_name.GADOMANCY.FAM_RANGE_1=使魔升级：范围提升
+tc.research_text.GADOMANCY.FAM_RANGE_1=更深的进攻
+gadomancy.research_page.FAM_RANGE_1.1=辅以外部的改造，精灵的敏感度得到了提升，她的攻击范围也随之有少许提升。
+
+tc.research_name.GADOMANCY.FAM_COOLDOWN_1=使魔升级：攻速提升
+tc.research_text.GADOMANCY.FAM_COOLDOWN_1=某科学的超电磁炮
+gadomancy.research_page.FAM_COOLDOWN_1.1=元始珍珠的共振，在各种领域都被证明是相当有用的特性。若将珍珠与元始核心一并与精灵绑定，她的进攻频率似乎会有很大提升。具体来说，这将会让她的攻击速度提升到原来的两倍。
+
+tc.research_name.GADOMANCY.NODE_MANIPULATOR=节点操纵
+tc.research_text.GADOMANCY.NODE_MANIPULATOR=和轮盘赌差不多
+gadomancy.research_page.NODE_MANIPULATOR.1=灵气节点自一开始就一直吸引着你的注意力。它们到底从何而来？为什么会有这么多变种？片刻后，你发现你问出了一个终极问题：有无可能，改变一个节点的运作方式？游历五湖四海，潜入邪术迷宫，在旅途中你找到不少能改变灵气运作方式的材料。小心处理这些材料，并利用这些东西，对你手头唯一能从节点中提取纯净魔力的设备进行增强，最终你终于解开了你的问题，而答案是：一台极端危险的机械。
+gadomancy.research_page.NODE_MANIPULATOR.3=节点操纵仪，是台和法杖充能基座工作方式完全相反的机械：从法杖中抽取vis，使得节点变得些许不稳定化。<LINE>操纵仪的基座本身稳定性并不好，不能够独立完成节点操纵的任务。通过追加特制核心来持有用于提取vis的法杖(或手杖)，以及一系列用于导流vis的魔法柱，最终这个机械终于可以开动了。只需在基座上放置法杖(或手杖)，然后操纵仪就会自动开始运转。
+gadomancy.research_page.NODE_MANIPULATOR.6=节点操纵仪需要至少六种元始要素的vis70点方可开始工作，但若给予超过70点的vis，效果似乎会更加明显。<BR>除了你对节点行为的研究，你对节点操纵仪究竟会造出什么样的怪物还是一无所知。现在，只有亲自上阵这一条路了...
+
+tc.research_name.GADOMANCY.E_PORTAL_CREATOR=虚空漫步者之门
+tc.research_text.GADOMANCY.E_PORTAL_CREATOR=步入虚空...
+gadomancy.research_page.E_PORTAL_CREATOR.1=“与怪物战斗的人，应当小心自己不要成为怪物。当你远远凝视深渊时，深渊也在凝视你。”<BR>-弗雷德里希.尼采，《善恶的彼岸》，1886<LINE>一开始只有一个奇迹：元始珍珠的发现。珍珠的光芒，揭示了世界和创世的秘密，但片刻后你感到一个珍珠还不够。珍珠的光芒确实很温暖，但却断断续续，似是暗淡无光，犹若一粒火星。
+gadomancy.research_page.E_PORTAL_CREATOR.3=古老而黑暗的低声细语开始在你的思虑中弥漫开来。这声音比以前的要更大，也更坚定，这声音在揭示一条道路，一条不是用来走的道路，黑暗无边，却通向力量之上的最强之力，隐没于纯粹虚空之边际。你认为你知道这声音究竟在说什么，因为，你作为你的存在，已经触及了这力量的一角。现在你只需要知道，如何找到这不可见不可及的道路了。
+gadomancy.research_page.E_PORTAL_CREATOR.4=毫无意外的是，这道路的问题的解，就在那邪术方尖碑里。这古代机械包括了一个节点，而这节点却有足够的灵气，以维持一个小型的传送门的开启。通过修改复合要素换能器的工作方式，以模仿方尖碑的工作方式，你可以做到和方尖碑一样的vis重定向。<BR>这歌新的核心和普通的随机核心不同，因为它需要放置在节点操纵仪上才能工作。
+gadomancy.research_page.E_PORTAL_CREATOR.6=要搭建门的框架，仍需要一个普通的节点操纵仪结构，但外部还需要四个重定向核心，而且此前随机核心的位置要换上重定向核心。虚空漫步者之门需要六种元始要素各150点方可完成建造。<BR>建造完成后，还需在门四周放置四个邪术之眼，并需要在中心基座放置一柄含六种元始要素各120点的法杖或手杖。<BR>一旦门吸收了足够多的要素，最上方的节点将会变为传送门。
+gadomancy.research_page.E_PORTAL_CREATOR.8=第一眼望去，你认为它和邪术传送门很像，但靠近了看，你能感受到它强大的力量，而且很不稳定。你已经看到了结局：这个门绝不可能在一个实体通过后生还，所以你不可能再从这个门回来。步入虚空漫步者之门后，你感受到了一种奇怪的预感和启示，同时你感觉有几百双上古时代的眼睛在注视着你缓缓走向深渊...
+
+tc.research_name.GADOMANCY.BLOCK_PROTECTOR=虚弱力场发射器
+tc.research_text.GADOMANCY.BLOCK_PROTECTOR=我！受！够！那！帮！该！死！的！爬！行！者！了！
+gadomancy.research_page.BLOCK_PROTECTOR.1=所有人——痛恨——爬行者。It is practically a given that at some point in a builder's career, one of these indescribably rage inducing freaks will sneak up from behind, above, below, or even right in front of them and explode, ruining the project in progress completely.<LINE>Almost by chance, you discovered an interesting way to solve this problem with essential gas. By exposing gunpowder to a small trace of ordo essentia, you found could completely nullify its ability to explode when ignited.
+gadomancy.research_page.BLOCK_PROTECTOR.3=Turning essentia into gas directly without having it dissolve into flux is all but impossible, but some careful tinkering with various alchemical machinery components and redstone yields a device that can use a slightly different process to acquire the same effects as liquid essentia. <BR>The Arcane Enervation Emitter diffuses a light aura of ordo across a limited area. Any creepers in that affected area will be unable to explode. The emitter is slow to start, and when it receives fuel in the form of ordo essentia and a redstone signal, it will gradually expand its area of effect until it reaches maximum size.
+gadomancy.research_page.BLOCK_PROTECTOR.4=The size of its area can be controlled by changing the strength of the redstone signal used to activate the device, and monitored by placing a comparator running out of the device.<BR>After using this device for some time, you noticed, much to your delight, that the field that the Arcane Enervation Emitter emits is strong enough to affect other mobs than just creepers. It appears to stop other mobs from breaking blocks. It isn’t strong enough to affect players though…
+
+tc.research_name.GADOMANCY.ANCIENT_STONES=荒古之石
+tc.research_text.GADOMANCY.ANCIENT_STONES=邪术装饰
+gadomancy.research_page.ANCIENT_STONES.1=进入邪术迷宫，对于和你一样阅历丰厚的神秘使来说，并非是唯一的目标；那些恶魔可能不是优秀的室内设计师，但他们用的石材却已被证明有极强的魔法潜力。<BR>将你每天使用的奥术石材暴露于邪术能量之下，也许就会使其的魔法属性发生改变，更趋近于邪术世界的那种石头。
+
+tc.research_name.GADOMANCY.GROWING=生长中的节点
+tc.research_text.GADOMANCY.GROWING=Feed me Semour
+gadomancy.research_page.GROWING.1=这节点...与众不同。<BR>你只是希望充能节点是我们唯一可靠的vis来源，但这灵气节点看上去也十分稳定。对一个灵气节点充能会直接从其源头抽取Vis到这个世界中，然后破坏它的要素直至元始要素。<BR>但是...这节点的行为确实和别的不一样。它看上去似乎在找什么...它看上去...在躁动。这种奇怪行为使得你开始担忧起来。
+gadomancy.research_page.GROWING.2=它究竟在找什么？就我有限的学识来说，这很像是饕餮节点，但是就是有什么事情令节点十分不安。
+
+tc.research_name.GADOMANCY.GROWING_AGGRESSION=侵略行为
+tc.research_text.GADOMANCY.GROWING_AGGRESSION=有人呼叫特斯拉
+gadomancy.research_page.GROWING_AGGRESSION.1=Suddenly, and completely out of nowhere, the Node released a huge bolt of energy.<BR>It may be the large amount of vis flowing through the Aura Node destabilized and released as an arc of energy. These bolts seem to be attracted to anything that even closely resembles a living entity.<BR>You should probably stand back a bit while researching to avoid any other close calls...
+
+tc.research_name.GADOMANCY.GROWING_GROWTH=生长行为
+tc.research_text.GADOMANCY.GROWING_GROWTH=A picky one.
+gadomancy.research_page.GROWING_GROWTH.1=The node has begun to display similarities to a hungry node, in that it has started to grow. <BR>The big difference between this node and an average hungry node  seems to be that this node only attracts things containing pure aspects, such as Wisps or Ethereal Essence. <LINE>As far as your research goes, it seems that the more pure the aspect is, the more likely it will fuse with the node. Aspect Orbs and Wisps are absorbed most because they are the most pure.
+gadomancy.research_page.GROWING_GROWTH.2=Materialized or solid vis in forms of essentia like Mana Beans, Ethereal Essence, or Crystallized Essentia may work too, but you feel you should take care with what you throw into this thing...<BR>Still it is more fascinating than a hungry node by far. In contrast to its hungry brother, this node seems to keep the complexity of its gained compound aspects instead of breaking them down to primal aspects. It seems to have something against primal aspects...
+
+tc.research_name.GADOMANCY.GROWING_ATTACK=破坏行为
+tc.research_text.GADOMANCY.GROWING_ATTACK=停止欺凌！
+gadomancy.research_page.GROWING_ATTACK.1=It seems the growing node does not only bully the other nodes, it completely destroys them! If the growing node can find another node within range it attacks it and breaks the other node into  aspect orbs. <BR>Further research shows that the node stabilizers cannot stop the growing node from destroying other nodes, but the growing node does not seem to attack bigger nodes than itself.
+
+tc.research_name.GADOMANCY.GROWING_GROWTHCLUE=生长的秘密
+tc.research_text.GADOMANCY.GROWING_GROWTHCLUE=解释清楚的生长
+gadomancy.research_page.GROWING_GROWTHCLUE.1=At last, you have figured out the secrets of growth and potential dangers in a growing node! <LINE>The node becomes much more stable when fed a variety of aspects. If it is only allowed to consume the same single aspects repeatedly, it destabilizes and stops growing due to becoming over saturated.<BR>It only accepts pure aspects though. Ethereal Essence, Crystallized Essence, and Mana beans are weak forms of materialized Vis. The node doesn't react to them very much...
+gadomancy.research_page.GROWING_GROWTHCLUE.2=Despite the fact that the node will consume ethereal essence, it seems to vastly prefer living Wisps and Aspect Orbs. One of the best things to offer the node seems to be other Aura Nodes... this method does get expensive though.<LINE>There are high risks too. The more saturated the node gets, the harder and more often the node attacks its surroundings. You wonder what happens when the node becomes fully saturated...
+
+gadomancy.golemblurb.default=??
+gadomancy.golemblurb.breakcore=吾主，吾应粉碎万物，又或仅何种方块？
+gadomancy.golem.breakcore=破坏
+gadomancy.golem.bodyguardcore护法
+
+gadomancy.upgrades.runicshield=符文护盾
+
+gadomancy.lore.hasAdditionalLore=<按下SHIFT以显示更多信息>
+
+gadomancy.lore.stickyjar=粘性
+gadomancy.lore.remotejar=§7网络：%s
+
+gadomancy.eldritch.portalPlacerCreative=创造传送门放置器
+gadomancy.eldritch.noflyCreative=(甚至是在创造模式)
+gadomancy.eldritch.nobreakPortalNothing=该传送门不可破坏。
+gadomancy.eldritch.portalSpawned=你感觉应该在开门时保持一段距离。
+
+tile.BlockStickyJar.name=粘性罐子
+tile.BlockArcaneDropper.name=奥术投掷器
+tile.BlockInfusionClaw.name=注魔爪
+tile.BlockRemoteJar.name=镜像罐子
+tile.BlockNode.name=灵气节点
+tile.BlockExtendedNodeJar.name=缸中节点
+tile.BlockNodeManipulator.5.name=节点操纵仪
+tile.BlockStoneMachine.0.name=随机化核心
+tile.BlockStoneMachine.1.name=荒古基座
+tile.BlockStoneMachine.2.name=奥法弱化力场发射器
+tile.BlockStoneMachine.3.name=重定向核心
+tile.BlockStoneMachine.11.name=魔法柱
+tile.BlockStoneMachine.15.name=魔法柱
+
+gadomancy.nodes.GROWING=微光
+gadomancy.nodes.STARVING=饥饿
+
+gadomancy.info.ArcanePackage=点击以打开，或放置于拆包器中
+gadomancy.info.InfusionClaw.owner=你现在是所有者。
+gadomancy.info.InfusionClaw.waila=§7所有者：
+gadomancy.info.InfusionClaw.lock=锁定可用法杖
+
+gadomancy.info.RemoteJar.new=创建新源质网络
+gadomancy.info.RemoteJar.clear=从当前网络中断开
+gadomancy.info.RemoteJar.connected=接入既有网络
