@@ -544,6 +544,13 @@ public class AuraEffects {
         }
     }.register(Aspect.BEAST);
 
+    public static final AuraEffect VITREUS = new PotionDistributionEffect(RegisteredPotions.ACHROMATIC, 4, 6, ticksForMinutes(5), 0) {
+        @Override
+        public boolean isEntityApplicable(Entity e) {
+            return e instanceof EntityPlayer;
+        }
+    }.register(Aspect.CRYSTAL);
+
     public static class PotionDistributionEffect extends AuraEffect.EntityAuraEffect {
 
         private Potion potion;

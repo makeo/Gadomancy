@@ -2,6 +2,7 @@ package makeo.gadomancy.common.data;
 
 import makeo.gadomancy.common.registration.RegisteredPotions;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
@@ -23,6 +24,10 @@ public class DataAchromatic extends AbstractData {
 
     private List<Integer> addClientQueue = new ArrayList<Integer>();
     private List<Integer> removeClientQueue = new ArrayList<Integer>();
+
+    public boolean isAchromatic(EntityPlayer player) {
+        return achromaticEntities.contains(player.getEntityId());
+    }
 
     public void handleApplication(EntityLivingBase entity) {
         if(entity.worldObj.isRemote) return;

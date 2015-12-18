@@ -1,5 +1,6 @@
 package makeo.gadomancy.client.events;
 
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import makeo.gadomancy.client.gui.GuiResearchRecipeAuraEffects;
 import makeo.gadomancy.client.util.ExtendedTypeDisplayManager;
@@ -9,6 +10,8 @@ import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.aura.ResearchPageAuraAspects;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
+import makeo.gadomancy.common.data.DataAchromatic;
+import makeo.gadomancy.common.data.SyncDataHolder;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.block.Block;
@@ -16,14 +19,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.BlockCoordinates;
@@ -114,7 +115,38 @@ public class RenderEventHandler {
     public void worldRenderEvent(RenderWorldLastEvent event) {
         ExtendedTypeDisplayManager.notifyRenderTick();
         MultiTickEffectDispatcher.notifyRenderTick(Minecraft.getMinecraft().theWorld, event.partialTicks);
+
     }
+
+    private EntityPlayer current = null;
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void renderEntityPre(RenderLivingEvent.Pre event) {
+        if(event.entity instanceof EntityPlayer
+                && ((DataAchromatic)SyncDataHolder.getDataClient("AchromaticData")).isAchromatic((EntityPlayer) event.entity)) {
+            current = (EntityPlayer) event.entity;
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.15F);
+            GL11.glDepthMask(false);
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
+    public void onSetArmor(RenderPlayerEvent.SetArmorModel event) {
+        if(event.entityPlayer == current) {
+            GL11.glDisable(GL11.GL_BLEND);
+            GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+            GL11.glDepthMask(true);
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
+    public void renderEntityPost(RenderLivingEvent.Specials.Pre event) {
+
+    }
+
 
     @SubscribeEvent
     public void playerRenderEvent(RenderPlayerEvent.Post renderEvent) {
