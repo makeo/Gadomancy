@@ -12,16 +12,22 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -39,6 +45,7 @@ import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
 import static makeo.gadomancy.common.utils.MiscUtils.*;
@@ -357,7 +364,7 @@ public class AuraEffects {
     public static final AuraEffect HERBA = new AuraEffect.BlockAuraEffect() {
         @Override
         public int getBlockCount(Random random) {
-            return 90;
+            return 140;
         }
 
         @Override
@@ -373,7 +380,7 @@ public class AuraEffects {
     public static final AuraEffect ARBOR = new AuraEffect.BlockAuraEffect() {
         @Override
         public int getBlockCount(Random random) {
-            return 60;
+            return 80;
         }
 
         @Override
@@ -452,7 +459,7 @@ public class AuraEffects {
         @Override
         public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
             EntityLiving mob = world.rand.nextBoolean() ? new EntitySkeleton(world) : new EntityZombie(world);
-            if(setAndCheckPosition(mob, selectedBlock, world, true)) {
+            if(setAndCheckPosition(mob, selectedBlock, world, true) && world.difficultySetting != EnumDifficulty.PEACEFUL) {
 
                 int totalCount = (world.rand.nextInt(3) == 0 ? 1 : 0) + 2;
                 do {
@@ -477,6 +484,65 @@ public class AuraEffects {
         }
     }.register(Aspect.SOUL);
     public static final AuraEffect PRAECANTATIO = new PotionDistributionEffect(RegisteredPotions.VIS_DISCOUNT, 4, 6, ticksForMinutes(5), 1).register(Aspect.MAGIC);
+    public static final AuraEffect LIMUS = new AuraEffect.BlockAuraEffect() {
+        @Override
+        public int getBlockCount(Random random) {
+            return random.nextInt(40) == 0 ? 1 : 0;
+        }
+
+        @Override
+        public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
+            EntitySlime slime = new EntitySlime(world);
+            NBTTagCompound data = new NBTTagCompound();
+            slime.writeEntityToNBT(data);
+            data.setInteger("Size", 0);
+            slime.readEntityFromNBT(data);
+            boolean canSpawn = setAndCheckPosition(slime, selectedBlock, world, true) && world.difficultySetting != EnumDifficulty.PEACEFUL;
+            if(canSpawn) {
+                ChunkCoordinates pos = new ChunkCoordinates((int) slime.posX, (int) slime.posY, (int) slime.posZ);
+                pos = iterateDown(pos, world);
+                slime.setPosition(pos.posX + 0.5, pos.posY, pos.posZ + 0.5);
+                world.spawnEntityInWorld(slime);
+            }
+        }
+
+        @Override
+        public int getTickInterval() {
+            return 4;
+        }
+    }.register(Aspect.SLIME);
+    public static final AuraEffect BESTIA = new AuraEffect.BlockAuraEffect() {
+
+        private final Class[] animalClasses = new Class[] { EntitySheep.class, EntityCow.class, EntityChicken.class, EntityPig.class };
+
+        @Override
+        public int getBlockCount(Random random) {
+            return random.nextInt(60) == 0 ? 1 : 0;
+        }
+
+        @Override
+        public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
+            Class animalClass = animalClasses[world.rand.nextInt(animalClasses.length)];
+            EntityLivingBase animal;
+            try {
+                animal = (EntityLivingBase) animalClass.getConstructor(World.class).newInstance(world);
+            } catch (Exception e) {
+                return;
+            }
+            boolean canSpawn = setAndCheckPosition(animal, selectedBlock, world, true);
+            if(canSpawn) {
+                ChunkCoordinates pos = new ChunkCoordinates((int) animal.posX, (int) animal.posY, (int) animal.posZ);
+                pos = iterateDown(pos, world);
+                animal.setPosition(pos.posX + 0.5, pos.posY, pos.posZ + 0.5);
+                world.spawnEntityInWorld(animal);
+            }
+        }
+
+        @Override
+        public int getTickInterval() {
+            return 4;
+        }
+    }.register(Aspect.BEAST);
 
     public static class PotionDistributionEffect extends AuraEffect.EntityAuraEffect {
 
@@ -513,7 +579,7 @@ public class AuraEffects {
     private static void waterLocation(ChunkCoordinates coordinates, World world) {
         Block block = world.getBlock(coordinates.posX, coordinates.posY, coordinates.posZ);
         if (block.getTickRandomly()) {
-            world.scheduleBlockUpdate(coordinates.posX, coordinates.posY, coordinates.posZ, block, world.rand.nextInt(20)+10);
+            world.scheduleBlockUpdate(coordinates.posX, coordinates.posY, coordinates.posZ, block, world.rand.nextInt(10) + 5);
         }
     }
 

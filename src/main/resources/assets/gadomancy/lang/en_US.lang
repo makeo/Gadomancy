@@ -113,6 +113,21 @@ tc.research_text.GADOMANCY.GROWING_GROWTHCLUE=Growing explained
 gadomancy.research_page.GROWING_GROWTHCLUE.1=At last, you have figured out the secrets of growth and potential dangers in a growing node! <LINE>The node becomes much more stable when fed a variety of aspects. If it is only allowed to consume the same single aspects repeatedly, it destabilizes and stops growing due to becoming over saturated.<BR>It only accepts pure aspects though. Ethereal Essence, Crystallized Essence, and Mana beans are weak forms of materialized Vis. The node doesn't react to them very much...
 gadomancy.research_page.GROWING_GROWTHCLUE.2=Despite the fact that the node will consume ethereal essence, it seems to vastly prefer living Wisps and Aspect Orbs. One of the best things to offer the node seems to be other Aura Nodes... this method does get expensive though.<LINE>There are high risks too. The more saturated the node gets, the harder and more often the node attacks its surroundings. You wonder what happens when the node becomes fully saturated...
 
+tc.research_name.GADOMANCY.AURA_CORE=Aura Core
+tc.research_text.GADOMANCY.AURA_CORE=Your surroundings matter!
+
+tc.research_name.GADOMANCY.CLEAN_AURA_CORE=Core Cleaning
+tc.research_text.GADOMANCY.CLEAN_AURA_CORE=Mistakes were made
+
+tc.research_name.GADOMANCY.AURA_PYLON=Aura Pylon
+tc.research_text.GADOMANCY.AURA_PYLON=Diffusing essentia
+
+tc.research_name.GADOMANCY.AURA_EFFECTS=Aura Effects
+tc.research_text.GADOMANCY.AURA_EFFECTS=Remember what happened
+
+tc.research_name.GADOMANCY.ARCANE_PACKAGER=Arcane Packager
+tc.research_text.GADOMANCY.ARCANE_PACKAGER=Compressing items
+
 gadomancy.golemblurb.default=??
 gadomancy.golemblurb.breakcore=Master, should I break anything, or something specific?
 gadomancy.golem.breakcore=Break
@@ -156,6 +171,49 @@ gadomancy.auracore.blank=Blank
 gadomancy.aura.research.unlock=You've researched the aura of %s
 
 gadomancy.aura.effect.aer=Creates a speed aura
+gadomancy.aura.effect.alienis_0=Nearby monsters become
+gadomancy.aura.effect.alienis_1=more dangerous
+gadomancy.aura.effect.arbor_0=Increases growth speed
+gadomancy.aura.effect.arbor_1=of nearby plants
+gadomancy.aura.effect.auram_0=Diffuses some vis
+gadomancy.aura.effect.auram_1=into the aura
+gadomancy.aura.effect.bestia=Summons beasts
+gadomancy.aura.effect.cognitio_0=Grants more knowledge
+gadomancy.aura.effect.cognitio_1=about primal aspects
+gadomancy.aura.effect.exanimis=Supports undead monsters
+gadomancy.aura.effect.fabrico=Improves your golems
+gadomancy.aura.effect.gelum_0=Cools down the
+gadomancy.aura.effect.gelum_1=surrounding aura
+gadomancy.aura.effect.herba_0=Heavily
+gadomancy.aura.effect.herba_1=increases growth speed
+gadomancy.aura.effect.herba_2=of nearby plants
+gadomancy.aura.effect.humanus_0=Temporarily increases
+gadomancy.aura.effect.humanus_1=your health
+gadomancy.aura.effect.ignis=Spreads fire
+gadomancy.aura.effect.instrumentum_0=Increases your
+gadomancy.aura.effect.instrumentum_1=dig speed
+gadomancy.aura.effect.limus_0=The aura
+gadomancy.aura.effect.limus_1=becomes more slimy
+gadomancy.aura.effect.lucrum=Increases your luck
+gadomancy.aura.effect.lux_0=Stops monster spawning
+gadomancy.aura.effect.lux_1=in the area
+gadomancy.aura.effect.mortuus=The aura becomes deadly
+gadomancy.aura.effect.pannus=Spawns wool on sheep
+gadomancy.aura.effect.perfodio_0=Heavily increases
+gadomancy.aura.effect.perfodio_1=your dig speed
+gadomancy.aura.effect.praecantatio_0=Increases your
+gadomancy.aura.effect.praecantatio_1=magic skills
+gadomancy.aura.effect.spiritus_0=The aura seems
+gadomancy.aura.effect.spiritus_1=more ghostly
+gadomancy.aura.effect.tempestas=Summons lightnings
+gadomancy.aura.effect.tenebrae_0=Darkness spreads
+gadomancy.aura.effect.tenebrae_1=in the aura
+gadomancy.aura.effect.venenum=Poisons its surroundings
+gadomancy.aura.effect.victus_0=Helps little mobs
+gadomancy.aura.effect.victus_1=to grow up
+gadomancy.aura.effect.vinculum_0=Traps and slows down
+gadomancy.aura.effect.vinculum_1=living things
+gadomancy.aura.effect.vitium=Spreads taint
 gadomancy.aura.effect.aqua_0=Helps you to
 gadomancy.aura.effect.aqua_1=breath underwater
 gadomancy.aura.effect.terra_0=Increases your

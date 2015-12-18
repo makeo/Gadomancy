@@ -10,6 +10,7 @@ import makeo.gadomancy.common.items.ItemAuraCore;
 import makeo.gadomancy.common.items.baubles.ItemFamiliar;
 import makeo.gadomancy.common.research.SimpleResearchItem;
 import makeo.gadomancy.common.utils.NBTHelper;
+import makeo.gadomancy.common.utils.RandomizedAspectList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -75,7 +76,10 @@ public class RegisteredRecipes {
 
     public static CrucibleRecipe[] recipesWashAuraCore;
     public static IRecipe[] recipesUndoAuraCore;
-
+    public static InfusionRecipe recipeAuraCore;
+    public static IArcaneRecipe recipeAuraPylon;
+    public static IArcaneRecipe recipeAuraPylonPeak;
+    public static IArcaneRecipe recipeArcanePackager;
 
     public static void init() {
         AdditionalGolemType typeSilverwood = RegisteredGolemStuff.typeSilverwood;
@@ -183,6 +187,33 @@ public class RegisteredRecipes {
         }
 
         RegisteredRecipes.recipesUndoAuraCore = recipesUndoAuraCore.toArray(new IRecipe[recipesUndoAuraCore.size()]);
+
+        ItemStack blankCore = new ItemStack(RegisteredItems.itemAuraCore);
+        RegisteredItems.itemAuraCore.setCoreType(blankCore, ItemAuraCore.AuraCoreType.BLANK);
+        recipeAuraCore = ThaumcraftApi.addInfusionCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".AURA_CORE", blankCore, 10,
+                new RandomizedAspectList().setHalfCap(true).addAspectRandomBase(Aspect.AURA, 41).addAspectRandomBase(Aspect.MAGIC, 57).addAspectRandomBase(Aspect.ELDRITCH, 43).addAspectRandomBase(Aspect.VOID, 55),
+                new ItemStack(ConfigItems.itemResource, 1, 15),
+                new ItemStack[] { new ItemStack(ConfigItems.itemShard, 1, 6), new ItemStack(ConfigItems.itemResource, 1, 2), new ItemStack(ConfigItems.itemResource, 1, 2),
+                        new ItemStack(ConfigItems.itemShard, 1, 6), new ItemStack(ConfigItems.itemResource, 1, 2), new ItemStack(ConfigItems.itemResource, 1, 2),
+                        new ItemStack(ConfigItems.itemShard, 1, 6), new ItemStack(ConfigItems.itemResource, 1, 2), new ItemStack(ConfigItems.itemResource, 1, 2),
+                        new ItemStack(ConfigItems.itemShard, 1, 6), new ItemStack(ConfigItems.itemResource, 1, 2), new ItemStack(ConfigItems.itemResource, 1, 2)});
+
+        recipeAuraPylon = ThaumcraftApi.addArcaneCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".AURA_PYLON", new ItemStack(RegisteredBlocks.blockAuraPylon, 1, 0),
+                new AspectList().add(Aspect.ORDER, 110).add(Aspect.WATER, 80).add(Aspect.FIRE, 80).add(Aspect.AIR, 80),
+                "TST", "S S", "TJT", 'T', new ItemStack(ConfigBlocks.blockTube, 1, 6), 'S', new ItemStack(ConfigBlocks.blockMagicalLog, 1, 1), 'J', new ItemStack(ConfigBlocks.blockJar, 1, 0));
+
+        ItemStack ordoCore = new ItemStack(RegisteredItems.itemAuraCore);
+        RegisteredItems.itemAuraCore.setCoreType(ordoCore, ItemAuraCore.AuraCoreType.ORDER);
+        recipeAuraPylonPeak = ThaumcraftApi.addArcaneCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".AURA_PYLON", new ItemStack(RegisteredBlocks.blockAuraPylon, 1, 1),
+                new AspectList().add(Aspect.ORDER, 120).add(Aspect.FIRE, 90).add(Aspect.AIR, 70),
+                " N ", "ACA", " P ", 'A', new ItemStack(ConfigItems.itemResource, 1, 0), 'N', new ItemStack(ConfigItems.itemResource, 1, 1), 'C', ordoCore, 'P', new ItemStack(RegisteredBlocks.blockAuraPylon, 1, 0));
+
+        ItemStack aerCore = new ItemStack(RegisteredItems.itemAuraCore);
+        RegisteredItems.itemAuraCore.setCoreType(aerCore, ItemAuraCore.AuraCoreType.AIR);
+        recipeArcanePackager = ThaumcraftApi.addArcaneCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".ARCANE_PACKAGER", new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 4),
+                new AspectList().add(Aspect.AIR, 120).add(Aspect.ORDER, 80).add(Aspect.ENTROPY, 80),
+                "PSP", "GCG", "JTJ", 'P', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'S', new ItemStack(Blocks.piston), 'G', new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 2),
+                'C', aerCore, 'J', new ItemStack(ConfigBlocks.blockJar), 'T', new ItemStack(ConfigBlocks.blockTable, 1, 15));
 
         auraCoreRecipes = createAuraCoreRecipes();
     }
