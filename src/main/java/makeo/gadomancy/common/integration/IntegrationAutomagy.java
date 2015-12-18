@@ -1,6 +1,7 @@
 package makeo.gadomancy.common.integration;
 
 import makeo.gadomancy.common.CommonProxy;
+import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.Injector;
@@ -41,7 +42,10 @@ public class IntegrationAutomagy extends IntegrationMod {
             RegisteredBlocks.registerStickyJar(infinityJar, 3, false, true);
             RegisteredItems.registerStickyJar(Item.getItemFromBlock(infinityJar), 3);
         }
-        CommonProxy.unregisterWandHandler("Automagy", ConfigBlocks.blockWarded, -1);
+
+        if(ModConfig.enableAdditionalNodeTypes) {
+            CommonProxy.unregisterWandHandler("Automagy", ConfigBlocks.blockWarded, -1);
+        }
     }
 
     public boolean handleNodeJarVisCost(ItemStack wandStack, EntityPlayer player) {

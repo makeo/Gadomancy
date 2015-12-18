@@ -4,6 +4,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
+import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.entities.EntityAuraCore;
 import makeo.gadomancy.common.items.ItemAuraCore;
 import makeo.gadomancy.common.network.PacketHandler;
@@ -53,16 +54,21 @@ public class WandHandler {
     public static void handleWandInteract(World world, int x, int y, int z, EntityPlayer entityPlayer, ItemStack i) {
         Block target = world.getBlock(x, y, z);
         if(target == null) return;
-        if (target.equals(Blocks.glass)) {
-            if (ResearchManager.isResearchComplete(entityPlayer.getCommandSenderName(), "NODEJAR")) {
-                tryTCJarNodeCreation(i, entityPlayer, world, x, y, z);
+
+        if(ModConfig.enableAdditionalNodeTypes) {
+            if (target.equals(Blocks.glass)) {
+                if (ResearchManager.isResearchComplete(entityPlayer.getCommandSenderName(), "NODEJAR")) {
+                    tryTCJarNodeCreation(i, entityPlayer, world, x, y, z);
+                }
+            } else if (target.equals(ConfigBlocks.blockWarded)) {
+                if (RegisteredIntegrations.automagy.isPresent() &&
+                        ResearchManager.isResearchComplete(entityPlayer.getCommandSenderName(), "ADVNODEJAR")) {
+                    tryAutomagyJarNodeCreation(i, entityPlayer, world, x, y, z);
+                }
             }
-        } else if (target.equals(ConfigBlocks.blockWarded)) {
-            if (RegisteredIntegrations.automagy.isPresent() &&
-                    ResearchManager.isResearchComplete(entityPlayer.getCommandSenderName(), "ADVNODEJAR")) {
-                tryAutomagyJarNodeCreation(i, entityPlayer, world, x, y, z);
-            }
-        } else if(target.equals(ConfigBlocks.blockCrystal)) {
+        }
+
+        if(target.equals(ConfigBlocks.blockCrystal)) {
             if (ResearchManager.isResearchComplete(entityPlayer.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".AURA_CORE"))
                 tryAuraCoreCreation(i, entityPlayer, world, x, y, z);
         }

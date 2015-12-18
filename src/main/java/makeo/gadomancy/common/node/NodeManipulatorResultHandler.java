@@ -1,6 +1,7 @@
 package makeo.gadomancy.common.node;
 
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
+import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.registration.RegisteredManipulations;
 import net.minecraft.util.WeightedRandom;
 import thaumcraft.api.aspects.Aspect;
@@ -86,8 +87,10 @@ public class NodeManipulatorResultHandler {
         //Switch node Type
         possibleResults.add(RegisteredManipulations.resultSwitchType);
 
-        //Almighty Growing
-        possibleResults.add(RegisteredManipulations.resultApplyGrowing);
+        if(ModConfig.enableAdditionalNodeTypes) {
+            //Almighty Growing
+            possibleResults.add(RegisteredManipulations.resultApplyGrowing);
+        }
 
         //Let the node gain primals
         possibleResults.add(RegisteredManipulations.resultGainPrimal);

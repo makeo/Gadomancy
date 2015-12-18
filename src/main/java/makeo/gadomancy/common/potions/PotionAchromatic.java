@@ -1,5 +1,7 @@
 package makeo.gadomancy.common.potions;
 
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.attributes.BaseAttributeMap;
 import thaumcraft.api.aspects.Aspect;
 
 /**
@@ -14,5 +16,19 @@ public class PotionAchromatic extends PotionCustomTexture {
     public PotionAchromatic(int id) {
         super(id, false, Aspect.CRYSTAL.getColor(), Aspect.CRYSTAL.getImage());
         setPotionName("potion.achromatic");
+    }
+
+    @Override
+    public void applyAttributesModifiersToEntity(EntityLivingBase entity, BaseAttributeMap p_111185_2_, int p_111185_3_) {
+        super.applyAttributesModifiersToEntity(entity, p_111185_2_, p_111185_3_);
+
+
+    }
+
+    @Override
+    public void removeAttributesModifiersFromEntity(EntityLivingBase entity, BaseAttributeMap p_111187_2_, int p_111187_3_) {
+        super.removeAttributesModifiersFromEntity(entity, p_111187_2_, p_111187_3_);
+
+
     }
 }
