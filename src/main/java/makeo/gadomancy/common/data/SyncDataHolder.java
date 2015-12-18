@@ -60,7 +60,7 @@ public class SyncDataHolder {
         PacketHandler.INSTANCE.sendTo(dataSync, (net.minecraft.entity.player.EntityPlayerMP) player);
     }
 
-    public static void recieveServerPacket(Map<String, AbstractData> data) {
+    public static void receiveServerPacket(Map<String, AbstractData> data) {
         for(String key : data.keySet()) {
             AbstractData dat = clientData.get(key);
             if(dat != null) {
@@ -74,8 +74,11 @@ public class SyncDataHolder {
         Map<String, AbstractData> pktData = new HashMap<String, AbstractData>();
         for(String s : dirtyData) {
             AbstractData d = getDataServer(s);
-            pktData.put(s, d);
+            if(d.needsUpdate()) {
+                pktData.put(s, d);
+            }
         }
+        dirtyData.clear();
         PacketSyncData dataSync = new PacketSyncData(pktData, false);
         PacketHandler.INSTANCE.sendToAll(dataSync);
     }

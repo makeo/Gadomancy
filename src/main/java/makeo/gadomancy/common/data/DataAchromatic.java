@@ -35,13 +35,15 @@ public class DataAchromatic extends AbstractData {
         int entityId = entity.getEntityId();
 
         boolean needsUpdate = false;
-        if(!addClientQueue.contains(entityId)) {
+        if(!addClientQueue.contains(entityId) && !achromaticEntities.contains(entityId)) {
             addClientQueue.add(entityId);
-            needsUpdate = true;
-        }
-        if(!achromaticEntities.contains(entityId)) {
             achromaticEntities.add(entityId);
             needsUpdate = true;
+        }
+        if(removeClientQueue.contains(entityId)) {
+            removeClientQueue.remove(Integer.valueOf(entityId));
+            addClientQueue.remove(Integer.valueOf(entityId));
+            needsUpdate = false;
         }
         if(needsUpdate) {
             markDirty();
@@ -54,15 +56,16 @@ public class DataAchromatic extends AbstractData {
         int entityId = entity.getEntityId();
 
         boolean needsUpdate = false;
-        if(!removeClientQueue.contains(entityId)) {
+        if(!removeClientQueue.contains(entityId) && achromaticEntities.contains(entityId)) {
             removeClientQueue.add(entityId);
+            achromaticEntities.remove(Integer.valueOf(entityId));
             needsUpdate = true;
         }
-        if(achromaticEntities.contains(entityId)) {
-            achromaticEntities.remove((Integer)entityId);
-            needsUpdate = true;
+        if(addClientQueue.contains(entityId)) {
+            addClientQueue.remove(Integer.valueOf(entityId));
+            removeClientQueue.remove(Integer.valueOf(entityId));
+            needsUpdate = false;
         }
-
         if(needsUpdate) {
             markDirty();
         }
@@ -72,6 +75,11 @@ public class DataAchromatic extends AbstractData {
         if(p.isPotionActive(RegisteredPotions.ACHROMATIC)) {
             handleApplication(p);
         }
+    }
+
+    @Override
+    public boolean needsUpdate() {
+        return !addClientQueue.isEmpty() || !removeClientQueue.isEmpty();
     }
 
     @Override
@@ -120,10 +128,10 @@ public class DataAchromatic extends AbstractData {
     @Override
     public void handleIncomingData(AbstractData serverData) {
         DataAchromatic achromatic = (DataAchromatic) serverData;
-        List<Integer> toAdd = achromatic.addClientQueue;
-        achromaticEntities.addAll(toAdd);
         List<Integer> toRemove = achromatic.removeClientQueue;
         achromaticEntities.removeAll(toRemove);
+        List<Integer> toAdd = achromatic.addClientQueue;
+        achromaticEntities.addAll(toAdd);
     }
 
     public static class Provider extends ProviderAutoAllocate<DataAchromatic> {

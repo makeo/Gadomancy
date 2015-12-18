@@ -100,7 +100,7 @@ public class PacketSyncData implements IMessage, IMessageHandler<PacketSyncData,
 
     @Override
     public IMessage onMessage(PacketSyncData message, MessageContext ctx) {
-        SyncDataHolder.recieveServerPacket(message.data);
+        SyncDataHolder.receiveServerPacket(message.data);
         return null;
     }
 

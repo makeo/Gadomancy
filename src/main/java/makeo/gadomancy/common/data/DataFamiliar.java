@@ -20,7 +20,7 @@ import java.util.Map;
  * Gadomancy is Open Source and distributed under the
  * GNU LESSER GENERAL PUBLIC LICENSE
  * for more read the LICENSE file
- * <p/>
+ *
  * Created by HellFirePvP @ 14.12.2015 22:06
  */
 public class DataFamiliar extends AbstractData {
@@ -80,6 +80,11 @@ public class DataFamiliar extends AbstractData {
         if(baublesInv.getStackInSlot(0) != null) {
             handleEquip(p.worldObj, p);
         }
+    }
+
+    @Override
+    public boolean needsUpdate() {
+        return true;
     }
 
     @Override
