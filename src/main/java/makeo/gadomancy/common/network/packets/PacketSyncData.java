@@ -58,6 +58,7 @@ public class PacketSyncData implements IMessage, IMessageHandler<PacketSyncData,
                 cmp = CompressedStreamTools.func_152457_a(abyte, new NBTSizeTracker(2097152L));
             } catch (IOException e) {
                 Gadomancy.log.warn("Provider Compound of " + providerId + " threw an IOException! Skipping...");
+                Gadomancy.log.warn("Exception message: " + e.getMessage());
                 continue;
             }
 
@@ -91,6 +92,7 @@ public class PacketSyncData implements IMessage, IMessageHandler<PacketSyncData,
                 abyte = CompressedStreamTools.compress(cmp);
             } catch (IOException e) {
                 Gadomancy.log.warn("Compressing the NBTTagCompound of " + providerId + " threw an IOException! Skipping...");
+                Gadomancy.log.warn("Exception message: " + e.getMessage());
                 continue;
             }
             buf.writeShort((short) abyte.length);

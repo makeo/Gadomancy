@@ -115,7 +115,6 @@ public class RenderEventHandler {
     public void worldRenderEvent(RenderWorldLastEvent event) {
         ExtendedTypeDisplayManager.notifyRenderTick();
         MultiTickEffectDispatcher.notifyRenderTick(Minecraft.getMinecraft().theWorld, event.partialTicks);
-
     }
 
     private EntityPlayer current = null;
@@ -143,10 +142,7 @@ public class RenderEventHandler {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
-    public void renderEntityPost(RenderLivingEvent.Specials.Pre event) {
-
-    }
-
+    public void renderEntityPost(RenderLivingEvent.Specials.Pre event) {}
 
     @SubscribeEvent
     public void playerRenderEvent(RenderPlayerEvent.Post renderEvent) {

@@ -75,7 +75,7 @@ public class RegisteredResearches {
 
         ResearchCategories.registerCategory(Gadomancy.MODID, CATEGORY_ICON, CATEGORY_BACKGROUND);
 
-        ResearchItem researchAdvancedGolem = PseudoResearchItem.create("ADVANCEDGOLEM", 0, -5).registerResearchItem();
+        ResearchItem researchAdvancedGolem = PseudoResearchItem.create("GOLEMTALLOW", 0, -5).registerResearchItem();
 
         researchGolemSilverwood = new SimpleResearchItem("GOLEMSILVERWOOD", 1, -2, 3, (ItemStack) RegisteredRecipes.recipeGolemSilverwood.getRecipeOutput(),
                 new AspectList().add(Aspect.MOTION, 10).add(Aspect.TREE, 10).add(Aspect.MAGIC, 8).add(Aspect.ORDER, 8).add(Aspect.FLESH, 6).add(Aspect.EXCHANGE, 5))
