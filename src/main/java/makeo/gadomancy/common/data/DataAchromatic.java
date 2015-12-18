@@ -10,8 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class is part of the CycloneEnchantments Plugin for the CycloneNetwork
- * <p/>
+ * This class is part of the Gadomancy Mod
+ * Gadomancy is Open Source and distributed under the
+ * GNU LESSER GENERAL PUBLIC LICENSE
+ * for more read the LICENSE file
+ *
  * Created by HellFirePvP @ 18.12.2015 20:21
  */
 public class DataAchromatic extends AbstractData {

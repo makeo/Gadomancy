@@ -8,7 +8,10 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * This class is part of the CycloneEnchantments Plugin for the CycloneNetwork
+ * This class is part of the Gadomancy Mod
+ * Gadomancy is Open Source and distributed under the
+ * GNU LESSER GENERAL PUBLIC LICENSE
+ * for more read the LICENSE file
  *
  * Created by HellFirePvP @ 18.12.2015 13:58
  */
