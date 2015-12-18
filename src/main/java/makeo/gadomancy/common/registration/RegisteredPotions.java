@@ -30,7 +30,6 @@ public class RegisteredPotions {
         ACHROMATIC = registerPotion(PotionAchromatic.class);
         ELDRITCH = registerPotion(PotionLetsGargamelItUp.class);
         VIS_DISCOUNT = registerPotion(PotionVisAffinity.class);
-        System.out.println(VIS_DISCOUNT);
     }
 
     private static <T extends Potion> T registerPotion(Class<T> potionClass) {
