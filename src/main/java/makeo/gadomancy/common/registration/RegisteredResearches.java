@@ -18,6 +18,7 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
+import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 
 /**
@@ -257,7 +258,7 @@ public class RegisteredResearches {
                 new AspectList().add(Aspect.AURA, 22).add(Aspect.MAGIC, 10).add(Aspect.AIR, 8).add(Aspect.WATER, 8)
                         .add(Aspect.EARTH, 8).add(Aspect.FIRE, 8).add(Aspect.ORDER, 8).add(Aspect.ENTROPY, 8),
                 cores)
-                .setConcealed().setAutoUnlock()
+                .setConcealed().setParents("INFUSION", "THAUMIUM")
                 .setPages(new ResearchPage("gadomancy.research_page.AURA_CORE.1"), new ResearchPage(RegisteredRecipes.recipeAuraCore), new MultiResearchPage(RegisteredRecipes.auraCoreRecipes)).registerResearchItem();
 
         researchCleanAuraCore = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".CLEAN_AURA_CORE", Gadomancy.MODID,
@@ -271,7 +272,7 @@ public class RegisteredResearches {
                 new AspectList().add(Aspect.ORDER, 12).add(Aspect.AURA, 20).add(Aspect.MAGIC, 12).add(Aspect.MECHANISM, 8),
                 0, 9, 2, new ItemStack(RegisteredBlocks.blockAuraPylon, 1, 1))
                 .setHidden()
-                .setParents(researchAuraCore.key)
+                .setParents(researchAuraCore.key, "TUBEFILTER")
                 .setItemTriggers(new ItemStack(RegisteredItems.itemAuraCore, 1, ItemAuraCore.AuraCoreType.ORDER.ordinal()))
                 .setPages(new ResearchPage("gadomancy.research_page.AURA_PYLON.1"), new ResearchPage(RegisteredRecipes.recipeAuraPylon), new ResearchPage(RegisteredRecipes.recipeAuraPylonPeak), new ResearchPage(RegisteredRecipes.multiblockAuraPylon)).registerResearchItem();
 
@@ -283,11 +284,12 @@ public class RegisteredResearches {
                 .setParents(researchAuraPylon.key)
                 .setPages(new ResearchPage("gadomancy.research_page.AURA_EFFECTS.1")).registerResearchItem();
 
-        researchArcanePackager = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".ARCANE_PACKAGER", Gadomancy.MODID,
+        String[] packagerParents = Config.wardedStone ? new String[] { researchAuraCore.key, "WARDEDARCANA" } : new String[] { researchAuraCore.key };
+                researchArcanePackager = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".ARCANE_PACKAGER", Gadomancy.MODID,
                 new AspectList().add(Aspect.AIR, 12).add(Aspect.MECHANISM, 16).add(Aspect.VOID, 10).add(Aspect.MAGIC, 10),
                 2, 7, 2, new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 4))
                 .setHidden()
-                .setParents(researchAuraCore.key)
+                .setParents(packagerParents)
                 .setItemTriggers(new ItemStack(RegisteredItems.itemAuraCore, 1, ItemAuraCore.AuraCoreType.AIR.ordinal()))
                 .setPages(new ResearchPage("gadomancy.research_page.ARCANE_PACKAGER.1"), new ResearchPage(RegisteredRecipes.recipeArcanePackager)).registerResearchItem();
 
@@ -302,7 +304,10 @@ public class RegisteredResearches {
 
     public static void postInit() {
         ResearchItem researchJar = PseudoResearchItem.create("JARLABEL", -3, -7).registerResearchItem();
-        ResearchItem researchEssentiaMirror = PseudoResearchItem.create("MIRRORESSENTIA", -6, -2).registerResearchItem();
+        ResearchItem researchEssentiaMirror = null;
+        if(Config.allowMirrors) {
+            researchEssentiaMirror = PseudoResearchItem.create("MIRRORESSENTIA", -6, -2).registerResearchItem();
+        }
 
         if(researchBlockProtector != null) {
             researchBlockProtector.setParents(researchJar.key);
@@ -314,10 +319,11 @@ public class RegisteredResearches {
                 .setParents(researchJar.key).setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.STICKYJAR.1"), new ResearchPage(RegisteredRecipes.getVisualStickyJarRecipes())).registerResearchItem();
 
+        String[] parents = researchEssentiaMirror == null ? new String[] { researchJar.key } : new String[] { researchJar.key, researchEssentiaMirror.key };
         researchRemoteJar = new SimpleResearchItem("REMOTEJAR", -4, -3, 3,
                 RegisteredRecipes.recipeRemoteJar.getRecipeOutput(),
                 new AspectList().add(Aspect.WATER, 4).add(Aspect.MECHANISM, 8).add(Aspect.EARTH, 4).add(Aspect.ORDER, 8))
-                .setParents(researchJar.key, researchEssentiaMirror.key).setConcealed()
+                .setParents(parents).setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.REMOTEJAR.1"), new ResearchPage(RegisteredRecipes.recipeRemoteJar), new ResearchPage("gadomancy.research_page.REMOTEJAR.2")).registerResearchItem();
 
         //Aura researches

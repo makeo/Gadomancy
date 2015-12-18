@@ -23,6 +23,7 @@ import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
+import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.ItemWispEssence;
@@ -109,7 +110,7 @@ public class RegisteredRecipes {
                 10, new AspectList().add(Aspect.ELDRITCH, 25).add(Aspect.MECHANISM, 20).add(Aspect.MAGIC, 16).add(Aspect.ORDER, 20).add(Aspect.DARKNESS, 12),
                 new ItemStack(ConfigBlocks.blockStoneDevice, 1, 5), new ItemStack[]{new ItemStack(ConfigItems.itemFocusPrimal), /*new ItemStack(Items.redstone),*/ new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6), new ItemStack(ConfigItems.itemGolemCore, 1, 8), new ItemStack(ConfigItems.itemResource, 1, 16), new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6), new ItemStack(ConfigItems.itemResource, 1, 15), /*new ItemStack(Items.redstone),*/ new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6), new ItemStack(ConfigItems.itemZombieBrain), new ItemStack(ConfigItems.itemResource, 1, 16), new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6)});
 
-        recipeRemoteJar = ThaumcraftApi.addArcaneCraftingRecipe(SimpleResearchItem.getFullName("REMOTEJAR"), new ItemStack(RegisteredBlocks.blockRemoteJar), new AspectList().add(Aspect.WATER, 10).add(Aspect.EARTH, 10).add(Aspect.ORDER, 10), "GJG", "GMG", 'G', new ItemStack(ConfigBlocks.blockMagicalLog), 'J', new ItemStack(ConfigBlocks.blockJar), 'M', new ItemStack(ConfigBlocks.blockMirror, 1, 6));
+        recipeRemoteJar = ThaumcraftApi.addArcaneCraftingRecipe(SimpleResearchItem.getFullName("REMOTEJAR"), new ItemStack(RegisteredBlocks.blockRemoteJar), new AspectList().add(Aspect.WATER, 10).add(Aspect.EARTH, 10).add(Aspect.ORDER, 10), "GJG", "GMG", 'G', new ItemStack(ConfigBlocks.blockMagicalLog), 'J', new ItemStack(ConfigBlocks.blockJar), 'M', (Config.allowMirrors ? new ItemStack(ConfigBlocks.blockMirror, 1, 6) : new ItemStack(ConfigItems.itemResource, 1, 10) ));
 
         recipeNodeManipulator = ThaumcraftApi.addInfusionCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR",
                 new ItemStack(RegisteredBlocks.blockNodeManipulator, 1, 5), 10,
@@ -212,7 +213,7 @@ public class RegisteredRecipes {
         RegisteredItems.itemAuraCore.setCoreType(aerCore, ItemAuraCore.AuraCoreType.AIR);
         recipeArcanePackager = ThaumcraftApi.addArcaneCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".ARCANE_PACKAGER", new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 4),
                 new AspectList().add(Aspect.AIR, 120).add(Aspect.ORDER, 80).add(Aspect.ENTROPY, 80),
-                "PSP", "GCG", "JTJ", 'P', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'S', new ItemStack(Blocks.piston), 'G', new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 2),
+                "PSP", "GCG", "JTJ", 'P', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'S', new ItemStack(Blocks.piston), 'G', (Config.wardedStone ? new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 2) : new ItemStack(Blocks.glass) ),
                 'C', aerCore, 'J', new ItemStack(ConfigBlocks.blockJar), 'T', new ItemStack(ConfigBlocks.blockTable, 1, 15));
 
         auraCoreRecipes = createAuraCoreRecipes();
