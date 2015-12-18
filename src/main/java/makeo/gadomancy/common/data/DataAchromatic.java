@@ -59,7 +59,7 @@ public class DataAchromatic extends AbstractData {
             needsUpdate = true;
         }
         if(achromaticEntities.contains(entityId)) {
-            achromaticEntities.remove(entityId);
+            achromaticEntities.remove((Integer)entityId);
             needsUpdate = true;
         }
 
