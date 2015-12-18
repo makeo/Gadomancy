@@ -82,6 +82,7 @@ public class SyncDataHolder {
 
     public static void initialize() {
         register(new DataFamiliar.Provider("FamiliarData"));
+        register(new DataAchromatic.Provider("AchromaticData"));
     }
 
 }

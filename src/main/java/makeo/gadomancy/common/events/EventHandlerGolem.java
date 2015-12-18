@@ -8,12 +8,16 @@ import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.api.golems.events.GolemDropPlacerEvent;
 import makeo.gadomancy.api.golems.events.PlacerCreateGolemEvent;
 import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.data.DataAchromatic;
+import makeo.gadomancy.common.data.SyncDataHolder;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.entities.golems.ItemAdditionalGolemPlacer;
 import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;
 import makeo.gadomancy.common.registration.RegisteredGolemStuff;
+import makeo.gadomancy.common.registration.RegisteredPotions;
 import makeo.gadomancy.common.utils.NBTHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -94,6 +98,12 @@ public class EventHandlerGolem {
 
                     item.setEntityItemStack(fakePlacer);
                 }
+            }
+        }
+
+        if(!event.world.isRemote && event.entity instanceof EntityLivingBase) {
+            if(((EntityLivingBase) event.entity).isPotionActive(RegisteredPotions.ACHROMATIC)) {
+                ((DataAchromatic) SyncDataHolder.getDataServer("AchromaticData")).handleApplication((EntityLivingBase) event.entity);
             }
         }
     }

@@ -2,6 +2,7 @@ package makeo.gadomancy.common.events;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
+import makeo.gadomancy.common.data.DataAchromatic;
 import makeo.gadomancy.common.data.DataFamiliar;
 import makeo.gadomancy.common.data.SyncDataHolder;
 import makeo.gadomancy.common.network.PacketHandler;
@@ -29,6 +30,7 @@ public class EventHandlerNetwork {
         if(!p.playerNetServerHandler.netManager.isLocalChannel()) {
             PacketHandler.INSTANCE.sendTo(new PacketUpdateGolemTypeOrder(GolemEnumHelper.getCurrentMapping()), p);
             ((DataFamiliar) SyncDataHolder.getDataServer("FamiliarData")).checkPlayerEquipment(p);
+            ((DataAchromatic) SyncDataHolder.getDataServer("AchromaticData")).checkPotionEffect(p);
             SyncDataHolder.syncAllDataTo(p);
             PacketHandler.INSTANCE.sendTo(new PacketSyncConfigs(), p);
         }
