@@ -191,7 +191,7 @@ public class RegisteredRecipes {
         ItemStack blankCore = new ItemStack(RegisteredItems.itemAuraCore);
         RegisteredItems.itemAuraCore.setCoreType(blankCore, ItemAuraCore.AuraCoreType.BLANK);
         recipeAuraCore = ThaumcraftApi.addInfusionCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".AURA_CORE", blankCore, 10,
-                new RandomizedAspectList().setHalfCap(true).addAspectRandomBase(Aspect.AURA, 41).addAspectRandomBase(Aspect.MAGIC, 57).addAspectRandomBase(Aspect.ELDRITCH, 43).addAspectRandomBase(Aspect.VOID, 55),
+                new RandomizedAspectList().setHalfCap(true).addAspectRandomBase(Aspect.AURA, 21).addAspectRandomBase(Aspect.MAGIC, 27).addAspectRandomBase(Aspect.ELDRITCH, 18).addAspectRandomBase(Aspect.VOID, 35),
                 new ItemStack(ConfigItems.itemResource, 1, 15),
                 new ItemStack[] { new ItemStack(ConfigItems.itemShard, 1, 6), new ItemStack(ConfigItems.itemResource, 1, 2), new ItemStack(ConfigItems.itemResource, 1, 2),
                         new ItemStack(ConfigItems.itemShard, 1, 6), new ItemStack(ConfigItems.itemResource, 1, 2), new ItemStack(ConfigItems.itemResource, 1, 2),
