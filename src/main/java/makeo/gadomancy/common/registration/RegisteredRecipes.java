@@ -27,6 +27,7 @@ import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.ItemWispEssence;
+import thaumcraft.common.items.wands.ItemWandCasting;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -234,8 +235,14 @@ public class RegisteredRecipes {
                         .add(Aspect.EARTH, 14).add(Aspect.ORDER, 14).add(Aspect.ENTROPY, 14);
             }
 
-            recipes[i] = Arrays.asList(cost, 3, 1, 3,
+            ItemWandCasting item = (ItemWandCasting) ConfigItems.itemWandCasting;
+            ItemStack wand = new ItemStack(item);
+            item.setRod(wand, ConfigItems.WAND_ROD_GREATWOOD);
+            item.setCap(wand, ConfigItems.WAND_CAP_GOLD);
+
+            recipes[i] = Arrays.asList(cost, 3, 2, 3,
                     Arrays.asList(
+                            null, null, null, null, wand, null, null, null, null,
                             null, null, null, null, new ItemStack(ConfigBlocks.blockCrystal, 1, i),
                             new ItemStack(RegisteredItems.itemAuraCore), null, null, null
                     ));
