@@ -117,6 +117,14 @@ public class RegisteredItems {
         ThaumcraftApi.registerObjectTag(new ItemStack(Item.getItemFromBlock(RegisteredBlocks.blockStoneMachine)), new int[]{11, 15}, new AspectList());
         ThaumcraftApi.registerObjectTag(new ItemStack(Item.getItemFromBlock(RegisteredBlocks.blockStoneMachine)), new int[]{0}, oldAspects);
 
+        AspectList pylon = new AspectList().add(Aspect.WATER, 10).add(Aspect.MAGIC, 12).add(Aspect.VOID, 4).add(Aspect.MECHANISM, 4);
+        ThaumcraftApi.registerObjectTag(new ItemStack(Item.getItemFromBlock(RegisteredBlocks.blockAuraPylon)), new int[]{0}, pylon);
+        pylon = new AspectList().add(Aspect.FIRE, 10).add(Aspect.AURA, 12).add(Aspect.MAGIC, 8).add(Aspect.LIGHT, 4).add(Aspect.MECHANISM, 4);
+        ThaumcraftApi.registerObjectTag(new ItemStack(Item.getItemFromBlock(RegisteredBlocks.blockAuraPylon)), new int[]{1}, pylon);
+
+        AspectList packager = new AspectList().add(Aspect.TREE, 10).add(Aspect.MECHANISM, 8).add(Aspect.CRAFT, 8).add(Aspect.AURA, 12);
+        ThaumcraftApi.registerObjectTag(new ItemStack(Item.getItemFromBlock(RegisteredBlocks.blockStoneMachine)), new int[]{4}, packager);
+
         AspectList aspect = new AspectList();
         aspect.add(Aspect.MAGIC, 6).add(Aspect.AURA, 12).add(Aspect.ELDRITCH, 4).add(Aspect.VOID, 10);
         ThaumcraftApi.registerObjectTag(new ItemStack(RegisteredItems.itemAuraCore), new int[]{0}, aspect.copy());
