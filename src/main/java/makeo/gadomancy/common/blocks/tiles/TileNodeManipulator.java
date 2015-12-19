@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
+import thaumcraft.api.nodes.INode;
 import thaumcraft.api.wands.IWandable;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.wands.ItemWandCasting;
@@ -273,8 +274,8 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
         workAspectList = new AspectList();
 
         TileEntity te = worldObj.getTileEntity(xCoord, yCoord + 2, zCoord);
-        if(te == null || !(te instanceof TileExtendedNode)) return;
-        TileExtendedNode node = (TileExtendedNode) te;
+        if(te == null || !(te instanceof INode)) return;
+        INode node = (INode) te;
         int areaRange = NODE_MANIPULATION_WORK_ASPECT_CAP - NODE_MANIPULATION_POSSIBLE_WORK_START;
         int percChanceForBetter = 0;
         if(areaRange > 0) {
@@ -282,14 +283,14 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
         }
         NodeManipulatorResult result;
         do {
-            result = NodeManipulatorResultHandler.getRandomResult(node, percChanceForBetter);
-        } while (!result.affect(node));
+            result = NodeManipulatorResultHandler.getRandomResult(worldObj, node, percChanceForBetter);
+        } while (!result.affect(worldObj, node));
         PacketStartAnimation packet = new PacketStartAnimation(PacketStartAnimation.ID_SPARKLE_SPREAD, xCoord, yCoord + 2, zCoord);
         PacketHandler.INSTANCE.sendToAllAround(packet, getTargetPoint(32));
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         worldObj.markBlockForUpdate(xCoord, yCoord + 2, zCoord);
         markDirty();
-        node.markDirty();
+        ((TileEntity) node).markDirty();
     }
 
     private float calcOversize(int neededAspects) {

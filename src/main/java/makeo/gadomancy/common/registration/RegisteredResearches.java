@@ -149,33 +149,36 @@ public class RegisteredResearches {
                 .setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.BLOCK_PROTECTOR.1"), new ResearchPage(RegisteredRecipes.recipeBlockProtector), new ResearchPage("gadomancy.research_page.BLOCK_PROTECTOR.3"), new ResearchPage("gadomancy.research_page.BLOCK_PROTECTOR.4")).registerResearchItem();
 
-        researchGrowingNodes = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING", Gadomancy.MODID, new AspectList(), -8, -1, 5, new ResourceLocation("thaumcraft", "textures/misc/r_nodes.png"))
-                .setSpecial().setLost().setConcealed()
-                .setParents(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR")
-                .setPages(new ResearchPage("gadomancy.research_page.GROWING.1"), new ResearchPage("gadomancy.research_page.GROWING.2")).registerResearchItem();
+        if(ModConfig.enableAdditionalNodeTypes) {
+            researchGrowingNodes = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING", Gadomancy.MODID, new AspectList(), -8, -1, 5, new ResourceLocation("thaumcraft", "textures/misc/r_nodes.png"))
+                    .setSpecial().setLost().setConcealed()
+                    .setParents(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR")
+                    .setPages(new ResearchPage("gadomancy.research_page.GROWING.1"), new ResearchPage("gadomancy.research_page.GROWING.2")).registerResearchItem();
 
-        researchGrowingNodeAgression = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_AGGRESSION", Gadomancy.MODID, new AspectList(), -5, 0, 6, new ItemStack(ConfigBlocks.blockAiry, 1, 5))
-                .setLost()
-                .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING")
-                .setPages(new ResearchPage("gadomancy.research_page.GROWING_AGGRESSION.1")).registerResearchItem();
+            researchGrowingNodeAgression = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_AGGRESSION", Gadomancy.MODID, new AspectList(), -5, 0, 6, new ItemStack(ConfigBlocks.blockAiry, 1, 5))
+                    .setLost()
+                    .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING")
+                    .setPages(new ResearchPage("gadomancy.research_page.GROWING_AGGRESSION.1")).registerResearchItem();
 
-        researchGrowingNodeGrowth = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTH", Gadomancy.MODID, new AspectList(), -7, 2, 6, new ResourceLocation("gadomancy", "textures/misc/r_node_star.png"))
-                .setLost()
-                .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING")
-                .setPages(new ResearchPage("gadomancy.research_page.GROWING_GROWTH.1"), new ResearchPage("gadomancy.research_page.GROWING_GROWTH.2")).registerResearchItem();
+            researchGrowingNodeGrowth = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTH", Gadomancy.MODID, new AspectList(), -7, 2, 6, new ResourceLocation("gadomancy", "textures/misc/r_node_star.png"))
+                    .setLost()
+                    .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING")
+                    .setPages(new ResearchPage("gadomancy.research_page.GROWING_GROWTH.1"), new ResearchPage("gadomancy.research_page.GROWING_GROWTH.2")).registerResearchItem();
 
-        researchGrowingNodeAttackNodes = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_ATTACK", Gadomancy.MODID, new AspectList(), -6, 1, 6, new ResourceLocation("gadomancy", "textures/misc/r_node_dark.png"))
-                .setLost()
-                .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING")
-                .setPages(new ResearchPage("gadomancy.research_page.GROWING_ATTACK.1")).registerResearchItem();
+            researchGrowingNodeAttackNodes = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_ATTACK", Gadomancy.MODID, new AspectList(), -6, 1, 6, new ResourceLocation("gadomancy", "textures/misc/r_node_dark.png"))
+                    .setLost()
+                    .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING")
+                    .setPages(new ResearchPage("gadomancy.research_page.GROWING_ATTACK.1")).registerResearchItem();
 
-        researchGrowingNodeGrowthClue = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTHCLUE", Gadomancy.MODID,
-                new AspectList().add(Aspect.AURA, 10).add(Aspect.MAGIC, 15).add(Aspect.ELDRITCH, 5).add(Aspect.VOID, 12).add(Aspect.ENERGY, 12).add(Aspect.ENTROPY, 8).add(Aspect.DEATH, 3)
-                .add(Aspect.GREED, 10).add(Aspect.HUNGER, 10).add(Aspect.MECHANISM, 12).add(Aspect.DARKNESS, 12),
-                -4, 3, 2, new ItemStack(ConfigBlocks.blockAiry, 1, 5))
-                .setSpecial().setRound().setConcealed()
-                .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING_AGGRESSION", Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTH", Gadomancy.MODID.toUpperCase() + ".GROWING_ATTACK")
-                .setPages(new ResearchPage("gadomancy.research_page.GROWING_GROWTHCLUE.1"), new ResearchPage("gadomancy.research_page.GROWING_GROWTHCLUE.2")).registerResearchItem();
+            researchGrowingNodeGrowthClue = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTHCLUE", Gadomancy.MODID,
+                    new AspectList().add(Aspect.AURA, 10).add(Aspect.MAGIC, 15).add(Aspect.ELDRITCH, 5).add(Aspect.VOID, 12).add(Aspect.ENERGY, 12).add(Aspect.ENTROPY, 8).add(Aspect.DEATH, 3)
+                            .add(Aspect.GREED, 10).add(Aspect.HUNGER, 10).add(Aspect.MECHANISM, 12).add(Aspect.DARKNESS, 12),
+                    -4, 3, 2, new ItemStack(ConfigBlocks.blockAiry, 1, 5))
+                    .setSpecial().setRound().setConcealed()
+                    .setParents(Gadomancy.MODID.toUpperCase() + ".GROWING_AGGRESSION", Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTH", Gadomancy.MODID.toUpperCase() + ".GROWING_ATTACK")
+                    .setPages(new ResearchPage("gadomancy.research_page.GROWING_GROWTHCLUE.1"), new ResearchPage("gadomancy.research_page.GROWING_GROWTHCLUE.2")).registerResearchItem();
+
+        }
 
         ResearchItem nitorResearch = PseudoResearchItem.create("NITOR", 2, -4).registerResearchItem();
         ResearchItem runicResearch = PseudoResearchItem.create("RUNICARMOR", 4, -4).registerResearchItem();

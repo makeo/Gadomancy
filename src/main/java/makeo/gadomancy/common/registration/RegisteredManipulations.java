@@ -6,8 +6,10 @@ import makeo.gadomancy.common.node.ExtendedNodeType;
 import makeo.gadomancy.common.node.NodeManipulatorResult;
 import makeo.gadomancy.common.node.NodeManipulatorResultHandler;
 import makeo.gadomancy.common.utils.ResearchHelper;
+import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.nodes.INode;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 
@@ -25,7 +27,7 @@ public class RegisteredManipulations {
 
     public static NodeManipulatorResult resultBreakCompounds = new NodeManipulatorResult(4, NodeManipulatorResultHandler.ResultType.NEGATIVE) {
         @Override
-        public boolean affect(TileExtendedNode node) {
+        public boolean affect(World world, INode node) {
             AspectList baseList = node.getAspectsBase();
             AspectList list = node.getAspects();
             for(Aspect a : baseList.getAspects()) {
@@ -47,35 +49,35 @@ public class RegisteredManipulations {
 
     public static NodeManipulatorResult resultCombineAspects = new NodeManipulatorResult(5, NodeManipulatorResultHandler.ResultType.POSITIVE) {
         @Override
-        public boolean affect(TileExtendedNode node) {
+        public boolean affect(World world, INode node) {
             AspectList base = node.getAspectsBase();
             if(base.getAspects().length < 2)
                 return false;
             if(base.getAspects().length == 2) {
                 if(!NodeManipulatorResultHandler.canCombine(base.getAspects()[0], base.getAspects()[1])) return false;
-                int addition = node.getWorldObj().rand.nextInt(4);
+                int addition = world.rand.nextInt(4);
                 NodeManipulatorResultHandler.combine(base, base.getAspects()[0], base.getAspects()[1], addition);
                 NodeManipulatorResultHandler.combine(node.getAspects(), base.getAspects()[0], base.getAspects()[1], addition);
                 return true;
             }
             if(base.getAspects().length > 2) {
                 int actuallyCombined = 0;
-                int combineCount = node.getWorldObj().rand.nextInt(1) + 1;
+                int combineCount = world.rand.nextInt(1) + 1;
                 doLabel:
                 do {
                     if(base.getAspects().length < 2) break;
 
-                    int randIndexForA = node.getWorldObj().rand.nextInt(base.getAspects().length);
+                    int randIndexForA = world.rand.nextInt(base.getAspects().length);
                     for (int i = 0; i < base.getAspects().length; i++) {
                         int indexA = (i + randIndexForA) % base.getAspects().length;
                         Aspect a = base.getAspects()[indexA];
-                        int randIndexForB = node.getWorldObj().rand.nextInt(base.getAspects().length);
+                        int randIndexForB = world.rand.nextInt(base.getAspects().length);
                         for (int j = 0; j < base.getAspects().length; j++) {
                             int indexB = (j + randIndexForB) % base.getAspects().length;
                             Aspect b = base.getAspects()[indexB];
 
                             if(NodeManipulatorResultHandler.canCombine(a, b)) {
-                                int addition = node.getWorldObj().rand.nextInt(4);
+                                int addition = world.rand.nextInt(4);
                                 NodeManipulatorResultHandler.combine(base, a, b, addition);
                                 NodeManipulatorResultHandler.combine(node.getAspects(), a, b, addition);
                                 combineCount--;
@@ -98,12 +100,12 @@ public class RegisteredManipulations {
     public static NodeManipulatorResult resultIncreaseModifier = new NodeManipulatorResult(4, NodeManipulatorResultHandler.ResultType.POSITIVE) {
 
         @Override
-        public boolean canAffect(TileExtendedNode node) {
+        public boolean canAffect(World world, INode node) {
             return node.getNodeModifier() != NodeModifier.BRIGHT;
         }
 
         @Override
-        public boolean affect(TileExtendedNode node) {
+        public boolean affect(World world, INode node) {
             if(node.getNodeModifier() == null) {
                 node.setNodeModifier(NodeModifier.BRIGHT);
                 return true;
@@ -125,12 +127,12 @@ public class RegisteredManipulations {
     public static NodeManipulatorResult resultDecreaseModifier = new NodeManipulatorResult(5, NodeManipulatorResultHandler.ResultType.NEGATIVE) {
 
         @Override
-        public boolean canAffect(TileExtendedNode node) {
+        public boolean canAffect(World world, INode node) {
             return node.getNodeModifier() != NodeModifier.FADING;
         }
 
         @Override
-        public boolean affect(TileExtendedNode node) {
+        public boolean affect(World world, INode node) {
             if(node.getNodeModifier() == null) {
                 node.setNodeModifier(NodeModifier.PALE);
                 return true;
@@ -151,12 +153,12 @@ public class RegisteredManipulations {
 
     public static NodeManipulatorResult resultGainPrimal = new NodeManipulatorResult(3, NodeManipulatorResultHandler.ResultType.POSITIVE) {
         @Override
-        public boolean affect(TileExtendedNode node) {
+        public boolean affect(World world, INode node) {
             List<Aspect> primals = Aspect.getPrimalAspects();
             int visSize = node.getAspectsBase().visSize();
             int size = node.getAspectsBase().size();
             int modulo = primals.size();
-            int index = node.getWorldObj().rand.nextInt(primals.size());
+            int index = world.rand.nextInt(primals.size());
             for (int i = 0; i < primals.size(); i++) {
                 int get = (index + i) % modulo;
                 Aspect rand = primals.get(get);
@@ -176,11 +178,18 @@ public class RegisteredManipulations {
 
     public static NodeManipulatorResult resultSwitchType = new NodeManipulatorResult(2, NodeManipulatorResultHandler.ResultType.NEUTRAL) {
         @Override
-        public boolean affect(TileExtendedNode node) {
+        public boolean affect(World world, INode node) {
             NodeType newType = node.getNodeType();
-            int random = node.getWorldObj().rand.nextInt(40);
+            int random = world.rand.nextInt(40);
             if(random > 38) {
-                if(!(node.getExtendedNodeType() != null && node.getExtendedNodeType().equals(ExtendedNodeType.GROWING))) newType = NodeType.HUNGRY; //1 of 40
+                if(node instanceof TileExtendedNode) {
+                    TileExtendedNode tNode = (TileExtendedNode) node;
+                    if(!(tNode.getExtendedNodeType() != null && tNode.getExtendedNodeType().equals(ExtendedNodeType.GROWING))) {
+                        newType = NodeType.HUNGRY; //1 of 40
+                    }
+                } else {
+                    newType = NodeType.HUNGRY; //1 of 40
+                }
             } else if(random > 37) {
                 newType = NodeType.TAINTED; //1 of 40
             } else if(random > 34) {
@@ -201,7 +210,9 @@ public class RegisteredManipulations {
 
     public static NodeManipulatorResult resultApplyGrowing = new NodeManipulatorResult(1, NodeManipulatorResultHandler.ResultType.POSITIVE) {
         @Override
-        public boolean affect(TileExtendedNode node) {
+        public boolean affect(World world, INode inode) {
+            if(!(inode instanceof TileExtendedNode)) return false;
+            TileExtendedNode node = (TileExtendedNode) inode;
             boolean isGrowingAlready = node.getExtendedNodeType() != null && node.getExtendedNodeType().equals(ExtendedNodeType.GROWING);
             if(isGrowingAlready) if(node.getNodeType().equals(NodeType.HUNGRY)) isGrowingAlready = false;
             if(!isGrowingAlready) {
