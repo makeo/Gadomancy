@@ -71,7 +71,7 @@ public class RegisteredRecipes {
     public static IArcaneRecipe recipeArcaneDropper;
     public static IArcaneRecipe recipeRemoteJar;
     public static IArcaneRecipe recipeAncientPedestal;
-    public static IArcaneRecipe recipeBlockProtector;
+    public static IArcaneRecipe[] recipeBlockProtector;
 
     public static CrucibleRecipe recipeAncientStonePedestal = null;
     public static IArcaneRecipe recipeAncientStone = null;
@@ -163,9 +163,20 @@ public class RegisteredRecipes {
         recipesFamilar = createFamilarRecipes();
         recipesFamiliarAugmentation = createFamiliarAugmentationRecipes();
 
-        recipeBlockProtector =  ThaumcraftApi.addArcaneCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".BLOCK_PROTECTOR", new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 2),
+        recipeBlockProtector = new IArcaneRecipe[4];
+        recipeBlockProtector[0] =  ThaumcraftApi.addArcaneCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".BLOCK_PROTECTOR", new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 2),
                 new AspectList().add(Aspect.ORDER, 120).add(Aspect.EARTH, 120),
-                "WNW", "PJP", "GRG", 'W', new ItemStack(Items.potionitem, 1, 8232), 'V', new ItemStack(Items.potionitem, 1, 8264), 'N', new ItemStack(ConfigItems.itemResource, 1, 1), 'P', new ItemStack(ConfigBlocks.blockTube), 'J', new ItemStack(ConfigBlocks.blockJar), 'G', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'R', new ItemStack(Items.redstone));
+                "WNW", "PJP", "GRG", 'W', new ItemStack(Items.potionitem, 1, 8232), 'N', new ItemStack(ConfigItems.itemResource, 1, 1), 'P', new ItemStack(ConfigBlocks.blockTube), 'J', new ItemStack(ConfigBlocks.blockJar), 'G', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'R', new ItemStack(Items.redstone));
+        recipeBlockProtector[1] =  ThaumcraftApi.addArcaneCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".BLOCK_PROTECTOR", new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 2),
+                new AspectList().add(Aspect.ORDER, 120).add(Aspect.EARTH, 120),
+                "WNW", "PJP", "GRG", 'W', new ItemStack(Items.potionitem, 1, 8200), 'N', new ItemStack(ConfigItems.itemResource, 1, 1), 'P', new ItemStack(ConfigBlocks.blockTube), 'J', new ItemStack(ConfigBlocks.blockJar), 'G', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'R', new ItemStack(Items.redstone));
+
+        recipeBlockProtector[2] =  ThaumcraftApi.addArcaneCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".BLOCK_PROTECTOR", new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 2),
+                new AspectList().add(Aspect.ORDER, 120).add(Aspect.EARTH, 120),
+                "WNV", "PJP", "GRG", 'W', new ItemStack(Items.potionitem, 1, 8232), 'V', new ItemStack(Items.potionitem, 1, 8200), 'N', new ItemStack(ConfigItems.itemResource, 1, 1), 'P', new ItemStack(ConfigBlocks.blockTube), 'J', new ItemStack(ConfigBlocks.blockJar), 'G', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'R', new ItemStack(Items.redstone));
+        recipeBlockProtector[3] =  ThaumcraftApi.addArcaneCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".BLOCK_PROTECTOR", new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 2),
+                new AspectList().add(Aspect.ORDER, 120).add(Aspect.EARTH, 120),
+                "WNV", "PJP", "GRG", 'W', new ItemStack(Items.potionitem, 1, 8200), 'V', new ItemStack(Items.potionitem, 1, 8232), 'N', new ItemStack(ConfigItems.itemResource, 1, 1), 'P', new ItemStack(ConfigBlocks.blockTube), 'J', new ItemStack(ConfigBlocks.blockJar), 'G', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'R', new ItemStack(Items.redstone));
 
         if(ModConfig.ancientStoneRecipes) {
             recipeAncientStone = ThaumcraftApi.addArcaneCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".ANCIENT_STONES", new ItemStack(ConfigBlocks.blockCosmeticSolid, 4, 11), new AspectList().add(Aspect.ENTROPY, 16).add(Aspect.EARTH, 8),
