@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.events;
 
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import makeo.gadomancy.common.aura.AuraEffects;
 import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
@@ -7,18 +8,15 @@ import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.entities.EntityPermNoClipItem;
 import makeo.gadomancy.common.familiar.FamiliarAIController;
-import makeo.gadomancy.common.registration.RegisteredPotions;
+import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.MiscUtils;
+import makeo.gadomancy.common.utils.NBTHelper;
 import makeo.gadomancy.common.utils.Vector3;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
@@ -30,6 +28,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import thaumcraft.common.items.armor.Hover;
 
 import java.util.ArrayList;
@@ -53,6 +52,17 @@ public class EventHandlerEntity {
             //e.entity.registerExtendedProperties(Gadomancy.MODID, new ExtendedPlayerProperties((EntityPlayer) e.entity));
         }
     }*/
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void on(PlayerInteractEvent event) {
+        if(!event.world.isRemote) {
+            ItemStack stack = event.entityPlayer.getHeldItem();
+            if(stack != null && stack.getItem() == RegisteredItems.itemFakeLootbag && NBTHelper.hasPersistentData(stack)) {
+                RegisteredItems.itemPackage.onItemRightClick(stack, event.world, event.entityPlayer);
+                event.setCanceled(true);
+            }
+        }
+    }
 
     @SubscribeEvent
     public void on(LivingSpawnEvent.CheckSpawn event) {

@@ -1,9 +1,12 @@
 package makeo.gadomancy.common.registration;
 
+import cpw.mods.fml.common.LoadController;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.items.*;
 import makeo.gadomancy.common.items.baubles.ItemFamiliar;
+import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -13,6 +16,7 @@ import net.minecraftforge.common.util.EnumHelper;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
@@ -45,6 +49,7 @@ public class RegisteredItems {
     public static ItemFamiliar itemFamiliar;
     public static ItemCreativeNode itemCreativeNode;
     public static ItemArcanePackage itemPackage;
+    public static ItemFakeLootbag itemFakeLootbag;
     public static ItemAuraCore itemAuraCore;
 
     public static void preInit() {
@@ -75,6 +80,7 @@ public class RegisteredItems {
 
         itemCreativeNode = registerItem(new ItemCreativeNode());
         itemPackage = registerItem(new ItemArcanePackage());
+        itemFakeLootbag = registerItem(Thaumcraft.MODID, new ItemFakeLootbag());
         itemFakeGolemPlacer = registerItem(new ItemFakeGolemPlacer());
         itemFakeGolemShield = registerItem(new ItemFakeGolemShield());
         itemExtendedNodeJar = registerItem(new ItemExtendedNodeJar());
@@ -88,6 +94,21 @@ public class RegisteredItems {
 
     private static <T extends Item> T registerItem(T item) {
         return registerItem(item, item.getClass().getSimpleName());
+    }
+
+    private static <T extends Item> T registerItem(String modId, T item) {
+        return registerItem(modId, item, item.getClass().getSimpleName());
+    }
+
+    private static <T extends Item> T registerItem(String modId, T item, String name) {
+        Injector modController = new Injector(new Injector(Loader.instance(), Loader.class).getField("modController"), LoadController.class);
+        Object old = modController.getField("activeContainer");
+        modController.setField("activeContainer", Loader.instance().getIndexedModList().get(modId));
+
+        GameRegistry.registerItem(item, name);
+
+        modController.setField("activeContainer", old);
+        return item;
     }
 
     private static void registerItemAspects() {
@@ -105,6 +126,11 @@ public class RegisteredItems {
         ThaumcraftApi.registerObjectTag(new ItemStack(RegisteredItems.itemAuraCore), new int[]{4}, aspect.copy().add(Aspect.EARTH, 26));
         ThaumcraftApi.registerObjectTag(new ItemStack(RegisteredItems.itemAuraCore), new int[]{5}, aspect.copy().add(Aspect.ORDER, 26));
         ThaumcraftApi.registerObjectTag(new ItemStack(RegisteredItems.itemAuraCore), new int[]{6}, aspect.copy().add(Aspect.ENTROPY, 26));
+
+        ThaumcraftApi.registerObjectTag(new ItemStack(RegisteredItems.itemPackage, 1, 0), new AspectList().add(Aspect.CLOTH, 2).add(Aspect.BEAST, 2).add(Aspect.ARMOR, 1));
+        ThaumcraftApi.registerObjectTag(new ItemStack(RegisteredItems.itemPackage, 1, 1), new AspectList().add(Aspect.CLOTH, 4));
+        ThaumcraftApi.registerObjectTag(new ItemStack(RegisteredItems.itemFakeLootbag, 1, 0), new AspectList().add(Aspect.CLOTH, 2).add(Aspect.BEAST, 2).add(Aspect.ARMOR, 1));
+        ThaumcraftApi.registerObjectTag(new ItemStack(RegisteredItems.itemFakeLootbag, 1, 1), new AspectList().add(Aspect.CLOTH, 4));
     }
 
     //Sticky jars

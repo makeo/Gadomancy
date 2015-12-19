@@ -165,10 +165,7 @@ public class TileArcanePackager extends TileJarFillable implements IInventory, I
                 }
             }
 
-            int metadata = disguise ? 1 : 0;
-            metadata |= useEssentia ? 2 : 0;
-            ItemStack pack = new ItemStack(RegisteredItems.itemPackage, 1, metadata);
-
+            ItemStack pack = new ItemStack(disguise ? RegisteredItems.itemFakeLootbag : RegisteredItems.itemPackage, 1, useEssentia ? 1 : 0);
             boolean success = RegisteredItems.itemPackage.setContents(pack, contents);
 
             if (success) {

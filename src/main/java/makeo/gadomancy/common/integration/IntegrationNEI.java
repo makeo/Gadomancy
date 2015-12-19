@@ -30,6 +30,7 @@ public class IntegrationNEI extends IntegrationMod {
         hideItem(new ItemStack(RegisteredItems.itemFakeModIcon));
         hideItem(new ItemStack(RegisteredBlocks.blockStickyJar, 1, Short.MAX_VALUE));
         hideItem(new ItemStack(RegisteredItems.itemPackage, 1, Short.MAX_VALUE));
+        hideItem(new ItemStack(RegisteredItems.itemFakeLootbag, 1, Short.MAX_VALUE));
         hideItem(new ItemStack(RegisteredBlocks.blockExtendedNodeJar, 1, Short.MAX_VALUE));
         hideItem(new ItemStack(RegisteredItems.itemExtendedNodeJar, 1, Short.MAX_VALUE));
         hideItem(new ItemStack(RegisteredItems.itemFakeGolemPlacer, 1, Short.MAX_VALUE));

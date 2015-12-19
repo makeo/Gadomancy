@@ -3,19 +3,14 @@ package makeo.gadomancy.common.items;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.NBTHelper;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryBasic;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import thaumcraft.common.items.ItemLootBag;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 import java.util.ArrayList;
@@ -31,48 +26,19 @@ import java.util.List;
  * <p/>
  * Created by makeo @ 14.11.2015 12:34
  */
-public class ItemArcanePackage extends ItemLootBag {
+public class ItemArcanePackage extends ItemFakeLootbag {
     public ItemArcanePackage() {
-        setCreativeTab(null);
         setUnlocalizedName("ItemArcanePackage");
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
-
-    }
-
-    @Override
-    public IIcon getIconFromDamage(int damage) {
-        return super.getIconFromDamage(damage >> 1);
-    }
-
-    @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
-        if ((stack.getItemDamage() & 1) == 1) {
-            super.addInformation(stack, player, list, par4);
-        } else {
-            list.add(StatCollector.translateToLocal(Gadomancy.MODID + ".info.ArcanePackage"));
-        }
-    }
-
-    @Override
-    public EnumRarity getRarity(ItemStack stack) {
-        switch (stack.getItemDamage() >> 1) {
-            case 1:
-                return EnumRarity.uncommon;
-            case 2:
-                return EnumRarity.rare;
-        }
-        return EnumRarity.common;
+        list.add(StatCollector.translateToLocal(Gadomancy.MODID + ".info.ArcanePackage"));
     }
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        if ((stack.getItemDamage() & 1) == 1) {
-            return "item.ItemLootBag." + (stack.getItemDamage() >> 1);
-        }
-        return super.getUnlocalizedName();
+        return "item.ItemArcanePackage";
     }
 
     public boolean setContents(ItemStack stack, List<ItemStack> items) {
@@ -118,14 +84,16 @@ public class ItemArcanePackage extends ItemLootBag {
             }
             stackList.appendTag(itemTag);
         }
-        NBTHelper.getData(stack).setTag("items", stackList);
+
+        (stack.getItem() == this ? NBTHelper.getData(stack) : NBTHelper.getPersistentData(stack)).setTag("items", stackList);
         return true;
     }
 
     public List<ItemStack> getContents(ItemStack stack) {
         List<ItemStack> contents = new ArrayList<ItemStack>();
-        if (stack.hasTagCompound()) {
-            NBTTagList stackList = (NBTTagList) stack.getTagCompound().getTag("items");
+        boolean isDisguised = stack.getItem() != this;
+        if (isDisguised ? NBTHelper.hasPersistentData(stack) : stack.hasTagCompound()) {
+            NBTTagList stackList = (NBTTagList) (isDisguised ? NBTHelper.getPersistentData(stack) : stack.getTagCompound()).getTag("items");
             if (stackList != null) {
                 for (int i = 0; i < stackList.tagCount(); ++i) {
                     NBTTagCompound nbtStack = stackList.getCompoundTagAt(i);

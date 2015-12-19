@@ -185,21 +185,6 @@ public class EventHandlerWorld {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onLow(ItemTooltipEvent e) {
-        if(e.itemStack.getItem() == RegisteredItems.itemPackage) {
-            if((e.itemStack.getItemDamage() & 1) == 1) {
-                for(int i = 0; i < e.toolTip.size(); i++) {
-                    String line = e.toolTip.get(i);
-                    if(line.contains(Gadomancy.NAME)) {
-                        line = line.replace(Gadomancy.NAME, Thaumcraft.MODNAME);
-                        e.toolTip.set(i, line);
-                    }
-                }
-            }
-        }
-    }
-
     private static class ValueOverride extends GameRules.Value {
         private final EventHandlerWorld handler;
         public ValueOverride(EventHandlerWorld handler, String value) {
