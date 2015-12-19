@@ -1,5 +1,7 @@
 package makeo.gadomancy.common.blocks.tiles;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import makeo.gadomancy.common.entities.EntityPermNoClipItem;
 import makeo.gadomancy.common.aura.AuraEffectHandler;
 import makeo.gadomancy.common.utils.NBTHelper;
@@ -78,7 +80,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
             }
         } else {
 
-            if( isInputTile() && holdingAspect != null) {
+            if(isInputTile() && holdingAspect != null) {
                 doEssentiaTrail();
             }
         }
@@ -105,6 +107,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
     }
 
     //Client-Side input tile only!
+    @SideOnly(Side.CLIENT)
     private void doEssentiaTrail() {
         if((ticksExisted & 1) == 0) return;
         TileAuraPylon tile = getMasterTile();
