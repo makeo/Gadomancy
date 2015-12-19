@@ -41,6 +41,7 @@ public class TileArcanePackager extends TileJarFillable implements IInventory, I
 
     public TileArcanePackager() {
         aspectFilter = ASPECT;
+        maxAmount = 8;
     }
 
     @Override
