@@ -15,10 +15,9 @@ import java.util.Random;
 public class ItemUtils {
 
     public static void applyRandomDropOffset(EntityItem item, Random rand) {
-        double xs = rand.nextFloat() * 0.7F - 0.35D;
-        double ys = rand.nextFloat() * 0.7F - 0.35D;
-        double zs = rand.nextFloat() * 0.7F - 0.35D;
-        item.setVelocity(xs, ys, zs);
+        item.motionX = rand.nextFloat() * 0.7F - 0.35D;
+        item.motionY = rand.nextFloat() * 0.7F - 0.35D;
+        item.motionZ = rand.nextFloat() * 0.7F - 0.35D;
     }
 
 }

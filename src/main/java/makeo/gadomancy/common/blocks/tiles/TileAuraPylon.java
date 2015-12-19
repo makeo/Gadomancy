@@ -182,7 +182,9 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
 
             EntityPermNoClipItem item = new EntityPermNoClipItem(entity.worldObj, xCoord + 0.5F, yC + 0.3F, zCoord + 0.5F, crystalEssentiaStack, xCoord, yCoord, zCoord);
             entity.worldObj.spawnEntityInWorld(item);
-            item.setVelocity(0, 0, 0);
+            item.motionX = 0;
+            item.motionY = 0;
+            item.motionZ = 0;
             item.hoverStart = entity.hoverStart;
             item.age = entity.age;
             item.noClip = true;
