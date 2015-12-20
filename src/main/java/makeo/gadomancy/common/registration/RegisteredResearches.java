@@ -279,10 +279,10 @@ public class RegisteredResearches {
                 .setPages(new ResearchPage("gadomancy.research_page.AURA_PYLON.1"), new ResearchPage(RegisteredRecipes.recipeAuraPylon), new ResearchPage(RegisteredRecipes.recipeAuraPylonPeak), new ResearchPage(RegisteredRecipes.multiblockAuraPylon)).registerResearchItem();
 
         researchAuraEffects = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".AURA_EFFECTS", Gadomancy.MODID,
-                new AspectList().add(Aspect.AURA, 10).add(Aspect.MIND, 8).add(Aspect.MAGIC, 4).add(Aspect.MECHANISM, 8),
+                new AspectList().add(Aspect.AURA, 6).add(Aspect.MIND, 8).add(Aspect.MAGIC, 4).add(Aspect.ORDER, 4),
                 1, 10, 2,
                 new ResourceLocation("thaumcraft", "textures/misc/r_aspects.png"))
-                .setConcealed().setRound()
+                .setConcealed().setSecondary()
                 .setParents(researchAuraPylon.key)
                 .setPages(new ResearchPage("gadomancy.research_page.AURA_EFFECTS.1")).registerResearchItem();
 

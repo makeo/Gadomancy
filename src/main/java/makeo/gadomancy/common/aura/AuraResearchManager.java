@@ -3,10 +3,12 @@ package makeo.gadomancy.common.aura;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketTCNotificationText;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.StatCollector;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.research.ResearchManager;
@@ -30,6 +32,7 @@ public class AuraResearchManager {
         if(!AuraEffectHandler.registeredEffects.containsKey(aspect)) return;
 
         if(!ResearchManager.isResearchComplete(player.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".AURA_EFFECTS")) return;
+        if(!Thaumcraft.proxy.getPlayerKnowledge().hasDiscoveredAspect(player.getCommandSenderName(), aspect)) return;
 
         String res = String.format(TC_AURA_RESEARCH_STR, aspect.getTag());
         if(ResearchManager.isResearchComplete(player.getCommandSenderName(), res)) return;
