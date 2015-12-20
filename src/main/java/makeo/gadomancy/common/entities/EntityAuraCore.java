@@ -274,7 +274,10 @@ public class EntityAuraCore extends EntityItem implements IEntityAdditionalSpawn
                         ScanResult result = null;
                         MovingObjectPosition pos = new MovingObjectPosition(x, y, z, ForgeDirection.UP.ordinal(),
                                 Vec3.createVectorHelper(0, 0, 0), true);
-                        ItemStack is = block.getPickBlock(pos, worldObj, x, y, z);
+                        ItemStack is = null;
+                        try {
+                            is = block.getPickBlock(pos, worldObj, x, y, z);
+                        } catch (Throwable tr) {}
                         try {
                             if(is == null) {
                                 is = BlockUtils.createStackedBlock(block, meta);

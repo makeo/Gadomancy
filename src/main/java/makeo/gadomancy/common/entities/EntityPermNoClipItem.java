@@ -62,7 +62,9 @@ public class EntityPermNoClipItem extends EntityPermanentItem {
     public void onUpdate() {
         noClip = true;
         super.onUpdate();
-        setVelocity(0, 0, 0);
+        motionX = 0;
+        motionY = 0;
+        motionZ = 0;
         if (getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherFixedId).getObject() == null)
             return;
 

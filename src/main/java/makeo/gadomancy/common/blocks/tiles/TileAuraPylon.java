@@ -1,5 +1,7 @@
 package makeo.gadomancy.common.blocks.tiles;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import makeo.gadomancy.common.entities.EntityPermNoClipItem;
 import makeo.gadomancy.common.aura.AuraEffectHandler;
 import makeo.gadomancy.common.utils.NBTHelper;
@@ -37,22 +39,10 @@ import java.util.List;
  */
 public class TileAuraPylon extends SynchronizedTileEntity implements IAspectContainer, IEssentiaTransport {
 
-    //This TileEntity is designed to be used stacked with others of its kind - without limits.
-    //The aspects the tiles contain are all provided in the top tile of the structure
-    //The actual work is done in the top tile of the structure
-
-    //The inner aspect type is defined by a piece of crystallized Essentia being checked by the master-tile
-    //The master tile informs all the other tiles what aspect currently is in use.
-
-    //All tiles check each 8 ticks if the structure is still complete/contains an IO- and a master-tile
-    //Master tile updates its state and the state of all tiles every 4 ticks so Aspect information and item information are still valid.
-    //Master tile updates effects all 8 ticks if there is an internal aspect present.
-    //Input tile handles Essentia IO all 8 ticks and thus provides needed amount information.
-
     private ItemStack crystalEssentiaStack = null;
     private boolean isPartOfMultiblock = false;
 
-    public int timeSinceLastItemInfo = 0; //0-5, update interval = 2
+    public int timeSinceLastItemInfo = 0;
 
     private int ticksExisted = 0;
     private Aspect holdingAspect;
@@ -90,7 +80,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
             }
         } else {
 
-            if( isInputTile() && holdingAspect != null) {
+            if(isInputTile() && holdingAspect != null) {
                 doEssentiaTrail();
             }
         }
@@ -117,6 +107,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
     }
 
     //Client-Side input tile only!
+    @SideOnly(Side.CLIENT)
     private void doEssentiaTrail() {
         if((ticksExisted & 1) == 0) return;
         TileAuraPylon tile = getMasterTile();
@@ -194,7 +185,9 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
 
             EntityPermNoClipItem item = new EntityPermNoClipItem(entity.worldObj, xCoord + 0.5F, yC + 0.3F, zCoord + 0.5F, crystalEssentiaStack, xCoord, yCoord, zCoord);
             entity.worldObj.spawnEntityInWorld(item);
-            item.setVelocity(0, 0, 0);
+            item.motionX = 0;
+            item.motionY = 0;
+            item.motionZ = 0;
             item.hoverStart = entity.hoverStart;
             item.age = entity.age;
             item.noClip = true;
