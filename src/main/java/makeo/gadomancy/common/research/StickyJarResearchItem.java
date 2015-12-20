@@ -1,6 +1,7 @@
 package makeo.gadomancy.common.research;
 
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import net.minecraft.client.Minecraft;
@@ -24,6 +25,7 @@ public class StickyJarResearchItem extends AlternatingResearchItem {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public boolean isSpecial() {
         if(Gadomancy.proxy.getSide() == Side.CLIENT) {
             List<ItemStack> items = RegisteredItems.getStickyJarStacks(Minecraft.getMinecraft().thePlayer);
@@ -33,4 +35,5 @@ public class StickyJarResearchItem extends AlternatingResearchItem {
         }
         return super.isSpecial();
     }
+
 }
