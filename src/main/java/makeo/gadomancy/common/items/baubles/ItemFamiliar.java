@@ -127,7 +127,10 @@ public class ItemFamiliar extends Item implements IBauble {
         if(itemStack == null) return;
         if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar) {
             DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
-            familiarData.equipTick(((EntityPlayer) entity).worldObj, (EntityPlayer) entity);
+            Aspect a = getAspect(itemStack);
+            if(a != null) {
+                familiarData.equipTick(((EntityPlayer) entity).worldObj, (EntityPlayer) entity, a);
+            }
 
             if(((EntityPlayer) entity).worldObj.isRemote) return;
 
@@ -148,7 +151,10 @@ public class ItemFamiliar extends Item implements IBauble {
         if(itemStack == null) return;
         if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar) {
             DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
-            familiarData.handleEquip(((EntityPlayer) entity).worldObj, (EntityPlayer) entity);
+            Aspect a = getAspect(itemStack);
+            if(a != null) {
+                familiarData.handleEquip(((EntityPlayer) entity).worldObj, (EntityPlayer) entity, a);
+            }
         }
     }
 
@@ -157,7 +163,10 @@ public class ItemFamiliar extends Item implements IBauble {
         if(itemStack == null) return;
         if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar) {
             DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
-            familiarData.handleUnequip(((EntityPlayer) entity).worldObj, (EntityPlayer) entity);
+            Aspect a = getAspect(itemStack);
+            if(a != null) {
+                familiarData.handleUnequip(((EntityPlayer) entity).worldObj, (EntityPlayer) entity, a);
+            }
         }
     }
 

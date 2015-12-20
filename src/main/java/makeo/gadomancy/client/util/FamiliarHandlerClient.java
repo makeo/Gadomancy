@@ -3,17 +3,20 @@ package makeo.gadomancy.client.util;
 import baubles.api.BaublesApi;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.common.data.DataFamiliar;
 import makeo.gadomancy.common.items.baubles.ItemFamiliar;
 import makeo.gadomancy.common.network.packets.PacketFamiliarBolt;
 import makeo.gadomancy.common.utils.world.fake.FakeWorld;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
 import thaumcraft.client.renderers.entity.RenderWisp;
 import thaumcraft.common.entities.monster.EntityWisp;
@@ -37,15 +40,20 @@ public class FamiliarHandlerClient {
 
     private static RenderWisp fallbackRenderer;
 
-    private static Map<String, PartialEntityFamiliar> clientFamiliars = new HashMap<String, PartialEntityFamiliar>();
+    private static Map<String, ExFamiliarData> clientFamiliars = new HashMap<String, ExFamiliarData>();
 
     @SideOnly(Side.CLIENT)
     public static void processBoltPacket(PacketFamiliarBolt pkt) {
         EntityPlayer p = Minecraft.getMinecraft().theWorld.getPlayerEntityByName(pkt.owner);
         if(p == null || p.getDistanceSqToEntity(Minecraft.getMinecraft().thePlayer) > 1024) return; //32^2
-        PartialEntityFamiliar fam = clientFamiliars.get(p.getCommandSenderName());
-        if(fam == null) return;
-        FXLightningBolt bolt = new FXLightningBolt(Minecraft.getMinecraft().theWorld, (float) fam.posX, (float) fam.posY, (float) fam.posZ, pkt.targetX, pkt.targetY, pkt.targetZ, Minecraft.getMinecraft().theWorld.rand.nextLong(), 10, 4.0F, 5);
+        ExFamiliarData data = clientFamiliars.get(p.getCommandSenderName());
+        if(data == null) return;
+        PartialEntityFamiliar fam = data.familiar;
+        float y = (float) fam.posY;
+        if (!Minecraft.getMinecraft().thePlayer.getCommandSenderName().equals(pkt.owner)) {
+            y += 1.32F;
+        }
+        FXLightningBolt bolt = new FXLightningBolt(Minecraft.getMinecraft().theWorld, (float) fam.posX, y, (float) fam.posZ, pkt.targetX, pkt.targetY, pkt.targetZ, Minecraft.getMinecraft().theWorld.rand.nextLong(), 10, 4.0F, 5);
         bolt.defaultFractal();
         bolt.setType(pkt.type);
         bolt.finalizeBolt();
@@ -56,23 +64,44 @@ public class FamiliarHandlerClient {
         String ownerName = player.getCommandSenderName();
         if(!clientFamiliars.containsKey(ownerName)) return;
 
-        PartialEntityFamiliar fam = clientFamiliars.get(ownerName);
+        ExFamiliarData data = clientFamiliars.get(ownerName);
+        PartialEntityFamiliar fam = data.familiar;
 
-        ItemStack stack = BaublesApi.getBaubles(player).getStackInSlot(0);
-        if(stack == null || !(stack.getItem() instanceof ItemFamiliar)) return;
-        if(((ItemFamiliar) stack.getItem()).hasAspect(stack)) {
-            ENTITY_WISP.setType(((ItemFamiliar) stack.getItem()).getAspect(stack).getTag());
-            ENTITY_WISP.ticksExisted = fam.dummyEntity.ticksExisted;
-            GL11.glPushMatrix();
-            fallbackRenderer.doRender(ENTITY_WISP, fam.renderX, fam.renderY, fam.renderZ, 0, partialTicks);
-            GL11.glPopMatrix();
+        Aspect aspect = Aspect.getAspect(data.data.aspectTag);
+
+        ENTITY_WISP.setType(aspect.getTag());
+        ENTITY_WISP.ticksExisted = fam.dummyEntity.ticksExisted;
+        GL11.glPushMatrix();
+        if(fam.owner == null || fam.owner.get() == null) {
+            fam.owner = new WeakReference<EntityPlayer>(player);
         }
+        EntityPlayer current = Minecraft.getMinecraft().thePlayer;
+        double diffX = fam.renderX - current.posX + player.posX;
+        double diffY = fam.renderY - current.posY + player.posY + 0.5;
+        double diffZ = fam.renderZ - current.posZ + player.posZ;
+
+        String currentPl = current.getCommandSenderName();
+        String otherPl = player.getCommandSenderName();
+
+        if(!currentPl.equals(otherPl)) {
+            diffY += 1.32;
+
+            EntityLivingBase entity = Minecraft.getMinecraft().renderViewEntity;
+            diffX -= ((entity.posX - entity.lastTickPosX) * partialTicks);
+            diffY -= ((entity.posY - entity.lastTickPosY) * partialTicks);
+            diffZ -= ((entity.posZ - entity.lastTickPosZ) * partialTicks);
+        }
+
+        fallbackRenderer.doRender(ENTITY_WISP, diffX, diffY, diffZ, 0, partialTicks);
+        GL11.glPopMatrix();
     }
 
     @SideOnly(Side.CLIENT)
     public static void playerTickEvent() {
         if(Minecraft.getMinecraft().theWorld == null) return;
-        for(PartialEntityFamiliar fam : clientFamiliars.values()) fam.tick();
+        for(ExFamiliarData data : clientFamiliars.values()) {
+            data.familiar.tick();
+        }
         PartialEntityFamiliar.DUMMY_FAMILIAR.tick();
     }
 
@@ -82,15 +111,46 @@ public class FamiliarHandlerClient {
         ENTITY_WISP = new EntityWisp(new FakeWorld());
     }
 
-    public static void handleAdditions(List<String> toAdd) {
-        for(String plName : toAdd) {
-            clientFamiliars.put(plName, new PartialEntityFamiliar(Minecraft.getMinecraft().theWorld.getPlayerEntityByName(plName), plName));
+    public static void handleAdditions(List<DataFamiliar.FamiliarData> toAdd) {
+        for(DataFamiliar.FamiliarData data : toAdd) {
+            PartialEntityFamiliar familiar = new PartialEntityFamiliar(Minecraft.getMinecraft().theWorld.getPlayerEntityByName(data.owner), data.owner);
+            ExFamiliarData exData = new ExFamiliarData(data, familiar);
+            clientFamiliars.put(data.owner, exData);
         }
     }
 
-    public static void handleRemovals(List<String> toRemove) {
-        for(String plName : toRemove) {
-            clientFamiliars.remove(plName);
+    public static void handleRemovals(List<DataFamiliar.FamiliarData> toRemove) {
+        for(DataFamiliar.FamiliarData data : toRemove) {
+            clientFamiliars.remove(data.owner);
+        }
+    }
+
+    public static class ExFamiliarData {
+
+        public final DataFamiliar.FamiliarData data;
+        public final PartialEntityFamiliar familiar;
+
+        public ExFamiliarData(DataFamiliar.FamiliarData data, PartialEntityFamiliar familiar) {
+            this.data = data;
+            this.familiar = familiar;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            ExFamiliarData that = (ExFamiliarData) o;
+
+            return !(data != null ? !data.equals(that.data) : that.data != null) && !(familiar != null ? !familiar.equals(that.familiar) : that.familiar != null);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = data != null ? data.hashCode() : 0;
+            result = 31 * result + (familiar != null ? familiar.hashCode() : 0);
+            return result;
         }
     }
 
@@ -161,7 +221,7 @@ public class FamiliarHandlerClient {
             double theta = RAD_CAP * part;
             this.renderX = RADIUS * Math.cos(theta);
             this.renderZ = RADIUS * Math.sin(theta);
-            this.renderY = 0.7 + Math.sin(theta * 2) / 2D;
+            this.renderY = Math.sin(theta * 2) / 2D;
 
             this.posX = owner.get().posX + renderX;
             this.posZ = owner.get().posZ + renderZ;

@@ -29,17 +29,20 @@ public class EventHandlerNetwork {
         EntityPlayerMP p = (EntityPlayerMP) e.player;
         if(!p.playerNetServerHandler.netManager.isLocalChannel()) {
             PacketHandler.INSTANCE.sendTo(new PacketUpdateGolemTypeOrder(GolemEnumHelper.getCurrentMapping()), p);
-            ((DataFamiliar) SyncDataHolder.getDataServer("FamiliarData")).checkPlayerEquipment(p);
-            ((DataAchromatic) SyncDataHolder.getDataServer("AchromaticData")).checkPotionEffect(p);
-            SyncDataHolder.syncAllDataTo(p);
             PacketHandler.INSTANCE.sendTo(new PacketSyncConfigs(), p);
         }
+        ((DataFamiliar) SyncDataHolder.getDataServer("FamiliarData")).checkPlayerEquipment(p);
+        ((DataAchromatic) SyncDataHolder.getDataServer("AchromaticData")).checkPotionEffect(p);
+        SyncDataHolder.syncAllDataTo(p);
     }
 
     @SubscribeEvent
     public void on(PlayerEvent.PlayerLoggedOutEvent e) {
         EntityPlayer player = e.player;
-        ((DataFamiliar) SyncDataHolder.getDataServer("FamiliarData")).handleUnequip(player.worldObj, player);
+        DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
+        if(familiarData.hasFamiliar(player)) {
+            familiarData.handleUnsafeUnequip(player);
+        }
 
         TCMazeHandler.closeSession(e.player, true);
     }
