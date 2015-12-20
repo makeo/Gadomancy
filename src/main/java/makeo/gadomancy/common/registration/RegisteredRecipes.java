@@ -189,7 +189,7 @@ public class RegisteredRecipes {
         List<IRecipe> recipesUndoAuraCore = new ArrayList<IRecipe>();
 
         for(int i = 1; i < auraCoreTypes.length; i++) {
-            recipesWashAuraCore[i-1] = ThaumcraftApi.addCrucibleRecipe(Gadomancy.MODID.toUpperCase() + ".CLEAN_AURA_CORE", new ItemStack(RegisteredItems.itemAuraCore), new ItemStack(RegisteredItems.itemAuraCore, 1, i), new AspectList().add(Aspect.MAGIC, 12).add(Aspect.WATER, 18).add(Aspect.HEAL, 24)); //damn those heal potions
+            recipesWashAuraCore[i-1] = ThaumcraftApi.addCrucibleRecipe(Gadomancy.MODID.toUpperCase() + ".CLEAN_AURA_CORE", new ItemStack(RegisteredItems.itemAuraCore), new ItemStack(RegisteredItems.itemAuraCore, 1, i), new AspectList().add(Aspect.MAGIC, 12).add(Aspect.WATER, 12).add(Aspect.HEAL, 18)); //damn those heal potions
 
             if(auraCoreTypes[i].isUnused()) {
                 GameRegistry.addShapelessRecipe(new ItemStack(RegisteredItems.itemAuraCore), new ItemStack(RegisteredItems.itemAuraCore, 1, i));
@@ -203,8 +203,8 @@ public class RegisteredRecipes {
 
         ItemStack blankCore = new ItemStack(RegisteredItems.itemAuraCore);
         RegisteredItems.itemAuraCore.setCoreType(blankCore, ItemAuraCore.AuraCoreType.BLANK);
-        recipeAuraCore = ThaumcraftApi.addInfusionCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".AURA_CORE", blankCore, 10,
-                new RandomizedAspectList().setHalfCap(true).addAspectRandomBase(Aspect.AURA, 21).addAspectRandomBase(Aspect.MAGIC, 27).addAspectRandomBase(Aspect.ELDRITCH, 18).addAspectRandomBase(Aspect.VOID, 35),
+        recipeAuraCore = ThaumcraftApi.addInfusionCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".AURA_CORE", blankCore, 6,
+                new RandomizedAspectList().setHalfCap(true).addAspectRandomBase(Aspect.AURA, 9).addAspectRandomBase(Aspect.MAGIC, 19).addAspectRandomBase(Aspect.ELDRITCH, 17).addAspectRandomBase(Aspect.VOID, 34),
                 new ItemStack(ConfigItems.itemResource, 1, 15),
                 new ItemStack[] { new ItemStack(ConfigItems.itemShard, 1, 6), new ItemStack(ConfigItems.itemResource, 1, 2), new ItemStack(ConfigItems.itemResource, 1, 2),
                         new ItemStack(ConfigItems.itemShard, 1, 6), new ItemStack(ConfigItems.itemResource, 1, 2), new ItemStack(ConfigItems.itemResource, 1, 2),
@@ -224,7 +224,7 @@ public class RegisteredRecipes {
         ItemStack aerCore = new ItemStack(RegisteredItems.itemAuraCore);
         RegisteredItems.itemAuraCore.setCoreType(aerCore, ItemAuraCore.AuraCoreType.AIR);
         recipeArcanePackager = ThaumcraftApi.addArcaneCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".ARCANE_PACKAGER", new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 4),
-                new AspectList().add(Aspect.AIR, 120).add(Aspect.ORDER, 80).add(Aspect.ENTROPY, 80),
+                new AspectList().add(Aspect.AIR, 100).add(Aspect.ORDER, 60).add(Aspect.ENTROPY, 50),
                 "PSP", "GCG", "JTJ", 'P', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'S', new ItemStack(Blocks.piston), 'G', (Config.wardedStone ? new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 2) : new ItemStack(Blocks.glass) ),
                 'C', aerCore, 'J', new ItemStack(ConfigBlocks.blockJar), 'T', new ItemStack(ConfigBlocks.blockTable, 1, 15));
 

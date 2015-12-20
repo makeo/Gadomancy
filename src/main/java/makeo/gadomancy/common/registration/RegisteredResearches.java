@@ -282,7 +282,7 @@ public class RegisteredResearches {
                 new AspectList().add(Aspect.AURA, 10).add(Aspect.MIND, 8).add(Aspect.MAGIC, 4).add(Aspect.MECHANISM, 8),
                 1, 10, 2,
                 new ResourceLocation("thaumcraft", "textures/misc/r_aspects.png"))
-                .setConcealed()
+                .setConcealed().setRound()
                 .setParents(researchAuraPylon.key)
                 .setPages(new ResearchPage("gadomancy.research_page.AURA_EFFECTS.1")).registerResearchItem();
 
