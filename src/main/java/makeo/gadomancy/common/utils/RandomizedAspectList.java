@@ -33,7 +33,7 @@ public class RandomizedAspectList extends AspectList {
     }
 
     private void checkRandomization() {
-        if((System.currentTimeMillis() - lastRandomization) > 1000) {
+        if((System.currentTimeMillis() - lastRandomization) > 500) {
             super.aspects.clear();
             for(Aspect a : aspectMap.keySet()) {
                 if(a == null) continue;
