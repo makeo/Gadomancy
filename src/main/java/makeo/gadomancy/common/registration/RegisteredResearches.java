@@ -2,12 +2,10 @@ package makeo.gadomancy.common.registration;
 
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.aura.AuraResearchManager;
+import makeo.gadomancy.common.crafting.RecipeVisualStickyJar;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.items.ItemAuraCore;
-import makeo.gadomancy.common.research.AlternatingResearchItem;
-import makeo.gadomancy.common.research.MultiResearchPage;
-import makeo.gadomancy.common.research.PseudoResearchItem;
-import makeo.gadomancy.common.research.SimpleResearchItem;
+import makeo.gadomancy.common.research.*;
 import makeo.gadomancy.common.utils.NBTHelper;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import net.minecraft.item.ItemStack;
@@ -15,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
@@ -316,11 +315,13 @@ public class RegisteredResearches {
             researchBlockProtector.setParents(researchJar.key);
         }
 
-        researchStickyJar = new AlternatingResearchItem("STICKYJAR", -5, -5, 2,
-                new AspectList().add(Aspect.SLIME, 8).add(Aspect.EARTH, 8),
-                RegisteredItems.getStickyJarStacks())
+        RecipeVisualStickyJar visualRecipe = new RecipeVisualStickyJar();
+        ResearchPage page = new ResearchPage(visualRecipe);
+
+        researchStickyJar = new StickyJarResearchItem("STICKYJAR", -5, -5, 2,
+                new AspectList().add(Aspect.SLIME, 8).add(Aspect.EARTH, 8))
                 .setParents(researchJar.key).setConcealed()
-                .setPages(new ResearchPage("gadomancy.research_page.STICKYJAR.1"), new ResearchPage(RegisteredRecipes.getVisualStickyJarRecipes())).registerResearchItem();
+                .setPages(new ResearchPage("gadomancy.research_page.STICKYJAR.1"), page).registerResearchItem();
 
         String[] parents = researchEssentiaMirror == null ? new String[] { researchJar.key } : new String[] { researchJar.key, researchEssentiaMirror.key };
         researchRemoteJar = new SimpleResearchItem("REMOTEJAR", -4, -3, 3,

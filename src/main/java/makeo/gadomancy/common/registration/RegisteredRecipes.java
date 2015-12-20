@@ -322,32 +322,6 @@ public class RegisteredRecipes {
         return recipes;
     }
 
-    private static IArcaneRecipe[] stickyJarRecipes = null;
-
-    public static IArcaneRecipe[] getVisualStickyJarRecipes() {
-        if(stickyJarRecipes == null) {
-            List<ItemStack> stacks = RegisteredItems.getStickyJarStacks();
-            stickyJarRecipes = new IArcaneRecipe[stacks.size()];
-
-            ItemStack slime = new ItemStack(Items.slime_ball, 1, 0);
-            for(int i = 0; i < stacks.size(); i++) {
-                ItemStack stack = stacks.get(i);
-
-                ItemStack output = stack.copy();
-                NBTHelper.getData(output).setBoolean("isStickyJar", true);
-
-                stickyJarRecipes[i] = new ShapedArcaneRecipe(SimpleResearchItem.getFullName("STICKYJAR"), output,
-                        new AspectList().add(Aspect.WATER, 10).add(Aspect.EARTH, 10),
-                        "   ",
-                        " A ",
-                        " B ",
-                        'A', stack, 'B', slime);
-            }
-        }
-
-        return stickyJarRecipes;
-    }
-
     public static InfusionRecipe[] createFamilarRecipes() {
         List<Aspect> aspects = new ArrayList<Aspect>(Aspect.aspects.values());
         InfusionRecipe[] recipes = new InfusionRecipe[aspects.size()];

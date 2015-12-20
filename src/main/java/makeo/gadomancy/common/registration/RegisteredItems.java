@@ -6,8 +6,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.items.*;
 import makeo.gadomancy.common.items.baubles.ItemFamiliar;
+import makeo.gadomancy.common.research.SimpleResearchItem;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,6 +22,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
+import thaumcraft.common.lib.research.ResearchManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,20 +150,25 @@ public class RegisteredItems {
         registerStickyJar(ConfigItems.itemJarFilled, 3);
 
         Item itemBlockJar = Item.getItemFromBlock(ConfigBlocks.blockJar);
-        registerStickyJar(itemBlockJar, 0, new ItemStack(itemBlockJar, 1, 0));
-        registerStickyJar(itemBlockJar, 3, new ItemStack(itemBlockJar, 1, 3));
+        registerStickyJar(itemBlockJar, 0, new ItemStack(itemBlockJar, 1, 0), "JARLABEL");
+        registerStickyJar(itemBlockJar, 3, new ItemStack(itemBlockJar, 1, 3), "JARVOID");
 
         Item itemRemoteJar = Item.getItemFromBlock(RegisteredBlocks.blockRemoteJar);
-        registerStickyJar(itemRemoteJar, 0, new ItemStack(itemRemoteJar));
+        registerStickyJar(itemRemoteJar, 0, new ItemStack(itemRemoteJar), SimpleResearchItem.getFullName("REMOTEJAR"));
     }
 
     private static List<StickyJarItemInfo> stickyJarItems = new ArrayList<StickyJarItemInfo>();
 
     public static void registerStickyJar(Item item, int damage, ItemStack recipeStack) {
+        registerStickyJar(item, damage, recipeStack, null);
+    }
+
+    public static void registerStickyJar(Item item, int damage, ItemStack recipeStack, String research) {
         StickyJarItemInfo info = new StickyJarItemInfo();
         info.item = item;
         info.damage = damage;
         info.recipeStack = recipeStack;
+        info.research = research;
         stickyJarItems.add(info);
     }
 
@@ -186,9 +194,14 @@ public class RegisteredItems {
     }
 
     public static List<ItemStack> getStickyJarStacks() {
+        return getStickyJarStacks(null);
+    }
+
+    public static List<ItemStack> getStickyJarStacks(EntityPlayer player) {
         List<ItemStack> stacks = new ArrayList<ItemStack>();
         for(StickyJarItemInfo info : stickyJarItems) {
-            if(info.recipeStack != null) {
+            if(info.recipeStack != null && (player == null || info.research == null
+                    || ResearchManager.isResearchComplete(player.getCommandSenderName(), info.research))) {
                 stacks.add(info.recipeStack);
             }
         }
@@ -199,5 +212,6 @@ public class RegisteredItems {
         public Item item;
         public int damage;
         public ItemStack recipeStack;
+        public String research = null;
     }
 }
