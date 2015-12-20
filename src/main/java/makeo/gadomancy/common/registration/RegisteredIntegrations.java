@@ -2,7 +2,9 @@ package makeo.gadomancy.common.registration;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
+import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.integration.*;
+import makeo.gadomancy.common.integration.mystcraft.IntegrationMystcraft;
 import makeo.gadomancy.common.utils.Injector;
 
 /**
@@ -18,6 +20,7 @@ public class RegisteredIntegrations {
     public static IntegrationThaumicExploration thaumicExploration;
     public static IntegrationAutomagy automagy;
     public static IntegrationNEI nei;
+    public static IntegrationMystcraft mystcraft;
 
     private RegisteredIntegrations() {}
 
@@ -26,6 +29,7 @@ public class RegisteredIntegrations {
         thaumicExploration = registerIndependent(IntegrationThaumicExploration.class);
         automagy = registerIndependent(IntegrationAutomagy.class);
         nei = registerIndependent(IntegrationNEI.class);
+        mystcraft = registerIndependent(IntegrationMystcraft.class);
 
         registerDependent("ThaumicHorizons", "makeo.gadomancy.common.integration.thaumichorizions.IntegrationThaumicHorizions");
         registerDependent("Waila", "makeo.gadomancy.common.integration.waila.IntegrationWaila");
@@ -58,7 +62,7 @@ public class RegisteredIntegrations {
 
         integration.init();
         if(integration.isPresent()) {
-            FMLLog.severe("Initialized hook for mod \"" + integration.getModId() + "\"!");
+            Gadomancy.log.info("Initialized hook for mod \"" + integration.getModId() + "\"!");
         }
         return integration;
     }
