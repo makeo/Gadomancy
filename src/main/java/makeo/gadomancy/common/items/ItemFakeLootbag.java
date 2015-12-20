@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.items;
 
+import makeo.gadomancy.common.registration.RegisteredItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -35,6 +36,6 @@ public class ItemFakeLootbag extends ItemLootBag {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        return stack;
+        return RegisteredItems.itemPackage.onItemRightClick(stack, world, player);
     }
 }

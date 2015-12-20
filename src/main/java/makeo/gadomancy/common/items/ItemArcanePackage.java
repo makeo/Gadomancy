@@ -7,12 +7,15 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTSizeTracker;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,6 +30,8 @@ import java.util.List;
  * Created by makeo @ 14.11.2015 12:34
  */
 public class ItemArcanePackage extends ItemFakeLootbag {
+    private static final int MAX_PACKAGE_SIZE = 65536;
+
     public ItemArcanePackage() {
         setUnlocalizedName("ItemArcanePackage");
     }
@@ -68,7 +73,8 @@ public class ItemArcanePackage extends ItemFakeLootbag {
         NBTTagList stackList = new NBTTagList();
         for (ItemStack item : items) {
             //Prevent depth of more then 2 packages
-            if(item.getItem() == RegisteredItems.itemPackage) {
+            if(item.getItem() == RegisteredItems.itemPackage
+                    || item.getItem() == RegisteredItems.itemFakeLootbag) {
                 List<ItemStack> packedItems = getContents(item);
                 for(ItemStack packedItem : packedItems) {
                     if(packedItem.getItem() == RegisteredItems.itemPackage) {
@@ -76,25 +82,36 @@ public class ItemArcanePackage extends ItemFakeLootbag {
                     }
                 }
             }
-
-            //If the compound is too long it will not work to prevent lag
-            NBTTagCompound itemTag = item.writeToNBT(new NBTTagCompound());
-            if(itemTag.toString().length() > 8000) {
-                return false;
-            }
-            stackList.appendTag(itemTag);
+            stackList.appendTag(item.writeToNBT(new NBTTagCompound()));
         }
 
-        (stack.getItem() == this ? NBTHelper.getData(stack) : NBTHelper.getPersistentData(stack)).setTag("items", stackList);
+        NBTTagCompound compound = new NBTTagCompound();
+        compound.setTag("data", stackList);
+        try {
+            byte[] data = CompressedStreamTools.compress(compound);
+            //If the compound is too long it will not work to prevent lag
+            if(data.length > MAX_PACKAGE_SIZE) {
+                return false;
+            }
+            NBTHelper.getData(stack).setByteArray("items", data);
+        } catch (IOException e) {
+            return false;
+        }
         return true;
     }
 
     public List<ItemStack> getContents(ItemStack stack) {
         List<ItemStack> contents = new ArrayList<ItemStack>();
-        boolean isDisguised = stack.getItem() != this;
-        if (isDisguised ? NBTHelper.hasPersistentData(stack) : stack.hasTagCompound()) {
-            NBTTagList stackList = (NBTTagList) (isDisguised ? NBTHelper.getPersistentData(stack) : stack.getTagCompound()).getTag("items");
-            if (stackList != null) {
+        if (stack.hasTagCompound()) {
+            byte[] data = stack.getTagCompound().getByteArray("items");
+            if(data.length > 0) {
+                NBTTagList stackList;
+                try {
+                    stackList = (NBTTagList) CompressedStreamTools.func_152457_a(data, new NBTSizeTracker(Long.MAX_VALUE)).getTag("data");
+                } catch (Exception e) {
+                    return contents;
+                }
+
                 for (int i = 0; i < stackList.tagCount(); ++i) {
                     NBTTagCompound nbtStack = stackList.getCompoundTagAt(i);
                     contents.add(ItemStack.loadItemStackFromNBT(nbtStack));

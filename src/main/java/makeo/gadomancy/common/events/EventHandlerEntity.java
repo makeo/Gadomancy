@@ -53,17 +53,6 @@ public class EventHandlerEntity {
         }
     }*/
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void on(PlayerInteractEvent event) {
-        if(!event.world.isRemote) {
-            ItemStack stack = event.entityPlayer.getHeldItem();
-            if(stack != null && stack.getItem() == RegisteredItems.itemFakeLootbag && NBTHelper.hasPersistentData(stack)) {
-                RegisteredItems.itemPackage.onItemRightClick(stack, event.world, event.entityPlayer);
-                event.setCanceled(true);
-            }
-        }
-    }
-
     @SubscribeEvent
     public void on(LivingSpawnEvent.CheckSpawn event) {
         if(event.entityLiving.isCreatureType(EnumCreatureType.monster, false)) {
