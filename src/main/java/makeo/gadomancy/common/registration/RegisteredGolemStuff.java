@@ -6,6 +6,7 @@ import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.entities.golems.cores.BodyguardGolemCore;
 import makeo.gadomancy.common.entities.golems.cores.BreakGolemCore;
+import makeo.gadomancy.common.entities.golems.types.ObsidianGolemType;
 import makeo.gadomancy.common.entities.golems.types.SilverwoodGolemType;
 import makeo.gadomancy.common.entities.golems.upgrades.GolemUpgrade;
 import makeo.gadomancy.common.entities.golems.upgrades.GolemUpgradeRunicShield;
@@ -28,12 +29,14 @@ public class RegisteredGolemStuff {
     public static GolemUpgradeRunicShield upgradeRunicShield;
 
     public static SilverwoodGolemType typeSilverwood;
+    public static ObsidianGolemType typeObsidian;
 
     public static AdditionalGolemCore breakCore;
     public static AdditionalGolemCore bodyguardCore;
 
     public static void init() {
         typeSilverwood = registerGolemType("SILVERWOOD", new SilverwoodGolemType());
+        typeObsidian = registerGolemType("OBSIDIAN", new ObsidianGolemType());
 
         breakCore = registerGolemCore("breakCore", new BreakGolemCore());
         bodyguardCore = registerGolemCore("bodyguardCore", new BodyguardGolemCore());
