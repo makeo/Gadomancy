@@ -27,10 +27,8 @@ public class EventHandlerNetwork {
     @SubscribeEvent
     public void on(PlayerEvent.PlayerLoggedInEvent e) {
         EntityPlayerMP p = (EntityPlayerMP) e.player;
-        if(!p.playerNetServerHandler.netManager.isLocalChannel()) {
-            PacketHandler.INSTANCE.sendTo(new PacketUpdateGolemTypeOrder(GolemEnumHelper.getCurrentMapping()), p);
-            PacketHandler.INSTANCE.sendTo(new PacketSyncConfigs(), p);
-        }
+        PacketHandler.INSTANCE.sendTo(new PacketUpdateGolemTypeOrder(GolemEnumHelper.getCurrentMapping()), p);
+        PacketHandler.INSTANCE.sendTo(new PacketSyncConfigs(), p);
         ((DataFamiliar) SyncDataHolder.getDataServer("FamiliarData")).checkPlayerEquipment(p);
         ((DataAchromatic) SyncDataHolder.getDataServer("AchromaticData")).checkPotionEffect(p);
         SyncDataHolder.syncAllDataTo(p);
