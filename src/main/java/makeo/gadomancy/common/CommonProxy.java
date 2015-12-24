@@ -128,6 +128,8 @@ public class CommonProxy implements IGuiHandler {
         return null;
     }
 
+    public void runDelayedClientSide(Runnable run) { }
+
     public Side getSide() {
         return this instanceof ClientProxy ? Side.CLIENT : Side.SERVER;
     }

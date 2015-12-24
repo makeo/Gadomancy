@@ -56,6 +56,7 @@ import thaumcraft.common.tiles.TileEldritchAltar;
 import thaumcraft.common.tiles.TileEldritchCap;
 import thaumcraft.common.tiles.TileEldritchObelisk;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -163,7 +164,7 @@ public class ClientProxy extends CommonProxy {
         IResourceManager manager = Minecraft.getMinecraft().getResourceManager();
         if(manager instanceof SimpleReloadableResourceManager) {
             SimpleReloadableResourceManager rm = (SimpleReloadableResourceManager) manager;
-            rm.registerReloadListener(new ResourceReloadListener());
+            rm.registerReloadListener(ResourceReloadListener.getInstance());
         }
 
         MinecraftForge.EVENT_BUS.register(EffectHandler.getInstance());
@@ -224,5 +225,12 @@ public class ClientProxy extends CommonProxy {
             }
         }
         return null;
+    }
+
+    public final List<Runnable> clientActions = new ArrayList<Runnable>();
+
+    @Override
+    public void runDelayedClientSide(Runnable run) {
+        clientActions.add(run);
     }
 }

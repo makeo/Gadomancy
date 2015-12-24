@@ -44,6 +44,6 @@ public class SilverwoodGolemType extends AdditionalGolemType {
 
     @Override
     public ResourceLocation getInvSlotTexture() {
-        return new SimpleResourceLocation("gui/default_slot.png");
+        return new SimpleResourceLocation("gui/silverwood_slot.png");
     }
 }

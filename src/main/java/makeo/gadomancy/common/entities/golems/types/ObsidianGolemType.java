@@ -23,7 +23,7 @@ public class ObsidianGolemType extends AdditionalGolemType {
 
     @Override
     public String getUnlocalizedName() {
-        return "item.ItemGolemPlacer.obsidian.name";
+        return "item.ItemGolemPlacer.obsidian";
     }
 
     private IIcon icon;
@@ -44,6 +44,6 @@ public class ObsidianGolemType extends AdditionalGolemType {
 
     @Override
     public ResourceLocation getInvSlotTexture() {
-        return new SimpleResourceLocation("gui/default_slot.png");
+        return new SimpleResourceLocation("gui/obsidian_slot.png");
     }
 }

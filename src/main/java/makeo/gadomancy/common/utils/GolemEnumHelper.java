@@ -2,6 +2,7 @@ package makeo.gadomancy.common.utils;
 
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
+import makeo.gadomancy.client.events.ResourceReloadListener;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.entities.golems.types.RemovedGolemType;
 import net.minecraftforge.common.util.EnumHelper;
@@ -145,6 +146,9 @@ public class GolemEnumHelper {
                 }
             }
         }
+
+        new Injector(EnumGolemType.class).setField("codeToTypeMapping", null);
+        ResourceReloadListener.getInstance().reloadGolemResources();
     }
 
     private static void resetEnum() {
