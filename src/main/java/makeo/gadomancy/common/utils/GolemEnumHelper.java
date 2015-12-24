@@ -109,7 +109,7 @@ public class GolemEnumHelper {
         }
 
         int returnVal = -1;
-        int i = EnumGolemType.values().length;
+        int i = calcDefaultGolemCount();
         do {
             boolean contains = false;
             for(Map.Entry<String, Integer> entry : map.entrySet()) {
