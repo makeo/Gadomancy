@@ -10,8 +10,8 @@ import thaumcraft.api.aspects.Aspect;
  * <p/>
  * Created by makeo @ 11.12.2015 20:50
  */
-public class PotionLetsGargamelItUp extends PotionCustomTexture {
-    public PotionLetsGargamelItUp(int id) {
+public class PotionEldritch extends PotionCustomTexture {
+    public PotionEldritch(int id) {
         super(id, false, Aspect.ELDRITCH.getColor(), Aspect.ELDRITCH.getImage());
         setPotionName("potion.eldritch");
     }
