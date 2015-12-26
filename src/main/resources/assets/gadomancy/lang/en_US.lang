@@ -141,6 +141,9 @@ gadomancy.lore.hasAdditionalLore=<Press SHIFT for more information>
 gadomancy.lore.stickyjar=Sticky
 gadomancy.lore.remotejar=§7Network: %s
 
+gadomancy.lore.disguise.item=Disguised as %s
+gadomancy.lore.disguise.none=Transparent
+
 gadomancy.eldritch.portalPlacerCreative=Creative portal placer
 gadomancy.eldritch.noflyCreative=(even in creative)
 gadomancy.eldritch.nobreakPortalNothing=This portal cannot be broken

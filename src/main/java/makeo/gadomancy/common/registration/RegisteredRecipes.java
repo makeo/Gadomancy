@@ -3,6 +3,7 @@ package makeo.gadomancy.common.registration;
 import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.crafting.InfusionDisguiseArmor;
 import makeo.gadomancy.common.crafting.InfusionUpgradeRecipe;
 import makeo.gadomancy.common.crafting.RecipeStickyJar;
 import makeo.gadomancy.common.data.config.ModConfig;
@@ -229,6 +230,8 @@ public class RegisteredRecipes {
                 'C', aerCore, 'J', new ItemStack(ConfigBlocks.blockJar), 'T', new ItemStack(ConfigBlocks.blockTable, 1, 15));
 
         auraCoreRecipes = createAuraCoreRecipes();
+
+        ThaumcraftApi.getCraftingRecipes().add(new InfusionDisguiseArmor());
     }
 
     private static List[] createAuraCoreRecipes() {

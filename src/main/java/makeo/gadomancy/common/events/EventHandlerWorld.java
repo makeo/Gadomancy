@@ -12,12 +12,17 @@ import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.GolemEnumHelper;
+import makeo.gadomancy.common.utils.ItemUtils;
+import makeo.gadomancy.common.utils.NBTHelper;
 import makeo.gadomancy.common.utils.WandHandler;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -25,6 +30,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.GameRules;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -36,7 +42,9 @@ import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.tiles.TileJarFillable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,6 +56,58 @@ import java.util.Map;
  * Created by makeo @ 05.07.2015 13:20
  */
 public class EventHandlerWorld {
+    public List<EntityItem> trackedItems = new ArrayList<EntityItem>();
+
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public void on(EntityJoinWorldEvent event) {
+        if(!event.world.isRemote && event.entity instanceof EntityItem
+                && isDisguised(((EntityItem) event.entity).getEntityItem())) {
+            trackedItems.add((EntityItem) event.entity);
+        }
+    }
+
+    @SubscribeEvent
+    public void on(TickEvent.WorldTickEvent event) {
+        if(event.phase == TickEvent.Phase.START && !event.world.isRemote && event.world.getTotalWorldTime() % 20 == 0) {
+            for(int i = 0; i < trackedItems.size(); i++) {
+                EntityItem entity = trackedItems.get(i);
+                if(event.world == entity.worldObj) {
+                    if(entity.isDead || !isDisguised(entity.getEntityItem())) {
+                        trackedItems.remove(i);
+                        i--;
+                        continue;
+                    }
+
+                    int x = (int) entity.posX - 1;
+                    int y = (int) entity.posY;
+                    int z = (int) entity.posZ - 1;
+                    if(ConfigBlocks.blockFluidPure == event.world.getBlock(x, y, z)
+                            && event.world.getBlockMetadata(x, y, z) == 0) {
+                        NBTTagCompound compound = NBTHelper.getPersistentData(entity.getEntityItem());
+                        NBTBase base = compound.getTag("disguise");
+                        if(base instanceof NBTTagCompound) {
+                            ItemStack stack = ItemStack.loadItemStackFromNBT((NBTTagCompound) base);
+                            EntityItem newEntity = new EntityItem(event.world, entity.posX, entity.posY, entity.posZ, stack);
+                            ItemUtils.applyRandomDropOffset(newEntity, event.world.rand);
+                            event.world.spawnEntityInWorld(newEntity);
+                        }
+                        compound.removeTag("disguise");
+                        if(compound.hasNoTags()) {
+                            NBTHelper.removePersistentData(entity.getEntityItem());
+                            if(entity.getEntityItem().getTagCompound().hasNoTags()) {
+                                entity.getEntityItem().setTagCompound(null);
+                            }
+                        }
+                        event.world.setBlockToAir(x, y, z);
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean isDisguised(ItemStack stack) {
+        return NBTHelper.hasPersistentData(stack) && NBTHelper.getPersistentData(stack).hasKey("disguise");
+    }
 
     private int serverTick = 0;
     private Entity lastUpdated;
@@ -181,6 +241,21 @@ public class EventHandlerWorld {
         if (e.toolTip.size() > 0 && e.itemStack.hasTagCompound()) {
             if (e.itemStack.stackTagCompound.getBoolean("isStickyJar")) {
                 e.toolTip.add(1, "\u00a7a" + StatCollector.translateToLocal("gadomancy.lore.stickyjar"));
+            }
+        }
+
+        if(e.toolTip.size() > 0 && NBTHelper.hasPersistentData(e.itemStack)) {
+            NBTTagCompound compound = NBTHelper.getPersistentData(e.itemStack);
+            if(compound.hasKey("disguise")) {
+                NBTBase base = compound.getTag("disguise");
+                String lore;
+                if(base instanceof NBTTagCompound) {
+                    ItemStack stack = ItemStack.loadItemStackFromNBT((NBTTagCompound) base);
+                    lore = String.format(StatCollector.translateToLocal("gadomancy.lore.disguise.item"), EnumChatFormatting.getTextWithoutFormattingCodes(stack.getDisplayName()));
+                } else {
+                    lore = StatCollector.translateToLocal("gadomancy.lore.disguise.none");
+                }
+                e.toolTip.add("\u00a7a" + lore);
             }
         }
     }

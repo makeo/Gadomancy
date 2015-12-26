@@ -52,6 +52,18 @@ public class NBTHelper {
     }
 
 
+    public static void removePersistentData(Entity entity) {
+        removePersistentData(entity.getEntityData());
+    }
+    public static void removePersistentData(ItemStack item) {
+        if(item.hasTagCompound()) removePersistentData(item.getTagCompound());
+    }
+
+    public static void removePersistentData(NBTTagCompound base) {
+        base.removeTag(Gadomancy.MODID);
+    }
+
+
     public static NBTTagCompound getData(ItemStack stack) {
         NBTTagCompound compound = stack.getTagCompound();
         if(compound == null) {

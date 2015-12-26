@@ -24,6 +24,7 @@ public abstract class GadomancyApi {
         GadomancyApi.handler = handler;
     }
 
+    @Deprecated
     public static boolean registerAdditionalGolemType(String name, String modId, AdditionalGolemType newType){
         return handler.registerAdditionalGolemType(name, modId, newType);
     }

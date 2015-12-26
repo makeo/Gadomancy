@@ -43,7 +43,9 @@ public class ItemFakeGolemPlacer extends Item {
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
         for(EnumGolemType type : EnumGolemType.values()) {
-            list.add(new ItemStack(this, 1, type.ordinal()));
+            if(type.health > 0) {
+                list.add(new ItemStack(this, 1, type.ordinal()));
+            }
         }
     }
 

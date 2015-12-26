@@ -15,6 +15,7 @@ import makeo.gadomancy.common.entities.golems.ItemAdditionalGolemPlacer;
 import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;
 import makeo.gadomancy.common.registration.RegisteredGolemStuff;
 import makeo.gadomancy.common.registration.RegisteredPotions;
+import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.NBTHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,6 +23,8 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -200,10 +203,18 @@ public class EventHandlerGolem {
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void on(LivingHurtEvent event) {
-        if (!event.entity.worldObj.isRemote && event.entity instanceof EntityGolemBase) {
-            EntityGolemBase golem = (EntityGolemBase) event.entity;
-            if(event.ammount > 0 && RegisteredGolemStuff.upgradeRunicShield.hasUpgrade(golem)) {
-                event.ammount = RegisteredGolemStuff.upgradeRunicShield.absorb(golem, event.ammount, event.source);
+        if (!event.entity.worldObj.isRemote) {
+            if(event.entity instanceof EntityGolemBase) {
+                EntityGolemBase golem = (EntityGolemBase) event.entity;
+                if(event.ammount > 0 && RegisteredGolemStuff.upgradeRunicShield.hasUpgrade(golem)) {
+                    event.ammount = RegisteredGolemStuff.upgradeRunicShield.absorb(golem, event.ammount, event.source);
+                }
+            }
+
+            if(event.source.getEntity() != null && event.source.getEntity() instanceof EntityGolemBase
+                    && ((EntityGolemBase) event.source.getEntity()).getGolemType()
+                        == RegisteredGolemStuff.typeObsidian.getEnumEntry()) {
+                event.entityLiving.addPotionEffect(new PotionEffect(Potion.wither.getId(), 3*20, 1));
             }
         }
     }
