@@ -68,7 +68,7 @@ public class EventHandlerWorld {
 
     @SubscribeEvent
     public void on(TickEvent.WorldTickEvent event) {
-        if(event.phase == TickEvent.Phase.START && !event.world.isRemote && event.world.getTotalWorldTime() % 20 == 0) {
+        if(event.phase == TickEvent.Phase.START && !event.world.isRemote && event.world.getTotalWorldTime() % 30 == 0 && event.world.rand.nextBoolean()) {
             for(int i = 0; i < trackedItems.size(); i++) {
                 EntityItem entity = trackedItems.get(i);
                 if(event.world == entity.worldObj) {
@@ -81,7 +81,7 @@ public class EventHandlerWorld {
                     int x = (int) entity.posX - 1;
                     int y = (int) entity.posY;
                     int z = (int) entity.posZ - 1;
-                    if(ConfigBlocks.blockFluidPure == event.world.getBlock(x, y, z)
+                    if(entity.delayBeforeCanPickup <= 0 && ConfigBlocks.blockFluidPure == event.world.getBlock(x, y, z)
                             && event.world.getBlockMetadata(x, y, z) == 0) {
                         NBTTagCompound compound = NBTHelper.getPersistentData(entity.getEntityItem());
                         NBTBase base = compound.getTag("disguise");
