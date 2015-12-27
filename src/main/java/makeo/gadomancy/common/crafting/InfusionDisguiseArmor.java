@@ -14,6 +14,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.lib.crafting.InfusionRunicAugmentRecipe;
 import thaumcraft.common.lib.research.ResearchManager;
 
@@ -28,8 +29,8 @@ import java.util.*;
  * Created by makeo @ 25.12.2015 15:35
  */
 public class InfusionDisguiseArmor extends InfusionRunicAugmentRecipe {
-    private static final ItemStack[] COMPONENTS = new ItemStack[] {new ItemStack(Items.slime_ball), new ItemStack(Items.slime_ball)};
-    private static final AspectList ASPECTS = new AspectList().add(Aspect.WATER, 1);
+    public static final ItemStack[] COMPONENTS = new ItemStack[] {new ItemStack(Items.slime_ball), new ItemStack(ConfigItems.itemResource, 1, 3), new ItemStack(Items.slime_ball), new ItemStack(ConfigItems.itemResource, 1, 3)};
+    public static final AspectList ASPECTS = new AspectList().add(Aspect.SLIME, 12).add(Aspect.ARMOR, 10).add(Aspect.MAGIC, 8);
 
     private Map<ItemStack, List<ItemStack>> cachedItems = new HashMap<ItemStack, List<ItemStack>>();
 
@@ -90,17 +91,20 @@ public class InfusionDisguiseArmor extends InfusionRunicAugmentRecipe {
     public Object getRecipeOutput(ItemStack input) {
         List<ItemStack> components = cachedItems.get(input);
         if(components != null) {
-            ItemStack disguise = components.get(0);
-            ItemStack out = input.copy();
-            NBTTagCompound compound = NBTHelper.getPersistentData(out);
-            if(disguise.getItem() == Items.potionitem) {
-                compound.setBoolean("disguise", true);
-            } else {
-                compound.setTag("disguise", disguise.writeToNBT(new NBTTagCompound()));
-            }
-            return out;
+            return disguiseStack(input, components.get(0));
         }
         return input;
+    }
+
+    public static ItemStack disguiseStack(ItemStack stack, ItemStack disguise) {
+        ItemStack out = stack.copy();
+        NBTTagCompound compound = NBTHelper.getPersistentData(out);
+        if(disguise.getItem() == Items.potionitem) {
+            compound.setBoolean("disguise", true);
+        } else {
+            compound.setTag("disguise", disguise.writeToNBT(new NBTTagCompound()));
+        }
+        return out;
     }
 
     private boolean isValidDisguise(ItemStack armor, ItemStack disguise) {
