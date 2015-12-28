@@ -22,13 +22,15 @@ public class GadomancyTransformer extends AccessTransformer {
     public static final String NAME_ENCHANTMENT_HELPER = "net.minecraft.enchantment.EnchantmentHelper";
     public static final String NAME_WANDMANAGER = "thaumcraft.common.items.wands.WandManager";
     public static final String NAME_NODE_RENDERER = "thaumcraft.client.renderers.tile.TileNodeRenderer";
+    public static final String NAME_RENDER_EVENT_HANDLER = "thaumcraft.client.lib.RenderEventHandler";
 
     public GadomancyTransformer() throws IOException {}
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] bytes) {
         boolean needsTransform = name.equalsIgnoreCase(NAME_ENCHANTMENT_HELPER) ||
-                name.equalsIgnoreCase(NAME_WANDMANAGER) || name.equalsIgnoreCase(NAME_NODE_RENDERER);
+                name.equalsIgnoreCase(NAME_WANDMANAGER) || name.equalsIgnoreCase(NAME_NODE_RENDERER)
+                || name.equalsIgnoreCase(NAME_RENDER_EVENT_HANDLER);
         if(!needsTransform) return super.transform(name, transformedName, bytes);
 
         ClassNode node = new ClassNode();
@@ -79,14 +81,41 @@ public class GadomancyTransformer extends AccessTransformer {
 
                     mn.instructions.insertBefore(mn.instructions.get(0), setBefore);
 
-                    InsnList setAfter = new InsnList();
+                    AbstractInsnNode next = mn.instructions.get(0);
+                    while(next != null) {
+                        AbstractInsnNode insnNode = next;
+                        next = insnNode.getNext();
+
+                        if(insnNode.getOpcode() == Opcodes.RETURN) {
+                            InsnList setAfter = new InsnList();
+                            setAfter.add(new VarInsnNode(Opcodes.ALOAD, 1));
+                            setAfter.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "makeo/gadomancy/common/events/EventHandlerRedirect",
+                                    "postNodeRender", "(Lnet/minecraft/tileentity/TileEntity;)V", false));
+                            mn.instructions.insertBefore(insnNode, setAfter);
+                        }
+                    }
+                }
+            }
+        } else if(name.equalsIgnoreCase(NAME_RENDER_EVENT_HANDLER)) {
+            for(MethodNode mn : node.methods) {
+                if (mn.name.equals("blockHighlight")) {
+                    InsnList setBefore = new InsnList();
                     setBefore.add(new VarInsnNode(Opcodes.ALOAD, 1));
                     setBefore.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "makeo/gadomancy/common/events/EventHandlerRedirect",
-                            "postNodeRender", "(Lnet/minecraft/tileentity/TileEntity;)V", false));
+                            "preBlockHighlight", "(Lnet/minecraftforge/client/event/DrawBlockHighlightEvent;)V", false));
 
-                    for(int i = 0; i < mn.instructions.size(); i++) {
-                        AbstractInsnNode insnNode = mn.instructions.get(i);
+                    mn.instructions.insertBefore(mn.instructions.get(0), setBefore);
+
+                    AbstractInsnNode next = mn.instructions.get(0);
+                    while(next != null) {
+                        AbstractInsnNode insnNode = next;
+                        next = insnNode.getNext();
+
                         if(insnNode.getOpcode() == Opcodes.RETURN) {
+                            InsnList setAfter = new InsnList();
+                            setAfter.add(new VarInsnNode(Opcodes.ALOAD, 1));
+                            setAfter.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "makeo/gadomancy/common/events/EventHandlerRedirect",
+                                    "postBlockHighlight", "(Lnet/minecraftforge/client/event/DrawBlockHighlightEvent;)V", false));
                             mn.instructions.insertBefore(insnNode, setAfter);
                         }
                     }

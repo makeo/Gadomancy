@@ -15,19 +15,12 @@ import makeo.gadomancy.common.events.EventHandlerGolem;
 import makeo.gadomancy.common.events.EventHandlerNetwork;
 import makeo.gadomancy.common.events.EventHandlerWorld;
 import makeo.gadomancy.common.network.PacketHandler;
-import makeo.gadomancy.common.registration.ModSubstitutions;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-import makeo.gadomancy.common.registration.RegisteredEntities;
-import makeo.gadomancy.common.registration.RegisteredGolemStuff;
-import makeo.gadomancy.common.registration.RegisteredIntegrations;
-import makeo.gadomancy.common.registration.RegisteredItems;
-import makeo.gadomancy.common.registration.RegisteredPotions;
-import makeo.gadomancy.common.registration.RegisteredRecipes;
-import makeo.gadomancy.common.registration.RegisteredResearches;
+import makeo.gadomancy.common.registration.*;
 import makeo.gadomancy.common.utils.Injector;
 import makeo.gadomancy.common.utils.world.WorldProviderTCEldrich;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
@@ -77,6 +70,7 @@ public class CommonProxy implements IGuiHandler {
 
         AuraEffects.AER.getTickInterval(); //initalize AuraEffects
 
+        RegisteredEnchantments.init();
         RegisteredRecipes.init();
 
         SyncDataHolder.initialize();

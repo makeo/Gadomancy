@@ -1,14 +1,22 @@
 package makeo.gadomancy.common.events;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.common.registration.RegisteredEnchantments;
 import makeo.gadomancy.common.registration.RegisteredPotions;
+import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.common.config.ConfigItems;
 
 import java.util.List;
 
@@ -21,13 +29,48 @@ import java.util.List;
  * Created by HellFirePvP @ 15.12.2015 14:57
  */
 public class EventHandlerRedirect {
-    public static void preNodeRender(TileEntity tile) {
-        //postNodeRender(tile);
-        System.out.print("");
+    private static final ItemStack ITEM_GOGGLES = new ItemStack(ConfigItems.itemGoggles);
+
+    private static boolean hasChanged = false;
+    private static ItemStack oldItem;
+    public static void addGoggles(Entity entity) {
+        if(entity instanceof EntityPlayer && hasGoggles((EntityPlayer) entity)) {
+            ItemStack[] armorInv = ((EntityPlayer)entity).inventory.armorInventory;
+            oldItem = armorInv[3];
+            hasChanged = true;
+            armorInv[3] = ITEM_GOGGLES;
+        }
     }
 
+    public static void removeGoggles(Entity entity) {
+        if(hasChanged && entity instanceof EntityPlayer) {
+            ((EntityPlayer)entity).inventory.armorInventory[3] = oldItem;
+            oldItem = null;
+            hasChanged = false;
+        }
+    }
+
+    private static boolean hasGoggles(EntityPlayer player) {
+        ItemStack stack = player.inventory.armorItemInSlot(3);
+        return stack != null && EnchantmentHelper.getEnchantmentLevel(RegisteredEnchantments.revealer.effectId, stack) > 0;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void preNodeRender(TileEntity tile) {
+        addGoggles(Minecraft.getMinecraft().renderViewEntity);
+    }
+
+    @SideOnly(Side.CLIENT)
     public static void postNodeRender(TileEntity tile) {
-        System.out.print("");
+        removeGoggles(Minecraft.getMinecraft().renderViewEntity);
+    }
+
+    public static void preBlockHighlight(DrawBlockHighlightEvent event) {
+        addGoggles(event.player);
+    }
+
+    public static void postBlockHighlight(DrawBlockHighlightEvent event) {
+        removeGoggles(event.player);
     }
 
     public static int getAdditionalVisDiscount(EntityPlayer player, Aspect aspect, int currentTotalDiscount) {

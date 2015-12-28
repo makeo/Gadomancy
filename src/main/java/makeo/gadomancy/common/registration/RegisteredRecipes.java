@@ -20,10 +20,7 @@ import net.minecraft.item.crafting.IRecipe;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.crafting.CrucibleRecipe;
-import thaumcraft.api.crafting.IArcaneRecipe;
-import thaumcraft.api.crafting.InfusionRecipe;
-import thaumcraft.api.crafting.ShapedArcaneRecipe;
+import thaumcraft.api.crafting.*;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
@@ -83,6 +80,8 @@ public class RegisteredRecipes {
     public static IArcaneRecipe recipeAuraPylon;
     public static IArcaneRecipe recipeAuraPylonPeak;
     public static IArcaneRecipe recipeArcanePackager;
+
+    public static InfusionEnchantmentRecipe recipeRevealer;
 
     public static void init() {
         AdditionalGolemType typeSilverwood = RegisteredGolemStuff.typeSilverwood;
@@ -232,6 +231,8 @@ public class RegisteredRecipes {
         auraCoreRecipes = createAuraCoreRecipes();
 
         ThaumcraftApi.getCraftingRecipes().add(new InfusionDisguiseArmor());
+
+        recipeRevealer = ThaumcraftApi.addInfusionEnchantmentRecipe("", RegisteredEnchantments.revealer, 4, new AspectList().add(Aspect.SENSES, 16).add(Aspect.MAGIC, 8), new ItemStack[]{new ItemStack(ConfigItems.itemGoggles), new ItemStack(ConfigItems.itemResource, 1, 14), new ItemStack(ConfigItems.itemResource, 1, 14)});
     }
 
     private static List[] createAuraCoreRecipes() {

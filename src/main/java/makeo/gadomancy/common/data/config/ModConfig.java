@@ -67,11 +67,20 @@ public class ModConfig {
         renderParticleDistance = config.getInt("particleRenderDistance", "general", 100, 5, 1000, "Defines, how close a player has to be towards the particle origin to see the particles created by it.");
         enableAdditionalNodeTypes = config.getBoolean("enableAdditionalNodeTypes", "general", true, "Enables our custom node types. This might solve some compatibility issues (e.g. WitchingGadgets). You have to change this client- and server-side! Only change when you experience issues with special mods' features ONLY not working when using the mod together with Gadomancy.");
 
-        config.addCustomCategoryComment("potions", "Use the following if you have problems with conflicting potion ids. If the entry is set to '-1' it will try to automatically find a free potion id.");
+        config.addCustomCategoryComment("potions", "Use the following if you have problems with conflicting potion ids. If the entry is set to '-1' it will try to automatically find the lowest free potion id.");
+        config.addCustomCategoryComment("enchantments", "Use the following if you have problems with conflicting enchantment ids. If the entry is set to '-1' it will try to automatically find the lowest free enchantments id.");
     }
 
     public static int loadPotionId(String name) {
-        Property prop = config.get("potions", name, -1);
+        return loadId("potions", name);
+    }
+
+    public static int loadEnchantmentId(String name) {
+        return loadId("enchantments", name);
+    }
+
+    public static int loadId(String category, String name) {
+        Property prop = config.get(category, name, -1);
         prop.setLanguageKey(name);
         int result = prop.getInt(-1);
         return result < -1 ? -1 : result;
