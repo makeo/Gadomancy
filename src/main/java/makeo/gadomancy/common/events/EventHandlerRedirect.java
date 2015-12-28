@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
 import thaumcraft.api.aspects.Aspect;
 
 import java.util.List;
@@ -20,6 +21,14 @@ import java.util.List;
  * Created by HellFirePvP @ 15.12.2015 14:57
  */
 public class EventHandlerRedirect {
+    public static void preNodeRender(TileEntity tile) {
+        //postNodeRender(tile);
+        System.out.print("");
+    }
+
+    public static void postNodeRender(TileEntity tile) {
+        System.out.print("");
+    }
 
     public static int getAdditionalVisDiscount(EntityPlayer player, Aspect aspect, int currentTotalDiscount) {
         if(player.isPotionActive(RegisteredPotions.VIS_DISCOUNT)) {
