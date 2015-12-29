@@ -16,7 +16,6 @@ import makeo.gadomancy.client.renderers.block.RenderBlockStoneMachine;
 import makeo.gadomancy.client.renderers.block.RenderBlockTransparent;
 import makeo.gadomancy.client.renderers.entity.RenderAdditionalGolemBase;
 import makeo.gadomancy.client.renderers.entity.RenderEntityAuraCore;
-import makeo.gadomancy.client.renderers.entity.RenderEntityItem;
 import makeo.gadomancy.client.renderers.item.ItemCreativeNodeRenderer;
 import makeo.gadomancy.client.renderers.item.ItemExNodeRenderer;
 import makeo.gadomancy.client.renderers.item.ItemJarExtendedNodeRenderer;
@@ -34,7 +33,6 @@ import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.SimpleReloadableResourceManager;
@@ -146,7 +144,7 @@ public class ClientProxy extends CommonProxy {
         itemRenderStoneMachine.registerRenderer(2, tileBlockProtector, renderTileBlockProtector);
         itemRenderStoneMachine.registerRenderer(4, new TileArcanePackager(), renderTileArcanePackager);
 
-        MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemFamiliar, new ItemRenderFamiliar());
+        MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemFamiliar_old, new ItemRenderFamiliar());
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemCreativeNode, new ItemCreativeNodeRenderer());
 
         //Entities

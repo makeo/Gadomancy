@@ -3,7 +3,7 @@ package makeo.gadomancy.common.data;
 import baubles.api.BaublesApi;
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
 import makeo.gadomancy.common.familiar.FamiliarAIController;
-import makeo.gadomancy.common.items.baubles.ItemFamiliar;
+import makeo.gadomancy.common.items.baubles.ItemFamiliar_Old;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -88,12 +88,13 @@ public class DataFamiliar extends AbstractData {
         familiarAI.get(player).scheduleTick();
     }
 
+    //TODO adjust to new itemClass!
     public void checkPlayerEquipment(EntityPlayer p) {
         IInventory baublesInv = BaublesApi.getBaubles(p);
         if(baublesInv.getStackInSlot(0) != null) {
             ItemStack amulet = baublesInv.getStackInSlot(0);
-            if(amulet.getItem() != null && amulet.getItem() instanceof ItemFamiliar) {
-                ItemFamiliar fam = (ItemFamiliar) amulet.getItem();
+            if(amulet.getItem() != null && amulet.getItem() instanceof ItemFamiliar_Old) {
+                ItemFamiliar_Old fam = (ItemFamiliar_Old) amulet.getItem();
                 Aspect a = fam.getAspect(amulet);
                 if(a != null) {
                     handleEquip(p.worldObj, p, a);

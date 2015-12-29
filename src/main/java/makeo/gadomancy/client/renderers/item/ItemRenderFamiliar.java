@@ -1,7 +1,7 @@
 package makeo.gadomancy.client.renderers.item;
 
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
-import makeo.gadomancy.common.items.baubles.ItemFamiliar;
+import makeo.gadomancy.common.items.baubles.ItemFamiliar_Old;
 import makeo.gadomancy.common.utils.world.fake.FakeWorld;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -27,7 +27,7 @@ public class ItemRenderFamiliar implements IItemRenderer {
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return !(item == null || !(item.getItem() instanceof ItemFamiliar));
+        return !(item == null || !(item.getItem() instanceof ItemFamiliar_Old));
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ItemRenderFamiliar implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        if(item == null || !(item.getItem() instanceof ItemFamiliar)) return;
+        if(item == null || !(item.getItem() instanceof ItemFamiliar_Old)) return;
         GL11.glPushMatrix();
         if(type == ItemRenderType.EQUIPPED) {
             GL11.glTranslatef(0.5F, 0.5F, 0.7F);
@@ -56,9 +56,9 @@ public class ItemRenderFamiliar implements IItemRenderer {
         try {
             cleanActiveRenderInfo(type);
             GL11.glScalef(1.2F, 1.2F, 1.2F);
-            if(((ItemFamiliar) item.getItem()).hasAspect(item)) {
+            if(((ItemFamiliar_Old) item.getItem()).hasAspect(item)) {
                 ENTITY_WISP.ticksExisted = FamiliarHandlerClient.PartialEntityFamiliar.DUMMY_FAMILIAR.ticksExisted;
-                ENTITY_WISP.setType(((ItemFamiliar) item.getItem()).getAspect(item).getTag());
+                ENTITY_WISP.setType(((ItemFamiliar_Old) item.getItem()).getAspect(item).getTag());
                 fallbackRenderer.doRender(ENTITY_WISP, 0, 0, 0, 0, 0);
             }
         } finally {

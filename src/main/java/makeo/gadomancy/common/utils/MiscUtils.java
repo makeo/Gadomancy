@@ -28,14 +28,21 @@ public final class MiscUtils {
 
     private MiscUtils() {}
 
-    public static String getNumberSuffix(int number) {
-        int digit = number % 10;
-        switch (digit) {
-            case 1: return "st";
-            case 2: return "nd";
-            case 3: return "rd";
+    private static final int[] R_NUMBERS = {1000, 900,  500, 400,  100,  90,  50,   40,  10,   9,    5,   4,    1};
+    private static final String[] R_CHARS = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+
+    public static String toRomanNumeral(int number) {
+        if(number < 0 || number > 3999) {
+            return String.valueOf(number);
         }
-        return "th";
+        String roman = "";
+        for (int i = 0; i < R_NUMBERS.length; i++) {
+            while (number >= R_NUMBERS[i]) {
+                roman += R_CHARS[i];
+                number -= R_NUMBERS[i];
+            }
+        }
+        return roman;
     }
     
     public static int ticksForDays(int days) {

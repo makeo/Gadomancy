@@ -3,7 +3,7 @@ package makeo.gadomancy.common.registration;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import makeo.gadomancy.common.familiar.FamiliarAIController;
 import makeo.gadomancy.common.familiar.FamiliarAIProcess;
-import makeo.gadomancy.common.items.baubles.ItemFamiliar;
+import makeo.gadomancy.common.items.baubles.ItemFamiliar_Old;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketFamiliarBolt;
 import net.minecraft.entity.EntityLivingBase;
@@ -47,13 +47,13 @@ public class RegisteredFamiliarAI {
 
         @Override
         public boolean canRun(World world, double x, double y, double z, EntityPlayer parent, ItemStack itemStack) {
-            int rangeInc = ((ItemFamiliar) itemStack.getItem()).getAttackRangeIncrease(itemStack);
+            int rangeInc = ((ItemFamiliar_Old) itemStack.getItem()).getAttackRangeIncrease(itemStack);
             return getPotentialTargets(world, parent, rangeInc).size() > 0;
         }
 
         @Override
         public void tick(int ticksSoFar, World world, EntityPlayer parent, ItemStack itemStack) {
-            int rangeInc = ((ItemFamiliar) itemStack.getItem()).getAttackRangeIncrease(itemStack);
+            int rangeInc = ((ItemFamiliar_Old) itemStack.getItem()).getAttackRangeIncrease(itemStack);
 
             List<EntityLivingBase> lastTargetters = getPotentialTargets(world, parent, rangeInc);
             if(lastTargetters.size() == 0) {
@@ -66,7 +66,7 @@ public class RegisteredFamiliarAI {
                 return;
             }
 
-            mob.attackEntityFrom(DamageSource.magic, ((ItemFamiliar) itemStack.getItem()).getAttackStrength(itemStack));
+            mob.attackEntityFrom(DamageSource.magic, ((ItemFamiliar_Old) itemStack.getItem()).getAttackStrength(itemStack));
 
             world.playSoundEffect(mob.posX + 0.5, mob.posY + 0.5, mob.posZ + 0.5, "thaumcraft:zap", 0.8F, 1.0F);
 
@@ -112,7 +112,7 @@ public class RegisteredFamiliarAI {
 
         @Override
         public int getCooldownDuration(ItemStack itemStack) {
-            return 20 - ((ItemFamiliar) itemStack.getItem()).getAttackCooldownReduction(itemStack);
+            return 20 - ((ItemFamiliar_Old) itemStack.getItem()).getAttackCooldownReduction(itemStack);
         }
     };
 

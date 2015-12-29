@@ -5,6 +5,7 @@ import baubles.api.IBauble;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.data.DataFamiliar;
 import makeo.gadomancy.common.data.SyncDataHolder;
+import makeo.gadomancy.common.registration.DeprecationItemPaybacks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.NBTHelper;
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,12 +14,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.input.Keyboard;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.config.ConfigBlocks;
+import thaumcraft.common.config.ConfigItems;
+import thaumcraft.common.items.ItemEssence;
+import thaumcraft.common.items.ItemWispEssence;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,9 +37,9 @@ import java.util.List;
  *
  * Created by HellFirePvP @ 31.10.2015 11:38
  */
-public class ItemFamiliar extends Item implements IBauble {
+public class ItemFamiliar_Old extends Item implements IBauble {
 
-    public ItemFamiliar() {
+    public ItemFamiliar_Old() {
         setUnlocalizedName("ItemFamiliar");
         setMaxStackSize(1);
         setFull3D();
@@ -106,26 +114,26 @@ public class ItemFamiliar extends Item implements IBauble {
 
     public Aspect getAspect(ItemStack stack) {
         if(!hasAspect(stack)) return null;
-        if(stack == null || !(stack.getItem() instanceof ItemFamiliar)) return null;
+        if(stack == null || !(stack.getItem() instanceof ItemFamiliar_Old)) return null;
         if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey("aspect")) return null;
         return Aspect.getAspect(stack.getTagCompound().getString("aspect"));
     }
 
     public boolean hasAspect(ItemStack stack) {
-        if(stack == null || !(stack.getItem() instanceof ItemFamiliar)) return false;
+        if(stack == null || !(stack.getItem() instanceof ItemFamiliar_Old)) return false;
         if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey("aspect")) return false;
         return Aspect.getAspect(stack.getTagCompound().getString("aspect")) != null;
     }
 
     public void setAspect(ItemStack stack, Aspect aspect) {
-        if(stack == null || !(stack.getItem() instanceof ItemFamiliar)) return;
+        if(stack == null || !(stack.getItem() instanceof ItemFamiliar_Old)) return;
         NBTHelper.getData(stack).setString("aspect", aspect.getTag());
     }
 
     @Override
     public void onWornTick(ItemStack itemStack, EntityLivingBase entity) {
         if(itemStack == null) return;
-        if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar) {
+        if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar_Old) {
             DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
             Aspect a = getAspect(itemStack);
             if(a != null) {
@@ -149,7 +157,7 @@ public class ItemFamiliar extends Item implements IBauble {
     @Override
     public void onEquipped(ItemStack itemStack, EntityLivingBase entity) {
         if(itemStack == null) return;
-        if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar) {
+        if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar_Old) {
             DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
             Aspect a = getAspect(itemStack);
             if(a != null) {
@@ -161,7 +169,7 @@ public class ItemFamiliar extends Item implements IBauble {
     @Override
     public void onUnequipped(ItemStack itemStack, EntityLivingBase entity) {
         if(itemStack == null) return;
-        if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar) {
+        if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar_Old) {
             DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
             Aspect a = getAspect(itemStack);
             if(a != null) {
@@ -183,7 +191,7 @@ public class ItemFamiliar extends Item implements IBauble {
     //Infusion stuff.
 
     public int getAttackRangeIncrease(ItemStack itemStack) {
-        if(!(itemStack.getItem() instanceof ItemFamiliar)) return 0;
+        if(!(itemStack.getItem() instanceof ItemFamiliar_Old)) return 0;
 
         int range = 0;
 
@@ -194,12 +202,12 @@ public class ItemFamiliar extends Item implements IBauble {
     }
 
     public int getAttackCooldownReduction(ItemStack itemStack) {
-        if(!(itemStack.getItem() instanceof ItemFamiliar)) return 0;
+        if(!(itemStack.getItem() instanceof ItemFamiliar_Old)) return 0;
         return hasUpgrade(itemStack, FamiliarUpgrade.COOLDOWN_1) ? 10 : 0;
     }
 
     public float getAttackStrength(ItemStack itemStack) {
-        if(!(itemStack.getItem() instanceof ItemFamiliar)) return 0F;
+        if(!(itemStack.getItem() instanceof ItemFamiliar_Old)) return 0F;
 
         float attack = 1F;
 
@@ -216,15 +224,44 @@ public class ItemFamiliar extends Item implements IBauble {
     }
 
     public boolean hasUpgrade(ItemStack stack, FamiliarUpgrade upgrade) {
-        if(stack == null || !(stack.getItem() instanceof ItemFamiliar)) return false;
+        if(stack == null || !(stack.getItem() instanceof ItemFamiliar_Old)) return false;
         if(upgrade == null) return true;
         if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey(upgrade.getTag())) return false;
         return stack.getTagCompound().getBoolean(upgrade.getTag());
     }
 
     public void addUpgrade(ItemStack stack, FamiliarUpgrade upgrade) {
-        if(stack == null || !(stack.getItem() instanceof ItemFamiliar)) return;
+        if(stack == null || !(stack.getItem() instanceof ItemFamiliar_Old)) return;
         NBTHelper.getData(stack).setBoolean(upgrade.getTag(), true);
+    }
+
+    public static ItemStack getPaybackPackage(ItemStack oldFamiliarStack) {
+        if(oldFamiliarStack == null || !(oldFamiliarStack.getItem() instanceof ItemFamiliar_Old)) return null;
+        ItemStack arcPackage = new ItemStack(RegisteredItems.itemPackage, 1, 2);
+        List<ItemStack> contents = new ArrayList<ItemStack>();
+        arcPackage.setStackDisplayName(EnumChatFormatting.GOLD + "Used Familiar Items");
+
+        DeprecationItemPaybacks.addFamiliarCraftingPaybackStack(contents, oldFamiliarStack);
+
+        if(RegisteredItems.itemFamiliar_old.hasUpgrade(oldFamiliarStack, FamiliarUpgrade.ATTACK_1)) {
+            DeprecationItemPaybacks.addFamiliarAttack1Payback(contents, oldFamiliarStack);
+        }
+        if(RegisteredItems.itemFamiliar_old.hasUpgrade(oldFamiliarStack, FamiliarUpgrade.ATTACK_2)) {
+            DeprecationItemPaybacks.addFamiliarAttack2Payback(contents, oldFamiliarStack);
+        }
+        if(RegisteredItems.itemFamiliar_old.hasUpgrade(oldFamiliarStack, FamiliarUpgrade.ATTACK_3)) {
+            DeprecationItemPaybacks.addFamiliarAttack3Payback(contents, oldFamiliarStack);
+        }
+        if(RegisteredItems.itemFamiliar_old.hasUpgrade(oldFamiliarStack, FamiliarUpgrade.COOLDOWN_1)) {
+            DeprecationItemPaybacks.addFamiliarCooldownPayback(contents, oldFamiliarStack);
+        }
+        if(RegisteredItems.itemFamiliar_old.hasUpgrade(oldFamiliarStack, FamiliarUpgrade.RANGE_1)) {
+            DeprecationItemPaybacks.addFamiliarRangePayback(contents, oldFamiliarStack);
+        }
+
+        RegisteredItems.itemPackage.setContents(arcPackage, contents);
+
+        return arcPackage;
     }
 
     public static enum FamiliarUpgrade {

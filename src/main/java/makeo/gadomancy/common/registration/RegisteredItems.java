@@ -5,7 +5,8 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.items.*;
-import makeo.gadomancy.common.items.baubles.ItemFamiliar;
+import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
+import makeo.gadomancy.common.items.baubles.ItemFamiliar_Old;
 import makeo.gadomancy.common.research.SimpleResearchItem;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.creativetab.CreativeTabs;
@@ -49,7 +50,8 @@ public class RegisteredItems {
     public static ItemTransformationFocus itemTransformationFocus;
     public static ItemGolemCoreBreak itemGolemCoreBreak;
     public static ItemExtendedNodeJar itemExtendedNodeJar;
-    public static ItemFamiliar itemFamiliar;
+    public static ItemFamiliar_Old itemFamiliar_old;
+    //public static ItemEtherealFamiliar itemEtherealFamiliar;
     public static ItemCreativeNode itemCreativeNode;
     public static ItemArcanePackage itemPackage;
     public static ItemFakeLootbag itemFakeLootbag;
@@ -78,7 +80,8 @@ public class RegisteredItems {
     private static void registerItems() {
         itemTransformationFocus = registerItem(new ItemTransformationFocus());
         itemGolemCoreBreak = registerItem(new ItemGolemCoreBreak());
-        itemFamiliar = registerItem(new ItemFamiliar());
+        itemFamiliar_old = registerItem(new ItemFamiliar_Old(), "ItemFamiliar");
+        //itemEtherealFamiliar = registerItem(new ItemEtherealFamiliar());
         itemAuraCore = registerItem(new ItemAuraCore());
 
         itemCreativeNode = registerItem(new ItemCreativeNode());

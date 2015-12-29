@@ -17,18 +17,18 @@ public abstract class AbstractData {
 
     private byte providerId;
 
-    public void markDirty() {
+    public final void markDirty() {
         AbstractDataProvider<? extends AbstractData> provider = Registry.getProvider(getProviderID());
         if(provider != null) {
             SyncDataHolder.markForUpdate(provider.getKey());
         }
     }
 
-    public void setProviderId(byte id) {
+    public final void setProviderId(byte id) {
         this.providerId = id;
     }
 
-    public byte getProviderID() {
+    public final byte getProviderID() {
         return providerId;
     }
 
@@ -67,11 +67,11 @@ public abstract class AbstractData {
 
         public abstract T provideNewInstance();
 
-        public String getKey() {
+        public final String getKey() {
             return key;
         }
 
-        public byte getProviderId() {
+        public final byte getProviderId() {
             return providerId;
         }
 
@@ -79,9 +79,10 @@ public abstract class AbstractData {
 
     public abstract static class ProviderAutoAllocate<T extends AbstractData> extends AbstractDataProvider<T> {
 
-        protected ProviderAutoAllocate(String key) {
+        public ProviderAutoAllocate(String key) {
             super(key, SyncDataHolder.allocateNewId());
         }
+
     }
 
 }

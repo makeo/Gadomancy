@@ -13,7 +13,6 @@ import net.minecraft.util.ResourceLocation;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
@@ -182,7 +181,7 @@ public class RegisteredResearches {
         ResearchItem nitorResearch = PseudoResearchItem.create("NITOR", 2, -4).registerResearchItem();
         ResearchItem runicResearch = PseudoResearchItem.create("RUNICARMOR", 4, -4).registerResearchItem();
 
-        ItemStack familiarResearchStack = new ItemStack(RegisteredItems.itemFamiliar, 1, 0);
+        ItemStack familiarResearchStack = new ItemStack(RegisteredItems.itemFamiliar_old, 1, 0);
         NBTHelper.getData(familiarResearchStack).setString("aspect", Aspect.MAGIC.getTag());
 
         researchFamiliarBasic = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".FAMILIAR", Gadomancy.MODID,

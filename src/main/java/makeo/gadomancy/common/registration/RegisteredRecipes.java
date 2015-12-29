@@ -8,9 +8,9 @@ import makeo.gadomancy.common.crafting.InfusionUpgradeRecipe;
 import makeo.gadomancy.common.crafting.RecipeStickyJar;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.items.ItemAuraCore;
-import makeo.gadomancy.common.items.baubles.ItemFamiliar;
+import makeo.gadomancy.common.items.baubles.ItemFamiliar_Old;
 import makeo.gadomancy.common.research.SimpleResearchItem;
-import makeo.gadomancy.common.utils.NBTHelper;
+import makeo.gadomancy.common.utils.FamiliarUndoRecipe;
 import makeo.gadomancy.common.utils.RandomizedAspectList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -233,6 +233,8 @@ public class RegisteredRecipes {
         ThaumcraftApi.getCraftingRecipes().add(new InfusionDisguiseArmor());
 
         recipeRevealer = ThaumcraftApi.addInfusionEnchantmentRecipe("", RegisteredEnchantments.revealer, 4, new AspectList().add(Aspect.SENSES, 16).add(Aspect.MAGIC, 8), new ItemStack[]{new ItemStack(ConfigItems.itemGoggles), new ItemStack(ConfigItems.itemResource, 1, 14), new ItemStack(ConfigItems.itemResource, 1, 14)});
+
+        //CraftingManager.getInstance().getRecipeList().add(new FamiliarUndoRecipe());
     }
 
     private static List[] createAuraCoreRecipes() {
@@ -268,7 +270,7 @@ public class RegisteredRecipes {
     private static InfusionRecipe[][] createFamiliarAugmentationRecipes() {
         InfusionRecipe[][] recipes = new InfusionRecipe[5][];
         ItemWispEssence wispEssence = (ItemWispEssence) ConfigItems.itemWispEssence;
-        ItemFamiliar familiar = RegisteredItems.itemFamiliar;
+        ItemFamiliar_Old familiar = RegisteredItems.itemFamiliar_old;
 
         List<Aspect> aspects = new ArrayList<Aspect>(Aspect.aspects.values());
         InfusionRecipe[] upgradeArrayStr1 = new InfusionRecipe[aspects.size()];
@@ -282,47 +284,47 @@ public class RegisteredRecipes {
             ItemStack wispyEssence = new ItemStack(wispEssence, 1, 0);
             wispEssence.setAspects(wispyEssence, new AspectList().add(aspect, 2));
 
-            ItemStack familiarIn = new ItemStack(RegisteredItems.itemFamiliar);
+            ItemStack familiarIn = new ItemStack(RegisteredItems.itemFamiliar_old);
             familiar.setAspect(familiarIn, aspect);
 
-            FamiliarAugmentInfusion infusion = new FamiliarAugmentInfusion(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_1", 4, new AspectList().add(Aspect.AURA, 37).add(Aspect.MAGIC, 53).add(aspect, 35), familiarIn, ItemFamiliar.FamiliarUpgrade.ATTACK_1,
+            FamiliarAugmentInfusion infusion = new FamiliarAugmentInfusion(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_1", 4, new AspectList().add(Aspect.AURA, 37).add(Aspect.MAGIC, 53).add(aspect, 35), familiarIn, ItemFamiliar_Old.FamiliarUpgrade.ATTACK_1,
                     new ItemStack[]{ wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 6), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 4), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 6), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 4)});
             ThaumcraftApi.getCraftingRecipes().add(infusion);
             upgradeArrayStr1[i] = infusion;
 
-            familiarIn = new ItemStack(RegisteredItems.itemFamiliar);
+            familiarIn = new ItemStack(RegisteredItems.itemFamiliar_old);
             familiar.setAspect(familiarIn, aspect);
-            familiar.addUpgrade(familiarIn, ItemFamiliar.FamiliarUpgrade.ATTACK_1);
+            familiar.addUpgrade(familiarIn, ItemFamiliar_Old.FamiliarUpgrade.ATTACK_1);
 
-            infusion = new FamiliarAugmentInfusion(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_2", 6, new AspectList().add(Aspect.AURA, 43).add(Aspect.MAGIC, 71).add(Aspect.ELDRITCH, 37).add(aspect, 59), familiarIn, ItemFamiliar.FamiliarUpgrade.ATTACK_2,
+            infusion = new FamiliarAugmentInfusion(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_2", 6, new AspectList().add(Aspect.AURA, 43).add(Aspect.MAGIC, 71).add(Aspect.ELDRITCH, 37).add(aspect, 59), familiarIn, ItemFamiliar_Old.FamiliarUpgrade.ATTACK_2,
                     new ItemStack[] { wispyEssence, new ItemStack(ConfigBlocks.blockCrystal, 1, 6), new ItemStack(ConfigItems.itemResource, 1, 15), wispyEssence, new ItemStack(ConfigBlocks.blockCrystal, 1, 6), new ItemStack(ConfigItems.itemResource, 1, 17), wispyEssence, new ItemStack(ConfigBlocks.blockCrystal, 1, 6), new ItemStack(ConfigItems.itemResource, 1, 15), wispyEssence, new ItemStack(ConfigBlocks.blockCrystal, 1, 6), new ItemStack(ConfigItems.itemResource, 1, 17)});
             ThaumcraftApi.getCraftingRecipes().add(infusion);
             upgradeArrayStr2[i] = infusion;
 
 
-            familiarIn = new ItemStack(RegisteredItems.itemFamiliar);
+            familiarIn = new ItemStack(RegisteredItems.itemFamiliar_old);
             familiar.setAspect(familiarIn, aspect);
-            familiar.addUpgrade(familiarIn, ItemFamiliar.FamiliarUpgrade.ATTACK_1);
-            familiar.addUpgrade(familiarIn, ItemFamiliar.FamiliarUpgrade.ATTACK_2);
+            familiar.addUpgrade(familiarIn, ItemFamiliar_Old.FamiliarUpgrade.ATTACK_1);
+            familiar.addUpgrade(familiarIn, ItemFamiliar_Old.FamiliarUpgrade.ATTACK_2);
 
-            infusion = new FamiliarAugmentInfusion(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_3", 10, new AspectList().add(Aspect.AURA, 77).add(Aspect.MAGIC, 93).add(Aspect.WEAPON, 49).add(aspect, 104), familiarIn, ItemFamiliar.FamiliarUpgrade.ATTACK_3,
+            infusion = new FamiliarAugmentInfusion(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_3", 10, new AspectList().add(Aspect.AURA, 77).add(Aspect.MAGIC, 93).add(Aspect.WEAPON, 49).add(aspect, 104), familiarIn, ItemFamiliar_Old.FamiliarUpgrade.ATTACK_3,
                     new ItemStack[] { new ItemStack(ConfigItems.itemEldritchObject, 1, 3), wispyEssence, new ItemStack(ConfigBlocks.blockCustomPlant, 1, 4), wispyEssence, new ItemStack(Items.nether_star, 1, 0), wispyEssence, new ItemStack(ConfigBlocks.blockCustomPlant, 1, 4), wispyEssence });
             ThaumcraftApi.getCraftingRecipes().add(infusion);
             upgradeArrayStr3[i] = infusion;
 
-            familiarIn = new ItemStack(RegisteredItems.itemFamiliar);
+            familiarIn = new ItemStack(RegisteredItems.itemFamiliar_old);
             familiar.setAspect(familiarIn, aspect);
 
-            infusion = new FamiliarAugmentInfusion(Gadomancy.MODID.toUpperCase() + ".FAM_RANGE_1", 8, new AspectList().add(Aspect.AURA, 44).add(Aspect.MAGIC, 51).add(aspect, 37), familiarIn, ItemFamiliar.FamiliarUpgrade.RANGE_1,
+            infusion = new FamiliarAugmentInfusion(Gadomancy.MODID.toUpperCase() + ".FAM_RANGE_1", 8, new AspectList().add(Aspect.AURA, 44).add(Aspect.MAGIC, 51).add(aspect, 37), familiarIn, ItemFamiliar_Old.FamiliarUpgrade.RANGE_1,
                     new ItemStack[] { new ItemStack(ConfigItems.itemResource, 1, 0), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 17), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 0), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 17), wispyEssence });
             ThaumcraftApi.getCraftingRecipes().add(infusion);
             upgradeArrayRange1[i] = infusion;
 
 
-            familiarIn = new ItemStack(RegisteredItems.itemFamiliar);
+            familiarIn = new ItemStack(RegisteredItems.itemFamiliar_old);
             familiar.setAspect(familiarIn, aspect);
 
-            infusion = new FamiliarAugmentInfusion(Gadomancy.MODID.toUpperCase() + ".FAM_COOLDOWN_1", 10, new AspectList().add(Aspect.AURA, 79).add(Aspect.MAGIC, 101).add(Aspect.EXCHANGE, 54).add(aspect, 81), familiarIn, ItemFamiliar.FamiliarUpgrade.COOLDOWN_1,
+            infusion = new FamiliarAugmentInfusion(Gadomancy.MODID.toUpperCase() + ".FAM_COOLDOWN_1", 10, new AspectList().add(Aspect.AURA, 79).add(Aspect.MAGIC, 101).add(Aspect.EXCHANGE, 54).add(aspect, 81), familiarIn, ItemFamiliar_Old.FamiliarUpgrade.COOLDOWN_1,
                     new ItemStack[] { new ItemStack(ConfigItems.itemEldritchObject, 1, 3), new ItemStack(ConfigItems.itemFocusPrimal, 1, 0), wispyEssence, new ItemStack(ConfigItems.itemBathSalts, 1, 0), new ItemStack(ConfigItems.itemFocusPrimal, 1, 0), wispyEssence, new ItemStack(ConfigItems.itemBathSalts, 1, 0) });
             ThaumcraftApi.getCraftingRecipes().add(infusion);
             upgradeArrayCd1[i] = infusion;
@@ -340,7 +342,6 @@ public class RegisteredRecipes {
     public static InfusionRecipe[] createFamilarRecipes() {
         List<Aspect> aspects = new ArrayList<Aspect>(Aspect.aspects.values());
         InfusionRecipe[] recipes = new InfusionRecipe[aspects.size()];
-        ItemFamiliar familiar = (ItemFamiliar) RegisteredItems.itemFamiliar;
 
         ItemWispEssence itemEssence = (ItemWispEssence) ConfigItems.itemWispEssence;
         for (int i = 0; i < aspects.size(); i++) {
@@ -349,8 +350,8 @@ public class RegisteredRecipes {
             ItemStack wispyEssence = new ItemStack(itemEssence, 1, 0);
             itemEssence.setAspects(wispyEssence, new AspectList().add(aspect, 2));
 
-            ItemStack result = new ItemStack(RegisteredItems.itemFamiliar);
-            familiar.setAspect(result, aspect);
+            ItemStack result = new ItemStack(RegisteredItems.itemFamiliar_old);
+            RegisteredItems.itemFamiliar_old.setAspect(result, aspect);
 
             recipes[i] = ThaumcraftApi.addInfusionCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".FAMILIAR", result, 4, new AspectList().add(aspect, 46).add(Aspect.AURA, 34).add(Aspect.MAGIC, 51), new ItemStack(ConfigItems.itemAmuletRunic, 1, 0), new ItemStack[] { wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 15), new ItemStack(ConfigBlocks.blockCrystal, 1, 6) , wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 14), new ItemStack(ConfigItems.itemResource, 1, 1), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 15), new ItemStack(ConfigBlocks.blockCrystal, 1, 6), wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 14), new ItemStack(ConfigItems.itemResource, 1, 1) });
         }

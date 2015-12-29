@@ -56,8 +56,9 @@ public class TileAdditionalEldritchPortal extends TileEldritchPortal {
                 if(toTeleport.dimension != ModConfig.dimOuterId) {
                     //Teleporting there.
 
-                    startTracking(toTeleport, new ExtendedChunkCoordinates(new ChunkCoordinates(xCoord, yCoord, zCoord), toTeleport.dimension));
-                    TCMazeHandler.createSessionWaitForTeleport(toTeleport);
+                    if(TCMazeHandler.createSessionWaitForTeleport(toTeleport)) {
+                        startTracking(toTeleport, new ExtendedChunkCoordinates(new ChunkCoordinates(xCoord, yCoord, zCoord), toTeleport.dimension));
+                    }
                 } else {
                     //Teleporting back.
 
