@@ -1,4 +1,4 @@
-package makeo.gadomancy.common.utils;
+package makeo.gadomancy.common.crafting;
 
 import makeo.gadomancy.common.items.baubles.ItemFamiliar_Old;
 import makeo.gadomancy.common.registration.RegisteredItems;

@@ -12,13 +12,13 @@ import net.minecraft.world.World;
  *
  * Created by HellFirePvP @ 31.10.2015 14:05
  */
-public abstract class FamiliarAIProcess {
+public abstract class FamiliarAIProcess_Old {
 
     private static int sessionProcessIdCounter = 0;
     private int id;
     private int duration;
 
-    public FamiliarAIProcess(int durationTicks) {
+    public FamiliarAIProcess_Old(int durationTicks) {
         this.duration = durationTicks;
         this.id = sessionProcessIdCounter++;
     }
@@ -41,7 +41,7 @@ public abstract class FamiliarAIProcess {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FamiliarAIProcess that = (FamiliarAIProcess) o;
+        FamiliarAIProcess_Old that = (FamiliarAIProcess_Old) o;
         return id == that.id;
 
     }

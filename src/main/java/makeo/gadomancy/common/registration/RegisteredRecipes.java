@@ -10,7 +10,6 @@ import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.items.ItemAuraCore;
 import makeo.gadomancy.common.items.baubles.ItemFamiliar_Old;
 import makeo.gadomancy.common.research.SimpleResearchItem;
-import makeo.gadomancy.common.utils.FamiliarUndoRecipe;
 import makeo.gadomancy.common.utils.RandomizedAspectList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

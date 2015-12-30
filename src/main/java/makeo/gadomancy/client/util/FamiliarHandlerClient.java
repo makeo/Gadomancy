@@ -46,10 +46,10 @@ public class FamiliarHandlerClient {
         ExFamiliarData data = clientFamiliars.get(p.getCommandSenderName());
         if(data == null) return;
         PartialEntityFamiliar fam = data.familiar;
-        float y = (float) fam.posY;
-        if (!Minecraft.getMinecraft().thePlayer.getCommandSenderName().equals(pkt.owner)) {
+        float y = (float) (fam.posY + 1.32F);
+        /*if (!Minecraft.getMinecraft().thePlayer.getCommandSenderName().equals(pkt.owner)) {
             y += 1.32F;
-        }
+        }*/
         FXLightningBolt bolt = new FXLightningBolt(Minecraft.getMinecraft().theWorld, (float) fam.posX, y, (float) fam.posZ, pkt.targetX, pkt.targetY, pkt.targetZ, Minecraft.getMinecraft().theWorld.rand.nextLong(), 10, 4.0F, 5);
         bolt.defaultFractal();
         bolt.setType(pkt.type);

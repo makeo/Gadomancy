@@ -2,7 +2,9 @@ package makeo.gadomancy.common.data;
 
 import baubles.api.BaublesApi;
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
-import makeo.gadomancy.common.familiar.FamiliarAIController;
+import makeo.gadomancy.common.familiar.FamiliarAIController_Old;
+import makeo.gadomancy.common.familiar.FamiliarController;
+import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
 import makeo.gadomancy.common.items.baubles.ItemFamiliar_Old;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -28,7 +30,8 @@ import java.util.Map;
 public class DataFamiliar extends AbstractData {
 
     private List<FamiliarData> playersWithFamiliar = new ArrayList<FamiliarData>();
-    private Map<EntityPlayer, FamiliarAIController> familiarAI = new HashMap<EntityPlayer, FamiliarAIController>();
+    private Map<EntityPlayer, FamiliarAIController_Old> familiarAI = new HashMap<EntityPlayer, FamiliarAIController_Old>();
+    //private Map<EntityPlayer, FamiliarController> familiarControllers = new HashMap<EntityPlayer, FamiliarController>();
 
     private List<FamiliarData> addClientQueue = new ArrayList<FamiliarData>();
     private List<FamiliarData> removeClientQueue = new ArrayList<FamiliarData>();
@@ -51,10 +54,14 @@ public class DataFamiliar extends AbstractData {
         markDirty();
 
         if(!familiarAI.containsKey(player)) {
-            FamiliarAIController controller = new FamiliarAIController(player);
+            FamiliarAIController_Old controller = new FamiliarAIController_Old(player);
             controller.registerDefaultTasks();
             familiarAI.put(player, controller);
         }
+        /*if(!familiarControllers.containsKey(player)) {
+            FamiliarController controller = new FamiliarController(player);
+            familiarControllers.put(player, controller);
+        }*/
     }
 
     public void handleUnequip(World world, EntityPlayer player, Aspect aspect) {
@@ -96,6 +103,12 @@ public class DataFamiliar extends AbstractData {
             if(amulet.getItem() != null && amulet.getItem() instanceof ItemFamiliar_Old) {
                 ItemFamiliar_Old fam = (ItemFamiliar_Old) amulet.getItem();
                 Aspect a = fam.getAspect(amulet);
+                if(a != null) {
+                    handleEquip(p.worldObj, p, a);
+                }
+            }
+            if(amulet.getItem() != null && amulet.getItem() instanceof ItemEtherealFamiliar) {
+                Aspect a = ItemEtherealFamiliar.getFamiliarAspect(amulet);
                 if(a != null) {
                     handleEquip(p.worldObj, p, a);
                 }

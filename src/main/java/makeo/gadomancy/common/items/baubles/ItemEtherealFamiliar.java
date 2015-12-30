@@ -5,6 +5,7 @@ import baubles.api.IBauble;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.data.DataFamiliar;
 import makeo.gadomancy.common.data.SyncDataHolder;
+import makeo.gadomancy.common.familiar.FamiliarAugment;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.NBTHelper;
@@ -48,6 +49,30 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
     public void getSubItems(Item item, CreativeTabs tab, List list) {
         ItemStack stack = new ItemStack(item);
         setFamiliarAspect(stack, Aspect.MAGIC);
+        list.add(stack);
+
+        stack = new ItemStack(item);
+        setFamiliarAspect(stack, Aspect.FIRE);
+        addAugmentUnsafe(stack, FamiliarAugment.FIRE, 3);
+        addAugmentUnsafe(stack, FamiliarAugment.DAMAGE_INCREASE, 3);
+        list.add(stack);
+
+        stack = new ItemStack(item);
+        setFamiliarAspect(stack, Aspect.WEATHER);
+        addAugmentUnsafe(stack, FamiliarAugment.SHOCK, 3);
+        addAugmentUnsafe(stack, FamiliarAugment.ATTACK_SPEED, 2);
+        list.add(stack);
+
+        stack = new ItemStack(item);
+        setFamiliarAspect(stack, Aspect.POISON);
+        addAugmentUnsafe(stack, FamiliarAugment.POISON, 3);
+        addAugmentUnsafe(stack, FamiliarAugment.ATTACK_SPEED, 2);
+        list.add(stack);
+
+        stack = new ItemStack(item);
+        setFamiliarAspect(stack, Aspect.WEAPON);
+        addAugmentUnsafe(stack, FamiliarAugment.WEAKNESS, 3);
+        addAugmentUnsafe(stack, FamiliarAugment.DAMAGE_INCREASE, 3);
         list.add(stack);
     }
 
@@ -106,12 +131,12 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
         return false;
     }
 
-    public static List<FamiliarAugment.FamiliarAugmentPair> getAugments(ItemStack stack) {
-        if(stack == null || !(stack.getItem() instanceof ItemEtherealFamiliar)) return new ArrayList<FamiliarAugment.FamiliarAugmentPair>();
+    public static FamiliarAugment.FamiliarAugmentList getAugments(ItemStack stack) {
+        if(stack == null || !(stack.getItem() instanceof ItemEtherealFamiliar)) return new FamiliarAugment.FamiliarAugmentList();
         NBTTagCompound augmentTag = NBTHelper.getData(stack).getCompoundTag("augments");
         Set<String> strKeySet = augmentTag.func_150296_c();
-        if(strKeySet == null || strKeySet.size() <= 0) return new ArrayList<FamiliarAugment.FamiliarAugmentPair>();
-        List<FamiliarAugment.FamiliarAugmentPair> augmentList = new ArrayList<FamiliarAugment.FamiliarAugmentPair>();
+        if(strKeySet == null || strKeySet.size() <= 0) return new FamiliarAugment.FamiliarAugmentList();
+        FamiliarAugment.FamiliarAugmentList augmentList = new FamiliarAugment.FamiliarAugmentList();
         for(String key : strKeySet) {
             FamiliarAugment augment = FamiliarAugment.getByUnlocalizedName(key);
             int level = augmentTag.getInteger(key);
@@ -122,7 +147,7 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
 
     public static boolean doesAcceptAugment(ItemStack stack, FamiliarAugment augment, int level) {
         if(stack == null || !(stack.getItem() instanceof ItemEtherealFamiliar)) return false;
-        List<FamiliarAugment.FamiliarAugmentPair> currentAugments = getAugments(stack);
+        FamiliarAugment.FamiliarAugmentList currentAugments = getAugments(stack);
         for(FamiliarAugment.FamiliarAugmentPair pair : currentAugments) {
             if(pair.augment.equals(augment)) return false;
         }
@@ -146,8 +171,15 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
     }
 
     @Override
-    public void onWornTick(ItemStack itemStack, EntityLivingBase entityLivingBase) {
-        //TODO get and tick AI controlling
+    public void onWornTick(ItemStack itemStack, EntityLivingBase entity) {
+        if(itemStack == null) return;
+        if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemEtherealFamiliar) {
+            DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
+            Aspect a = getFamiliarAspect(itemStack);
+            if (a != null) {
+                familiarData.equipTick(((EntityPlayer) entity).worldObj, (EntityPlayer) entity, a);
+            }
+        }
     }
 
     @Override

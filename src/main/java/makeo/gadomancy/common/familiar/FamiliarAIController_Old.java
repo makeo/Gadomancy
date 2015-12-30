@@ -1,7 +1,7 @@
 package makeo.gadomancy.common.familiar;
 
 import baubles.api.BaublesApi;
-import makeo.gadomancy.common.registration.RegisteredFamiliarAI;
+import makeo.gadomancy.common.registration.RegisteredFamiliarAI_Old;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -22,26 +22,26 @@ import java.util.Random;
  *
  * Created by HellFirePvP @ 31.10.2015 14:08
  */
-public class FamiliarAIController {
+public class FamiliarAIController_Old {
 
     private static final Random RAND = new Random();
 
     private static Map<EntityPlayer, LinkedList<EntityLivingBase>> targetMap = new HashMap<EntityPlayer, LinkedList<EntityLivingBase>>();
 
-    private List<FamiliarAIProcess> availableTasks = new ArrayList<FamiliarAIProcess>();
-    private Map<FamiliarAIProcess, Integer> cooldownProcesses = new HashMap<FamiliarAIProcess, Integer>();
-    private LinkedList<FamiliarAIProcess> requestedLoop = new LinkedList<FamiliarAIProcess>();
-    private FamiliarAIProcess runningTask;
+    private List<FamiliarAIProcess_Old> availableTasks = new ArrayList<FamiliarAIProcess_Old>();
+    private Map<FamiliarAIProcess_Old, Integer> cooldownProcesses = new HashMap<FamiliarAIProcess_Old, Integer>();
+    private LinkedList<FamiliarAIProcess_Old> requestedLoop = new LinkedList<FamiliarAIProcess_Old>();
+    private FamiliarAIProcess_Old runningTask;
     private int ticksInTask;
     private EntityPlayer owningPlayer;
 
-    public FamiliarAIController(EntityPlayer owningPlayer) {
+    public FamiliarAIController_Old(EntityPlayer owningPlayer) {
         this.owningPlayer = owningPlayer;
     }
 
     public void registerDefaultTasks() {
-        this.availableTasks.add(RegisteredFamiliarAI.familiarAIIdle);
-        this.availableTasks.add(RegisteredFamiliarAI.familiarAIZapAttackingMonsters);
+        this.availableTasks.add(RegisteredFamiliarAI_Old.familiarAIIdle);
+        this.availableTasks.add(RegisteredFamiliarAI_Old.familiarAIZapAttackingMonsters);
     }
 
     public void scheduleTick() {
@@ -63,9 +63,9 @@ public class FamiliarAIController {
 
     private void selectNewTask() {
         if(!requestedLoop.isEmpty()) {
-            Iterator<FamiliarAIProcess> it = requestedLoop.iterator();
+            Iterator<FamiliarAIProcess_Old> it = requestedLoop.iterator();
             while(it.hasNext()) {
-                FamiliarAIProcess process = it.next();
+                FamiliarAIProcess_Old process = it.next();
                 if(!cooldownProcesses.containsKey(process)) {
                     runningTask = process;
                     it.remove();
@@ -77,7 +77,7 @@ public class FamiliarAIController {
         int randIndex = RAND.nextInt(size);
         for (int i = 0; i < size; i++) {
             int index = (randIndex + i) % size;
-            FamiliarAIProcess process = availableTasks.get(index);
+            FamiliarAIProcess_Old process = availableTasks.get(index);
             if(process.canRun(owningPlayer.worldObj, owningPlayer.posX, owningPlayer.posY, owningPlayer.posZ, owningPlayer, BaublesApi.getBaubles(owningPlayer).getStackInSlot(0)) &&
                     !cooldownProcesses.containsKey(process)) {
                 runningTask = process;
@@ -86,9 +86,9 @@ public class FamiliarAIController {
     }
 
     private void reduceRunningCooldowns() {
-        Iterator<FamiliarAIProcess> itProcesses = cooldownProcesses.keySet().iterator();
+        Iterator<FamiliarAIProcess_Old> itProcesses = cooldownProcesses.keySet().iterator();
         while(itProcesses.hasNext()) {
-            FamiliarAIProcess process = itProcesses.next();
+            FamiliarAIProcess_Old process = itProcesses.next();
             int cd = cooldownProcesses.get(process) - 1;
             if(cd <= 0) {
                 itProcesses.remove();
