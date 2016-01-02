@@ -274,7 +274,7 @@ public class RegisteredResearches {
                 0, 9, 2, new ItemStack(RegisteredBlocks.blockAuraPylon, 1, 1))
                 .setHidden()
                 .setParents(researchAuraCore.key, "TUBEFILTER")
-                .setItemTriggers(new ItemStack(RegisteredItems.itemAuraCore, 1, ItemAuraCore.AuraCoreType.ORDER.ordinal()))
+                .setItemTriggers(new ItemStack(RegisteredItems.itemAuraCore, 1, ItemAuraCore.AuraCoreType.FIRE.ordinal()))
                 .setPages(new ResearchPage("gadomancy.research_page.AURA_PYLON.1"), new ResearchPage(RegisteredRecipes.recipeAuraPylon), new ResearchPage(RegisteredRecipes.recipeAuraPylonPeak), new ResearchPage(RegisteredRecipes.multiblockAuraPylon)).registerResearchItem();
 
         researchAuraEffects = new ResearchItem(Gadomancy.MODID.toUpperCase() + ".AURA_EFFECTS", Gadomancy.MODID,
