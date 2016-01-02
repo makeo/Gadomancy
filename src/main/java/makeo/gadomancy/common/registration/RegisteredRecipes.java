@@ -215,7 +215,7 @@ public class RegisteredRecipes {
                 "TST", "S S", "TJT", 'T', new ItemStack(ConfigBlocks.blockTube, 1, 6), 'S', new ItemStack(ConfigBlocks.blockMagicalLog, 1, 1), 'J', new ItemStack(ConfigBlocks.blockJar, 1, 0));
 
         ItemStack ordoCore = new ItemStack(RegisteredItems.itemAuraCore);
-        RegisteredItems.itemAuraCore.setCoreType(ordoCore, ItemAuraCore.AuraCoreType.ORDER);
+        RegisteredItems.itemAuraCore.setCoreType(ordoCore, ItemAuraCore.AuraCoreType.FIRE);
         recipeAuraPylonPeak = ThaumcraftApi.addArcaneCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".AURA_PYLON", new ItemStack(RegisteredBlocks.blockAuraPylon, 1, 1),
                 new AspectList().add(Aspect.ORDER, 120).add(Aspect.FIRE, 90).add(Aspect.AIR, 70),
                 " N ", "ACA", " P ", 'A', new ItemStack(ConfigItems.itemResource, 1, 0), 'N', new ItemStack(ConfigItems.itemResource, 1, 1), 'C', ordoCore, 'P', new ItemStack(RegisteredBlocks.blockAuraPylon, 1, 0));
