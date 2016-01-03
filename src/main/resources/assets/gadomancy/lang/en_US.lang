@@ -257,6 +257,14 @@ gadomancy.info.RemoteJar.new=Created new jar network
 gadomancy.info.RemoteJar.clear=Disconnected from current jar network
 gadomancy.info.RemoteJar.connected=Connected to existing jar network
 
+familiar.augment.shock.name=Shock Impact
+familiar.augment.poison.name=Venomous Rot
+familiar.augment.fire.name=Scorching Heat
+familiar.augment.weakness.name=Enervation Impulse
+familiar.augment.damage.name=Emission Resonance Boost
+familiar.augment.speed.name=Internal Frequency Boost
+familiar.augment.range.name=Aura Detection
+
 potion.luck=Increased Luck
 potion.buffGolem=Golem Buff
 potion.achromatic=Achromatic
