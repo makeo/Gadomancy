@@ -2,6 +2,8 @@ package makeo.gadomancy.client.events;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import makeo.gadomancy.api.GadomancyApi;
+import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.client.gui.GuiResearchRecipeAuraEffects;
 import makeo.gadomancy.client.util.ExtendedTypeDisplayManager;
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
@@ -22,6 +24,7 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
@@ -29,8 +32,10 @@ import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.IArchitect;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.wands.ItemFocusBasic;
+import thaumcraft.client.gui.GuiGolem;
 import thaumcraft.client.gui.GuiResearchRecipe;
 import thaumcraft.client.lib.REHWandHandler;
+import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.items.relics.ItemThaumometer;
 import thaumcraft.common.items.wands.ItemWandCasting;
 
@@ -47,6 +52,37 @@ import java.util.ArrayList;
 public class RenderEventHandler {
     private static final REHWandHandler WAND_HANDLER = new REHWandHandler();
     private static final FakeArchitectItem ARCHITECT_ITEM = new FakeArchitectItem();
+
+    private Object oldGolemblurb = null;
+    private int blurbId;
+
+    @SubscribeEvent
+    public void on(GuiScreenEvent.DrawScreenEvent.Pre e) {
+        if(e.gui instanceof GuiGolem) {
+            GuiGolem gui = (GuiGolem) e.gui;
+            EntityGolemBase golem = new Injector(gui, GuiGolem.class).getField("golem");
+            if(golem != null) {
+                AdditionalGolemCore core = GadomancyApi.getAdditionalGolemCore(golem);
+                if(core != null) {
+                    blurbId = core.getBaseCore();
+                    String key = "golemblurb." + blurbId + ".text";
+                    oldGolemblurb = ResourceReloadListener.languageList.get(key);
+                    ResourceReloadListener.languageList.put(key, StatCollector.translateToLocal(core.getUnlocalizedGuiText()));
+                }
+            }
+        }
+
+        ResourceReloadListener.languageList.get("");
+    }
+
+    @SubscribeEvent
+    public void on(GuiScreenEvent.DrawScreenEvent.Post e) {
+        if(oldGolemblurb != null) {
+            String key = "golemblurb." + blurbId + ".text";
+            ResourceReloadListener.languageList.put(key, oldGolemblurb);
+            oldGolemblurb = null;
+        }
+    }
 
     @SubscribeEvent
     public void on(DrawBlockHighlightEvent e) {

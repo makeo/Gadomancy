@@ -131,7 +131,7 @@ tc.research_name.GADOMANCY.ARCANE_PACKAGER=Arcane Packager
 tc.research_text.GADOMANCY.ARCANE_PACKAGER=Compressing items
 
 gadomancy.golemblurb.default=??
-gadomancy.golemblurb.breakcore=Master, should I break anything, or something specific?
+gadomancy.golemblurb.breakcore=Master, should I break anything, or something specific and should I use a tool or none?
 gadomancy.golem.breakcore=Break
 gadomancy.golem.bodyguardcore=Bodyguard
 
