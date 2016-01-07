@@ -71,8 +71,6 @@ public class RenderEventHandler {
                 }
             }
         }
-
-        ResourceReloadListener.languageList.get("");
     }
 
     @SubscribeEvent
