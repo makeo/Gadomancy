@@ -68,7 +68,7 @@ public class ModConfig {
         enableAdditionalNodeTypes = config.getBoolean("enableAdditionalNodeTypes", "general", true, "Enables our custom node types. This might solve some compatibility issues (e.g. WitchingGadgets). You have to change this client- and server-side! Only change when you experience issues with special mods' features ONLY not working when using the mod together with Gadomancy.");
 
         config.addCustomCategoryComment("potions", "Use the following if you have problems with conflicting potion ids. If the entry is set to '-1' it will try to automatically find the lowest free potion id.");
-        config.addCustomCategoryComment("enchantments", "Use the following if you have problems with conflicting enchantment ids. If the entry is set to '-1' it will try to automatically find the lowest free enchantments id.");
+        config.addCustomCategoryComment("enchantments", "Use the following if you have problems with conflicting enchantment ids. If the entry is set to '-1' it will try to automatically find the lowest free enchantment id.");
     }
 
     public static int loadPotionId(String name) {

@@ -18,7 +18,7 @@ import net.minecraft.util.ResourceLocation;
  */
 public class ObsidianGolemType extends AdditionalGolemType {
     public ObsidianGolemType() {
-        super(50, 15, 0.2F, true, 2, 48, 100, 6);
+        super(50, 18, 0.27F, true, 2, 32, 100, 6);
     }
 
     @Override
