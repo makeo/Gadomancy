@@ -29,14 +29,14 @@ public class RegisteredGolemStuff {
     public static GolemUpgradeRunicShield upgradeRunicShield;
 
     public static SilverwoodGolemType typeSilverwood;
-    public static ObsidianGolemType typeObsidian;
+    //public static ObsidianGolemType typeObsidian;
 
     public static AdditionalGolemCore breakCore;
     public static AdditionalGolemCore bodyguardCore;
 
     public static void init() {
         typeSilverwood = registerGolemType("SILVERWOOD", new SilverwoodGolemType());
-        typeObsidian = registerGolemType("OBSIDIAN", new ObsidianGolemType());
+        //typeObsidian = registerGolemType("OBSIDIAN", new ObsidianGolemType());
 
         breakCore = registerGolemCore("breakCore", new BreakGolemCore());
         bodyguardCore = registerGolemCore("bodyguardCore", new BodyguardGolemCore());

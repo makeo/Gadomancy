@@ -130,6 +130,12 @@ tc.research_text.GADOMANCY.AURA_EFFECTS=Remember what happened
 tc.research_name.GADOMANCY.ARCANE_PACKAGER=Arcane Packager
 tc.research_text.GADOMANCY.ARCANE_PACKAGER=Compressing items
 
+tc.research_name.GADOMANCY.REVEALER=Thaumic Sight
+tc.research_text.GADOMANCY.REVEALER=Seeing the Seen
+
+tc.research_name.GADOMANCY.ARMORDISGUISE=Armor Disguise
+tc.research_text.GADOMANCY.ARMORDISGUISE=Appearance counts!
+
 gadomancy.golemblurb.default=??
 gadomancy.golemblurb.breakcore=Master, should I break anything, or something specific and should I use a tool or none?
 gadomancy.golem.breakcore=Break
@@ -271,4 +277,4 @@ potion.achromatic=Achromatic
 potion.eldritch=Eldritch
 potion.visdiscount=Vis Affinity
 
-gadomancy.enchantment.revealer=Revealing
+gadomancy.enchantment.revealer=Thaumic Sight

@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.utils;
 
+import cpw.mods.fml.relauncher.Side;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.client.events.ResourceReloadListener;
@@ -148,7 +149,9 @@ public class GolemEnumHelper {
         }
 
         new Injector(EnumGolemType.class).setField("codeToTypeMapping", null);
-        ResourceReloadListener.getInstance().reloadGolemResources();
+        if(Gadomancy.proxy.getSide() == Side.CLIENT) {
+            ResourceReloadListener.getInstance().reloadGolemResources();
+        }
     }
 
     private static void resetEnum() {

@@ -211,11 +211,11 @@ public class EventHandlerGolem {
                 }
             }
 
-            if(event.source.getEntity() != null && event.source.getEntity() instanceof EntityGolemBase
+            /*if(event.source.getEntity() != null && event.source.getEntity() instanceof EntityGolemBase
                     && ((EntityGolemBase) event.source.getEntity()).getGolemType()
                         == RegisteredGolemStuff.typeObsidian.getEnumEntry()) {
                 event.entityLiving.addPotionEffect(new PotionEffect(Potion.wither.getId(), 3*20, 1));
-            }
+            }*/
         }
     }
 

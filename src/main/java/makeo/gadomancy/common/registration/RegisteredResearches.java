@@ -2,22 +2,27 @@ package makeo.gadomancy.common.registration;
 
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.aura.AuraResearchManager;
+import makeo.gadomancy.common.crafting.InfusionVisualDisguiseArmor;
 import makeo.gadomancy.common.crafting.RecipeVisualStickyJar;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.items.ItemAuraCore;
 import makeo.gadomancy.common.research.*;
 import makeo.gadomancy.common.utils.NBTHelper;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
+import thaumcraft.common.config.ConfigItems;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -44,6 +49,10 @@ public class RegisteredResearches {
     public static ResearchItem researchNodeManipulator;
     public static ResearchItem researchEldritchPortalCreator;
     public static ResearchItem researchBlockProtector;
+
+    //Enchantment stuff
+    public static ResearchItem researchRevealer;
+    public static ResearchItem researchArmorDisguise;
 
     //Aura core stuff
     public static ResearchItem researchAuraCore;
@@ -293,6 +302,19 @@ public class RegisteredResearches {
                 .setParents(packagerParents)
                 .setItemTriggers(new ItemStack(RegisteredItems.itemAuraCore, 1, ItemAuraCore.AuraCoreType.AIR.ordinal()))
                 .setPages(new ResearchPage("gadomancy.research_page.ARCANE_PACKAGER.1"), new ResearchPage(RegisteredRecipes.recipeArcanePackager)).registerResearchItem();
+
+
+        ResearchItem researchInfusionEnch = PseudoResearchItem.create("INFUSIONENCHANTMENT", -3, 1).registerResearchItem();
+
+        ItemStack goggles = new ItemStack(ConfigItems.itemGoggles);
+        goggles.addEnchantment(Enchantment.protection, 1);
+        researchRevealer = new SimpleResearchItem("REVEALER", -2, 2, 1, goggles, new AspectList().add(Aspect.SENSES, 4).add(Aspect.MAGIC, 4))
+                .setParents(researchInfusionEnch.key)
+                .setPages(new ResearchPage("Bla"), new ResearchPage(RegisteredRecipes.recipeRevealer)).registerResearchItem();
+
+        researchArmorDisguise = new DisguiseResearchItem("ARMORDISGUISE", -4, 2, 1, new AspectList().add(Aspect.SLIME, 8).add(Aspect.MAGIC, 4).add(Aspect.ARMOR, 4))
+                .setParents(researchInfusionEnch.key)
+                .setPages(new ResearchPage("Blub"), new ResearchPage(new InfusionVisualDisguiseArmor(false)), new ResearchPage(new InfusionVisualDisguiseArmor(true))).registerResearchItem();
 
         //Warpy warpy
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_3", 2);

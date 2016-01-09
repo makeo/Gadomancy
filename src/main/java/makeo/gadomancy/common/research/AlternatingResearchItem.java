@@ -33,7 +33,11 @@ public class AlternatingResearchItem extends SimpleResearchItem {
     }
 
     private void updateIcon() {
-        injector.setField(ICON_FIELD, itemIcons.get(calcIndex(itemIcons.size())));
+        injector.setField(ICON_FIELD, getIcon());
+    }
+
+    protected ItemStack getIcon() {
+        return itemIcons.get(calcIndex(itemIcons.size()));
     }
 
     private int calcIndex(int max) {
