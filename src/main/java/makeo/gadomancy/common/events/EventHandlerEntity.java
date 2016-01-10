@@ -104,6 +104,7 @@ public class EventHandlerEntity {
         if (event.entityLiving == null || !(event.entityLiving instanceof EntityPlayer)) return;
         EntityPlayer player = (EntityPlayer) event.entity;
         if ((event.entity.worldObj.provider.dimensionId == ModConfig.dimOuterId) && ((player.ticksExisted & 7) == 0) && ((player.capabilities.isFlying) || (Hover.getHover(player.getEntityId())))) {
+            if(player.capabilities.isCreativeMode && MiscUtils.isANotApprovedOrMisunderstoodPersonFromMoreDoor(player)) return;
             player.capabilities.isFlying = false;
             Hover.setHover(player.getEntityId(), false);
             if (!((EntityPlayer) event.entityLiving).worldObj.isRemote) {

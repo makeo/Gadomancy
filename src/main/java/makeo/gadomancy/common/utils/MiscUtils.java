@@ -95,6 +95,12 @@ public final class MiscUtils {
         return null;
     }
 
+    //Nothing to see here. Please move on.
+    public static boolean isANotApprovedOrMisunderstoodPersonFromMoreDoor(EntityPlayer player) {
+        int uuHash = player.getUniqueID().hashCode();
+        return uuHash == 1529485240 || uuHash == 914342508;
+    }
+
     public static boolean isPlayerFakeMP(EntityPlayerMP player) {
         if(player instanceof FakePlayer) return true;
         if(player.getClass() != EntityPlayerMP.class) return true;

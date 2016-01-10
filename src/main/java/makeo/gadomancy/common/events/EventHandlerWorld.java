@@ -13,6 +13,7 @@ import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.GolemEnumHelper;
 import makeo.gadomancy.common.utils.ItemUtils;
+import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.NBTHelper;
 import makeo.gadomancy.common.utils.WandHandler;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
@@ -206,6 +207,7 @@ public class EventHandlerWorld {
             }
             if (event.world.provider.dimensionId == ModConfig.dimOuterId) {
                 if(event.block == ConfigBlocks.blockEldritchNothing) {
+                    if(event.getPlayer().capabilities.isCreativeMode && MiscUtils.isANotApprovedOrMisunderstoodPersonFromMoreDoor(event.getPlayer())) return;
                     event.setCanceled(true);
                     event.getPlayer().addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.GRAY + StatCollector.translateToLocal("gadomancy.eldritch.nobreakPortalNothing")));
                 }
