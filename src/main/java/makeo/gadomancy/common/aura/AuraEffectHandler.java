@@ -1,6 +1,7 @@
 package makeo.gadomancy.common.aura;
 
 import makeo.gadomancy.api.AuraEffect;
+import makeo.gadomancy.common.data.config.ModConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
@@ -27,7 +28,7 @@ public class AuraEffectHandler {
     public static Map<Aspect, AuraEffect> registeredEffects = new HashMap<Aspect, AuraEffect>();
 
     public static void distributeEffects(Aspect aspect, World worldObj, double x, double y, double z, int tick) {
-        if(!registeredEffects.containsKey(aspect) || worldObj.isRemote) return;
+        if(!registeredEffects.containsKey(aspect) || worldObj.isRemote || AuraResearchManager.isBlacklisted(aspect)) return;
         AuraEffect effect = registeredEffects.get(aspect);
         if((tick % effect.getTickInterval()) != 0) return;
 

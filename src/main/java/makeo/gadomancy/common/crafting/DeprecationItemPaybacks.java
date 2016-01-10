@@ -1,5 +1,6 @@
-package makeo.gadomancy.common.registration;
+package makeo.gadomancy.common.crafting;
 
+import makeo.gadomancy.common.registration.RegisteredItems;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;

@@ -3,6 +3,7 @@ package makeo.gadomancy.common.registration;
 import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.crafting.FamiliarAugmentInfusion;
 import makeo.gadomancy.common.crafting.InfusionDisguiseArmor;
 import makeo.gadomancy.common.crafting.InfusionUpgradeRecipe;
 import makeo.gadomancy.common.crafting.RecipeStickyJar;
@@ -214,11 +215,11 @@ public class RegisteredRecipes {
                 new AspectList().add(Aspect.ORDER, 80).add(Aspect.WATER, 50).add(Aspect.FIRE, 50).add(Aspect.AIR, 50),
                 "TST", "S S", "TJT", 'T', new ItemStack(ConfigBlocks.blockTube, 1, 6), 'S', new ItemStack(ConfigBlocks.blockMagicalLog, 1, 1), 'J', new ItemStack(ConfigBlocks.blockJar, 1, 0));
 
-        ItemStack ordoCore = new ItemStack(RegisteredItems.itemAuraCore);
-        RegisteredItems.itemAuraCore.setCoreType(ordoCore, ItemAuraCore.AuraCoreType.FIRE);
+        ItemStack ignisCore = new ItemStack(RegisteredItems.itemAuraCore);
+        RegisteredItems.itemAuraCore.setCoreType(ignisCore, ItemAuraCore.AuraCoreType.FIRE);
         recipeAuraPylonPeak = ThaumcraftApi.addArcaneCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".AURA_PYLON", new ItemStack(RegisteredBlocks.blockAuraPylon, 1, 1),
                 new AspectList().add(Aspect.ORDER, 120).add(Aspect.FIRE, 90).add(Aspect.AIR, 70),
-                " N ", "ACA", " P ", 'A', new ItemStack(ConfigItems.itemResource, 1, 0), 'N', new ItemStack(ConfigItems.itemResource, 1, 1), 'C', ordoCore, 'P', new ItemStack(RegisteredBlocks.blockAuraPylon, 1, 0));
+                " N ", "ACA", " P ", 'A', new ItemStack(ConfigItems.itemResource, 1, 0), 'N', new ItemStack(ConfigItems.itemResource, 1, 1), 'C', ignisCore, 'P', new ItemStack(RegisteredBlocks.blockAuraPylon, 1, 0));
 
         ItemStack aerCore = new ItemStack(RegisteredItems.itemAuraCore);
         RegisteredItems.itemAuraCore.setCoreType(aerCore, ItemAuraCore.AuraCoreType.AIR);

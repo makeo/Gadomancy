@@ -1,6 +1,7 @@
 package makeo.gadomancy.common.aura;
 
 import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketTCNotificationText;
 import net.minecraft.client.Minecraft;
@@ -30,6 +31,7 @@ public class AuraResearchManager {
 
     public static void tryUnlockAuraEffect(EntityPlayer player, Aspect aspect) {
         if(!AuraEffectHandler.registeredEffects.containsKey(aspect)) return;
+        if(isBlacklisted(aspect)) return;
 
         if(!ResearchManager.isResearchComplete(player.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".AURA_EFFECTS")) return;
         if(!Thaumcraft.proxy.getPlayerKnowledge().hasDiscoveredAspect(player.getCommandSenderName(), aspect)) return;
@@ -61,10 +63,18 @@ public class AuraResearchManager {
         List<String> lines = new ArrayList<String>();
         for(Aspect a : AuraEffectHandler.registeredEffects.keySet()) {
             if(ResearchManager.isResearchComplete(player.getCommandSenderName(), String.format(TC_AURA_RESEARCH_STR, a.getTag()))) {
-                lines.add(a.getTag());
+                if(!isBlacklisted(a)) lines.add(a.getTag());
             }
         }
         return lines;
+    }
+
+    public static boolean isBlacklisted(Aspect a) {
+        for(String aspectTag : ModConfig.blacklistAuraEffects) {
+            if(aspectTag == null) continue;
+            if(aspectTag.equals(a.getTag())) return true;
+        }
+        return false;
     }
 
     public static void registerAuraResearches() {

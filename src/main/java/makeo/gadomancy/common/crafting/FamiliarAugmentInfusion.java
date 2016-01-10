@@ -1,4 +1,4 @@
-package makeo.gadomancy.common.registration;
+package makeo.gadomancy.common.crafting;
 
 import makeo.gadomancy.common.items.baubles.ItemFamiliar_Old;
 import net.minecraft.entity.player.EntityPlayer;

@@ -117,10 +117,10 @@ public class ItemAuraCore extends Item {
         BLANK("blank"),
 
         AIR(Aspect.AIR),
-        FIRE(Aspect.FIRE, true),
+        FIRE(Aspect.FIRE),
         WATER(Aspect.WATER, true),
         EARTH(Aspect.EARTH, true),
-        ORDER(Aspect.ORDER),
+        ORDER(Aspect.ORDER, true),
         ENTROPY(Aspect.ENTROPY, true);
 
         private final Aspect aspect;
