@@ -117,24 +117,35 @@ gadomancy.research_page.GROWING_GROWTHCLUE.2=Despite the fact that the node will
 
 tc.research_name.GADOMANCY.AURA_CORE=Aura Core
 tc.research_text.GADOMANCY.AURA_CORE=Your surroundings matter!
+gadomancy.research_page.AURA_CORE.1=Many times, the strange properties of the primal charm have always been puzzling. Constantly spitting out small sparks of primal energy and changing colors in a completely unstable fasion, the charm's behavior is unlike anything else, making the primal charm most difficult to use. By encasing the charm in a layer of crystalized thaumium it is possible to calm these bizzarre tendencies, resulting in a much more usable object known as an Aura Core.
+gadomancy.research_page.AURA_CORE.3=Unlike the charm that it was constructed from, an Aura core has had most of the primal energy removed in the crafting process. This leaves Aura cores heavily susceptible to the presence of auras in the environment. Tossing one on the ground near a primal crystal cluster and then energizing the crystal cluster with a wand will cause the core to coat itself in an extra layer of crystal, forcing the core to tune to one primal aspect. Six primal cores are possible to make.<BR> Finding a use for the individual primal cores requires making them, and them inspecting them directly.
 
 tc.research_name.GADOMANCY.CLEAN_AURA_CORE=Core Cleaning
 tc.research_text.GADOMANCY.CLEAN_AURA_CORE=Mistakes were made
+gadomancy.research_page.CLEAN_AURA_CORE.1=Returning an Aura Core to it's original state has proven very simple. Tossing an aspect core into a special bath of essentia will allow the extra primal crystal coat to be removed without damaging the aura core.
 
 tc.research_name.GADOMANCY.AURA_PYLON=Aura Pylon
 tc.research_text.GADOMANCY.AURA_PYLON=Diffusing essentia
+gadomancy.research_page.AURA_PYLON.1=The aura pylon is a device that exploits the properties of an Aura Core tuned to Ignis. This device is able to be able to destabilize and evaporate essentia into the local aura. This process is a bit slow, and the essentia needs time to reach full concentration. When it does, the aura concentration should be enough to physically influence the environment.<BR>As for discovering what each different type of essentia does, the only way you think you think you can find out is to test them.
 
 tc.research_name.GADOMANCY.AURA_EFFECTS=Aura Effects
-tc.research_text.GADOMANCY.AURA_EFFECTS=Remember what happened
+tc.research_text.GADOMANCY.AURA_EFFECTS=What diffusing essentia actually does
+gadomancy.research_page.AURA_EFFECTS.1=Most types of essentia have their own unique effects, however some do not. either way, keeping a log of what each aspect does seems like a good idea.
 
 tc.research_name.GADOMANCY.ARCANE_PACKAGER=Arcane Packager
-tc.research_text.GADOMANCY.ARCANE_PACKAGER=Compressing items
+tc.research_text.GADOMANCY.ARCANE_PACKAGER=PACK IT UP!
+gadomancy.research_page.ARCANE_PACKAGER.1=Scattered in dungeons, temples, and ruins throughout the world are strange objects called loot bags. They seem small and relatively tough and light, but when opened, the fabric simply disintergrates, leaving a pile of valuable bits and things. Sometimes the among of things even seems to defy the size of the bag.<BR>A closer inspection revealed that the bag is not actually made of fabric at all, but rather a fine mesh of stable Pannus essentia.
+gadomancy.research_page.ARCANE_PACKAGER.3=Not only that, but the fibers of essentia seem to weave themselves together even tighter when they are brought into contact with the pressure created by an aer tuned aura core.<BR>The Arcane Packager is a device that replicates the conditions needed for Pannus essentia to form threads. The result is a small package that behaves much the same as any other loot bag. These small packages can even be disguised as normal loot bags. The process can also be replicated with leather and strings, but the result looks really cheap.
+gadomancy.research_page.ARCANE_PACKAGER.4=Up to nine stacks of items can fit in one package, and when opened the bag will disintergrate and drop its contents into the holder's inventory. Even other lootbags can fit into another lootbag. However, the aer tuned aura core can only stabilize those threads to some degree. If the package gets too big, it might cause overpressure inside the packager. To stop this from happening, you adjusted the Arcane Packager to drop the items into the world if the pressure inside rises above a certain level. The Arcane Packager can be started with a redstone signal.
 
 tc.research_name.GADOMANCY.REVEALER=Thaumic Sight
 tc.research_text.GADOMANCY.REVEALER=Seeing the Seen
+gadomancy.research_page.REVEALER.1=After extensively studying the Goggles of Revealing, you have devised an enchantment that can give ant helmet the same properties.<BR> This enchantment gives any helmet the ability to let the wearer see aura nodes and amounts of essentia in jars. It does not give the vis discount of the goggles though.
 
 tc.research_name.GADOMANCY.ARMORDISGUISE=Armor Disguise
-tc.research_text.GADOMANCY.ARMORDISGUISE=Appearance counts!
+tc.research_text.GADOMANCY.ARMORDISGUISE=Let the games begin!
+gadomancy.research_page.ARMORDISGUISE.1=You have found a way to change the appearance of your armor. The effects of the original armor will remain, while the appearance of the armor when worn will be that of the disguise.<BR> The original armor is placed on the central pedestal of the infusion, and the armor that will disguise the original is placed on the outer ring of pedestals.<BR>However, the item that will be used as disguise will merge into the other armor and its appearance will be the only thing left of it.
+gadomancy.research_page.ARMORDISGUISE.4=After giving it a second thought, you think if you replace the armor you want to have as new appearance with an invisibility potion, the potion might just merge with the armor, causing it to be fully transparent when worn.
 
 gadomancy.golemblurb.default=??
 gadomancy.golemblurb.breakcore=Master, should I break anything, or something specific and should I use a tool or none?
@@ -179,7 +190,7 @@ gadomancy.nodes.STARVING=Starving
 gadomancy.auracore.unused=(Unused at the moment)
 gadomancy.auracore.blank=Blank
 
-gadomancy.aura.research.unlock=You've researched the aura of %s
+gadomancy.aura.research.unlock=You've discovered the effects of %s essentia.
 
 gadomancy.aura.effect.aer=Creates a speed aura
 gadomancy.aura.effect.alienis_0=Nearby monsters become
@@ -202,7 +213,7 @@ gadomancy.aura.effect.humanus_0=Temporarily increases
 gadomancy.aura.effect.humanus_1=your health
 gadomancy.aura.effect.ignis=Spreads fire
 gadomancy.aura.effect.instrumentum_0=Increases your
-gadomancy.aura.effect.instrumentum_1=dig speed
+gadomancy.aura.effect.instrumentum_1=digging speed
 gadomancy.aura.effect.limus_0=The aura
 gadomancy.aura.effect.limus_1=becomes more slimy
 gadomancy.aura.effect.lucrum=Increases your luck
@@ -220,14 +231,11 @@ gadomancy.aura.effect.tempestas=Summons lightnings
 gadomancy.aura.effect.tenebrae_0=Darkness spreads
 gadomancy.aura.effect.tenebrae_1=in the aura
 gadomancy.aura.effect.venenum=Poisons its surroundings
-gadomancy.aura.effect.victus_0=Helps little mobs
-gadomancy.aura.effect.victus_1=to grow up
+gadomancy.aura.effect.victus_0=Helps baby animals
+gadomancy.aura.effect.victus_1=to grow up faster
 gadomancy.aura.effect.vinculum_0=Traps and slows down
 gadomancy.aura.effect.vinculum_1=living things
 gadomancy.aura.effect.vitium=Spreads taint
-gadomancy.aura.effect.vitreus_0=You can feel the
-gadomancy.aura.effect.vitreus_1=air blowing through
-gadomancy.aura.effect.vitreus_2=your stomach
 gadomancy.aura.effect.aqua_0=Helps you to
 gadomancy.aura.effect.aqua_1=breath underwater
 gadomancy.aura.effect.terra_0=Increases your
@@ -249,6 +257,9 @@ gadomancy.aura.effect.perditio_1=aura of weakness
 gadomancy.aura.effect.potentia=Increases your strength
 gadomancy.aura.effect.telum_0=Increases your
 gadomancy.aura.effect.telum_1=strength a lot
+gadomancy.aura.effect.vitreus_0=You can feel the
+gadomancy.aura.effect.vitreus_1=air blowing through
+gadomancy.aura.effect.vitreus_2=your stomach
 
 gadomancy.info.InfusionClaw.owner=You are now the owner.
 gadomancy.info.InfusionClaw.waila=§7Owner:

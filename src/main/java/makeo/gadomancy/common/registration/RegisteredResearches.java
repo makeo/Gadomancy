@@ -265,14 +265,14 @@ public class RegisteredResearches {
                         .add(Aspect.EARTH, 8).add(Aspect.FIRE, 8).add(Aspect.ORDER, 8).add(Aspect.ENTROPY, 8),
                 cores)
                 .setConcealed().setParents("INFUSION", "THAUMIUM")
-                .setPages(new ResearchPage("gadomancy.research_page.AURA_CORE.1"), new ResearchPage(RegisteredRecipes.recipeAuraCore), new MultiResearchPage(RegisteredRecipes.auraCoreRecipes)).registerResearchItem();
+                .setPages(new ResearchPage("gadomancy.research_page.AURA_CORE.1"), new ResearchPage(RegisteredRecipes.recipeAuraCore), new ResearchPage("gadomancy.research_page.AURA_CORE.3"), new MultiResearchPage(RegisteredRecipes.auraCoreRecipes)).registerResearchItem();
 
         researchCleanAuraCore = new SimpleResearchItem("CLEAN_AURA_CORE",
                 1, 5, 0, new ItemStack(RegisteredItems.itemAuraCore),
                 new AspectList().add(Aspect.HEAL, 8).add(Aspect.AURA, 6).add(Aspect.MAGIC, 8).add(Aspect.WATER, 10))
                 .setConcealed().setSecondary()
                 .setParents(researchAuraCore.key)
-                .setPages(new ResearchPage("gadomancy.research_page.CLEAN_AURA_CORE.1"), new ResearchPage(RegisteredRecipes.recipesWashAuraCore), new ResearchPage("gadomancy.research_page.CLEAN_AURA_CORE.3"), new ResearchPage(RegisteredRecipes.recipesUndoAuraCore)).registerResearchItem();
+                .setPages(new ResearchPage("gadomancy.research_page.CLEAN_AURA_CORE.1"), new ResearchPage(RegisteredRecipes.recipesWashAuraCore), new ResearchPage(RegisteredRecipes.recipesUndoAuraCore)).registerResearchItem();
 
         researchAuraPylon = new SimpleResearchItem("AURA_PYLON",
                 0, 9, 2, new ItemStack(RegisteredBlocks.blockAuraPylon, 1, 1),
@@ -296,7 +296,7 @@ public class RegisteredResearches {
                 .setHidden()
                 .setParents(packagerParents)
                 .setItemTriggers(new ItemStack(RegisteredItems.itemAuraCore, 1, ItemAuraCore.AuraCoreType.AIR.ordinal()))
-                .setPages(new ResearchPage("gadomancy.research_page.ARCANE_PACKAGER.1"), new ResearchPage(RegisteredRecipes.recipeArcanePackager)).registerResearchItem();
+                .setPages(new ResearchPage("gadomancy.research_page.ARCANE_PACKAGER.1"), new ResearchPage(RegisteredRecipes.recipeArcanePackager), new ResearchPage("gadomancy.research_page.ARCANE_PACKAGER.3"), new ResearchPage("gadomancy.research_page.ARCANE_PACKAGER.4")).registerResearchItem();
 
 
         ResearchItem researchInfusionEnch = PseudoResearchItem.create("INFUSIONENCHANTMENT", -1, 2).registerResearchItem();
@@ -304,14 +304,15 @@ public class RegisteredResearches {
         ItemStack goggles = new ItemStack(ConfigItems.itemGoggles);
         goggles.addEnchantment(Enchantment.protection, 1);
         researchRevealer = new SimpleResearchItem("REVEALER", 1, 3, 1, goggles, new AspectList().add(Aspect.SENSES, 4).add(Aspect.MAGIC, 4))
-                .setParents(researchInfusionEnch.key)
-                .setPages(new ResearchPage("gadomancy.research_page.GADOMANCY.REVEALER.1"), new ResearchPage(RegisteredRecipes.recipeRevealer)).registerResearchItem();
+                .setParents(researchInfusionEnch.key, "GOGGLES")
+                .setPages(new ResearchPage("gadomancy.research_page.REVEALER.1"), new ResearchPage(RegisteredRecipes.recipeRevealer)).registerResearchItem();
 
         researchArmorDisguise = new DisguiseResearchItem("ARMORDISGUISE", -2, 4, 1, new AspectList().add(Aspect.SLIME, 8).add(Aspect.MAGIC, 4).add(Aspect.ARMOR, 4))
                 .setParents(researchInfusionEnch.key)
-                .setPages(new ResearchPage("gadomancy.research_page.GADOMANCY.ARMORDISGUISE.1"), new ResearchPage(new InfusionVisualDisguiseArmor(false)), new ResearchPage(new InfusionVisualDisguiseArmor(true))).registerResearchItem();
+                .setPages(new ResearchPage("gadomancy.research_page.ARMORDISGUISE.1"), new ResearchPage(new InfusionVisualDisguiseArmor(false)), new ResearchPage(new InfusionVisualDisguiseArmor(true)), new ResearchPage("gadomancy.research_page.ARMORDISGUISE.4")).registerResearchItem();
 
         //Warpy warpy
+        ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".AURA_CORE", 1);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_3", 2);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".FAM_COOLDOWN_1", 3);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR", 4);
