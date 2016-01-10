@@ -93,6 +93,9 @@ public class InfusionVisualDisguiseArmor extends InfusionRecipe {
     @Override
     @SideOnly(Side.CLIENT)
     public ItemStack getRecipeInput() {
+        if(Minecraft.getMinecraft().thePlayer == null) {
+            return new ItemStack(Items.cookie);
+        }
         return armorItems[getRecipeInput(new Random(System.currentTimeMillis() / 1000))];
     }
 
