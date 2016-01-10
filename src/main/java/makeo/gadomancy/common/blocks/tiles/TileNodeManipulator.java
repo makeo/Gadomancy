@@ -108,6 +108,8 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
                             workAspectList = new AspectList();
                             workTick = 0;
                             isWorking = false;
+                            markDirty();
+                            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                         }
                         return;
                     }
@@ -174,21 +176,21 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
             }
             if(worldObj.rand.nextInt(4) == 0) {
                 Vec3 relPed = getRelPedestalLoc(worldObj.rand.nextInt(4));
-                PacketTCNodeBolt bolt = new PacketTCNodeBolt(xCoord + 0.5F, yCoord + 2.5F, zCoord + 0.5F, (float) (xCoord + 0.5F + relPed.xCoord), (float) (yCoord + 2.5F + relPed.yCoord), (float) (zCoord + 0.5F + relPed.zCoord), 2, false);
+                PacketTCNodeBolt bolt = new PacketTCNodeBolt(xCoord + 0.5F, yCoord + 2.5F, zCoord + 0.5F, (float) (xCoord + 0.5F - relPed.xCoord), (float) (yCoord + 1.5 + relPed.yCoord), (float) (zCoord + 0.5F - relPed.zCoord), 2, false);
                 PacketHandler.INSTANCE.sendToAllAround(bolt, getTargetPoint(32));
             }
         } else {
-            shedulePortalCreation();
+            schedulePortalCreation();
         }
     }
 
-    private void shedulePortalCreation() {
+    private void schedulePortalCreation() {
         workTick = 0;
         isWorking = false;
         workAspectList = new AspectList();
 
         TileEntity te = worldObj.getTileEntity(xCoord, yCoord + 2, zCoord);
-        if(te == null || !(te instanceof TileExtendedNode)) return;
+        if(te == null || !(te instanceof INode)) return;
 
         consumeEldritchEyes();
 
@@ -232,7 +234,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IAspectCont
     private Vec3 getRelPedestalLoc(int pedestalId) {
         try {
             ChunkCoordinates cc = bufferedCCPedestals.get(pedestalId);
-            return Vec3.createVectorHelper(cc.posX, cc.posY, cc.posZ);
+            return Vec3.createVectorHelper(xCoord - cc.posX, yCoord - cc.posY, zCoord - cc.posZ);
         } catch (Exception exc) {}
         return Vec3.createVectorHelper(0, 0, 0);
     }
