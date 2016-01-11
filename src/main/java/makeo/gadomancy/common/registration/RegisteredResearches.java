@@ -304,11 +304,11 @@ public class RegisteredResearches {
         ItemStack goggles = new ItemStack(ConfigItems.itemGoggles);
         goggles.addEnchantment(Enchantment.protection, 1);
         researchRevealer = new SimpleResearchItem("REVEALER", 1, 3, 1, goggles, new AspectList().add(Aspect.SENSES, 4).add(Aspect.MAGIC, 4))
-                .setParents(researchInfusionEnch.key, "GOGGLES")
+                .setParents(researchInfusionEnch.key, "GOGGLES").setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.REVEALER.1"), new ResearchPage(RegisteredRecipes.recipeRevealer)).registerResearchItem();
 
         researchArmorDisguise = new DisguiseResearchItem("ARMORDISGUISE", -2, 4, 1, new AspectList().add(Aspect.SLIME, 8).add(Aspect.MAGIC, 4).add(Aspect.ARMOR, 4))
-                .setParents(researchInfusionEnch.key)
+                .setParents(researchInfusionEnch.key).setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.ARMORDISGUISE.1"), new ResearchPage(new InfusionVisualDisguiseArmor(false)), new ResearchPage(new InfusionVisualDisguiseArmor(true)), new ResearchPage("gadomancy.research_page.ARMORDISGUISE.4")).registerResearchItem();
 
         //Warpy warpy

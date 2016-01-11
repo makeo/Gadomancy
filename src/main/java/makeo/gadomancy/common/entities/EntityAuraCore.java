@@ -333,6 +333,12 @@ public class EntityAuraCore extends EntityItem implements IEntityAdditionalSpawn
                 break;
             }
         }
+
+        for(int i = 0; i < colors.length; i++) {
+            if(colors[i] == null) {
+                colors[i] = aspects[0];
+            }
+        }
         return colors;
     }
 
