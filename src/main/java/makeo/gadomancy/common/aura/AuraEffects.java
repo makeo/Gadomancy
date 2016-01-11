@@ -460,10 +460,13 @@ public class AuraEffects {
         public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
             EntityLiving mob = world.rand.nextBoolean() ? new EntitySkeleton(world) : new EntityZombie(world);
             if(setAndCheckPosition(mob, selectedBlock, world, true) && world.difficultySetting != EnumDifficulty.PEACEFUL) {
+                for(int i = 0; i < 5; i++) {
+                    mob.setCurrentItemOrArmor(i, null);
+                }
 
                 int totalCount = (world.rand.nextInt(3) == 0 ? 1 : 0) + 2;
                 do {
-                    int slot = mob.getEquipmentInSlot(0) == null ? 0 : mob.getEquipmentInSlot(4) == null ? 4 : world.rand.nextInt(5);
+                    int slot = mob.getEquipmentInSlot(0) == null ? 0 : (mob.getEquipmentInSlot(4) == null ? 4 : (world.rand.nextInt(3)+1));
                     if(mob.getEquipmentInSlot(slot) == null) {
                         ItemStack[] items = ITEMS_SOUL[slot];
                         ItemStack stack = items[world.rand.nextInt(items.length)];

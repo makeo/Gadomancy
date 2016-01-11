@@ -27,6 +27,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.GameRules;
@@ -43,10 +44,7 @@ import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.tiles.TileJarFillable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -57,49 +55,58 @@ import java.util.Map;
  * Created by makeo @ 05.07.2015 13:20
  */
 public class EventHandlerWorld {
-    public List<EntityItem> trackedItems = new ArrayList<EntityItem>();
+    public Map<EntityItem,Long> trackedItems = new HashMap<EntityItem, Long>();
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void on(EntityJoinWorldEvent event) {
         if(!event.world.isRemote && event.entity instanceof EntityItem
                 && isDisguised(((EntityItem) event.entity).getEntityItem())) {
-            trackedItems.add((EntityItem) event.entity);
+            long time = event.world.getTotalWorldTime() + event.world.rand.nextInt(60) + 40;
+            trackedItems.put((EntityItem) event.entity, time);
         }
     }
 
     @SubscribeEvent
     public void on(TickEvent.WorldTickEvent event) {
-        if(event.phase == TickEvent.Phase.START && !event.world.isRemote && event.world.getTotalWorldTime() % 30 == 0 && event.world.rand.nextBoolean()) {
-            for(int i = 0; i < trackedItems.size(); i++) {
-                EntityItem entity = trackedItems.get(i);
+        if(event.phase == TickEvent.Phase.START && !event.world.isRemote && event.world.getTotalWorldTime() % 10 == 0) {
+
+            Iterator<Map.Entry<EntityItem, Long>> iterator = trackedItems.entrySet().iterator();
+            while(iterator.hasNext()) {
+                Map.Entry<EntityItem, Long> entry = iterator.next();
+                EntityItem entity = entry.getKey();
+
                 if(event.world == entity.worldObj) {
                     if(entity.isDead || !isDisguised(entity.getEntityItem())) {
-                        trackedItems.remove(i);
-                        i--;
+                        iterator.remove();
                         continue;
                     }
 
-                    int x = (int) entity.posX - 1;
-                    int y = (int) entity.posY;
-                    int z = (int) entity.posZ - 1;
-                    if(entity.delayBeforeCanPickup <= 0 && ConfigBlocks.blockFluidPure == event.world.getBlock(x, y, z)
-                            && event.world.getBlockMetadata(x, y, z) == 0) {
-                        NBTTagCompound compound = NBTHelper.getPersistentData(entity.getEntityItem());
-                        NBTBase base = compound.getTag("disguise");
-                        if(base instanceof NBTTagCompound) {
-                            ItemStack stack = ItemStack.loadItemStackFromNBT((NBTTagCompound) base);
-                            EntityItem newEntity = new EntityItem(event.world, entity.posX, entity.posY, entity.posZ, stack);
-                            ItemUtils.applyRandomDropOffset(newEntity, event.world.rand);
-                            event.world.spawnEntityInWorld(newEntity);
-                        }
-                        compound.removeTag("disguise");
-                        if(compound.hasNoTags()) {
-                            NBTHelper.removePersistentData(entity.getEntityItem());
-                            if(entity.getEntityItem().getTagCompound().hasNoTags()) {
-                                entity.getEntityItem().setTagCompound(null);
+                    int x = MathHelper.floor_double(entity.posX);
+                    int y = MathHelper.floor_double(entity.posY);
+                    int z = MathHelper.floor_double(entity.posZ);
+
+                    if(entity.delayBeforeCanPickup <= 0 && entity.worldObj.getTotalWorldTime() - entry.getValue() > 0) {
+                        if(ConfigBlocks.blockFluidPure == event.world.getBlock(x, y, z)
+                                && event.world.getBlockMetadata(x, y, z) == 0) {
+                            NBTTagCompound compound = NBTHelper.getPersistentData(entity.getEntityItem());
+                            NBTBase base = compound.getTag("disguise");
+                            if(base instanceof NBTTagCompound) {
+                                ItemStack stack = ItemStack.loadItemStackFromNBT((NBTTagCompound) base);
+                                EntityItem newEntity = new EntityItem(event.world, entity.posX, entity.posY, entity.posZ, stack);
+                                ItemUtils.applyRandomDropOffset(newEntity, event.world.rand);
+                                event.world.spawnEntityInWorld(newEntity);
                             }
+                            compound.removeTag("disguise");
+                            if(compound.hasNoTags()) {
+                                NBTHelper.removePersistentData(entity.getEntityItem());
+                                if(entity.getEntityItem().getTagCompound().hasNoTags()) {
+                                    entity.getEntityItem().setTagCompound(null);
+                                }
+                            }
+                            event.world.setBlockToAir(x, y, z);
                         }
-                        event.world.setBlockToAir(x, y, z);
+                    } else {
+                        Gadomancy.proxy.spawnBubbles(event.world, (float)entity.posX, (float)entity.posY, (float)entity.posZ, 0.2f);
                     }
                 }
             }
