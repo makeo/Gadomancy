@@ -6,6 +6,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
+import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
 import makeo.gadomancy.client.util.UtilsFX;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
@@ -32,6 +33,7 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
     public static final byte ID_SPARKLE = 5;
     public static final byte ID_SMOKE = 6;
     public static final byte ID_SMOKE_SPREAD = 7;
+    public static final byte ID_BUBBLES = 8;
 
     private byte annimationId;
     private int x;
@@ -103,6 +105,13 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
                 break;
             case ID_SMOKE_SPREAD:
                 UtilsFX.doSmokeEffectsAround(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z, Float.intBitsToFloat(message.additionalData));
+                break;
+            case ID_BUBBLES:
+                MultiTickEffectDispatcher.BubbleFXInfo bubbles =
+                        new MultiTickEffectDispatcher.BubbleFXInfo(Minecraft.getMinecraft().theWorld.provider.dimensionId,
+                                Float.intBitsToFloat(message.x), Float.intBitsToFloat(message.y), Float.intBitsToFloat(message.z),
+                                10, Float.intBitsToFloat(message.additionalData));
+                MultiTickEffectDispatcher.registerBubbles(bubbles);
                 break;
         }
         return null;

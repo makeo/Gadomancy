@@ -15,6 +15,7 @@ import makeo.gadomancy.common.events.EventHandlerGolem;
 import makeo.gadomancy.common.events.EventHandlerNetwork;
 import makeo.gadomancy.common.events.EventHandlerWorld;
 import makeo.gadomancy.common.network.PacketHandler;
+import makeo.gadomancy.common.network.packets.PacketStartAnimation;
 import makeo.gadomancy.common.registration.*;
 import makeo.gadomancy.common.utils.Injector;
 import makeo.gadomancy.common.utils.world.WorldProviderTCEldrich;
@@ -102,6 +103,14 @@ public class CommonProxy implements IGuiHandler {
         List arrKey = Arrays.asList(block, metadata);
         modTriggers.remove(arrKey);
         triggers.put(modid, modTriggers);
+    }
+
+    public void spawnBubbles(World world, float posX, float posY, float posZ, float rangeAroundItem) {
+        PacketStartAnimation pkt = new PacketStartAnimation(PacketStartAnimation.ID_BUBBLES,
+                Float.floatToIntBits(posX), Float.floatToIntBits(posY), Float.floatToIntBits(posZ),
+                Float.floatToIntBits(rangeAroundItem));
+        PacketHandler.INSTANCE.sendToAllAround(pkt, new NetworkRegistry.TargetPoint(world.provider.dimensionId,
+                posX, posY, posZ, 32));
     }
 
     @Override

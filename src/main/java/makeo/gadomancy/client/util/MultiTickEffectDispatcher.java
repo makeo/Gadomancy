@@ -3,6 +3,8 @@ package makeo.gadomancy.client.util;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
+import thaumcraft.client.fx.ParticleEngine;
+import thaumcraft.client.fx.particles.FXBubble;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.Thaumcraft;
 
@@ -24,14 +26,42 @@ public class MultiTickEffectDispatcher {
     private static ReentrantLock renderLock = new ReentrantLock();
     private static List<VortexDigInfo> vortexDigInfos = new ArrayList<VortexDigInfo>();
     private static List<FloatyLineInfo> floatyLineInfos = new ArrayList<FloatyLineInfo>();
+    private static List<BubbleFXInfo> bubbleInfos = new ArrayList<BubbleFXInfo>();
 
     public static void notifyRenderTick(World currentRenderWorld, float partialTicks) {
         renderLock.lock();
         try {
             handleVortexDiggingEffects(currentRenderWorld);
             handleWispyLineEffects(currentRenderWorld, partialTicks);
+            handleBubbleSpawnings(currentRenderWorld);
         } finally {
             renderLock.unlock();
+        }
+    }
+
+    private static void handleBubbleSpawnings(World world) {
+        Iterator<BubbleFXInfo> it = bubbleInfos.iterator();
+        while(it.hasNext()) {
+            BubbleFXInfo info = it.next();
+            if(info.dimId != world.provider.dimensionId) {
+                it.remove();
+                continue;
+            }
+            info.renderTicks++;
+            if(info.renderTicks > info.overallTicks) {
+                it.remove();
+                continue;
+            }
+
+            if(world.rand.nextInt(3) == 0) {
+                float x = info.posX + (world.rand.nextBoolean() ? 1 : -1) * (world.rand.nextFloat() * info.rangeAroundItem);
+                float y = info.posY + (world.rand.nextBoolean() ? 1 : -1) * (world.rand.nextFloat() * info.rangeAroundItem);
+                float z = info.posZ + (world.rand.nextBoolean() ? 1 : -1) * (world.rand.nextFloat() * info.rangeAroundItem);
+                FXBubble fb = new FXBubble(world, x, y, z, 0.0D, 0.0D, 0.0D, 0);
+                fb.setAlphaF(0.25F);
+                fb.setRGB(1.0F, 1.0F, 1.0F);
+                ParticleEngine.instance.addEffect(world, fb);
+            }
         }
     }
 
@@ -76,6 +106,15 @@ public class MultiTickEffectDispatcher {
         }
     }
 
+    public static void registerBubbles(BubbleFXInfo info) {
+        renderLock.lock();
+        try {
+            bubbleInfos.add(info);
+        } finally {
+            renderLock.unlock();
+        }
+    }
+
     public static void registerVortexDig(VortexDigInfo info) {
         renderLock.lock();
         try {
@@ -114,6 +153,23 @@ public class MultiTickEffectDispatcher {
             this.originZ = originZ;
             this.tickCap = tickCap;
             this.colorAsInt = colorAsInt;
+        }
+    }
+
+    public static class BubbleFXInfo {
+
+        private int dimId;
+        private float posX, posY, posZ;
+        private int renderTicks, overallTicks;
+        private float rangeAroundItem;
+
+        public BubbleFXInfo(int dimId, float posX, float posY, float posZ, int overallTicks, float rangeAroundItem) {
+            this.dimId = dimId;
+            this.posX = posX;
+            this.posY = posY;
+            this.posZ = posZ;
+            this.overallTicks = overallTicks;
+            this.rangeAroundItem = rangeAroundItem;
         }
     }
 

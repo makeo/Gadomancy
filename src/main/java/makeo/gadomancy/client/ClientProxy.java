@@ -25,6 +25,7 @@ import makeo.gadomancy.client.renderers.item.ItemRenderStoneMachine;
 import makeo.gadomancy.client.renderers.item.ItemRenderTileEntity;
 import makeo.gadomancy.client.renderers.item.ItemRenderTileEntityMulti;
 import makeo.gadomancy.client.renderers.tile.*;
+import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
 import makeo.gadomancy.common.CommonProxy;
 import makeo.gadomancy.common.blocks.tiles.*;
 import makeo.gadomancy.common.entities.EntityAuraCore;
@@ -177,6 +178,14 @@ public class ClientProxy extends CommonProxy {
         int nextId = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(nextId, renderer);
         return nextId;
+    }
+
+    @Override
+    public void spawnBubbles(World world, float posX, float posY, float posZ, float rangeAroundItem) {
+        MultiTickEffectDispatcher.BubbleFXInfo bubbles =
+                new MultiTickEffectDispatcher.BubbleFXInfo(Minecraft.getMinecraft().theWorld.provider.dimensionId,
+                        posX, posY, posZ, 10, rangeAroundItem);
+        MultiTickEffectDispatcher.registerBubbles(bubbles);
     }
 
     @Override
