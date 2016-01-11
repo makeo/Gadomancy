@@ -232,7 +232,7 @@ public class AuraEffects {
         @Override
         public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
             Block selected = world.getBlock(selectedBlock.posX, selectedBlock.posY, selectedBlock.posZ);
-            if(selected.equals(Blocks.water)) {
+            if(selected.equals(Blocks.water) && world.getBlockMetadata(selectedBlock.posX, selectedBlock.posY, selectedBlock.posZ) == 0) {
                 world.setBlock(selectedBlock.posX, selectedBlock.posY, selectedBlock.posZ, Blocks.ice);
             }
         }
