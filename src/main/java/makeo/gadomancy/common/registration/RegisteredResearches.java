@@ -312,7 +312,6 @@ public class RegisteredResearches {
                 .setPages(new ResearchPage("gadomancy.research_page.ARMORDISGUISE.1"), new ResearchPage(new InfusionVisualDisguiseArmor(false)), new ResearchPage(new InfusionVisualDisguiseArmor(true)), new ResearchPage("gadomancy.research_page.ARMORDISGUISE.4")).registerResearchItem();
 
         //Warpy warpy
-        ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".AURA_CORE", 1);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_3", 2);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".FAM_COOLDOWN_1", 3);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR", 4);
