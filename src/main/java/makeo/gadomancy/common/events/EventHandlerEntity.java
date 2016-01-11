@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.events;
 
+import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import makeo.gadomancy.common.aura.AuraEffects;
 import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
@@ -56,7 +57,7 @@ public class EventHandlerEntity {
             for(ChunkCoordinates luxPylons : registeredLuxPylons) {
                 Vector3 pylon = Vector3.fromCC(luxPylons);
                 if(entityPos.distanceSquared(pylon) <= rangeSq) {
-                    event.setCanceled(true);
+                    event.setResult(Event.Result.DENY);
                     return;
                 }
             }
