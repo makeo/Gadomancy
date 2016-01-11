@@ -59,7 +59,9 @@ public class TCMazeHandler {
 
     public static void closeAllSessionsAndCleanup() {
         for (EntityPlayer pl : runningSessions.keySet()) {
-            runningSessions.get(pl).closeSession(false);
+            TCMazeSession session = runningSessions.get(pl);
+            session.closeSession(false);
+            watchedBosses.remove(session);
         }
         init();
     }
@@ -80,7 +82,8 @@ public class TCMazeHandler {
                     player.setPositionAndUpdate(cc.posX + 0.5, y, cc.posZ + 0.5);
                 }
             }
-            for (EntityPlayer player : runningSessions.keySet()) {
+            HashMap<EntityPlayer, TCMazeSession> map = new HashMap<EntityPlayer, TCMazeSession>(runningSessions);
+            for (EntityPlayer player : map.keySet()) {
                 if (player.worldObj.provider.dimensionId != ModConfig.dimOuterId) { //If the player left our dim, but he should still be in the session, ...
                     closeSession(player, false);
                 }
