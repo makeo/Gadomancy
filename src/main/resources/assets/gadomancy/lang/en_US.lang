@@ -145,7 +145,7 @@ gadomancy.research_page.REVEALER.1=After extensively studying the Goggles of Rev
 tc.research_name.GADOMANCY.ARMORDISGUISE=Armor Disguise
 tc.research_text.GADOMANCY.ARMORDISGUISE=Let the games begin!
 gadomancy.research_page.ARMORDISGUISE.1=You have found a way to change the appearance of your armor. The effects of the original armor will remain, while the appearance of the armor when worn will be that of the disguise.<BR> The original armor is placed on the central pedestal of the infusion, and the armor that will disguise the original is placed on the outer ring of pedestals.<BR>However, the item that will be used as disguise will merge into the other armor and its appearance will be the only thing left of it.
-gadomancy.research_page.ARMORDISGUISE.4=After giving it a second thought, you think if you replace the armor you want to have as new appearance with an invisibility potion, the potion might just merge with the armor, causing it to be fully transparent when worn.
+gadomancy.research_page.ARMORDISGUISE.4=After giving it a second thought, you think if you replace the armor you want to have as new appearance with an invisibility potion, the potion might just merge with the armor, causing it to be fully transparent when worn.<LINE>Throwing the disguised armor into Purifying Fluid causes a reaction that removes the disguise effect. The armor used as disguise will be ripped off the other armor and reappears miraculously near the previously disguised armor.
 
 gadomancy.golemblurb.default=??
 gadomancy.golemblurb.breakcore=Master, should I break anything, or something specific and should I use a tool or none?
