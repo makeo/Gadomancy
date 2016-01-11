@@ -464,6 +464,7 @@ public class AuraEffects {
                     mob.setCurrentItemOrArmor(i, null);
                 }
 
+                int timeout = 40;
                 int totalCount = (world.rand.nextInt(3) == 0 ? 1 : 0) + 2;
                 do {
                     int slot = mob.getEquipmentInSlot(0) == null ? 0 : (mob.getEquipmentInSlot(4) == null ? 4 : (world.rand.nextInt(3)+1));
@@ -476,13 +477,17 @@ public class AuraEffects {
                             mob.setEquipmentDropChance(slot, 0);
                         }
                     }
-                } while (totalCount > 0);
-                mob.addPotionEffect(new PotionEffect(Potion.invisibility.getId(), MiscUtils.ticksForMinutes(60*24*365), 1, true));
+                    timeout--;
+                } while (totalCount > 0 && timeout > 0);
 
-                ChunkCoordinates pos = new ChunkCoordinates((int) mob.posX, (int) mob.posY, (int) mob.posZ);
-                pos = iterateDown(pos, world);
-                mob.setPosition(pos.posX + 0.5, pos.posY, pos.posZ + 0.5);
-                world.spawnEntityInWorld(mob);
+                if(timeout > 0) {
+                    mob.addPotionEffect(new PotionEffect(Potion.invisibility.getId(), MiscUtils.ticksForMinutes(60*24*365), 1, true));
+
+                    ChunkCoordinates pos = new ChunkCoordinates((int) mob.posX, (int) mob.posY, (int) mob.posZ);
+                    pos = iterateDown(pos, world);
+                    mob.setPosition(pos.posX + 0.5, pos.posY, pos.posZ + 0.5);
+                    world.spawnEntityInWorld(mob);
+                }
             }
         }
     }.register(Aspect.SOUL);

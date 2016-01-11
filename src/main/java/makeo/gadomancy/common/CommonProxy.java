@@ -69,8 +69,6 @@ public class CommonProxy implements IGuiHandler {
         FMLCommonHandler.instance().bus().register(worldEventHandler);
         MinecraftForge.EVENT_BUS.register(new EventHandlerEntity());
 
-        AuraEffects.AER.getTickInterval(); //initalize AuraEffects
-
         RegisteredEnchantments.init();
         RegisteredRecipes.init();
 
@@ -85,6 +83,7 @@ public class CommonProxy implements IGuiHandler {
 
     public void postInitalize() {
         RegisteredPotions.init();
+        AuraEffects.AER.getTickInterval(); //initalize AuraEffects
 
         RegisteredResearches.init();
         RegisteredIntegrations.init();
