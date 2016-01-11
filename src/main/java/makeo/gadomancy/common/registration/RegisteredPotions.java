@@ -38,10 +38,21 @@ public class RegisteredPotions {
         int id = ModConfig.loadPotionId(potionClass.getSimpleName());
         if(id == -1) {
             id = Potion.potionTypes.length;
+            for(int i = 0; i < Potion.potionTypes.length; i++) {
+                if(Potion.potionTypes[i] == null) {
+                    id = i;
+                }
+            }
+
+            if(id == -1) {
+                id = Potion.potionTypes.length;
+                FMLLog.warning("Gadomancy could not find a free potion id and will extend the potionTypes array! This might cause fatal errors. Please consider changing the config!");
+            }
+
         }
 
         if(id > 127) {
-            FMLLog.warning("The potion id '" + id + "' of potion '" + Gadomancy.NAME + ":" + potionClass.getSimpleName() + "' is bigger then 127 this might cause errors. Please consider changing the config.");
+            FMLLog.warning("The potion id '" + id + "' of potion '" + Gadomancy.NAME + ":" + potionClass.getSimpleName() + "' is bigger then 127 this might cause errors as well. Please consider changing the config.");
         }
 
         if(id >= Potion.potionTypes.length) {
