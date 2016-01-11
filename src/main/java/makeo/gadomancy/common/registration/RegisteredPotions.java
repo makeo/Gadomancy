@@ -40,6 +40,7 @@ public class RegisteredPotions {
             for(int i = 0; i < Potion.potionTypes.length; i++) {
                 if(Potion.potionTypes[i] == null) {
                     id = i;
+                    break;
                 }
             }
 
