@@ -31,16 +31,16 @@ public class GadomancyTransformer extends AccessTransformer {
     public byte[] transform(String name, String transformedName, byte[] bytes) {
         boolean needsTransform = name.equalsIgnoreCase(NAME_ENCHANTMENT_HELPER) ||
                 name.equalsIgnoreCase(NAME_WANDMANAGER) || name.equalsIgnoreCase(NAME_NODE_RENDERER)
-                || name.equalsIgnoreCase(NAME_RENDER_EVENT_HANDLER);
+                || transformedName.equalsIgnoreCase(NAME_RENDER_EVENT_HANDLER);
         if(!needsTransform) return super.transform(name, transformedName, bytes);
 
-        FMLLog.info("[GadomancyTransformer] Transforming " + name);
+        FMLLog.info("[GadomancyTransformer] Transforming " + name + " : " + transformedName);
 
         ClassNode node = new ClassNode();
         ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
 
-        if(name.equalsIgnoreCase(NAME_ENCHANTMENT_HELPER)) {
+        if(transformedName.equalsIgnoreCase(NAME_ENCHANTMENT_HELPER)) {
             for (MethodNode mn : node.methods) {
                 if(mn.name.equals("getFortuneModifier") || mn.name.equals("func_77517_e")) {
                     mn.instructions = new InsnList();
