@@ -131,6 +131,8 @@ public class TileArcaneDropper extends TileEntity implements IInventory, ISidedI
     public ItemStack getStackInSlot(int slot) {
         updateInventory();
 
+        if(slot >= items.size()) return null; //Get rekt. nothing here on this slot.
+
         EntityItem entity = items.get(slot);
         return entity == null || entity.isDead ? null : entity.getEntityItem();
     }

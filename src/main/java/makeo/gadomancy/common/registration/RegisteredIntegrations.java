@@ -2,10 +2,9 @@ package makeo.gadomancy.common.registration;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
-import makeo.gadomancy.common.integration.IntegrationAutomagy;
-import makeo.gadomancy.common.integration.IntegrationMod;
-import makeo.gadomancy.common.integration.IntegrationMorph;
-import makeo.gadomancy.common.integration.IntegrationThaumicExploration;
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.integration.*;
+import makeo.gadomancy.common.integration.mystcraft.IntegrationMystcraft;
 import makeo.gadomancy.common.utils.Injector;
 
 /**
@@ -20,13 +19,17 @@ public class RegisteredIntegrations {
     public static IntegrationMorph morph;
     public static IntegrationThaumicExploration thaumicExploration;
     public static IntegrationAutomagy automagy;
+    public static IntegrationNEI nei;
+    public static IntegrationMystcraft mystcraft;
 
     private RegisteredIntegrations() {}
 
     public static void init() {
-        morph = registerUndependent(IntegrationMorph.class);
-        thaumicExploration = registerUndependent(IntegrationThaumicExploration.class);
-        automagy = registerUndependent(IntegrationAutomagy.class);
+        morph = registerIndependent(IntegrationMorph.class);
+        thaumicExploration = registerIndependent(IntegrationThaumicExploration.class);
+        automagy = registerIndependent(IntegrationAutomagy.class);
+        nei = registerIndependent(IntegrationNEI.class);
+        mystcraft = registerIndependent(IntegrationMystcraft.class);
 
         registerDependent("ThaumicHorizons", "makeo.gadomancy.common.integration.thaumichorizions.IntegrationThaumicHorizions");
         registerDependent("Waila", "makeo.gadomancy.common.integration.waila.IntegrationWaila");
@@ -49,7 +52,7 @@ public class RegisteredIntegrations {
         }
     }
 
-    private static  <T extends IntegrationMod> T registerUndependent(Class<T> clazz) {
+    private static  <T extends IntegrationMod> T registerIndependent(Class<T> clazz) {
         T integration;
         try {
             integration = clazz.newInstance();
@@ -59,7 +62,7 @@ public class RegisteredIntegrations {
 
         integration.init();
         if(integration.isPresent()) {
-            FMLLog.severe("Initialized hook for mod \"" + integration.getModId() + "\"!");
+            Gadomancy.log.info("Initialized hook for mod \"" + integration.getModId() + "\"!");
         }
         return integration;
     }

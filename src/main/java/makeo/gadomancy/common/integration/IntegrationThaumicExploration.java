@@ -25,7 +25,7 @@ public class IntegrationThaumicExploration extends IntegrationMod {
         Block trashJar = Block.getBlockFromName("ThaumicExploration:trashJar");
         if(trashJar != null) {
             RegisteredBlocks.registerStickyJar(trashJar, 0, false, true);
-            RegisteredItems.registerStickyJar(Item.getItemFromBlock(trashJar), 0, new ItemStack(trashJar));
+            RegisteredItems.registerStickyJar(Item.getItemFromBlock(trashJar), 0, new ItemStack(trashJar), "TRASHJAR");
         }
     }
 }

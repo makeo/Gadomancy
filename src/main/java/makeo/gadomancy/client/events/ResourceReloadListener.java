@@ -3,6 +3,7 @@ package makeo.gadomancy.client.events;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.client.textures.GolemGuiTexture;
+import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResourceManager;
@@ -22,9 +23,14 @@ import java.util.Map;
  * Created by makeo @ 03.10.2015 12:09
  */
 public class ResourceReloadListener implements IResourceManagerReloadListener {
+    public static final ResourceReloadListener instance = new ResourceReloadListener();
+    public static ResourceReloadListener getInstance() {
+        return instance;
+    }
+
     public static Map languageList;
 
-    public ResourceReloadListener() {
+    private ResourceReloadListener() {
         Injector instance = new Injector(new Injector(StringTranslate.class)
                 .getField(Injector.findField(StringTranslate.class, StringTranslate.class)));
         languageList = instance.getField(instance.findField(Map.class));
@@ -32,8 +38,18 @@ public class ResourceReloadListener implements IResourceManagerReloadListener {
 
     @Override
     public void onResourceManagerReload(IResourceManager resourceManager) {
+        reloadGolemResources();
+    }
+
+    public void reloadGolemResources() {
         manipulateLanguageFile();
-        registerTextureOverride();
+
+        Gadomancy.proxy.runDelayedClientSide(new Runnable() {
+            @Override
+            public void run() {
+                registerTextureOverride();
+            }
+        });
     }
 
     private void manipulateLanguageFile() {

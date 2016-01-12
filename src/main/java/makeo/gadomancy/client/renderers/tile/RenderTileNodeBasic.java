@@ -1,5 +1,6 @@
 package makeo.gadomancy.client.renderers.tile;
 
+import makeo.gadomancy.common.events.EventHandlerRedirect;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -186,7 +187,12 @@ public class RenderTileNodeBasic {
 
     //Gadomancy: Added dynamic size
     public static void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks, float size) {
+        //Gadomancy Added event hook
+        EventHandlerRedirect.preNodeRender(tile);
+
         if (!(tile instanceof INode)) {
+            //Gadomancy Added event hook
+            EventHandlerRedirect.postNodeRender(tile);
             return;
         }
         INode node = (INode) tile;
@@ -217,6 +223,9 @@ public class RenderTileNodeBasic {
             if (((drainEntity instanceof EntityPlayer)) && (!((EntityPlayer) drainEntity).isUsingItem())) {
                 ((TileNode) tile).drainEntity = null;
                 ((TileNode) tile).drainCollision = null;
+
+                //Gadomancy Added event hook
+                EventHandlerRedirect.postNodeRender(tile);
                 return;
             }
             MovingObjectPosition drainCollision = ((TileNode) tile).drainCollision;
@@ -241,6 +250,9 @@ public class RenderTileNodeBasic {
 
             GL11.glPopMatrix();
         }
+
+        //Gadomancy Added event hook
+        EventHandlerRedirect.postNodeRender(tile);
     }
 
 }

@@ -6,6 +6,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
+import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
 import makeo.gadomancy.client.util.UtilsFX;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
@@ -30,18 +31,21 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
     public static final byte ID_RUNES = 3;
     public static final byte ID_SPARKLE_SPREAD = 4;
     public static final byte ID_SPARKLE = 5;
+    public static final byte ID_SMOKE = 6;
+    public static final byte ID_SMOKE_SPREAD = 7;
+    public static final byte ID_BUBBLES = 8;
 
     private byte annimationId;
     private int x;
     private int y;
     private int z;
-    private byte additionalData;
+    private int additionalData;
 
     public PacketStartAnimation(byte annimationId, int x, int y, int z) {
         this(annimationId, x, y, z, (byte) 0);
     }
     
-    public PacketStartAnimation(byte annimationId, int x, int y, int z, byte additionalData) {
+    public PacketStartAnimation(byte annimationId, int x, int y, int z, int additionalData) {
         this.annimationId = annimationId;
         this.x = x;
         this.y = y;
@@ -57,7 +61,7 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
         this.x = buf.readInt();
         this.y = buf.readInt();
         this.z = buf.readInt();
-        this.additionalData = buf.readByte();
+        this.additionalData = buf.readInt();
     }
 
     @Override
@@ -66,7 +70,7 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
         buf.writeInt(x);
         buf.writeInt(y);
         buf.writeInt(z);
-        buf.writeByte(additionalData);
+        buf.writeInt(additionalData);
     }
 
     @Override
@@ -95,6 +99,19 @@ public class PacketStartAnimation implements IMessage, IMessageHandler<PacketSta
                 break;
             case ID_SPARKLE:
                 UtilsFX.doSparkleEffects(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z);
+                break;
+            case ID_SMOKE:
+                UtilsFX.doSmokeEffects(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z, Float.intBitsToFloat(message.additionalData));
+                break;
+            case ID_SMOKE_SPREAD:
+                UtilsFX.doSmokeEffectsAround(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z, Float.intBitsToFloat(message.additionalData));
+                break;
+            case ID_BUBBLES:
+                MultiTickEffectDispatcher.BubbleFXInfo bubbles =
+                        new MultiTickEffectDispatcher.BubbleFXInfo(Minecraft.getMinecraft().theWorld.provider.dimensionId,
+                                Float.intBitsToFloat(message.x), Float.intBitsToFloat(message.y), Float.intBitsToFloat(message.z),
+                                10, Float.intBitsToFloat(message.additionalData));
+                MultiTickEffectDispatcher.registerBubbles(bubbles);
                 break;
         }
         return null;

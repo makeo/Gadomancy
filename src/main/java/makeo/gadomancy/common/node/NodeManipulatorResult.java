@@ -2,6 +2,8 @@ package makeo.gadomancy.common.node;
 
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import net.minecraft.util.WeightedRandom;
+import net.minecraft.world.World;
+import thaumcraft.api.nodes.INode;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -24,10 +26,10 @@ public abstract class NodeManipulatorResult extends WeightedRandom.Item {
         return resultType;
     }
 
-    public boolean canAffect(TileExtendedNode node) {
+    public boolean canAffect(World world, INode node) {
         return true;
     }
 
-    public abstract boolean affect(TileExtendedNode node);
+    public abstract boolean affect(World world, INode node);
 
 }

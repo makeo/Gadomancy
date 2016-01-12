@@ -1,9 +1,12 @@
 package makeo.gadomancy.common.blocks;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
 import makeo.gadomancy.common.blocks.tiles.TileAuraPylonTop;
 import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
+import makeo.gadomancy.common.network.PacketHandler;
+import makeo.gadomancy.common.network.packets.PacketStartAnimation;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.registration.RegisteredMultiblocks;
@@ -19,9 +22,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.lib.research.ResearchManager;
 
 import java.util.List;
 
@@ -64,6 +69,15 @@ public class BlockAuraPylon extends BlockContainer implements IBlockTransparent 
     }
 
     @Override
+    public int getLightValue(IBlockAccess world, int x, int y, int z) {
+        int meta = world.getBlockMetadata(x, y, z);
+        if(meta == 1) {
+            return 10;
+        }
+        return super.getLightValue(world, x, y, z);
+    }
+
+    @Override
     public int damageDropped(int meta) {
         return meta;
     }
@@ -88,15 +102,23 @@ public class BlockAuraPylon extends BlockContainer implements IBlockTransparent 
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9) {
-        if(world.getBlockMetadata(x, y, z) != 1) return false;
+        if(world.getBlockMetadata(x, y, z) != 1) {
+            Block up = world.getBlock(x, y + 1, z);
+            return up != null && up instanceof BlockAuraPylon && up.onBlockActivated(world, x, y + 1, z, player, side, par7, par8, par9);
+        }
         ItemStack heldItem = player.getHeldItem();
-        if(!world.isRemote && heldItem != null && heldItem.getItem() instanceof ItemWandCasting) {
-            //TODO check for research!
+        if(!world.isRemote && heldItem != null && heldItem.getItem() instanceof ItemWandCasting &&
+                ResearchManager.isResearchComplete(player.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".AURA_PYLON")) {
+            TileAuraPylon tileAuraPylon = (TileAuraPylon) world.getTileEntity(x, y - 1, z);
             if(MultiblockHelper.isMultiblockPresent(world, x, y, z, RegisteredMultiblocks.auraPylonPattern) &&
+                    !tileAuraPylon.isPartOfMultiblock() &&
                     ThaumcraftApiHelper.consumeVisFromWandCrafting(player.getCurrentEquippedItem(), player, RegisteredRecipes.costsAuraPylonMultiblock, true)) {
+                PacketStartAnimation pkt = new PacketStartAnimation(PacketStartAnimation.ID_SPARKLE_SPREAD, x, y, z);
+                NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 32);
+                PacketHandler.INSTANCE.sendToAllAround(pkt, point);
                 TileAuraPylon ta = (TileAuraPylon) world.getTileEntity(x, y - 1, z);
                 ta.setTileInformation(true, false);
-                ta = (TileAuraPylon) world.getTileEntity(x, y - 4, z);
+                ta = (TileAuraPylon) world.getTileEntity(x, y - 3, z);
                 ta.setTileInformation(false, true);
                 int count = 1;
                 TileEntity iter = world.getTileEntity(x, y - count, z);
@@ -104,6 +126,8 @@ public class BlockAuraPylon extends BlockContainer implements IBlockTransparent 
                     ((TileAuraPylon) iter).setPartOfMultiblock(true);
                     world.markBlockForUpdate(x, y - count, z);
                     iter.markDirty();
+                    pkt = new PacketStartAnimation(PacketStartAnimation.ID_SPARKLE_SPREAD, x, y - count, z);
+                    PacketHandler.INSTANCE.sendToAllAround(pkt, point);
                     count++;
                     iter = world.getTileEntity(x, y - count, z);
                 }

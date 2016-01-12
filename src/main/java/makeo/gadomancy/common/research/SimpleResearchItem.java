@@ -15,6 +15,7 @@ import thaumcraft.api.research.ResearchItem;
  * Created by makeo @ 15.06.2015 19:05
  */
 public class SimpleResearchItem extends ResearchItem {
+
     private static final String PREFIX = Gadomancy.MODID.toUpperCase() + ".";
 
     public SimpleResearchItem(String key, int col, int row, int complex, ResourceLocation icon, AspectList tags) {
@@ -28,4 +29,5 @@ public class SimpleResearchItem extends ResearchItem {
     public static String getFullName(String name) {
         return PREFIX + name;
     }
+
 }

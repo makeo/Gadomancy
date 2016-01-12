@@ -5,7 +5,8 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
-import makeo.gadomancy.client.events.ClientTickHandler;
+import makeo.gadomancy.client.effect.EffectHandler;
+import makeo.gadomancy.client.events.ClientHandler;
 import makeo.gadomancy.client.events.RenderEventHandler;
 import makeo.gadomancy.client.events.ResourceReloadListener;
 import makeo.gadomancy.client.gui.ArcanePackagerGui;
@@ -14,6 +15,7 @@ import makeo.gadomancy.client.renderers.block.BlockExtendedNodeJarRenderer;
 import makeo.gadomancy.client.renderers.block.RenderBlockStoneMachine;
 import makeo.gadomancy.client.renderers.block.RenderBlockTransparent;
 import makeo.gadomancy.client.renderers.entity.RenderAdditionalGolemBase;
+import makeo.gadomancy.client.renderers.entity.RenderEntityAuraCore;
 import makeo.gadomancy.client.renderers.item.ItemCreativeNodeRenderer;
 import makeo.gadomancy.client.renderers.item.ItemExNodeRenderer;
 import makeo.gadomancy.client.renderers.item.ItemJarExtendedNodeRenderer;
@@ -23,8 +25,11 @@ import makeo.gadomancy.client.renderers.item.ItemRenderStoneMachine;
 import makeo.gadomancy.client.renderers.item.ItemRenderTileEntity;
 import makeo.gadomancy.client.renderers.item.ItemRenderTileEntityMulti;
 import makeo.gadomancy.client.renderers.tile.*;
+import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
 import makeo.gadomancy.common.CommonProxy;
 import makeo.gadomancy.common.blocks.tiles.*;
+import makeo.gadomancy.common.entities.EntityAuraCore;
+import makeo.gadomancy.common.entities.EntityPermNoClipItem;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.Injector;
@@ -42,6 +47,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.client.gui.GuiGolem;
 import thaumcraft.client.renderers.entity.RenderGolemBase;
+import thaumcraft.client.renderers.entity.RenderSpecialItem;
 import thaumcraft.client.renderers.tile.TileEldritchPortalRenderer;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.golems.EntityGolemBase;
@@ -49,6 +55,7 @@ import thaumcraft.common.tiles.TileEldritchAltar;
 import thaumcraft.common.tiles.TileEldritchCap;
 import thaumcraft.common.tiles.TileEldritchObelisk;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -108,6 +115,9 @@ public class ClientProxy extends CommonProxy {
         RenderTileBlockProtector renderTileBlockProtector = new RenderTileBlockProtector();
         ClientRegistry.bindTileEntitySpecialRenderer(TileBlockProtector.class, renderTileBlockProtector);
 
+        RenderTileArcanePackager renderTileArcanePackager = new RenderTileArcanePackager();
+        ClientRegistry.bindTileEntitySpecialRenderer(TileArcanePackager.class, renderTileArcanePackager);
+
         //Items
         TileArcaneDropper fakeTile = new TileArcaneDropper();
         fakeTile.blockMetadata = 8 | ForgeDirection.SOUTH.ordinal();
@@ -117,9 +127,9 @@ public class ClientProxy extends CommonProxy {
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ConfigBlocks.blockAiry), new ItemExNodeRenderer());
 
-        //ItemRenderTileEntityMulti multi = new ItemRenderTileEntityMulti(new ItemRenderTileEntityMulti.RenderSet(renderTileAuraPylon, new TileAuraPylon(), 0),
-        //        new ItemRenderTileEntityMulti.RenderSet(renderTileAuraPylon, new TileAuraPylonTop(), 1));
-        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockAuraPylon), multi);
+        ItemRenderTileEntityMulti multi = new ItemRenderTileEntityMulti(new ItemRenderTileEntityMulti.RenderSet(renderTileAuraPylon, new TileAuraPylon(), 0),
+               new ItemRenderTileEntityMulti.RenderSet(renderTileAuraPylon, new TileAuraPylonTop(), 1));
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockAuraPylon), multi);
 
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemExtendedNodeJar, new ItemJarExtendedNodeRenderer());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockRemoteJar), new ItemRenderRemoteJar(renderTileRemoteJar));
@@ -133,9 +143,14 @@ public class ClientProxy extends CommonProxy {
         TileBlockProtector tileBlockProtector = new TileBlockProtector();
         tileBlockProtector.facing = 3;
         itemRenderStoneMachine.registerRenderer(2, tileBlockProtector, renderTileBlockProtector);
+        itemRenderStoneMachine.registerRenderer(4, new TileArcanePackager(), renderTileArcanePackager);
 
-        MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemFamiliar, new ItemRenderFamiliar());
+        MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemFamiliar_old, new ItemRenderFamiliar());
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemCreativeNode, new ItemCreativeNodeRenderer());
+
+        //Entities
+        RenderingRegistry.registerEntityRenderingHandler(EntityPermNoClipItem.class, new RenderSpecialItem());
+        RenderingRegistry.registerEntityRenderingHandler(EntityAuraCore.class, new RenderEntityAuraCore());
 
         //Blocks
         RegisteredBlocks.rendererTransparentBlock = registerBlockRenderer(new RenderBlockTransparent());
@@ -148,12 +163,13 @@ public class ClientProxy extends CommonProxy {
         IResourceManager manager = Minecraft.getMinecraft().getResourceManager();
         if(manager instanceof SimpleReloadableResourceManager) {
             SimpleReloadableResourceManager rm = (SimpleReloadableResourceManager) manager;
-            rm.registerReloadListener(new ResourceReloadListener());
+            rm.registerReloadListener(ResourceReloadListener.getInstance());
         }
 
+        MinecraftForge.EVENT_BUS.register(EffectHandler.getInstance());
         MinecraftForge.EVENT_BUS.register(new RenderEventHandler());
 
-        FMLCommonHandler.instance().bus().register(new ClientTickHandler());
+        FMLCommonHandler.instance().bus().register(new ClientHandler());
 
         super.postInitalize();
     }
@@ -162,6 +178,14 @@ public class ClientProxy extends CommonProxy {
         int nextId = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(nextId, renderer);
         return nextId;
+    }
+
+    @Override
+    public void spawnBubbles(World world, float posX, float posY, float posZ, float rangeAroundItem) {
+        MultiTickEffectDispatcher.BubbleFXInfo bubbles =
+                new MultiTickEffectDispatcher.BubbleFXInfo(Minecraft.getMinecraft().theWorld.provider.dimensionId,
+                        posX, posY, posZ, 10, rangeAroundItem);
+        MultiTickEffectDispatcher.registerBubbles(bubbles);
     }
 
     @Override
@@ -208,5 +232,12 @@ public class ClientProxy extends CommonProxy {
             }
         }
         return null;
+    }
+
+    public final List<Runnable> clientActions = new ArrayList<Runnable>();
+
+    @Override
+    public void runDelayedClientSide(Runnable run) {
+        clientActions.add(run);
     }
 }

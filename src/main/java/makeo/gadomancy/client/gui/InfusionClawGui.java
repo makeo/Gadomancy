@@ -6,6 +6,7 @@ import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
 import makeo.gadomancy.common.containers.ContainerInfusionClaw;
 import makeo.gadomancy.common.utils.ColorHelper;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -37,6 +38,11 @@ public class InfusionClawGui extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
+        if(((TileInfusionClaw)container.clawInv).isInvalid()) {
+            Minecraft.getMinecraft().displayGuiScreen(null);
+            return;
+        }
+
         ItemStack cursorStack = container.playerInv.getItemStack();
         if(((TileInfusionClaw)container.clawInv).isRunning() || (cursorStack != null && cursorStack.stackSize > 0 && !container.clawInv.isItemValidForSlot(0, cursorStack))) {
             GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
@@ -96,10 +102,10 @@ public class InfusionClawGui extends GuiContainer {
         int checkX = x - baseX - 114;
         int checkY = y - baseY - 36;
 
-        if(checkX >= 0 && checkX <= 8 && checkY >= 0 && checkY <= 8) {
+        if(checkX >= 0 && checkX < 8 && checkY >= 0 && checkY < 8) {
             TileInfusionClaw tile = ((TileInfusionClaw)container.clawInv);
             this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, tile.isLocked() ? 0 : 1);
-            tile.setIsLocked(tile.isLocked());
+            tile.setIsLocked(!tile.isLocked());
         }
     }
 }

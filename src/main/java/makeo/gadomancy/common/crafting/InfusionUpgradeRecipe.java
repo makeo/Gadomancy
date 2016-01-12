@@ -51,10 +51,11 @@ public class InfusionUpgradeRecipe extends InfusionRecipe {
 
         for(int i = 0; i < EnumGolemType.values().length ; i++) {
             EnumGolemType type = EnumGolemType.values()[i];
-
-            AdditionalGolemType addType = GadomancyApi.getAdditionalGolemType(type);
-            Item input = addType == null ? ConfigItems.itemGolemPlacer : addType.getPlacerItem();
-            recipes[i] = new InfusionUpgradeRecipe(research, upgrade, inst, aspects, new ItemStack(input, 1, type.ordinal()), recipe);
+            if(type.health > 0) {
+                AdditionalGolemType addType = GadomancyApi.getAdditionalGolemType(type);
+                Item input = addType == null ? ConfigItems.itemGolemPlacer : addType.getPlacerItem();
+                recipes[i] = new InfusionUpgradeRecipe(research, upgrade, inst, aspects, new ItemStack(input, 1, type.ordinal()), recipe);
+            }
         }
         return recipes;
     }

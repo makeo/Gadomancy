@@ -12,19 +12,8 @@ import makeo.gadomancy.common.blocks.BlockNodeManipulator;
 import makeo.gadomancy.common.blocks.BlockRemoteJar;
 import makeo.gadomancy.common.blocks.BlockStickyJar;
 import makeo.gadomancy.common.blocks.BlockStoneMachine;
-import makeo.gadomancy.common.blocks.tiles.TileAdditionalEldritchPortal;
-import makeo.gadomancy.common.blocks.tiles.TileArcaneDropper;
-import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
-import makeo.gadomancy.common.blocks.tiles.TileAuraPylonTop;
-import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
-import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
-import makeo.gadomancy.common.blocks.tiles.TileManipulationFocus;
-import makeo.gadomancy.common.blocks.tiles.TileManipulatorPillar;
-import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
-import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
-import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
+import makeo.gadomancy.common.blocks.tiles.*;
+import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.items.ItemBlockAdditionalEldritchPortal;
 import makeo.gadomancy.common.items.ItemBlockAuraPylon;
 import makeo.gadomancy.common.items.ItemBlockRemoteJar;
@@ -35,6 +24,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import thaumcraft.common.blocks.BlockAiry;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileInfusionMatrix;
 
@@ -60,7 +50,7 @@ public class RegisteredBlocks {
     public static BlockArcaneDropper blockArcaneDropper;
     public static BlockInfusionClaw blockInfusionClaw;
     public static BlockRemoteJar blockRemoteJar;
-    public static BlockNode blockNode;
+    public static BlockAiry blockNode = (BlockAiry) ConfigBlocks.blockAiry;
     public static BlockExtendedNodeJar blockExtendedNodeJar;
     public static BlockNodeManipulator blockNodeManipulator;
     public static BlockStoneMachine blockStoneMachine;
@@ -82,12 +72,12 @@ public class RegisteredBlocks {
         blockArcaneDropper = registerBlock(new BlockArcaneDropper());
         blockInfusionClaw = registerBlock(new BlockInfusionClaw());
         blockRemoteJar = registerBlock(new BlockRemoteJar(), ItemBlockRemoteJar.class);
-        blockNode = (BlockNode) new BlockNode().setBlockName("blockAiry");
+        blockNode = ModConfig.enableAdditionalNodeTypes ? (BlockAiry) new BlockNode().setBlockName("blockAiry") : (BlockAiry) ConfigBlocks.blockAiry;
         blockExtendedNodeJar = registerBlock(new BlockExtendedNodeJar());
         blockNodeManipulator = registerBlock(new BlockNodeManipulator(), ItemNodeManipulator.class);
         blockStoneMachine = registerBlock(new BlockStoneMachine(), ItemBlockStoneMachine.class);
         blockAdditionalEldrichPortal = registerBlock(new BlockAdditionalEldritchPortal(), ItemBlockAdditionalEldritchPortal.class);
-        //blockAuraPylon = registerBlock(new BlockAuraPylon(), ItemBlockAuraPylon.class);
+        blockAuraPylon = registerBlock(new BlockAuraPylon(), ItemBlockAuraPylon.class);
     }
 
     private static <T extends Block> T registerBlock(String name, T block) {
@@ -125,8 +115,9 @@ public class RegisteredBlocks {
         registerTile(TileManipulationFocus.class);
         registerTile(TileAdditionalEldritchPortal.class);
         registerTile(TileBlockProtector.class);
-        //registerTile(TileAuraPylon.class);
-        //registerTile(TileAuraPylonTop.class);
+        registerTile(TileAuraPylon.class);
+        registerTile(TileAuraPylonTop.class);
+        registerTile(TileArcanePackager.class);
     }
 
     private static void registerTile(Class<? extends TileEntity> tile, String name) {
@@ -192,6 +183,18 @@ public class RegisteredBlocks {
             public int getComparatorOutput() {
                 return matrix.crafting ? 15 : 0;
             }
+        });
+
+        registerClawClickBehavior(new ClickBehavior(true) {
+            @Override
+            public boolean isValidForBlock() {
+                return block.equals(ConfigBlocks.blockCrystal) && metadata <= 6;
+            }
+
+            /*@Override
+            public AspectList getVisCost() {
+                return RegisteredRecipes.costsAuraCoreStart;
+            }*/
         });
     }
 

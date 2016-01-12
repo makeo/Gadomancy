@@ -1,7 +1,6 @@
 package makeo.gadomancy.common.items;
 
 import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +15,7 @@ import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
+import thaumcraft.common.tiles.TileNode;
 
 import java.util.List;
 
@@ -55,7 +55,7 @@ public class ItemCreativeNode extends Item {
 
         if(placeRandomNode(world, x, y, z)) {
             int metadata = stack.getItemDamage();
-            TileExtendedNode node = (TileExtendedNode) world.getTileEntity(x, y, z);
+            TileNode node = (TileNode) world.getTileEntity(x, y, z);
 
             if(metadata == 0) {
                 node.setNodeType(NodeType.NORMAL);

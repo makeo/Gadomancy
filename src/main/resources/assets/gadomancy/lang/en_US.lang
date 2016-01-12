@@ -1,6 +1,9 @@
 item.ItemGolemPlacer.silverwood.name=Silverwood Golem
+item.ItemGolemPlacer.obsidian.name=Obsidian Golem
 item.ItemTransformationFocus.name=[WIP] Wand Focus: Transformation
 item.ItemFamiliar.name=Ethereal Familiar
+item.ItemEtherealFamiliar.name=Ethereal Familiar
+item.ItemAuraCore.name=Aura Core
 item.ItemArcanePackage.name=Arcane Package
 
 itemGroup.gadomancy=Gadomancy
@@ -16,7 +19,7 @@ gadomancy.research_page.GOLEMRUNICSHIELD.1=After further experimenting with prot
 
 tc.research_name.GADOMANCY.STICKYJAR=Sticky Jars
 tc.research_text.GADOMANCY.STICKYJAR=Stick 'em up!
-gadomancy.research_page.STICKYJAR.1=Warded jars are any thaumaturge's bread and butter, but they can be a bit difficult to arrange when large tangles of essentia tubes are involved. You decided to alleviate this minor difficulty by applying some adhesive to the bottom of the jar. Any jar that has its base coated will stick to the surface it is placed on, even if that surface is facing sideways or upside down. Breaking the jar does not remove the adhesive, allowing sticky jars to be reused. Also, many other types of essentia containing jars other than basic warded jars can accept this alteration.
+gadomancy.research_page.STICKYJAR.1=Warded jars are any thaumaturge's bread and butter, but they can be a bit difficult to arrange when large tangles of essentia tubes get involved. You decided to alleviate this minor difficulty by applying some adhesive to the bottom of the jar. Any jar that has its base coated will stick to the surface it is placed on, even if that surface is facing sideways or upside down. Breaking the jar does not remove the adhesive, allowing sticky jars to be reused. Also, many other types of essentia containing jars other than basic warded jars can accept this alteration.
 
 tc.research_name.GADOMANCY.ARCANEDROPPER=Arcane Dropper
 tc.research_text.GADOMANCY.ARCANEDROPPER=When the pimps in the crib, ma
@@ -43,7 +46,7 @@ gadomancy.research_page.REMOTEJAR.2=If a network already exists, then the jar wi
 tc.research_name.GADOMANCY.FAMILIAR=Ethereal Familiar
 tc.research_text.GADOMANCY.FAMILIAR=A arcane follower
 gadomancy.research_page.FAMILIAR.1=Wisps have intrigued you for some time now. Many of these sentient bits of ethereal magic seem to be  passive, but when attacked, they retaliate with surprising speed and efficiency. Not only that, but sometimes just approaching a wisp too quickly will provoke an attack.<LINE>This behavior gave you an unexpected inspiration. By exploiting the unusually responsive nature of a wisp, it may be possible to bend its defensive instincts to act as a personal protector. Unfortunately, wild wisps have proven to be far to unpredictable to capture.
-gadomancy.research_page.FAMILIAR.3=By infusing large amounts of magic and a few binding agents into a sample of ethereal essence, an artificial wisp can be created. This Ethereal "Familiar" will anchor to its wearer's aura and act similarly to a turret when it is held in the amulet slot, shooting sparks any hostile entities that get too close. It is considerably weaker and slower than its wild counterparts, however you feel that there are definitely methods of strengthening it.
+gadomancy.research_page.FAMILIAR.3=By infusing large amounts of magic and a few binding agents into a sample of ethereal essence, an artificial wisp can be created. This Ethereal "Familiar" will anchor to its wearer's aura and act similarly to a turret when it is held in the amulet slot, shooting sparks any hostile entities that attack its wearer. It is considerably weaker and slower than its wild counterparts, however you feel that there are definitely methods of strengthening it.
 
 tc.research_name.GADOMANCY.FAM_ATTACK_1=Attack Enhancement
 tc.research_text.GADOMANCY.FAM_ATTACK_1=Increasing the damage
@@ -69,25 +72,25 @@ tc.research_name.GADOMANCY.NODE_MANIPULATOR=Node Manipulator
 tc.research_text.GADOMANCY.NODE_MANIPULATOR=Almost like roulette
 gadomancy.research_page.NODE_MANIPULATOR.1=Aura nodes have intrigued you for the longest time. Where do they come from? Why are there so many varieties? After some time, you found yourself asking another question entirely; would it be possible to change how a node functions? After journeying far across the world and into the depths of the ancient eldritch mazes, you found a set of materials capable of changing the way aura behaves. After carefully developing these materials, and using them to augment the only device you found to be capable of channeling pure vis directly from a node, one of the most dangerous machines you could fathom finally fell within your grasp.
 gadomancy.research_page.NODE_MANIPULATOR.3=The Node Manipulator is a device that essentially works in a manner opposite to that of a wand recharge pedestal. By drawing vis from a wand or staff and channeling it back into the node, the node manipulator will force a node to destabilize slightly.<LINE> The manipulator's main pedestal is not stable enough to alter nodes on its own. By adding a specially modified focus to hold the wand/staff in place for vis extraction and a set of pillars to channel the extracted vis into the node, the device is finally ready for use. Just place a wand/staff on the pedestal, and the node manipulator will start automatically.
-gadomancy.research_page.NODE_MANIPULATOR.6=The Node Manipulator needs at least 70 of all six primal aspects to begin manipulating a node, but allowing more that 70 seems to yield greater effects. <BR>Despite all of your research into node behavior, you still haven't the slightest idea what the node manipulator will actually do to aura nodes. The only way to find out seems to be testing it out...
+gadomancy.research_page.NODE_MANIPULATOR.6=The Node Manipulator needs at least 70 of all six primal aspects to begin manipulating a node, but allowing more that 70 seems to yield greater results. <BR>Despite all of your research into node behavior, you still haven't the slightest idea what the node manipulator will actually do to aura nodes. The only way to find out seems to be testing it out...
 
 tc.research_name.GADOMANCY.E_PORTAL_CREATOR=Gate of the Voidwalkers
 tc.research_text.GADOMANCY.E_PORTAL_CREATOR=Into the abyss...
 gadomancy.research_page.E_PORTAL_CREATOR.1="He who fights with monsters should look to it that he himself does not become a monster. And when you gaze long into an abyss the abyss also gazes into you."<BR>-Friedrich Nietzsche<LINE> At first it was just a miracle, the discovery of the primordial pearl. Its light revealed many secrets of the world and of creation, but after a while, you began to feel that one pearl just wasn't enough. Its light was warm, but seemed fitful and weak, as though it was only a spark.
 gadomancy.research_page.E_PORTAL_CREATOR.3=Dark, ancient whispers have begun to pervade your consciousness. More powerful and insistent that before, they speak of a road not meant to be walked, a way too dark to see, a path to the greatest of all powers, hidden beyond the edges of the void. You suspect you know exactly what the voices speak of, as you have a piece of that power in your possession. Now you have only to solve the problem of finding this invisible, intangible path.
 gadomancy.research_page.E_PORTAL_CREATOR.4=Not surprisingly, the solution to the problem of entering the path came directly from the eldritch obelisks. These ancient devices each contain a node that, when enough vis is directed through, can be widened into a small stable portal. By altering the functions of a compound recharge focus to mimic the functions of the obelisk, the same type of vis redirection can be achieved.<BR>This new focus is not unlike the normal randomization focus, as it also needs to be placed atop a node manipulator in order to function.
-gadomancy.research_page.E_PORTAL_CREATOR.6=In order to build the gate frame, a node manipulator must be constructed in the same manner as normal, but with four ancient pedestals around the outside and the redirection focus in place of the usual randomization focus. The Gate of the Voidwalkers needs 150 of each primal aspect vis to be assembled.<BR>Once assembled, four eldritch eyes must be placed on the pedestals surrounding the gate, and a staff/wand containing at least 120 vis must be placed in the central pedestal.<BR>Once the gate drains the necessary vis, the node atop the focus will be forced to open into a portal.
+gadomancy.research_page.E_PORTAL_CREATOR.6=In order to build the gate frame, a node manipulator must be constructed in the same manner as normal, but with four ancient pedestals around the outside and the redirection focus in place of the usual randomization focus. The Gate of the Voidwalkers needs 150 of each primal aspect vis to be assembled.<BR>Once assembled, four eldritch eyes must be placed on the pedestals somewhere around the gate, and a staff/wand containing at least 120 vis must be placed in the manipulator.<BR>Once the manipulator drains the necessary vis, the node atop the focus will be forced to open into a portal.
 gadomancy.research_page.E_PORTAL_CREATOR.8=At first glance it resembles any other eldritch portal, however when you look closer, you can see that it it far stronger and less stable than the others. You can see that the Gate will not survive more than one entity passing through, so return via the same portal will be impossible. As you step through the Gate of the Voidwalkers, you feel an odd sense of anticipation and forboding, as though hundreds of ancient eyes are watching silently as you walk into the depths of the abyss...
 
 tc.research_name.GADOMANCY.BLOCK_PROTECTOR=Enervation Field Emitter
 tc.research_text.GADOMANCY.BLOCK_PROTECTOR=ENOUGH OF THESE DAMN CREEPERS ALREADY!!!!!
 gadomancy.research_page.BLOCK_PROTECTOR.1=EVERYONE. HATES. CREEPERS. It is practically a given that at some point in a builder's career, one of these indescribably rage inducing freaks will sneak up from behind, above, below, or even right in front of them and explode, ruining the project in progress completely.<LINE>Almost by chance, you discovered an interesting way to solve this problem with essential gas. By exposing gunpowder to a small trace of ordo essentia, you found could completely nullify its ability to explode when ignited.
 gadomancy.research_page.BLOCK_PROTECTOR.3=Turning essentia into gas directly without having it dissolve into flux is all but impossible, but some careful tinkering with various alchemical machinery components and redstone yields a device that can use a slightly different process to acquire the same effects as liquid essentia. <BR>The Arcane Enervation Emitter diffuses a light aura of ordo across a limited area. Any creepers in that affected area will be unable to explode. The emitter is slow to start, and when it receives fuel in the form of ordo essentia and a redstone signal, it will gradually expand its area of effect until it reaches maximum size.
-gadomancy.research_page.BLOCK_PROTECTOR.4=The size of its area can be controlled by changing the strength of the redstone signal used to activate the device, and monitored by placing a comparator running out of the device.<BR>After using this device for some time, you noticed, much to your delight, that the field that the Arcane Enervation Emitter emits is strong enough to affect other mobs than just creepers. It appears to stop other mobs from breaking blocks. It isn’t strong enough to affect players though…
+gadomancy.research_page.BLOCK_PROTECTOR.4=The size of its area can be controlled by changing the strength of the redstone signal used to activate the device, and monitored by placing a comparator running out of the device.<BR>After using this device for some time, you noticed, much to your delight, that the field that the Arcane Enervation Emitter emits is strong enough to affect more than just creepers. It appears to stop a variety of destructive mob behaviors as well as inhibiting enderman teleportation. It isn’t strong enough to affect players though…
 
 tc.research_name.GADOMANCY.ANCIENT_STONES=Ancient Stones
 tc.research_text.GADOMANCY.ANCIENT_STONES=Decorations of the Eldritch
-gadomancy.research_page.ANCIENT_STONES.1=Entering the mazes of the Eldritch is not only what an experienced thaumaturge such as yourself wants; the eldritch might not be the best room designers, but the stones they used to build show enormous magic potential.<BR>Exposing your everyday arcane stones to eldritch energies might alter the stones magical properties to react more like their eldritch relatives.
+gadomancy.research_page.ANCIENT_STONES.1=There is more to the mazes of the eldritch than meets the eye. The eldritch might not be the best room designers, but the stones they used to build show enormous magic potential.<BR>Exposing your everyday arcane stones to eldritch energies alter the stones magical properties to react more like their eldritch relatives.
 
 tc.research_name.GADOMANCY.GROWING=Growing Nodes
 tc.research_text.GADOMANCY.GROWING=Feed me Semour
@@ -112,8 +115,40 @@ tc.research_text.GADOMANCY.GROWING_GROWTHCLUE=Growing explained
 gadomancy.research_page.GROWING_GROWTHCLUE.1=At last, you have figured out the secrets of growth and potential dangers in a growing node! <LINE>The node becomes much more stable when fed a variety of aspects. If it is only allowed to consume the same single aspects repeatedly, it destabilizes and stops growing due to becoming over saturated.<BR>It only accepts pure aspects though. Ethereal Essence, Crystallized Essence, and Mana beans are weak forms of materialized Vis. The node doesn't react to them very much...
 gadomancy.research_page.GROWING_GROWTHCLUE.2=Despite the fact that the node will consume ethereal essence, it seems to vastly prefer living Wisps and Aspect Orbs. One of the best things to offer the node seems to be other Aura Nodes... this method does get expensive though.<LINE>There are high risks too. The more saturated the node gets, the harder and more often the node attacks its surroundings. You wonder what happens when the node becomes fully saturated...
 
+tc.research_name.GADOMANCY.AURA_CORE=Aura Core
+tc.research_text.GADOMANCY.AURA_CORE=Your surroundings matter!
+gadomancy.research_page.AURA_CORE.1=Many times, the strange properties of the primal charm have always been puzzling. Constantly spitting out small sparks of primal energy and changing colors in a completely unstable fasion, the charm's behavior is unlike anything else, making the primal charm most difficult to use. By encasing the charm in a layer of crystalized thaumium it is possible to calm these bizzarre tendencies, resulting in a much more usable object known as an Aura Core.
+gadomancy.research_page.AURA_CORE.3=Unlike the charm that it was constructed from, an Aura core has had most of the primal energy removed in the crafting process. This leaves Aura cores heavily susceptible to the presence of auras in the environment. Tossing one on the ground near a primal crystal cluster and then energizing the crystal cluster with a wand will cause the core to coat itself in an extra layer of crystal, forcing the core to tune to one primal aspect. Six primal cores are possible to make.<BR> Finding a use for the individual primal cores requires making them, and them inspecting them directly.
+
+tc.research_name.GADOMANCY.CLEAN_AURA_CORE=Core Cleaning
+tc.research_text.GADOMANCY.CLEAN_AURA_CORE=Mistakes were made
+gadomancy.research_page.CLEAN_AURA_CORE.1=Returning an Aura Core to it's original state has proven very simple. Tossing an aspect core into a special bath of essentia will allow the extra primal crystal coat to be removed without damaging the aura core.
+
+tc.research_name.GADOMANCY.AURA_PYLON=Aura Pylon
+tc.research_text.GADOMANCY.AURA_PYLON=Diffusing essentia
+gadomancy.research_page.AURA_PYLON.1=The aura pylon is a device that exploits the properties of an Aura Core tuned to Ignis. This device is able to be able to destabilize and evaporate essentia into the local aura. This process is a bit slow, and the essentia needs time to reach full concentration. When it does, the aura concentration should be enough to physically influence the environment.<BR>As for discovering what each different type of essentia does, the only way you think you think you can find out is to test them.
+
+tc.research_name.GADOMANCY.AURA_EFFECTS=Aura Effects
+tc.research_text.GADOMANCY.AURA_EFFECTS=What diffusing essentia actually does
+gadomancy.research_page.AURA_EFFECTS.1=Most types of essentia have their own unique effects, however some do not. either way, keeping a log of what each aspect does seems like a good idea.
+
+tc.research_name.GADOMANCY.ARCANE_PACKAGER=Arcane Packager
+tc.research_text.GADOMANCY.ARCANE_PACKAGER=PACK IT UP!
+gadomancy.research_page.ARCANE_PACKAGER.1=Scattered in dungeons, temples, and ruins throughout the world are strange objects called loot bags. They seem small and relatively tough and light, but when opened, the fabric simply disintergrates, leaving a pile of valuable bits and things. Sometimes the among of things even seems to defy the size of the bag.<BR>A closer inspection revealed that the bag is not actually made of fabric at all, but rather a fine mesh of stable Pannus essentia.
+gadomancy.research_page.ARCANE_PACKAGER.3=Not only that, but the fibers of essentia seem to weave themselves together even tighter when they are brought into contact with the pressure created by an aer tuned aura core.<BR>The Arcane Packager is a device that replicates the conditions needed for Pannus essentia to form threads. The result is a small package that behaves much the same as any other loot bag. These small packages can even be disguised as normal loot bags. The process can also be replicated with leather and strings, but the result looks really cheap.
+gadomancy.research_page.ARCANE_PACKAGER.4=Up to nine stacks of items can fit in one package, and when opened the bag will disintergrate and drop its contents into the holder's inventory. Even other lootbags can fit into another lootbag. However, the aer tuned aura core can only stabilize those threads to some degree. If the package gets too big, it might cause overpressure inside the packager. To stop this from happening, you adjusted the Arcane Packager to drop the items into the world if the pressure inside rises above a certain level. The Arcane Packager can be started with a redstone signal.
+
+tc.research_name.GADOMANCY.REVEALER=Thaumic Sight
+tc.research_text.GADOMANCY.REVEALER=Seeing the Seen
+gadomancy.research_page.REVEALER.1=After extensively studying the Goggles of Revealing, you have devised an enchantment that can give ant helmet the same properties.<BR> This enchantment gives any helmet the ability to let the wearer see aura nodes and amounts of essentia in jars. It does not give the vis discount of the goggles though.
+
+tc.research_name.GADOMANCY.ARMORDISGUISE=Armor Disguise
+tc.research_text.GADOMANCY.ARMORDISGUISE=Let the games begin!
+gadomancy.research_page.ARMORDISGUISE.1=You have found a way to change the appearance of your armor. The effects of the original armor will remain, while the appearance of the armor when worn will be that of the disguise.<BR> The original armor is placed on the central pedestal of the infusion, and the armor that will disguise the original is placed on the outer ring of pedestals.<BR>However, the item that will be used as disguise will merge into the other armor and its appearance will be the only thing left of it.
+gadomancy.research_page.ARMORDISGUISE.4=After giving it a second thought, you think if you replace the armor you want to have as new appearance with an invisibility potion, the potion might just merge with the armor, causing it to be fully transparent when worn.<LINE>Throwing the disguised armor into Purifying Fluid causes a reaction that removes the disguise effect. The armor used as disguise will be ripped off the other armor and reappears miraculously near the previously disguised armor.
+
 gadomancy.golemblurb.default=??
-gadomancy.golemblurb.breakcore=Master, should I break anything, or something specific?
+gadomancy.golemblurb.breakcore=Master, should I break anything, or something specific and should I use a tool or none?
 gadomancy.golem.breakcore=Break
 gadomancy.golem.bodyguardcore=Bodyguard
 
@@ -123,6 +158,9 @@ gadomancy.lore.hasAdditionalLore=<Press SHIFT for more information>
 
 gadomancy.lore.stickyjar=Sticky
 gadomancy.lore.remotejar=§7Network: %s
+
+gadomancy.lore.disguise.item=Disguised as %s
+gadomancy.lore.disguise.none=Transparent
 
 gadomancy.eldritch.portalPlacerCreative=Creative portal placer
 gadomancy.eldritch.noflyCreative=(even in creative)
@@ -140,17 +178,114 @@ tile.BlockStoneMachine.0.name=Randomization Focus
 tile.BlockStoneMachine.1.name=Ancient Pedestal
 tile.BlockStoneMachine.2.name=Arcane Enervation Emitter
 tile.BlockStoneMachine.3.name=Redirection Focus
+tile.BlockStoneMachine.4.name=Arcane Packager
 tile.BlockStoneMachine.11.name=Manipulation Pillar
 tile.BlockStoneMachine.15.name=Manipulation Pillar
+tile.BlockAuraPylon.0.name=Aura Pylon
+tile.BlockAuraPylon.1.name=Aura Pylon Peak
 
 gadomancy.nodes.GROWING=Growing
 gadomancy.nodes.STARVING=Starving
 
-gadomancy.info.ArcanePackage=Click to open or put it in a unpackager
+gadomancy.auracore.unused=(Unused at the moment)
+gadomancy.auracore.blank=Blank
+
+gadomancy.aura.research.unlock=You've discovered the effects of %s essentia.
+
+gadomancy.aura.effect.aer=Creates a speed aura
+gadomancy.aura.effect.alienis_0=Nearby monsters become
+gadomancy.aura.effect.alienis_1=more dangerous
+gadomancy.aura.effect.arbor_0=Increases growth speed
+gadomancy.aura.effect.arbor_1=of nearby plants
+gadomancy.aura.effect.auram_0=Diffuses some vis
+gadomancy.aura.effect.auram_1=into the aura
+gadomancy.aura.effect.bestia=Summons beasts
+gadomancy.aura.effect.cognitio_0=Grants more knowledge
+gadomancy.aura.effect.cognitio_1=about primal aspects
+gadomancy.aura.effect.exanimis=Supports undead monsters
+gadomancy.aura.effect.fabrico=Improves your golems
+gadomancy.aura.effect.gelum_0=Cools down the
+gadomancy.aura.effect.gelum_1=surrounding aura
+gadomancy.aura.effect.herba_0=Heavily
+gadomancy.aura.effect.herba_1=increases growth speed
+gadomancy.aura.effect.herba_2=of nearby plants
+gadomancy.aura.effect.humanus_0=Temporarily increases
+gadomancy.aura.effect.humanus_1=your health
+gadomancy.aura.effect.ignis=Spreads fire
+gadomancy.aura.effect.instrumentum_0=Increases your
+gadomancy.aura.effect.instrumentum_1=digging speed
+gadomancy.aura.effect.limus_0=The aura
+gadomancy.aura.effect.limus_1=becomes more slimy
+gadomancy.aura.effect.lucrum=Increases your luck
+gadomancy.aura.effect.lux_0=Stops monster spawning
+gadomancy.aura.effect.lux_1=in the area
+gadomancy.aura.effect.mortuus=The aura becomes deadly
+gadomancy.aura.effect.pannus=Spawns wool on sheep
+gadomancy.aura.effect.perfodio_0=Heavily increases
+gadomancy.aura.effect.perfodio_1=your dig speed
+gadomancy.aura.effect.praecantatio_0=Increases your
+gadomancy.aura.effect.praecantatio_1=magic skills
+gadomancy.aura.effect.spiritus_0=The aura seems
+gadomancy.aura.effect.spiritus_1=more ghostly
+gadomancy.aura.effect.tempestas=Summons lightnings
+gadomancy.aura.effect.tenebrae_0=Darkness spreads
+gadomancy.aura.effect.tenebrae_1=in the aura
+gadomancy.aura.effect.venenum=Poisons its surroundings
+gadomancy.aura.effect.victus_0=Helps baby animals
+gadomancy.aura.effect.victus_1=to grow up faster
+gadomancy.aura.effect.vinculum_0=Traps and slows down
+gadomancy.aura.effect.vinculum_1=living things
+gadomancy.aura.effect.vitium=Spreads taint
+gadomancy.aura.effect.aqua_0=Helps you to
+gadomancy.aura.effect.aqua_1=breath underwater
+gadomancy.aura.effect.terra_0=Increases your
+gadomancy.aura.effect.terra_1=resistances
+gadomancy.aura.effect.ordo_0=Provides a weak
+gadomancy.aura.effect.ordo_1=healing aura
+gadomancy.aura.effect.motus=Increases your speed
+gadomancy.aura.effect.iter_0=Supports a you for a
+gadomancy.aura.effect.iter_1=longer journey
+gadomancy.aura.effect.sano_0=Provides a strong
+gadomancy.aura.effect.sano_1=healing aura
+gadomancy.aura.effect.volatus=Increases jump height
+gadomancy.aura.effect.tutamen_0=Increases your
+gadomancy.aura.effect.tutamen_1=resistances a lot
+gadomancy.aura.effect.fames=Makes you feel hungry
+gadomancy.aura.effect.sensus=Lightens up the night
+gadomancy.aura.effect.perditio_0=Creates an
+gadomancy.aura.effect.perditio_1=aura of weakness
+gadomancy.aura.effect.potentia=Increases your strength
+gadomancy.aura.effect.telum_0=Increases your
+gadomancy.aura.effect.telum_1=strength a lot
+gadomancy.aura.effect.vitreus_0=You can feel the
+gadomancy.aura.effect.vitreus_1=air blowing through
+gadomancy.aura.effect.vitreus_2=your stomach
+
 gadomancy.info.InfusionClaw.owner=You are now the owner.
 gadomancy.info.InfusionClaw.waila=§7Owner:
 gadomancy.info.InfusionClaw.lock=Keep useable wand
 
+gadomancy.info.ArcanePackage=Click to open
+gadomancy.info.ArcanePackager.useEssentia=Use essentia
+gadomancy.info.ArcanePackager.autoStart=Automatically start
+gadomancy.info.ArcanePackager.disguisePackage=Disguise as loot bag
+
 gadomancy.info.RemoteJar.new=Created new jar network
 gadomancy.info.RemoteJar.clear=Disconnected from current jar network
 gadomancy.info.RemoteJar.connected=Connected to existing jar network
+
+familiar.augment.shock.name=Shock Impact
+familiar.augment.poison.name=Venomous Rot
+familiar.augment.fire.name=Scorching Heat
+familiar.augment.weakness.name=Enervation Impulse
+familiar.augment.damage.name=Emission Resonance Boost
+familiar.augment.speed.name=Internal Frequency Boost
+familiar.augment.range.name=Aura Detection
+
+potion.luck=Increased Luck
+potion.buffGolem=Golem Buff
+potion.achromatic=Achromatic
+potion.eldritch=Eldritch
+potion.visdiscount=Vis Affinity
+
+gadomancy.enchantment.revealer=Thaumic Sight

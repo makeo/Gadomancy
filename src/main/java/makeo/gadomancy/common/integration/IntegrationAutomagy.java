@@ -1,12 +1,17 @@
 package makeo.gadomancy.common.integration;
 
 import makeo.gadomancy.common.CommonProxy;
+import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
+import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.World;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -22,7 +27,7 @@ import thaumcraft.common.config.ConfigBlocks;
  */
 public class IntegrationAutomagy extends IntegrationMod {
 
-    //Keep in sync with Automagy some time...
+    //TODO sync with Automagy some time...
     private static final AspectList visCostAdvNodeJar = new AspectList().add(Aspect.FIRE, 125).add(Aspect.EARTH, 125).add(Aspect.ORDER, 125).add(Aspect.AIR, 125).add(Aspect.ENTROPY, 125).add(Aspect.WATER, 125);
 
     @Override
@@ -37,10 +42,34 @@ public class IntegrationAutomagy extends IntegrationMod {
             RegisteredBlocks.registerStickyJar(infinityJar, 3, false, true);
             RegisteredItems.registerStickyJar(Item.getItemFromBlock(infinityJar), 3);
         }
-        CommonProxy.unregisterWandHandler("Automagy", ConfigBlocks.blockWarded, -1);
+
+        if(ModConfig.enableAdditionalNodeTypes) {
+            CommonProxy.unregisterWandHandler("Automagy", ConfigBlocks.blockWarded, -1);
+        }
     }
 
     public boolean handleNodeJarVisCost(ItemStack wandStack, EntityPlayer player) {
         return ThaumcraftApiHelper.consumeVisFromWandCrafting(wandStack, player, visCostAdvNodeJar, true);
+    }
+
+    public void tryFillGolemCrafttable(ChunkCoordinates cc, World world) {
+        Class<?> workbenchTileClazz;
+        try {
+            workbenchTileClazz = Class.forName("tuhljin.automagy.tiles.TileEntityGolemWorkbench");
+        } catch (ClassNotFoundException e) {
+            return;
+        }
+
+        TileEntity te = world.getTileEntity(cc.posX, cc.posY, cc.posZ);
+        if(te != null && workbenchTileClazz.isAssignableFrom(te.getClass())) { //method instanceof checking..
+            try {
+                Injector i = new Injector(te, workbenchTileClazz);
+                int heat = i.getField("craftingHeat");
+                int impact = i.getField("heatImpactsAt");
+                if(heat > impact) {
+                    i.setField("craftingHeat", heat - 700);
+                }
+            } catch (Exception e) {}
+        }
     }
 }

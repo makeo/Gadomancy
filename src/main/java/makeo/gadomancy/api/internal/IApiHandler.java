@@ -1,9 +1,11 @@
 package makeo.gadomancy.api.internal;
 
+import makeo.gadomancy.api.AuraEffect;
 import makeo.gadomancy.api.ClickBehavior;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import net.minecraft.item.ItemStack;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
 import java.util.List;
@@ -34,4 +36,6 @@ public interface IApiHandler {
     List<AdditionalGolemCore> getAdditionalGolemCores();
 
     void registerClawClickBehavior(ClickBehavior clickBehavior);
+
+    void registerAdditionalAuraEffect(Aspect aspect, AuraEffect effect);
 }

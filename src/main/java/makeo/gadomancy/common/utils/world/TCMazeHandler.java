@@ -1,7 +1,7 @@
 package makeo.gadomancy.common.utils.world;
 
 import makeo.gadomancy.common.blocks.tiles.TileAdditionalEldritchPortal;
-import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.utils.world.fake.FakeWorldTCGeneration;
 import net.minecraft.entity.Entity;
@@ -59,7 +59,9 @@ public class TCMazeHandler {
 
     public static void closeAllSessionsAndCleanup() {
         for (EntityPlayer pl : runningSessions.keySet()) {
-            runningSessions.get(pl).closeSession(false);
+            TCMazeSession session = runningSessions.get(pl);
+            session.closeSession(false);
+            watchedBosses.remove(session);
         }
         init();
     }
@@ -80,9 +82,14 @@ public class TCMazeHandler {
                     player.setPositionAndUpdate(cc.posX + 0.5, y, cc.posZ + 0.5);
                 }
             }
-            for (EntityPlayer player : runningSessions.keySet()) {
+            Iterator<Map.Entry<EntityPlayer, TCMazeSession>> it = runningSessions.entrySet().iterator();
+            while(it.hasNext()) {
+                Map.Entry<EntityPlayer, TCMazeSession> entry = it.next();
+                EntityPlayer player = entry.getKey();
                 if (player.worldObj.provider.dimensionId != ModConfig.dimOuterId) { //If the player left our dim, but he should still be in the session, ...
-                    closeSession(player, false);
+                    //We close the session.
+                    entry.getValue().closeSession(false);
+                    it.remove();
                 }
             }
         }

@@ -1,7 +1,9 @@
 package makeo.gadomancy.common.utils;
 
+import cpw.mods.fml.relauncher.Side;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
+import makeo.gadomancy.client.events.ResourceReloadListener;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.entities.golems.types.RemovedGolemType;
 import net.minecraftforge.common.util.EnumHelper;
@@ -108,7 +110,7 @@ public class GolemEnumHelper {
         }
 
         int returnVal = -1;
-        int i = EnumGolemType.values().length;
+        int i = calcDefaultGolemCount();
         do {
             boolean contains = false;
             for(Map.Entry<String, Integer> entry : map.entrySet()) {
@@ -144,6 +146,11 @@ public class GolemEnumHelper {
                     addEnum(entry.getValue(), type);
                 }
             }
+        }
+
+        new Injector(EnumGolemType.class).setField("codeToTypeMapping", null);
+        if(Gadomancy.proxy.getSide() == Side.CLIENT) {
+            ResourceReloadListener.getInstance().reloadGolemResources();
         }
     }
 

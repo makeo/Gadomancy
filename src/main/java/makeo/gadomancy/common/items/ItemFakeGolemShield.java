@@ -58,10 +58,6 @@ public class ItemFakeGolemShield extends Item {
         if(pass == getRenderPasses(stack.getItemDamage()) - 1) {
             return shieldIcon;
         } else {
-            //EnumGolemType type = EnumGolemType.getType(stack.getItemDamage());
-
-
-            //TODO: change dat
             return golemItem.getIcon(stack, pass);
         }
     }

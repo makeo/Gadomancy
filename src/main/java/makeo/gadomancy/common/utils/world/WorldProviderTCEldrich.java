@@ -2,7 +2,7 @@ package makeo.gadomancy.common.utils.world;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import makeo.gadomancy.common.data.ModConfig;
+import makeo.gadomancy.common.data.config.ModConfig;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
