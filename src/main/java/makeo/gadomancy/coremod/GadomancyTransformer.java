@@ -29,9 +29,9 @@ public class GadomancyTransformer extends AccessTransformer {
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] bytes) {
-        boolean needsTransform = name.equalsIgnoreCase(NAME_ENCHANTMENT_HELPER) ||
+        boolean needsTransform = transformedName.equalsIgnoreCase(NAME_ENCHANTMENT_HELPER) ||
                 name.equalsIgnoreCase(NAME_WANDMANAGER) || name.equalsIgnoreCase(NAME_NODE_RENDERER)
-                || transformedName.equalsIgnoreCase(NAME_RENDER_EVENT_HANDLER);
+                || name.equalsIgnoreCase(NAME_RENDER_EVENT_HANDLER);
         if(!needsTransform) return super.transform(name, transformedName, bytes);
 
         FMLLog.info("[GadomancyTransformer] Transforming " + name + " : " + transformedName);
