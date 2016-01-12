@@ -82,10 +82,14 @@ public class TCMazeHandler {
                     player.setPositionAndUpdate(cc.posX + 0.5, y, cc.posZ + 0.5);
                 }
             }
-            HashMap<EntityPlayer, TCMazeSession> map = new HashMap<EntityPlayer, TCMazeSession>(runningSessions);
-            for (EntityPlayer player : map.keySet()) {
+            Iterator<Map.Entry<EntityPlayer, TCMazeSession>> it = runningSessions.entrySet().iterator();
+            while(it.hasNext()) {
+                Map.Entry<EntityPlayer, TCMazeSession> entry = it.next();
+                EntityPlayer player = entry.getKey();
                 if (player.worldObj.provider.dimensionId != ModConfig.dimOuterId) { //If the player left our dim, but he should still be in the session, ...
-                    closeSession(player, false);
+                    //We close the session.
+                    entry.getValue().closeSession(false);
+                    it.remove();
                 }
             }
         }
