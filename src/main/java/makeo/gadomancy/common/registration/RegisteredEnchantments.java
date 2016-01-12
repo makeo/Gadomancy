@@ -6,6 +6,8 @@ import makeo.gadomancy.common.enchantments.EnchantmentRevealer;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.enchantment.Enchantment;
 
+import java.lang.reflect.Field;
+
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
@@ -19,6 +21,14 @@ public class RegisteredEnchantments {
 
     public static void init() {
         revealer = registerEnchantment(EnchantmentRevealer.class);
+    }
+
+    public static void createConfigEntries() {
+        for(Field field : RegisteredEnchantments.class.getFields()) {
+            if(Enchantment.class.isAssignableFrom(field.getType())) {
+                ModConfig.loadEnchantmentId(field.getType().getSimpleName());
+            }
+        }
     }
 
     public static <T extends Enchantment> T registerEnchantment(Class<T> enchClass) {

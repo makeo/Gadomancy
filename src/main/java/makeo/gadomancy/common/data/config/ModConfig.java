@@ -1,5 +1,7 @@
 package makeo.gadomancy.common.data.config;
 
+import makeo.gadomancy.common.registration.RegisteredEnchantments;
+import makeo.gadomancy.common.registration.RegisteredPotions;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import thaumcraft.api.aspects.Aspect;
@@ -82,6 +84,9 @@ public class ModConfig {
 
         config.addCustomCategoryComment("potions", "Use the following if you have problems with conflicting potion ids. If the entry is set to '-1' it will try to automatically find the lowest free potion id.");
         config.addCustomCategoryComment("enchantments", "Use the following if you have problems with conflicting enchantment ids. If the entry is set to '-1' it will try to automatically find the lowest free enchantment id.");
+
+        RegisteredPotions.createConfigEntries();
+        RegisteredEnchantments.createConfigEntries();
     }
 
     private static String[] refactorAspects(String listOfAspects) {

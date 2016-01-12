@@ -8,6 +8,8 @@ import makeo.gadomancy.common.potions.PotionEldritch;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.potion.Potion;
 
+import java.lang.reflect.Field;
+
 /**
  * This class is part of the Gadomancy Mod
  * Gadomancy is Open Source and distributed under the
@@ -17,7 +19,6 @@ import net.minecraft.potion.Potion;
  * Created by makeo @ 31.10.2015 23:09
  */
 public class RegisteredPotions {
-
     public static PotionMiningLuck POTION_LUCK;
     public static PotionBuffGolem BUFF_GOLEM;
     public static PotionAchromatic ACHROMATIC;
@@ -30,8 +31,14 @@ public class RegisteredPotions {
         ACHROMATIC = registerPotion(PotionAchromatic.class);
         ELDRITCH = registerPotion(PotionEldritch.class);
         VIS_DISCOUNT = registerPotion(PotionVisAffinity.class);
+    }
 
-        ModConfig.save();
+    public static void createConfigEntries() {
+        for(Field field : RegisteredPotions.class.getFields()) {
+            if(Potion.class.isAssignableFrom(field.getType())) {
+                ModConfig.loadPotionId(field.getType().getSimpleName());
+            }
+        }
     }
 
     private static <T extends Potion> T registerPotion(Class<T> potionClass) {
