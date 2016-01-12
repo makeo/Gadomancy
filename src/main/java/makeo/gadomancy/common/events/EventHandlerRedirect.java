@@ -106,6 +106,7 @@ public class EventHandlerRedirect {
                 for(EntityPlayer player : (List<EntityPlayer>) server.getConfigurationManager().playerEntityList) {
                     if(player.getHeldItem() == stack) {
                         possiblePlayer = player;
+                        break;
                     }
                 }
             }

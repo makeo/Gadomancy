@@ -1,5 +1,6 @@
 package makeo.gadomancy.coremod;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.asm.transformers.AccessTransformer;
 
 import org.objectweb.asm.ClassReader;
@@ -32,6 +33,8 @@ public class GadomancyTransformer extends AccessTransformer {
                 name.equalsIgnoreCase(NAME_WANDMANAGER) || name.equalsIgnoreCase(NAME_NODE_RENDERER)
                 || name.equalsIgnoreCase(NAME_RENDER_EVENT_HANDLER);
         if(!needsTransform) return super.transform(name, transformedName, bytes);
+
+        FMLLog.info("[GadomancyTransformer] Transforming " + name);
 
         ClassNode node = new ClassNode();
         ClassReader reader = new ClassReader(bytes);
