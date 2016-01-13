@@ -280,7 +280,7 @@ public class RegisteredResearches {
                 .setHidden()
                 .setParents(researchAuraCore.key, "TUBEFILTER")
                 .setItemTriggers(new ItemStack(RegisteredItems.itemAuraCore, 1, ItemAuraCore.AuraCoreType.FIRE.ordinal()))
-                .setPages(new ResearchPage("gadomancy.research_page.AURA_PYLON.1"), new ResearchPage(RegisteredRecipes.recipeAuraPylon), new ResearchPage(RegisteredRecipes.recipeAuraPylonPeak), new ResearchPage(RegisteredRecipes.multiblockAuraPylon)).registerResearchItem();
+                .setPages(new ResearchPage("gadomancy.research_page.AURA_PYLON.1"), new ResearchPage(RegisteredRecipes.recipeAuraPylon), new ResearchPage(RegisteredRecipes.recipeAuraPylonPeak), new ResearchPage("gadomancy.research_page.AURA_PYLON.4"), new ResearchPage(RegisteredRecipes.multiblockAuraPylon)).registerResearchItem();
 
         researchAuraEffects = new SimpleResearchItem("AURA_EFFECTS",
                 1, 10, 2, new ResourceLocation("thaumcraft", "textures/misc/r_aspects.png"),

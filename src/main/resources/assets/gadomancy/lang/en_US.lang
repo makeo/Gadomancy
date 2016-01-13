@@ -126,7 +126,8 @@ gadomancy.research_page.CLEAN_AURA_CORE.1=Returning an Aura Core to it's origina
 
 tc.research_name.GADOMANCY.AURA_PYLON=Aura Pylon
 tc.research_text.GADOMANCY.AURA_PYLON=Diffusing essentia
-gadomancy.research_page.AURA_PYLON.1=The aura pylon is a device that exploits the properties of an Aura Core tuned to Ignis. This device is able to be able to destabilize and evaporate essentia into the local aura. This process is a bit slow, and the essentia needs time to reach full concentration. When it does, the aura concentration should be enough to physically influence the environment.<BR>As for discovering what each different type of essentia does, the only way you think you think you can find out is to test them.
+gadomancy.research_page.AURA_PYLON.1=The aura pylon is a device that exploits the properties of an Aura Core tuned to Ignis. This device is able to be able to destabilize and evaporate essentia into the local aura. This process is a bit slow, and the essentia needs time to reach full concentration. When it does, the aura concentration should be enough to physically influence the environment.
+gadomancy.research_page.AURA_PYLON.4=After assembling the aura pylon, dropping a piece of crystalized essentia of the desired aspect on the ground nearby will allow the pylon to tune itself. Once the pylon pulls in the crystal and the flame on top changes color, liquid essentia can be fed into the bottom. Removing the crystal is as simple as getting close enough to pick it up.<BR>As for discovering what each different type of essentia does, the only way you think you think you can find out is to test them.
 
 tc.research_name.GADOMANCY.AURA_EFFECTS=Aura Effects
 tc.research_text.GADOMANCY.AURA_EFFECTS=What diffusing essentia actually does
