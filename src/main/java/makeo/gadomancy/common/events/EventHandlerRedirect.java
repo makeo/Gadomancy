@@ -102,7 +102,7 @@ public class EventHandlerRedirect {
         EntityPlayer possiblePlayer = null;
         if(stack != null) {
             MinecraftServer server = MinecraftServer.getServer();
-            if(server != null) {
+            if(server != null && server.getConfigurationManager() != null) {
                 for(EntityPlayer player : (List<EntityPlayer>) server.getConfigurationManager().playerEntityList) {
                     if(player.getHeldItem() == stack) {
                         possiblePlayer = player;
@@ -113,7 +113,6 @@ public class EventHandlerRedirect {
         }
 
         if(possiblePlayer != null) {
-
             if(enchantmentId == Enchantment.fortune.effectId) {
                 return getFortuneLevel(possiblePlayer);
             } else if(enchantmentId == Enchantment.looting.effectId) {
