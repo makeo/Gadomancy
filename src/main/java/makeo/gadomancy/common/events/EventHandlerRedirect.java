@@ -104,7 +104,7 @@ public class EventHandlerRedirect {
             MinecraftServer server = MinecraftServer.getServer();
             if(server != null && server.getConfigurationManager() != null) {
                 for(EntityPlayer player : (List<EntityPlayer>) server.getConfigurationManager().playerEntityList) {
-                    if(player.getHeldItem() == stack) {
+                    if(player != null && player.getHeldItem() == stack) {
                         possiblePlayer = player;
                         break;
                     }
