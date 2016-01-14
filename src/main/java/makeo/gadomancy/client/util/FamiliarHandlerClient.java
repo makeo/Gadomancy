@@ -33,7 +33,7 @@ import java.util.Map;
  */
 public class FamiliarHandlerClient {
 
-    private static final EntityWisp ENTITY_WISP;
+    private static EntityWisp ENTITY_WISP = null;
 
     private static RenderWisp fallbackRenderer;
 
@@ -66,6 +66,7 @@ public class FamiliarHandlerClient {
 
         Aspect aspect = Aspect.getAspect(data.data.aspectTag);
 
+        if(ENTITY_WISP == null) ENTITY_WISP = new EntityWisp(new FakeWorld());
         ENTITY_WISP.setType(aspect.getTag());
         ENTITY_WISP.ticksExisted = fam.dummyEntity.ticksExisted;
         GL11.glPushMatrix();
@@ -105,7 +106,6 @@ public class FamiliarHandlerClient {
     static {
         fallbackRenderer = new RenderWisp();
         fallbackRenderer.setRenderManager(RenderManager.instance);
-        ENTITY_WISP = new EntityWisp(new FakeWorld());
     }
 
     public static void handleAdditions(List<DataFamiliar.FamiliarData> toAdd) {
