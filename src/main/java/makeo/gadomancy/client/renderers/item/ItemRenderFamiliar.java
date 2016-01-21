@@ -1,7 +1,7 @@
 package makeo.gadomancy.client.renderers.item;
 
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
-import makeo.gadomancy.common.items.baubles.ItemFamiliar_Old;
+import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
 import makeo.gadomancy.common.utils.world.fake.FakeWorld;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -22,12 +22,12 @@ import thaumcraft.common.entities.monster.EntityWisp;
 public class ItemRenderFamiliar implements IItemRenderer {
 
     private static final RenderWisp fallbackRenderer;
-    private static final EntityWisp ENTITY_WISP;
+    private static EntityWisp ENTITY_WISP = null;
     private float[] renderInfo = new float[5];
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return !(item == null || !(item.getItem() instanceof ItemFamiliar_Old));
+        return !(item == null || !(item.getItem() instanceof ItemEtherealFamiliar));
     }
 
     @Override
@@ -38,12 +38,11 @@ public class ItemRenderFamiliar implements IItemRenderer {
     static {
         fallbackRenderer = new RenderWisp();
         fallbackRenderer.setRenderManager(RenderManager.instance);
-        ENTITY_WISP = new EntityWisp(new FakeWorld());
     }
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        if(item == null || !(item.getItem() instanceof ItemFamiliar_Old)) return;
+        if(item == null || !(item.getItem() instanceof ItemEtherealFamiliar)) return;
         GL11.glPushMatrix();
         if(type == ItemRenderType.EQUIPPED) {
             GL11.glTranslatef(0.5F, 0.5F, 0.7F);
@@ -56,9 +55,10 @@ public class ItemRenderFamiliar implements IItemRenderer {
         try {
             cleanActiveRenderInfo(type);
             GL11.glScalef(1.2F, 1.2F, 1.2F);
-            if(((ItemFamiliar_Old) item.getItem()).hasAspect(item)) {
+            if(ItemEtherealFamiliar.hasFamiliarAspect(item)) {
+                if(ENTITY_WISP == null) ENTITY_WISP = new EntityWisp(new FakeWorld());
                 ENTITY_WISP.ticksExisted = FamiliarHandlerClient.PartialEntityFamiliar.DUMMY_FAMILIAR.ticksExisted;
-                ENTITY_WISP.setType(((ItemFamiliar_Old) item.getItem()).getAspect(item).getTag());
+                ENTITY_WISP.setType(ItemEtherealFamiliar.getFamiliarAspect(item).getTag());
                 fallbackRenderer.doRender(ENTITY_WISP, 0, 0, 0, 0, 0);
             }
         } finally {

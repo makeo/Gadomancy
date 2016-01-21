@@ -145,7 +145,7 @@ public class ClientProxy extends CommonProxy {
         itemRenderStoneMachine.registerRenderer(2, tileBlockProtector, renderTileBlockProtector);
         itemRenderStoneMachine.registerRenderer(4, new TileArcanePackager(), renderTileArcanePackager);
 
-        MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemFamiliar_old, new ItemRenderFamiliar());
+        MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemEtherealFamiliar, new ItemRenderFamiliar());
         MinecraftForgeClient.registerItemRenderer(RegisteredItems.itemCreativeNode, new ItemCreativeNodeRenderer());
 
         //Entities

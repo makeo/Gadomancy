@@ -4,6 +4,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.crafting.FamiliarAugmentInfusion;
+import makeo.gadomancy.common.crafting.FamiliarUndoRecipe;
 import makeo.gadomancy.common.crafting.InfusionDisguiseArmor;
 import makeo.gadomancy.common.crafting.InfusionUpgradeRecipe;
 import makeo.gadomancy.common.crafting.RecipeStickyJar;
@@ -234,7 +235,7 @@ public class RegisteredRecipes {
 
         recipeRevealer = ThaumcraftApi.addInfusionEnchantmentRecipe("", RegisteredEnchantments.revealer, 4, new AspectList().add(Aspect.SENSES, 16).add(Aspect.MAGIC, 8), new ItemStack[]{new ItemStack(ConfigItems.itemGoggles), new ItemStack(ConfigItems.itemResource, 1, 14), new ItemStack(ConfigItems.itemResource, 1, 14)});
 
-        //CraftingManager.getInstance().getRecipeList().add(new FamiliarUndoRecipe());
+        CraftingManager.getInstance().getRecipeList().add(new FamiliarUndoRecipe());
     }
 
     private static List[] createAuraCoreRecipes() {

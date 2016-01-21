@@ -51,7 +51,7 @@ public class RegisteredItems {
     public static ItemGolemCoreBreak itemGolemCoreBreak;
     public static ItemExtendedNodeJar itemExtendedNodeJar;
     public static ItemFamiliar_Old itemFamiliar_old;
-    //public static ItemEtherealFamiliar itemEtherealFamiliar;
+    public static ItemEtherealFamiliar itemEtherealFamiliar;
     public static ItemCreativeNode itemCreativeNode;
     public static ItemArcanePackage itemPackage;
     public static ItemFakeLootbag itemFakeLootbag;
@@ -81,7 +81,7 @@ public class RegisteredItems {
         itemTransformationFocus = registerItem(new ItemTransformationFocus());
         itemGolemCoreBreak = registerItem(new ItemGolemCoreBreak());
         itemFamiliar_old = registerItem(new ItemFamiliar_Old(), "ItemFamiliar");
-        //itemEtherealFamiliar = registerItem(new ItemEtherealFamiliar());
+        itemEtherealFamiliar = registerItem(new ItemEtherealFamiliar());
         itemAuraCore = registerItem(new ItemAuraCore());
 
         itemCreativeNode = registerItem(new ItemCreativeNode());

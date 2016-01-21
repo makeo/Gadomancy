@@ -1,10 +1,12 @@
 item.ItemGolemPlacer.silverwood.name=Silverwood Golem
 item.ItemGolemPlacer.obsidian.name=Obsidian Golem
 item.ItemTransformationFocus.name=[WIP] Wand Focus: Transformation
-item.ItemFamiliar.name=Ethereal Familiar
+item.ItemFamiliar.name=Ethereal Familiar (Deprecated)
 item.ItemEtherealFamiliar.name=Ethereal Familiar
 item.ItemAuraCore.name=Aura Core
 item.ItemArcanePackage.name=Arcane Package
+
+gadomancy.lore.deprecation.back=Put in a crafting grid to get your items back!
 
 itemGroup.gadomancy=Gadomancy
 tc.research_category.gadomancy=Gadomancy
@@ -43,6 +45,7 @@ tc.research_text.GADOMANCY.REMOTEJAR=Mirrored transportation
 gadomancy.research_page.REMOTEJAR.1=The essentia mirror is excellent for moving essentia around for infusions, but you have the uncanny feeling that it has some untapped potential. Two essentia mirrors, when linked, effectively allow essentia to move between two points in space. By placing an essentia mirror inside of a specially altered warded jar, the space inside of one jar can be effectively linked to another. In order to link two jars, simply place one in the world and right click it with another mirrored jar.
 gadomancy.research_page.REMOTEJAR.2=If a network already exists, then the jar will be added to the current network. Unlike essentia mirrors, mirrored jar networks can have more than two jars. The space inside of a network is shared and balanced between the jars it contains. To put it simply, a two jar network will hold two jars of essentia, a three jar network will hold three, etc. Also, when one mirrored jar is filled, it will attempt to evenly distribute its contents between the other jars in its network.
 
+
 tc.research_name.GADOMANCY.FAMILIAR=Ethereal Familiar
 tc.research_text.GADOMANCY.FAMILIAR=A arcane follower
 gadomancy.research_page.FAMILIAR.1=Wisps have intrigued you for some time now. Many of these sentient bits of ethereal magic seem to be  passive, but when attacked, they retaliate with surprising speed and efficiency. Not only that, but sometimes just approaching a wisp too quickly will provoke an attack.<LINE>This behavior gave you an unexpected inspiration. By exploiting the unusually responsive nature of a wisp, it may be possible to bend its defensive instincts to act as a personal protector. Unfortunately, wild wisps have proven to be far to unpredictable to capture.
@@ -67,6 +70,7 @@ gadomancy.research_page.FAM_RANGE_1.1=By enhancing the wisps sensitivity to exte
 tc.research_name.GADOMANCY.FAM_COOLDOWN_1=Attack-Speed Enhancement
 tc.research_text.GADOMANCY.FAM_COOLDOWN_1=A scientific Railgun
 gadomancy.research_page.FAM_COOLDOWN_1.1=The resonance of the primordial pearl has proven useful in more than one way. Combining the pearl and a primal wand focus with the wisp seems to change its frequencies drastically. The enhanced wisp attacks twice as fast as before.
+
 
 tc.research_name.GADOMANCY.NODE_MANIPULATOR=Node Manipulator
 tc.research_text.GADOMANCY.NODE_MANIPULATOR=Almost like roulette
