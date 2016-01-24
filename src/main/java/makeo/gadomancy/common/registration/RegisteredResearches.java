@@ -6,11 +6,13 @@ import makeo.gadomancy.common.crafting.InfusionVisualDisguiseArmor;
 import makeo.gadomancy.common.crafting.RecipeVisualStickyJar;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.items.ItemAuraCore;
+import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
 import makeo.gadomancy.common.research.*;
 import makeo.gadomancy.common.utils.NBTHelper;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import thaumcraft.api.ThaumcraftApi;
@@ -72,12 +74,14 @@ public class RegisteredResearches {
     public static ResearchItem researchGrowingNodeGrowthClue;
 
     //Familiar
-    //public static ResearchItem researchFamiliarBasic;
-    //public static ResearchItem researchFamiliarAttack_1;
-    //public static ResearchItem researchFamiliarAttack_2;
-    //public static ResearchItem researchFamiliarAttack_3;
-    //public static ResearchItem researchFamiliarRange_1;
-    //public static ResearchItem researchFamiliarCooldown_1;
+    public static ResearchItem researchEtherealFamiliar;
+    public static ResearchItem researchFamiliarElementLightning;
+    public static ResearchItem researchFamiliarElementFire;
+    public static ResearchItem researchFamiliarElementPoison;
+    public static ResearchItem researchFamiliarElementWeakness;
+    public static ResearchItem researchFamiliarAugmentDamage;
+    public static ResearchItem researchFamiliarAugmentSpeed;
+    public static ResearchItem researchFamiliarAugmentRange;
 
     public static void init() {
 
@@ -128,6 +132,7 @@ public class RegisteredResearches {
         ResearchItem researchVWardingStone = new ResearchItem("PAVEWARD", Gadomancy.MODID).registerResearchItem();
         ResearchItem researchVNodeStabilizer = new ResearchItem("WANDPEDFOC", Gadomancy.MODID).registerResearchItem();
         ResearchItem researchVCoreUse = new ResearchItem("COREUSE", Gadomancy.MODID).registerResearchItem();
+        ResearchItem researchVRunicShielding = new ResearchItem("RUNICARMOR", Gadomancy.MODID).registerResearchItem();
 
         ResearchItem researchOculus = PseudoResearchItem.create("OCULUS", -11, -2).setRound().setSpecial().registerResearchItem();
 
@@ -152,6 +157,60 @@ public class RegisteredResearches {
                 new AspectList().add(Aspect.ORDER, 10).add(Aspect.ARMOR, 8).add(Aspect.EARTH, 12).add(Aspect.LIGHT, 10).add(Aspect.AURA, 8))
                 .setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.BLOCK_PROTECTOR.1"), new ResearchPage(RegisteredRecipes.recipeBlockProtector), new ResearchPage("gadomancy.research_page.BLOCK_PROTECTOR.3"), new ResearchPage("gadomancy.research_page.BLOCK_PROTECTOR.4")).registerResearchItem();
+
+        ItemStack displayFamiliar = new ItemStack(RegisteredItems.itemEtherealFamiliar);
+        ItemEtherealFamiliar.setFamiliarAspect(displayFamiliar, Aspect.MAGIC);
+        researchEtherealFamiliar = new SimpleResearchItem("ETHEREAL_FAMILIAR", 5, 1, 2, displayFamiliar,
+                new AspectList().add(Aspect.MAGIC, 8).add(Aspect.FIRE, 6).add(Aspect.AURA, 4))
+                .setConcealed()
+                .setParents(researchVRunicShielding.key)
+                .setPages(new ResearchPage("gadomancy.research_page.ETHEREAL_FAMILIAR.1")).registerResearchItem();
+
+        researchFamiliarElementLightning = new SimpleResearchItem("FAMILIAR_SHOCK", 4, -1, 2, Aspect.WEATHER.getImage(),
+                new AspectList().add(Aspect.WEATHER, 4).add(Aspect.WEAPON, 4).add(Aspect.AIR, 8))
+                .setConcealed()
+                .setParents(researchEtherealFamiliar.key)
+                .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_SHOCK.1")).registerResearchItem();
+
+        researchFamiliarElementFire = new SimpleResearchItem("FAMILIAR_FIRE", 6, -1, 2, Aspect.FIRE.getImage(),
+                new AspectList().add(Aspect.FIRE, 8).add(Aspect.WEAPON, 4).add(Aspect.MAGIC, 4))
+                .setConcealed()
+                .setParents(researchEtherealFamiliar.key)
+                .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_FIRE.1")).registerResearchItem();
+
+        researchFamiliarElementPoison = new SimpleResearchItem("FAMILIAR_POISON", 3, 2, 2, Aspect.POISON.getImage(),
+                new AspectList().add(Aspect.POISON, 8).add(Aspect.WEAPON, 4).add(Aspect.ENTROPY, 4))
+                .setConcealed()
+                .setParents(researchEtherealFamiliar.key)
+                .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_POISON.1")).registerResearchItem();
+
+        researchFamiliarElementWeakness = new SimpleResearchItem("FAMILIAR_WEAKNESS", 2, 0, 2, Aspect.TRAP.getImage(),
+                new AspectList().add(Aspect.TRAP, 8).add(Aspect.WEAPON, 8).add(Aspect.TAINT, 6))
+                .setConcealed()
+                .setParents(researchEtherealFamiliar.key)
+                .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_WEAKNESS.1")).registerResearchItem();
+
+        researchFamiliarAugmentDamage = new IfAnyParentResearchItem("FAMILIAR_DAMAGE", 8, 2, 2, Aspect.WEAPON.getImage(),
+                new AspectList().add(Aspect.WEAPON, 8).add(Aspect.ENERGY, 8).add(Aspect.MAGIC, 4))
+                .setAnyParents(researchFamiliarElementFire.key, researchFamiliarElementLightning.key,
+                        researchFamiliarElementPoison.key, researchFamiliarElementWeakness.key)
+                .setConcealed()
+                .setParents(researchEtherealFamiliar.key)
+                .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_DAMAGE.1")).registerResearchItem();
+
+        researchFamiliarAugmentRange = new IfAnyParentResearchItem("FAMILIAR_RANGE", 6, 4, 2, Aspect.ELDRITCH.getImage(),
+                new AspectList().add(Aspect.MAGIC, 8).add(Aspect.ELDRITCH, 8).add(Aspect.ORDER, 4))
+                .setAnyParents(researchFamiliarElementFire.key, researchFamiliarElementLightning.key,
+                        researchFamiliarElementPoison.key, researchFamiliarElementWeakness.key)
+                .setConcealed()
+                .setParents(researchEtherealFamiliar.key)
+                .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_RANGE.1")).registerResearchItem();
+
+        researchFamiliarAugmentSpeed = new SimpleResearchItem("FAMILIAR_SPEED", 8, 5, 2, Aspect.MOTION.getImage(),
+                new AspectList().add(Aspect.MOTION, 10).add(Aspect.MAGIC, 4).add(Aspect.AURA, 4))
+                .setConcealed()
+                .setParents(researchFamiliarAugmentDamage.key, researchFamiliarAugmentRange.key)
+                .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_SPEED.1")).registerResearchItem();
 
         if(ModConfig.enableAdditionalNodeTypes) {
             researchGrowingNodes = new SimpleResearchItem("GROWING", -8, -1, 5, new ResourceLocation("thaumcraft", "textures/misc/r_nodes.png"), new AspectList())
@@ -254,11 +313,8 @@ public class RegisteredResearches {
                 .setPages(new ResearchPage("gadomancy.research_page.ARMORDISGUISE.1"), new ResearchPage(new InfusionVisualDisguiseArmor(false)), new ResearchPage(new InfusionVisualDisguiseArmor(true)), new ResearchPage("gadomancy.research_page.ARMORDISGUISE.4")).registerResearchItem();
 
         //Warpy warpy
-        ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".FAM_ATTACK_3", 2);
-        ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".FAM_COOLDOWN_1", 3);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR", 4);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTHCLUE", 3);
-        ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".FAMILIAR", 1);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".E_PORTAL_CREATOR", 4);
     }
 

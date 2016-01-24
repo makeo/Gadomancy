@@ -29,19 +29,24 @@ public class IfAnyParentResearchItem extends SimpleResearchItem {
     }
 
     @Override
-    public boolean isConcealed() {
+    public boolean isHidden() {
         if(anyParents != null) {
+            boolean hasFoundAny = false;
+            boolean doesAnyExist = false;
             for(String res : anyParents) {
                 ResearchItem ri = ResearchCategories.getResearch(res);
                 if(ri != null) {
+                    doesAnyExist = true;
                     if(GuiResearchBrowser.completedResearch.get(Minecraft.getMinecraft().thePlayer.getCommandSenderName()).contains(ri.key)) {
-                        return super.isConcealed();
+                        hasFoundAny = true;
                     }
                 }
             }
-            return true;
+            if(doesAnyExist) {
+                return !hasFoundAny;
+            }
         }
-        return super.isConcealed();
+        return super.isHidden();
     }
 
     public IfAnyParentResearchItem setAnyParents(String... parents) {
