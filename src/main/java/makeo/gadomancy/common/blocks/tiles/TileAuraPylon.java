@@ -225,7 +225,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
 
     //Special to inputTile only!
     private void handleIO() {
-        if ((!worldObj.isRemote) && ((ticksExisted % 40) == 0) && (getEssentiaAmount() < getMaxAmount())) {
+        if ((!worldObj.isRemote) && ((ticksExisted & 15) == 0) && (getEssentiaAmount() < getMaxAmount())) {
             TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.DOWN);
             if (te != null) {
                 IEssentiaTransport ic = (IEssentiaTransport) te;
