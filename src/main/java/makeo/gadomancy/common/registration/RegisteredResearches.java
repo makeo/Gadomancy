@@ -166,31 +166,31 @@ public class RegisteredResearches {
                 .setParents(researchVRunicShielding.key)
                 .setPages(new ResearchPage("gadomancy.research_page.ETHEREAL_FAMILIAR.1")).registerResearchItem();
 
-        researchFamiliarElementLightning = new SimpleResearchItem("FAMILIAR_SHOCK", 4, -1, 2, Aspect.WEATHER.getImage(),
+        researchFamiliarElementLightning = new SimpleResearchItem("FAMILIAR_SHOCK", 4, -1, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Lightning.png"),
                 new AspectList().add(Aspect.WEATHER, 4).add(Aspect.WEAPON, 4).add(Aspect.AIR, 8))
                 .setConcealed()
                 .setParents(researchEtherealFamiliar.key)
                 .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_SHOCK.1")).registerResearchItem();
 
-        researchFamiliarElementFire = new SimpleResearchItem("FAMILIAR_FIRE", 6, -1, 2, Aspect.FIRE.getImage(),
+        researchFamiliarElementFire = new SimpleResearchItem("FAMILIAR_FIRE", 6, -1, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Fire.png"),
                 new AspectList().add(Aspect.FIRE, 8).add(Aspect.WEAPON, 4).add(Aspect.MAGIC, 4))
                 .setConcealed()
                 .setParents(researchEtherealFamiliar.key)
                 .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_FIRE.1")).registerResearchItem();
 
-        researchFamiliarElementPoison = new SimpleResearchItem("FAMILIAR_POISON", 3, 2, 2, Aspect.POISON.getImage(),
+        researchFamiliarElementPoison = new SimpleResearchItem("FAMILIAR_POISON", 3, 2, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Poison.png"),
                 new AspectList().add(Aspect.POISON, 8).add(Aspect.WEAPON, 4).add(Aspect.ENTROPY, 4))
                 .setConcealed()
                 .setParents(researchEtherealFamiliar.key)
                 .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_POISON.1")).registerResearchItem();
 
-        researchFamiliarElementWeakness = new SimpleResearchItem("FAMILIAR_WEAKNESS", 2, 0, 2, Aspect.TRAP.getImage(),
+        researchFamiliarElementWeakness = new SimpleResearchItem("FAMILIAR_WEAKNESS", 2, 0, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Enervation.png"),
                 new AspectList().add(Aspect.TRAP, 8).add(Aspect.WEAPON, 8).add(Aspect.TAINT, 6))
                 .setConcealed()
                 .setParents(researchEtherealFamiliar.key)
                 .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_WEAKNESS.1")).registerResearchItem();
 
-        researchFamiliarAugmentDamage = new IfAnyParentResearchItem("FAMILIAR_DAMAGE", 8, 2, 2, Aspect.WEAPON.getImage(),
+        researchFamiliarAugmentDamage = new IfAnyParentResearchItem("FAMILIAR_DAMAGE", 8, 2, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Damage.png"),
                 new AspectList().add(Aspect.WEAPON, 8).add(Aspect.ENERGY, 8).add(Aspect.MAGIC, 4))
                 .setAnyParents(researchFamiliarElementFire.key, researchFamiliarElementLightning.key,
                         researchFamiliarElementPoison.key, researchFamiliarElementWeakness.key)
@@ -198,7 +198,7 @@ public class RegisteredResearches {
                 .setParents(researchEtherealFamiliar.key)
                 .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_DAMAGE.1")).registerResearchItem();
 
-        researchFamiliarAugmentRange = new IfAnyParentResearchItem("FAMILIAR_RANGE", 6, 4, 2, Aspect.ELDRITCH.getImage(),
+        researchFamiliarAugmentRange = new IfAnyParentResearchItem("FAMILIAR_RANGE", 6, 4, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Range.png"),
                 new AspectList().add(Aspect.MAGIC, 8).add(Aspect.ELDRITCH, 8).add(Aspect.ORDER, 4))
                 .setAnyParents(researchFamiliarElementFire.key, researchFamiliarElementLightning.key,
                         researchFamiliarElementPoison.key, researchFamiliarElementWeakness.key)
@@ -206,7 +206,7 @@ public class RegisteredResearches {
                 .setParents(researchEtherealFamiliar.key)
                 .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_RANGE.1")).registerResearchItem();
 
-        researchFamiliarAugmentSpeed = new SimpleResearchItem("FAMILIAR_SPEED", 8, 5, 2, Aspect.MOTION.getImage(),
+        researchFamiliarAugmentSpeed = new SimpleResearchItem("FAMILIAR_SPEED", 8, 5, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Speed.png"),
                 new AspectList().add(Aspect.MOTION, 10).add(Aspect.MAGIC, 4).add(Aspect.AURA, 4))
                 .setConcealed()
                 .setParents(researchFamiliarAugmentDamage.key, researchFamiliarAugmentRange.key)
