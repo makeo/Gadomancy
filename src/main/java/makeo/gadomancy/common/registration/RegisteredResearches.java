@@ -162,7 +162,7 @@ public class RegisteredResearches {
         ItemEtherealFamiliar.setFamiliarAspect(displayFamiliar, Aspect.MAGIC);
         researchEtherealFamiliar = new SimpleResearchItem("ETHEREAL_FAMILIAR", 5, 1, 2, displayFamiliar,
                 new AspectList().add(Aspect.MAGIC, 8).add(Aspect.FIRE, 6).add(Aspect.AURA, 4))
-                .setConcealed()
+                .setConcealed().setSpecial()
                 .setParents(researchVRunicShielding.key)
                 .setPages(new ResearchPage("gadomancy.research_page.ETHEREAL_FAMILIAR.1")).registerResearchItem();
 

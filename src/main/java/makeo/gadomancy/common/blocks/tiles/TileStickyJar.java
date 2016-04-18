@@ -26,6 +26,7 @@ import java.lang.reflect.Field;
  * Created by makeo @ 13.07.2015 15:48
  */
 public class TileStickyJar extends TileJarFillable {
+
     private Block parentBlock;
     private Integer parentMetadata = 0;
 
@@ -54,6 +55,7 @@ public class TileStickyJar extends TileJarFillable {
     }
 
     private boolean needsRenderUpdate = false;
+
     public void init(TileJarFillable parent, Block parentBlock, int parentMetadata, ForgeDirection placedOn) {
         this.parent = parent;
 
