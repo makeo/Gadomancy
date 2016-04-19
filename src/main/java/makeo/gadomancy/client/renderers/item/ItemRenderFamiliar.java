@@ -4,6 +4,7 @@ import makeo.gadomancy.client.util.FamiliarHandlerClient;
 import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
 import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.world.fake.FakeWorld;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -145,11 +146,20 @@ public class ItemRenderFamiliar implements IItemRenderer {
         if(priv) {
             color = new Color(Color.HSBtoRGB((System.currentTimeMillis() % 3240) / 3240F, 1F, 1F));
             if(owner.worldObj.rand.nextInt(3) == 0) {
+                EntityPlayer thisPlayer = Minecraft.getMinecraft().thePlayer;
+                boolean isThisOwner = thisPlayer.equals(owner);
                 World world = owner.worldObj;
                 Random rand = world.rand;
-                double oX = owner.posX + f11; //TODO check again
-                double oY = owner.posY + f12;
-                double oZ = owner.posZ + f13;
+                double oX, oY, oZ;
+                if(isThisOwner) {
+                    oX = owner.posX + f11;
+                    oY = owner.posY + f12;
+                    oZ = owner.posZ + f13;
+                } else {
+                    oX = thisPlayer.posX + (f11);
+                    oY = thisPlayer.posY + (f12);
+                    oZ = thisPlayer.posZ + (f13);
+                }
                 Thaumcraft.proxy.wispFX(world, oX + (rand.nextFloat() - rand.nextFloat()) * 0.3F,
                                                oY + (rand.nextFloat() - rand.nextFloat()) * 0.3F,
                                                oZ + (rand.nextFloat() - rand.nextFloat()) * 0.3F,
