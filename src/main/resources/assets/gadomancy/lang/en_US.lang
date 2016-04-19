@@ -79,31 +79,9 @@ tc.research_name.GADOMANCY.FAMILIAR_SPEED=Familiar-Upgrade-Speed
 tc.research_text.GADOMANCY.FAMILIAR_SPEED=Can attack multiple enemys; Conflicts with: Range, Damage
 gadomancy.research_page.FAMILIAR_SPEED.1=TEXT
 
-
-
-
-tc.research_name.GADOMANCY.FAM_ATTACK_1=Attack Enhancement
-tc.research_text.GADOMANCY.FAM_ATTACK_1=Increasing the damage
-gadomancy.research_page.FAM_ATTACK_1.1=By concentrating more magic into the wisp, its attack power is effectively doubled.
-
-tc.research_name.GADOMANCY.FAM_ATTACK_2=Further Attack Enhancement
-tc.research_text.GADOMANCY.FAM_ATTACK_2=What does the scouter say about its power level?
-gadomancy.research_page.FAM_ATTACK_2.1=By adding eldritch energies and further concentrating the wisps internal magic, a further doubling of power can be achieved. You occasionally hear strange whispering coming from the familiar, but the sound is so quiet that you don't think it will be an issue.
-
-tc.research_name.GADOMANCY.FAM_ATTACK_3=Maximized Damage
-tc.research_text.GADOMANCY.FAM_ATTACK_3=ITS OVER 9000!
-gadomancy.research_page.FAM_ATTACK_3.1=After observing the primordial pearl for some time, you found a way to use it to enhance the familiar even further. By infusing the resonating energies of the pearl with the familiar, you found a way to double its power yet again. The nearly inaudible whispering has become far more pronounced. You have an uneasy feeling that you are being monitored...
-
-tc.research_name.GADOMANCY.FAM_RANGE_1=Range Enhancement
-tc.research_text.GADOMANCY.FAM_RANGE_1=Attacking even further
-gadomancy.research_page.FAM_RANGE_1.1=By enhancing the wisps sensitivity to external influence, you can slightly increasing its range.
-
-tc.research_name.GADOMANCY.FAM_COOLDOWN_1=Attack-Speed Enhancement
-tc.research_text.GADOMANCY.FAM_COOLDOWN_1=A scientific Railgun
-gadomancy.research_page.FAM_COOLDOWN_1.1=The resonance of the primordial pearl has proven useful in more than one way. Combining the pearl and a primal wand focus with the wisp seems to change its frequencies drastically. The enhanced wisp attacks twice as fast as before.
-
-
-
+tc.research_name.GADOMANCY.KNOWLEDGE_BOOK=Book of Knowledge
+tc.research_text.GADOMANCY.KNOWLEDGE_BOOK=Knowledge is power
+gadomancy.research_page.KNOWLEDGE_BOOK.1=TEXT
 
 tc.research_name.GADOMANCY.NODE_MANIPULATOR=Node Manipulator
 tc.research_text.GADOMANCY.NODE_MANIPULATOR=Almost like roulette
@@ -221,6 +199,7 @@ tile.BlockStoneMachine.11.name=Manipulation Pillar
 tile.BlockStoneMachine.15.name=Manipulation Pillar
 tile.BlockAuraPylon.0.name=Aura Pylon
 tile.BlockAuraPylon.1.name=Aura Pylon Peak
+tile.BlockKnowledgeBook.name=Book of Knowledge
 
 gadomancy.nodes.GROWING=Growing
 gadomancy.nodes.STARVING=Starving

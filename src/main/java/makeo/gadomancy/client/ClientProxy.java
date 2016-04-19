@@ -22,6 +22,7 @@ import makeo.gadomancy.client.renderers.item.ItemJarExtendedNodeRenderer;
 import makeo.gadomancy.client.renderers.item.ItemRenderFamiliar;
 import makeo.gadomancy.client.renderers.item.ItemRenderRemoteJar;
 import makeo.gadomancy.client.renderers.item.ItemRenderStoneMachine;
+import makeo.gadomancy.client.renderers.item.ItemRenderTEKnowledgeBook;
 import makeo.gadomancy.client.renderers.item.ItemRenderTileEntity;
 import makeo.gadomancy.client.renderers.item.ItemRenderTileEntityMulti;
 import makeo.gadomancy.client.renderers.tile.*;
@@ -118,14 +119,19 @@ public class ClientProxy extends CommonProxy {
         RenderTileArcanePackager renderTileArcanePackager = new RenderTileArcanePackager();
         ClientRegistry.bindTileEntitySpecialRenderer(TileArcanePackager.class, renderTileArcanePackager);
 
+        RenderTileKnowledgeBook bookRender = new RenderTileKnowledgeBook();
+        ClientRegistry.bindTileEntitySpecialRenderer(TileKnowledgeBook.class, bookRender);
+
         //Items
         TileArcaneDropper fakeTile = new TileArcaneDropper();
         fakeTile.blockMetadata = 8 | ForgeDirection.SOUTH.ordinal();
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockArcaneDropper), new ItemRenderTileEntity(renderTileArcaneDropper, fakeTile));
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockArcaneDropper), new ItemRenderTileEntity<TileArcaneDropper>(renderTileArcaneDropper, fakeTile));
 
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockInfusionClaw), new ItemRenderTileEntity(renderTileInfusionClaw, new TileInfusionClaw()));
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockInfusionClaw), new ItemRenderTileEntity<TileInfusionClaw>(renderTileInfusionClaw, new TileInfusionClaw()));
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ConfigBlocks.blockAiry), new ItemExNodeRenderer());
+
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockKnowledgeBook), new ItemRenderTEKnowledgeBook(bookRender));
 
         ItemRenderTileEntityMulti multi = new ItemRenderTileEntityMulti(new ItemRenderTileEntityMulti.RenderSet(renderTileAuraPylon, new TileAuraPylon(), 0),
                new ItemRenderTileEntityMulti.RenderSet(renderTileAuraPylon, new TileAuraPylonTop(), 1));

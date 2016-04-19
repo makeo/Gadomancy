@@ -62,6 +62,7 @@ public class RegisteredResearches {
     public static ResearchItem researchArcanePackager;
     public static ResearchItem researchAuraPylon;
     public static ResearchItem researchAuraEffects;
+    public static ResearchItem researchKnowledgeBook;
 
     //Skyblock Helper
     public static ResearchItem researchAncientStones;
@@ -95,7 +96,7 @@ public class RegisteredResearches {
                 .setPages(new ResearchPage("gadomancy.research_page.GOLEMSILVERWOOD.1"), new ResearchPage(RegisteredRecipes.recipeGolemSilverwood)).registerResearchItem();
 
         researchGolemRunicShield = new SimpleResearchItem("GOLEMRUNICSHIELD", 0, 0, 4, new ItemStack(RegisteredItems.itemFakeGolemShield, 1, 32767),
-                new AspectList().add(Aspect.AURA, 16))
+                new AspectList().add(Aspect.AURA, 16).add(Aspect.ARMOR, 6).add(Aspect.MAGIC, 4).add(Aspect.MOTION, 8))
                 .setParents(researchGolemSilverwood.key).setConcealed()
                 .setPages(new ResearchPage("gadomancy.research_page.GOLEMRUNICSHIELD.1"), new ResearchPage(RegisteredRecipes.recipesGolemRunicShield)).registerResearchItem();
 
@@ -306,6 +307,14 @@ public class RegisteredResearches {
                 .setConcealed().setSecondary()
                 .setParents(researchAuraPylon.key)
                 .setPages(new ResearchPage("gadomancy.research_page.AURA_EFFECTS.1")).registerResearchItem();
+
+        researchKnowledgeBook = new SimpleResearchItem("KNOWLEDGE_BOOK",
+                -2, 8, 2, new ItemStack(RegisteredBlocks.blockKnowledgeBook),
+                new AspectList().add(Aspect.MIND, 12).add(Aspect.MAGIC, 8).add(Aspect.MOTION, 6).add(Aspect.ORDER, 10).add(Aspect.MECHANISM, 8).add(Aspect.CRAFT, 8))
+                .setHidden()
+                .setParents(researchAuraCore.key)
+                .setItemTriggers(new ItemStack(RegisteredItems.itemAuraCore, 1, ItemAuraCore.AuraCoreType.ORDER.ordinal()))
+                .setPages(new ResearchPage("gadomancy.research_page.KNOWLEDGE_BOOK.1"), new ResearchPage(RegisteredRecipes.recipeKnowledgeBook)).registerResearchItem();
 
         String[] packagerParents = Config.wardedStone ? new String[] { researchAuraCore.key, "WARDEDARCANA" } : new String[] { researchAuraCore.key };
                 researchArcanePackager = new SimpleResearchItem("ARCANE_PACKAGER",

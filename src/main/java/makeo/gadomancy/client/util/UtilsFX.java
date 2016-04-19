@@ -20,6 +20,7 @@ import java.util.Random;
  * Created by HellFirePvP @ 30.10.2015 20:08
  */
 public class UtilsFX {
+
     private static final Color[] RUNE_COLORS_RED = new Color[] { new Color(0xB60707), new Color(0xEE3782), new Color(0xF37B20), new Color(0xFF6722), new Color(0xFF6D30), new Color(0xFF0000) };
     private static final Color[] RUNE_COLORS_GREEN = new Color[] { new Color(0x015629), new Color(0x0E9C00), new Color(0x010000), new Color(0x01FF00), new Color(0x014C3E)};
     private static final Color[] RUNE_COLORS_BLUE = new Color[] { new Color(0x060956), new Color(0x012578), new Color(0x0C1556), new Color(0x0100FF), new Color(0x01018C)};

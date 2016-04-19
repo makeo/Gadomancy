@@ -15,29 +15,28 @@ import net.minecraft.tileentity.TileEntity;
  * Created by makeo @ 07.10.2015 18:39
  */
 public class SynchronizedTileEntity extends TileEntity {
-    public void readFromNBT(NBTTagCompound compound) {
+
+    public final void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         readCustomNBT(compound);
     }
 
-    public void readCustomNBT(NBTTagCompound compound) {
-    }
+    public void readCustomNBT(NBTTagCompound compound) {}
 
-    public void writeToNBT(NBTTagCompound compound) {
+    public final void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         writeCustomNBT(compound);
     }
 
-    public void writeCustomNBT(NBTTagCompound compound) {
-    }
+    public void writeCustomNBT(NBTTagCompound compound) {}
 
-    public Packet getDescriptionPacket() {
+    public final Packet getDescriptionPacket() {
         NBTTagCompound compound = new NBTTagCompound();
         writeCustomNBT(compound);
         return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 255, compound);
     }
 
-    public void onDataPacket(NetworkManager manager, S35PacketUpdateTileEntity paket) {
+    public final void onDataPacket(NetworkManager manager, S35PacketUpdateTileEntity paket) {
         super.onDataPacket(manager, paket);
         readCustomNBT(paket.func_148857_g());
     }

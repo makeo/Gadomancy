@@ -82,6 +82,7 @@ public class RegisteredRecipes {
     public static IArcaneRecipe recipeAuraPylon;
     public static IArcaneRecipe recipeAuraPylonPeak;
     public static IArcaneRecipe recipeArcanePackager;
+    public static IArcaneRecipe recipeKnowledgeBook;
 
     public static InfusionEnchantmentRecipe recipeRevealer;
 
@@ -227,8 +228,20 @@ public class RegisteredRecipes {
         RegisteredItems.itemAuraCore.setCoreType(aerCore, ItemAuraCore.AuraCoreType.AIR);
         recipeArcanePackager = ThaumcraftApi.addArcaneCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".ARCANE_PACKAGER", new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 4),
                 new AspectList().add(Aspect.AIR, 100).add(Aspect.ORDER, 60).add(Aspect.ENTROPY, 50),
-                "PSP", "GCG", "JTJ", 'P', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'S', new ItemStack(Blocks.piston), 'G', (Config.wardedStone ? new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 2) : new ItemStack(Blocks.glass) ),
-                'C', aerCore, 'J', new ItemStack(ConfigBlocks.blockJar), 'T', new ItemStack(ConfigBlocks.blockTable, 1, 15));
+                "PSP", "GCG", "JTJ",
+                'P', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'S', new ItemStack(Blocks.piston),
+                'G', (Config.wardedStone ? new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 2) : new ItemStack(Blocks.glass)), 'C', aerCore,
+                'J', new ItemStack(ConfigBlocks.blockJar), 'T', new ItemStack(ConfigBlocks.blockTable, 1, 15));
+
+        ItemStack ordoCore = new ItemStack(RegisteredItems.itemAuraCore);
+        RegisteredItems.itemAuraCore.setCoreType(ordoCore, ItemAuraCore.AuraCoreType.ORDER);
+
+        recipeKnowledgeBook = ThaumcraftApi.addArcaneCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".KNOWLEDGE_BOOK", new ItemStack(RegisteredBlocks.blockKnowledgeBook),
+                new AspectList().add(Aspect.ORDER, 70).add(Aspect.ENTROPY, 20).add(Aspect.AIR, 20).add(Aspect.FIRE, 30),
+                "STS", "BOB", "MGM",
+                'S', new ItemStack(ConfigItems.itemInkwell), 'T', new ItemStack(ConfigItems.itemThaumonomicon),
+                'B', new ItemStack(Items.book), 'O', ordoCore,
+                'M', new ItemStack(ConfigBlocks.blockMetalDevice, 1, 12), 'G', new ItemStack(ConfigItems.itemGoggles));
 
         auraCoreRecipes = createAuraCoreRecipes();
 

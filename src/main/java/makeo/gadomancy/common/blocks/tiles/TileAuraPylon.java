@@ -37,12 +37,12 @@ import java.util.List;
  * <p/>
  * Created by HellFirePvP @ 11.11.2015 14:30
  */
-public class TileAuraPylon extends SynchronizedTileEntity implements IAspectContainer, IEssentiaTransport {
+public class TileAuraPylon extends SynchronizedTileEntity implements IAspectContainer, IEssentiaTransport, EntityPermNoClipItem.IItemMasterTile {
 
     private ItemStack crystalEssentiaStack = null;
     private boolean isPartOfMultiblock = false;
 
-    public int timeSinceLastItemInfo = 0;
+    private int timeSinceLastItemInfo = 0;
 
     private int ticksExisted = 0;
     private Aspect holdingAspect;
@@ -75,7 +75,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
                     doAuraEffects(holdingAspect);
                 }
                 if(holdingAspect != null && timeSinceLastItemInfo > 8) {
-                    informItemPickup();
+                    informItemRemoval();
                 }
             }
         } else {
@@ -90,6 +90,16 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
                 tryVortexPossibleItems();
             }
         }
+    }
+
+    @Override
+    public boolean canStillHoldItem() {
+        return isMasterTile();
+    }
+
+    @Override
+    public void informMaster() {
+        this.timeSinceLastItemInfo = 0;
     }
 
     private void doAuraEffects(Aspect aspect) {
@@ -145,6 +155,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
     private void tryVortexPossibleItems() {
         TileAuraPylon io = getInputTile();
         if (io == null) return;
+
         int masterY = yCoord + 1;
         float dst = ((float) (masterY - io.yCoord)) / 2F;
         float yC = masterY - dst;
@@ -240,7 +251,8 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
         }
     }
 
-    public void informItemPickup() {
+    @Override
+    public void informItemRemoval() {
         if(!isMasterTile()) return;
         this.crystalEssentiaStack = null;
         this.holdingAspect = null;
@@ -252,6 +264,17 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
         io.amount = 0;
         worldObj.markBlockForUpdate(io.xCoord, io.yCoord, io.zCoord);
         io.markDirty();
+    }
+
+    //We don't want the item to change at any given point...
+    @Override
+    public EntityPermNoClipItem.ItemChangeTask getAndRemoveScheduledChangeTask() {
+        return null;
+    }
+
+    @Override
+    public void broadcastItemStack(ItemStack itemStack) {
+        this.crystalEssentiaStack = itemStack;
     }
 
     //Individual.
@@ -583,4 +606,5 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
         TileEntity te = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
         return te == null || !(te instanceof TileAuraPylon);
     }
+
 }

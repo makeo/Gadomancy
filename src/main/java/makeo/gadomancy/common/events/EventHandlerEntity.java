@@ -94,8 +94,8 @@ public class EventHandlerEntity {
                 EntityPermNoClipItem item = (EntityPermNoClipItem) event.item;
                 ChunkCoordinates master = (ChunkCoordinates) item.getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherMasterId).getObject();
                 TileEntity te = event.entityPlayer.worldObj.getTileEntity(master.posX, master.posY, master.posZ);
-                if (te == null || !(te instanceof TileAuraPylon)) return;
-                ((TileAuraPylon) te).informItemPickup();
+                if (te == null || !(te instanceof EntityPermNoClipItem.IItemMasterTile)) return;
+                ((EntityPermNoClipItem.IItemMasterTile) te).informItemRemoval();
             }
         }
     }

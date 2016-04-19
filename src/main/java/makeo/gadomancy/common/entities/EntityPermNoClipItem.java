@@ -1,6 +1,5 @@
 package makeo.gadomancy.common.entities;
 
-import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
 import makeo.gadomancy.common.data.config.ModConfig;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
@@ -72,8 +71,13 @@ public class EntityPermNoClipItem extends EntityPermanentItem {
             ChunkCoordinates cc = (ChunkCoordinates) getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherMasterId).getObject();
             if(cc == null) return;
             TileEntity te = worldObj.getTileEntity(cc.posX, cc.posY, cc.posZ);
-            if(te != null && te instanceof TileAuraPylon) {
-                ((TileAuraPylon) te).timeSinceLastItemInfo = 0;
+            if(te != null && te instanceof IItemMasterTile) {
+                ((IItemMasterTile) te).informMaster();
+                ItemChangeTask task = ((IItemMasterTile) te).getAndRemoveScheduledChangeTask();
+                if(task != null) {
+                    task.changeItem(this);
+                }
+                ((IItemMasterTile) te).broadcastItemStack(getEntityItem());
             }
         }
 
@@ -83,10 +87,12 @@ public class EntityPermNoClipItem extends EntityPermanentItem {
         float fZ = Float.intBitsToFloat(fixC.posZ);
         setPositionAndRotation(fX, fY, fZ, 0, 0);
 
+
+
         if ((ticksExisted & 7) == 0 && !worldObj.isRemote) {
             ChunkCoordinates masterCoords = (ChunkCoordinates) getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherMasterId).getObject();
             TileEntity te = worldObj.getTileEntity(masterCoords.posX, masterCoords.posY, masterCoords.posZ);
-            if (te == null || !(te instanceof TileAuraPylon) || !((TileAuraPylon) te).isMasterTile()) {
+            if (te == null || !(te instanceof IItemMasterTile) || !((IItemMasterTile) te).canStillHoldItem()) {
                 EntityItem item = new EntityItem(worldObj, posX, posY, posZ, getEntityItem());
                 worldObj.spawnEntityInWorld(item);
                 setDead();
@@ -135,4 +141,25 @@ public class EntityPermNoClipItem extends EntityPermanentItem {
         com.setInteger("mY", masterY);
         com.setInteger("mZ", masterZ);
     }
+
+    public static interface IItemMasterTile {
+
+        public boolean canStillHoldItem();
+
+        public void informMaster();
+
+        public void informItemRemoval();
+
+        public ItemChangeTask getAndRemoveScheduledChangeTask();
+
+        public void broadcastItemStack(ItemStack itemStack);
+
+    }
+
+    public static abstract class ItemChangeTask {
+
+        public abstract void changeItem(EntityPermNoClipItem item);
+
+    }
+
 }

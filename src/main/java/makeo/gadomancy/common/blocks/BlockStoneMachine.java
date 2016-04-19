@@ -205,6 +205,10 @@ public class BlockStoneMachine extends Block {
                 dropBlockAsItem(world, x, y, z, metadata, 0);
                 world.setBlockToAir(x, y, z);
             }
+        } else if(metadata == 1) {
+            if (!world.isAirBlock(x, y + 1, z)) {
+                InventoryUtils.dropItems(world, x, y, z);
+            }
         } else if(metadata == 4) {
             if(!world.isRemote) {
                 TileArcanePackager tile = (TileArcanePackager) world.getTileEntity(x, y, z);
@@ -247,7 +251,10 @@ public class BlockStoneMachine extends Block {
                 return world.getBlock(x, y - 1, z).onBlockActivated(world, x, y - 1, z, player, side, hitX, hitY, hitZ);
             }
         } else if (metadata == 1) {
-            return ConfigBlocks.blockStoneDevice.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
+            if(world.isAirBlock(x, y + 1, z)) {
+                return ConfigBlocks.blockStoneDevice.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
+            }
+            return true;
         } else if(metadata == 4) {
             player.openGui(Gadomancy.instance, 2, world, x, y, z);
             return true;
