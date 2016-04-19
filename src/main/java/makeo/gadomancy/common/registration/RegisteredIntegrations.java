@@ -21,6 +21,7 @@ public class RegisteredIntegrations {
     public static IntegrationAutomagy automagy;
     public static IntegrationNEI nei;
     public static IntegrationMystcraft mystcraft;
+    public static IntegrationThaumicTinkerer thaumicTinkerer;
 
     private RegisteredIntegrations() {}
 
@@ -30,6 +31,7 @@ public class RegisteredIntegrations {
         automagy = registerIndependent(IntegrationAutomagy.class);
         nei = registerIndependent(IntegrationNEI.class);
         mystcraft = registerIndependent(IntegrationMystcraft.class);
+        thaumicTinkerer = registerIndependent(IntegrationThaumicTinkerer.class);
 
         registerDependent("ThaumicHorizons", "makeo.gadomancy.common.integration.thaumichorizions.IntegrationThaumicHorizions");
         registerDependent("Waila", "makeo.gadomancy.common.integration.waila.IntegrationWaila");

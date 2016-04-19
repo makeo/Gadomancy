@@ -2,6 +2,7 @@ package makeo.gadomancy.common.aura;
 
 import makeo.gadomancy.api.AuraEffect;
 import makeo.gadomancy.common.events.EventHandlerEntity;
+import makeo.gadomancy.common.integration.IntegrationThaumicTinkerer;
 import makeo.gadomancy.common.registration.RegisteredIntegrations;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.registration.RegisteredPotions;
@@ -595,6 +596,14 @@ public class AuraEffects {
         Block block = world.getBlock(coordinates.posX, coordinates.posY, coordinates.posZ);
         if (block.getTickRandomly()) {
             world.scheduleBlockUpdate(coordinates.posX, coordinates.posY, coordinates.posZ, block, world.rand.nextInt(8) + 2);
+        }
+        if(IntegrationThaumicTinkerer.isCropBlock(block)) {
+            TileEntity te = world.getTileEntity(coordinates.posX, coordinates.posY, coordinates.posZ);
+            if(te != null && IntegrationThaumicTinkerer.isCropTile(te)) {
+                for (int i = 0; i < 10; i++) {
+                    te.updateEntity(); //Badumm tss..
+                }
+            }
         }
     }
 
