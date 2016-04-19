@@ -47,8 +47,8 @@ public class TileKnowledgeBook extends SynchronizedTileEntity implements EntityP
 
     private static final Random rand = new Random();
     private static final int LOWEST_AMOUNT = 10;
-    private static final int COGNITIO_TICKS = 300;
-    private static final int MAX_NEEDED_KNOWLEDGE = 100;
+    private static final int COGNITIO_TICKS = 150;
+    private static final int MAX_NEEDED_KNOWLEDGE = 200;
     private static final int SURROUNDINGS_SEARCH_XZ = 4;
     private static final int SURROUNDINGS_SEARCH_Y = 3;
     private static final double MULTIPLIER = 4;
@@ -139,6 +139,9 @@ public class TileKnowledgeBook extends SynchronizedTileEntity implements EntityP
             this.workResearchAspects.aspects.remove(a);
         } else {
             this.workResearchAspects.aspects.put(a, value);
+        }
+        if(this.workResearchAspects.aspects.isEmpty()) {
+            finishResearch();
         }
     }
 

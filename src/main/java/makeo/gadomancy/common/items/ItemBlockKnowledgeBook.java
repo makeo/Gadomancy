@@ -35,7 +35,11 @@ public class ItemBlockKnowledgeBook extends ItemBlock {
         Block placedAgainst = world.getBlock(x, y, z);
         int againstMeta = world.getBlockMetadata(x, y, z);
         if(placedAgainstDir.equals(ForgeDirection.UP) && placedAgainst.equals(ConfigBlocks.blockStoneDevice) && againstMeta == 1) {
-            return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+            if(world.isAirBlock(x, y + 2, z)) {
+                return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
