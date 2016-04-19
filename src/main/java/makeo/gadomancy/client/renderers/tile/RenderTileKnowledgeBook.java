@@ -30,7 +30,7 @@ public class RenderTileKnowledgeBook extends TileEntitySpecialRenderer {
         TileKnowledgeBook.FloatingBookAttributes attributes = te.getBookAttributes();
 
         GL11.glPushMatrix();
-        GL11.glTranslatef((float)x + 0.5F, (float)y + 0.2F, (float)z + 0.5F);
+        GL11.glTranslatef((float)x + 0.5F, (float)y + 0.1F, (float)z + 0.5F);
         float f1 = (float)attributes.field_145926_a + partialTicks;
         GL11.glTranslatef(0.0F, 0.1F + MathHelper.sin(f1 * 0.1F) * 0.03F, 0.0F);
         float f2;

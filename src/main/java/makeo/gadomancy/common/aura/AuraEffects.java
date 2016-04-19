@@ -364,7 +364,7 @@ public class AuraEffects {
     public static final AuraEffect HERBA = new AuraEffect.BlockAuraEffect() {
         @Override
         public int getBlockCount(Random random) {
-            return 140;
+            return 180;
         }
 
         @Override
@@ -380,7 +380,7 @@ public class AuraEffects {
     public static final AuraEffect ARBOR = new AuraEffect.BlockAuraEffect() {
         @Override
         public int getBlockCount(Random random) {
-            return 80;
+            return 120;
         }
 
         @Override
@@ -594,7 +594,7 @@ public class AuraEffects {
     private static void waterLocation(ChunkCoordinates coordinates, World world) {
         Block block = world.getBlock(coordinates.posX, coordinates.posY, coordinates.posZ);
         if (block.getTickRandomly()) {
-            world.scheduleBlockUpdate(coordinates.posX, coordinates.posY, coordinates.posZ, block, world.rand.nextInt(10) + 5);
+            world.scheduleBlockUpdate(coordinates.posX, coordinates.posY, coordinates.posZ, block, world.rand.nextInt(8) + 2);
         }
     }
 

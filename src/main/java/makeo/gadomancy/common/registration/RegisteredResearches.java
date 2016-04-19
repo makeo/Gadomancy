@@ -206,7 +206,7 @@ public class RegisteredResearches {
                 .setAnyParents(researchFamiliarElementFire.key, researchFamiliarElementLightning.key,
                         researchFamiliarElementPoison.key, researchFamiliarElementWeakness.key)
                 .setConcealed()
-                .setParents(researchEtherealFamiliar.key)
+                .setParents(researchEtherealFamiliar.key, "VOIDMETAL")
                 .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_DAMAGE.1"), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[12]),
                         new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[13]), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[14]))
                 .registerResearchItem();
@@ -224,7 +224,7 @@ public class RegisteredResearches {
         researchFamiliarAugmentSpeed = new SimpleResearchItem("FAMILIAR_SPEED", 8, 5, 2, new ResourceLocation("gadomancy", "textures/misc/Fam_Speed.png"),
                 new AspectList().add(Aspect.MOTION, 10).add(Aspect.MAGIC, 4).add(Aspect.AURA, 4))
                 .setConcealed()
-                .setParents(researchFamiliarAugmentDamage.key, researchFamiliarAugmentRange.key)
+                .setParents(researchFamiliarAugmentDamage.key, researchFamiliarAugmentRange.key, "PRIMPEARL")
                 .setPages(new ResearchPage("gadomancy.research_page.FAMILIAR_SPEED.1"), new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[17]),
                         new ResearchPage(RegisteredRecipes.recipesFamiliarAugmentation[18]))
                 .registerResearchItem();
@@ -312,7 +312,7 @@ public class RegisteredResearches {
                 -2, 8, 2, new ItemStack(RegisteredBlocks.blockKnowledgeBook),
                 new AspectList().add(Aspect.MIND, 12).add(Aspect.MAGIC, 8).add(Aspect.MOTION, 6).add(Aspect.ORDER, 10).add(Aspect.MECHANISM, 8).add(Aspect.CRAFT, 8))
                 .setHidden()
-                .setParents(researchAuraCore.key)
+                .setParents(researchAuraCore.key, "GOGGLES", "THAUMATORIUM")
                 .setItemTriggers(new ItemStack(RegisteredItems.itemAuraCore, 1, ItemAuraCore.AuraCoreType.ORDER.ordinal()))
                 .setPages(new ResearchPage("gadomancy.research_page.KNOWLEDGE_BOOK.1"), new ResearchPage(RegisteredRecipes.recipeKnowledgeBook)).registerResearchItem();
 

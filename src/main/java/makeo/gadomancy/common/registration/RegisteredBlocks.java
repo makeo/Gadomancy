@@ -190,17 +190,17 @@ public class RegisteredBlocks {
             }
         });
 
-        registerClawClickBehavior(new ClickBehavior(true) {
+        /*registerClawClickBehavior(new ClickBehavior(true) {
             @Override
             public boolean isValidForBlock() {
                 return block.equals(ConfigBlocks.blockCrystal) && metadata <= 6;
             }
 
-            /*@Override
+            @Override
             public AspectList getVisCost() {
                 return RegisteredRecipes.costsAuraCoreStart;
-            }*/
-        });
+            }
+        });*/
     }
 
     private static List<ClickBehavior> clawBehaviors = new ArrayList<ClickBehavior>();

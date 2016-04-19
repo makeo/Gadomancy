@@ -145,6 +145,8 @@ public class RegisteredItems {
         ThaumcraftApi.registerObjectTag(new ItemStack(RegisteredItems.itemPackage, 1, 1), new AspectList().add(Aspect.CLOTH, 4));
         ThaumcraftApi.registerObjectTag(new ItemStack(RegisteredItems.itemFakeLootbag, 1, 0), new AspectList().add(Aspect.CLOTH, 2).add(Aspect.BEAST, 2).add(Aspect.ARMOR, 1));
         ThaumcraftApi.registerObjectTag(new ItemStack(RegisteredItems.itemFakeLootbag, 1, 1), new AspectList().add(Aspect.CLOTH, 4));
+
+        ThaumcraftApi.registerObjectTag(new ItemStack(RegisteredBlocks.blockKnowledgeBook), new AspectList().add(Aspect.MIND, 8).add(Aspect.MECHANISM, 4).add(Aspect.MAGIC, 6).add(Aspect.ORDER, 4));
     }
 
     //Sticky jars
