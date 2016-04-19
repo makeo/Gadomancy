@@ -45,11 +45,42 @@ tc.research_text.GADOMANCY.REMOTEJAR=Mirrored transportation
 gadomancy.research_page.REMOTEJAR.1=The essentia mirror is excellent for moving essentia around for infusions, but you have the uncanny feeling that it has some untapped potential. Two essentia mirrors, when linked, effectively allow essentia to move between two points in space. By placing an essentia mirror inside of a specially altered warded jar, the space inside of one jar can be effectively linked to another. In order to link two jars, simply place one in the world and right click it with another mirrored jar.
 gadomancy.research_page.REMOTEJAR.2=If a network already exists, then the jar will be added to the current network. Unlike essentia mirrors, mirrored jar networks can have more than two jars. The space inside of a network is shared and balanced between the jars it contains. To put it simply, a two jar network will hold two jars of essentia, a three jar network will hold three, etc. Also, when one mirrored jar is filled, it will attempt to evenly distribute its contents between the other jars in its network.
 
+tc.research_name.GADOMANCY.ETHEREAL_FAMILIAR=Ethereal Familiar
+tc.research_text.GADOMANCY.ETHEREAL_FAMILIAR=A arcane follower
+gadomancy.research_page.ETHEREAL_FAMILIAR.1=Wisps have intrigued you for some time now. Many of these sentient bits of ethereal magic seem to be  passive, but when attacked, they retaliate with surprising speed and efficiency. Not only that, but sometimes just approaching a wisp too quickly will provoke an attack.<LINE>This behavior gave you an unexpected inspiration. By exploiting the unusually responsive nature of a wisp, it may be possible to bend its defensive instincts to act as a personal protector. Unfortunately, wild wisps have proven to be far to unpredictable to capture.
+gadomancy.research_page.ETHEREAL_FAMILIAR.3=By infusing large amounts of magic and a few binding agents into a sample of ethereal essence, an artificial wisp can be created. This Ethereal "Familiar" will anchor to its wearer's aura and act similarly to a turret when it is held in the amulet slot, shooting sparks any hostile entities that attack its wearer. It is considerably weaker and slower than its wild counterparts, however you feel that there are definitely methods of strengthening it.
 
-tc.research_name.GADOMANCY.FAMILIAR=Ethereal Familiar
-tc.research_text.GADOMANCY.FAMILIAR=A arcane follower
-gadomancy.research_page.FAMILIAR.1=Wisps have intrigued you for some time now. Many of these sentient bits of ethereal magic seem to be  passive, but when attacked, they retaliate with surprising speed and efficiency. Not only that, but sometimes just approaching a wisp too quickly will provoke an attack.<LINE>This behavior gave you an unexpected inspiration. By exploiting the unusually responsive nature of a wisp, it may be possible to bend its defensive instincts to act as a personal protector. Unfortunately, wild wisps have proven to be far to unpredictable to capture.
-gadomancy.research_page.FAMILIAR.3=By infusing large amounts of magic and a few binding agents into a sample of ethereal essence, an artificial wisp can be created. This Ethereal "Familiar" will anchor to its wearer's aura and act similarly to a turret when it is held in the amulet slot, shooting sparks any hostile entities that attack its wearer. It is considerably weaker and slower than its wild counterparts, however you feel that there are definitely methods of strengthening it.
+
+tc.research_name.GADOMANCY.FAMILIAR_SHOCK=Familiar-Upgrade-Lightning
+tc.research_text.GADOMANCY.FAMILIAR_SHOCK=Conflicts with: Fire, Poison, Weakness
+gadomancy.research_page.FAMILIAR_SHOCK.1=TEXT
+
+tc.research_name.GADOMANCY.FAMILIAR_FIRE=Familiar-Upgrade-Fire
+tc.research_text.GADOMANCY.FAMILIAR_FIRE=Conflicts with: Lightning, Poison, Weakness
+gadomancy.research_page.FAMILIAR_FIRE.1=TEXT
+
+tc.research_name.GADOMANCY.FAMILIAR_POISON=Familiar-Upgrade-Poison
+tc.research_text.GADOMANCY.FAMILIAR_POISON=Conflicts with: Fire, Lightning, Weakness
+gadomancy.research_page.FAMILIAR_POISON.1=TEXT
+
+tc.research_name.GADOMANCY.FAMILIAR_WEAKNESS=Familiar-Upgrade-Enervation
+tc.research_text.GADOMANCY.FAMILIAR_WEAKNESS=Conflicts with: Fire, Poison, Lightning
+gadomancy.research_page.FAMILIAR_WEAKNESS.1=TEXT
+
+tc.research_name.GADOMANCY.FAMILIAR_DAMAGE=Familiar-Upgrade-Damage
+tc.research_text.GADOMANCY.FAMILIAR_DAMAGE=Conflicts with: Range, Speed
+gadomancy.research_page.FAMILIAR_DAMAGE.1=TEXT
+
+tc.research_name.GADOMANCY.FAMILIAR_RANGE=Familiar-Upgrade-Range
+tc.research_text.GADOMANCY.FAMILIAR_RANGE=Conflicts with: Damage, Speed
+gadomancy.research_page.FAMILIAR_RANGE.1=TEXT
+
+tc.research_name.GADOMANCY.FAMILIAR_SPEED=Familiar-Upgrade-Speed
+tc.research_text.GADOMANCY.FAMILIAR_SPEED=Can attack multiple enemys; Conflicts with: Range, Damage
+gadomancy.research_page.FAMILIAR_SPEED.1=TEXT
+
+
+
 
 tc.research_name.GADOMANCY.FAM_ATTACK_1=Attack Enhancement
 tc.research_text.GADOMANCY.FAM_ATTACK_1=Increasing the damage
@@ -70,6 +101,8 @@ gadomancy.research_page.FAM_RANGE_1.1=By enhancing the wisps sensitivity to exte
 tc.research_name.GADOMANCY.FAM_COOLDOWN_1=Attack-Speed Enhancement
 tc.research_text.GADOMANCY.FAM_COOLDOWN_1=A scientific Railgun
 gadomancy.research_page.FAM_COOLDOWN_1.1=The resonance of the primordial pearl has proven useful in more than one way. Combining the pearl and a primal wand focus with the wisp seems to change its frequencies drastically. The enhanced wisp attacks twice as fast as before.
+
+
 
 
 tc.research_name.GADOMANCY.NODE_MANIPULATOR=Node Manipulator

@@ -18,11 +18,11 @@ import java.util.ArrayList;
  *
  * Created by HellFirePvP @ 02.11.2015 17:39
  */
-public class FamiliarAugmentInfusion extends InfusionRecipe {
+public class Familiar_Old_AugmentInfusion extends InfusionRecipe {
 
     private ItemFamiliar_Old.FamiliarUpgrade upgradeToAdd;
 
-    public FamiliarAugmentInfusion(String research, int inst, AspectList aspects2, ItemStack input, ItemFamiliar_Old.FamiliarUpgrade upgradeToAdd, ItemStack[] recipe) {
+    public Familiar_Old_AugmentInfusion(String research, int inst, AspectList aspects2, ItemStack input, ItemFamiliar_Old.FamiliarUpgrade upgradeToAdd, ItemStack[] recipe) {
         super(research, null, inst, aspects2, input, recipe);
         this.upgradeToAdd = upgradeToAdd;
     }

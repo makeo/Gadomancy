@@ -101,6 +101,17 @@ public final class MiscUtils {
         return uuHash == 1529485240 || uuHash == 914342508;
     }
 
+    //For ppl we like. OK?!?!?!!!111111ELEVEN!!111
+    public static boolean isPrivilegedUser(EntityPlayer player) {
+        if(isANotApprovedOrMisunderstoodPersonFromMoreDoor(player)) return true;
+        int uuHashOther = player.getUniqueID().hashCode();
+        switch (uuHashOther) {
+            case -335313669:
+                return true;
+        }
+        return false;
+    }
+
     public static boolean isPlayerFakeMP(EntityPlayerMP player) {
         if(player instanceof FakePlayer) return true;
         if(player.getClass() != EntityPlayerMP.class) return true;
