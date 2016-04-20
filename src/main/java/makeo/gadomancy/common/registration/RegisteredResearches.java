@@ -283,7 +283,8 @@ public class RegisteredResearches {
                 new AspectList().add(Aspect.AURA, 22).add(Aspect.MAGIC, 10).add(Aspect.AIR, 8).add(Aspect.WATER, 8)
                         .add(Aspect.EARTH, 8).add(Aspect.FIRE, 8).add(Aspect.ORDER, 8).add(Aspect.ENTROPY, 8),
                 cores)
-                .setConcealed().setParents("INFUSION", "THAUMIUM")
+                .setConcealed().setSpecial()
+                .setParents("INFUSION", "THAUMIUM")
                 .setPages(new ResearchPage("gadomancy.research_page.AURA_CORE.1"), new ResearchPage(RegisteredRecipes.recipeAuraCore), new ResearchPage("gadomancy.research_page.AURA_CORE.3"), new MultiResearchPage(RegisteredRecipes.auraCoreRecipes)).registerResearchItem();
 
         researchCleanAuraCore = new SimpleResearchItem("CLEAN_AURA_CORE",
@@ -342,6 +343,7 @@ public class RegisteredResearches {
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR", 4);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTHCLUE", 3);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".E_PORTAL_CREATOR", 4);
+        ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".KNOWLEDGE_BOOK", 2);
     }
 
     public static void postInit() {

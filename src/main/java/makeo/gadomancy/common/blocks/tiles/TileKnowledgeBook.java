@@ -110,6 +110,10 @@ public class TileKnowledgeBook extends SynchronizedTileEntity implements EntityP
         return ticksCognitio > 0;
     }
 
+    public boolean isResearching() {
+        return researching;
+    }
+
     private void doResearchCycle() {
         drainCognitio();
 

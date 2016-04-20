@@ -93,6 +93,25 @@ public class BlockKnowledgeBook extends BlockContainer implements IBlockTranspar
     }
 
     @Override
+    public boolean hasComparatorInputOverride() {
+        return true;
+    }
+
+    @Override
+    public int getComparatorInputOverride(World world, int x, int y, int z, int p_149736_5_) {
+        TileEntity te = world.getTileEntity(x, y, z);
+        if(te != null && te instanceof TileKnowledgeBook) {
+            if(((TileKnowledgeBook) te).isResearching()) {
+                if(((TileKnowledgeBook) te).hasCognitio()) {
+                    return 15;
+                }
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    @Override
     public boolean isOpaqueCube() {
         return false;
     }

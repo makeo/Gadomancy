@@ -53,7 +53,7 @@ public class EtherealFamiliarUpgradeRecipe extends InfusionRecipe {
 
         //Normal infusionrecipe stuff...
 
-        ItemStack inCopy = in.copy();
+        ItemStack inCopy;
         ArrayList<ItemStack> ii = new ArrayList<ItemStack>();
         for (ItemStack is : input) {
             ii.add(is.copy());

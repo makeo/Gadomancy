@@ -319,7 +319,7 @@ public class RegisteredRecipes {
             //Shock 0 -> 1
             famIn = new ItemStack(etherealFamiliar);
             ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            infusion = new EtherealFamiliarUpgradeRecipe(modid + "FAMILIAR_SHOCK", 3,
+            infusion = new EtherealFamiliarUpgradeRecipe(modid + ".FAMILIAR_SHOCK", 3,
                     new AspectList().add(Aspect.MOTION, 14).add(a, 16).add(Aspect.AIR, 20),
                     famIn, FamiliarAugment.SHOCK, 0,
                     wispyEssence, alumentum, wispyEssence, amber,
@@ -334,7 +334,7 @@ public class RegisteredRecipes {
             famIn = new ItemStack(etherealFamiliar);
             ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
             ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.SHOCK, 1);
-            infusion = new EtherealFamiliarUpgradeRecipe(modid + "FAMILIAR_SHOCK", 5,
+            infusion = new EtherealFamiliarUpgradeRecipe(modid + ".FAMILIAR_SHOCK", 5,
                     new AspectList().add(Aspect.MOTION, 22).add(a, 28).add(Aspect.AURA, 20).add(Aspect.WEAPON, 18).add(Aspect.AIR, 38),
                     famIn, FamiliarAugment.SHOCK, 1,
                     wispyEssence, alumentum, glowstone, wispyEssence, alumentum, ghastTear,
@@ -350,7 +350,7 @@ public class RegisteredRecipes {
             famIn = new ItemStack(etherealFamiliar);
             ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
             ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.SHOCK, 2);
-            infusion = new EtherealFamiliarUpgradeRecipe(modid + "FAMILIAR_SHOCK", 8,
+            infusion = new EtherealFamiliarUpgradeRecipe(modid + ".FAMILIAR_SHOCK", 8,
                     new AspectList().add(Aspect.MOTION, 40).add(Aspect.AURA, 28).add(a, 38).add(Aspect.WEAPON, 20).add(Aspect.AIR, 36),
                     famIn, FamiliarAugment.SHOCK, 2,
                     wispyEssence, alumentum, airShard, alumentum, quicksilver, alumentum, netherStar, alumentum,
@@ -363,7 +363,7 @@ public class RegisteredRecipes {
             //Fire 0 -> 1
             famIn = new ItemStack(etherealFamiliar);
             ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            infusion = new EtherealFamiliarUpgradeRecipe(modid + "FAMILIAR_FIRE", 4,
+            infusion = new EtherealFamiliarUpgradeRecipe(modid + ".FAMILIAR_FIRE", 4,
                     new AspectList().add(Aspect.FIRE, 12).add(a, 14).add(Aspect.WEAPON, 8),
                     famIn, FamiliarAugment.FIRE, 0,
                     wispyEssence, blazePowder, wispyEssence, blazePowder,
@@ -379,7 +379,7 @@ public class RegisteredRecipes {
             famIn = new ItemStack(etherealFamiliar);
             ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
             ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.FIRE, 1);
-            infusion = new EtherealFamiliarUpgradeRecipe(modid + "FAMILIAR_FIRE", 6,
+            infusion = new EtherealFamiliarUpgradeRecipe(modid + ".FAMILIAR_FIRE", 6,
                     new AspectList().add(Aspect.FIRE, 38).add(a, 24).add(Aspect.ENERGY, 32).add(Aspect.WEAPON, 18),
                     famIn, FamiliarAugment.FIRE, 1,
                     wispyEssence, redstone, coalBlock, wispyEssence, magmaCream, blazePowder,
@@ -394,7 +394,7 @@ public class RegisteredRecipes {
             famIn = new ItemStack(etherealFamiliar);
             ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
             ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.FIRE, 2);
-            infusion = new EtherealFamiliarUpgradeRecipe(modid + "FAMILIAR_FIRE", 9,
+            infusion = new EtherealFamiliarUpgradeRecipe(modid + ".FAMILIAR_FIRE", 9,
                     new AspectList().add(Aspect.FIRE, 48).add(a, 32).add(Aspect.ENERGY, 42).add(Aspect.WEAPON, 32).add(Aspect.AURA, 30),
                     famIn, FamiliarAugment.FIRE, 2,
                     wispyEssence, blazePowder, fireShard, blazePowder, netherStar, blazePowder, nitor, blazePowder,
@@ -408,7 +408,7 @@ public class RegisteredRecipes {
             //Poison 0 -> 1
             famIn = new ItemStack(etherealFamiliar);
             ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            infusion = new EtherealFamiliarUpgradeRecipe(modid + "FAMILIAR_POISON", 5,
+            infusion = new EtherealFamiliarUpgradeRecipe(modid + ".FAMILIAR_POISON", 5,
                     new AspectList().add(Aspect.WATER, 16).add(a, 14).add(Aspect.POISON, 8).add(Aspect.ELDRITCH, 4),
                     famIn, FamiliarAugment.POISON, 0,
                     wispyEssence, spiderEye, wispyEssence, rottenFlesh,
@@ -425,7 +425,7 @@ public class RegisteredRecipes {
             famIn = new ItemStack(etherealFamiliar);
             ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
             ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.POISON, 1);
-            infusion = new EtherealFamiliarUpgradeRecipe(modid + "FAMILIAR_POISON", 7,
+            infusion = new EtherealFamiliarUpgradeRecipe(modid + ".FAMILIAR_POISON", 7,
                     new AspectList().add(a, 26).add(Aspect.POISON, 28).add(Aspect.ELDRITCH, 12).add(Aspect.WATER, 22).add(Aspect.AURA, 8),
                     famIn, FamiliarAugment.POISON, 1,
                     wispyEssence, fermentedSpiderEye, enderPearl, wispyEssence, sugarCane, pumpkinSeeds,
@@ -439,7 +439,7 @@ public class RegisteredRecipes {
             famIn = new ItemStack(etherealFamiliar);
             ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
             ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.POISON, 2);
-            infusion = new EtherealFamiliarUpgradeRecipe(modid + "FAMILIAR_POISON", 9,
+            infusion = new EtherealFamiliarUpgradeRecipe(modid + ".FAMILIAR_POISON", 9,
                     new AspectList().add(a, 36).add(Aspect.POISON, 38).add(Aspect.ELDRITCH, 22).add(Aspect.WATER, 48).add(Aspect.AURA, 36),
                     famIn, FamiliarAugment.POISON, 2,
                     wispyEssence, netherWarts, rottenFlesh, netherWarts, spiderEye, netherWarts, netherStar, netherWarts,
@@ -453,7 +453,7 @@ public class RegisteredRecipes {
             //Enervation 0 -> 1
             famIn = new ItemStack(etherealFamiliar);
             ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            infusion = new EtherealFamiliarUpgradeRecipe(modid + "FAMILIAR_WEAKNESS", 6,
+            infusion = new EtherealFamiliarUpgradeRecipe(modid + ".FAMILIAR_WEAKNESS", 6,
                     new AspectList().add(a, 12).add(Aspect.DEATH, 18).add(Aspect.AURA, 6).add(Aspect.ELDRITCH, 18).add(Aspect.ENTROPY, 8),
                     famIn, FamiliarAugment.WEAKNESS, 0,
                     wispyEssence, deadBush, wispyEssence, string,
@@ -467,7 +467,7 @@ public class RegisteredRecipes {
             famIn = new ItemStack(etherealFamiliar);
             ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
             ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.WEAKNESS, 1);
-            infusion = new EtherealFamiliarUpgradeRecipe(modid + "FAMILIAR_WEAKNESS", 8,
+            infusion = new EtherealFamiliarUpgradeRecipe(modid + ".FAMILIAR_WEAKNESS", 8,
                     new AspectList().add(a, 30).add(Aspect.DEATH, 28).add(Aspect.AURA, 26).add(Aspect.ELDRITCH, 28).add(Aspect.ENTROPY, 48).add(Aspect.TRAP, 14),
                     famIn, FamiliarAugment.WEAKNESS, 1,
                     wispyEssence, rottenFlesh, witherSkull, rottenFlesh,
@@ -482,7 +482,7 @@ public class RegisteredRecipes {
             famIn = new ItemStack(etherealFamiliar);
             ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
             ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.WEAKNESS, 2);
-            infusion = new EtherealFamiliarUpgradeRecipe(modid + "FAMILIAR_WEAKNESS", 10,
+            infusion = new EtherealFamiliarUpgradeRecipe(modid + ".FAMILIAR_WEAKNESS", 10,
                     new AspectList().add(a, 46).add(Aspect.DEATH, 42).add(Aspect.AURA, 38).add(Aspect.ELDRITCH, 20).add(Aspect.ENTROPY, 56).add(Aspect.TRAP, 32),
                     famIn, FamiliarAugment.WEAKNESS, 2,
                     wispyEssence, enderEye, entropyShard, entropyShard, wispyEssence, enderEye, netherStar, entropyShard,
@@ -496,7 +496,7 @@ public class RegisteredRecipes {
             //Damage 0 -> 1
             famIn = new ItemStack(etherealFamiliar);
             ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            infusion = new EtherealFamiliarUpgradeRecipe(modid + "FAMILIAR_DAMAGE", 6,
+            infusion = new EtherealFamiliarUpgradeRecipe(modid + ".FAMILIAR_DAMAGE", 6,
                     new AspectList().add(a, 14).add(Aspect.WEAPON, 10).add(Aspect.ENERGY, 12).add(Aspect.FIRE, 16),
                     famIn, FamiliarAugment.DAMAGE_INCREASE, 0,
                     wispyEssence, balancedShard, wispyEssence, gunpowder,
@@ -512,7 +512,7 @@ public class RegisteredRecipes {
             famIn = new ItemStack(etherealFamiliar);
             ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
             ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.DAMAGE_INCREASE, 1);
-            infusion = new EtherealFamiliarUpgradeRecipe(modid + "FAMILIAR_DAMAGE", 10,
+            infusion = new EtherealFamiliarUpgradeRecipe(modid + ".FAMILIAR_DAMAGE", 10,
                     new AspectList().add(a, 22).add(Aspect.WEAPON, 28).add(Aspect.ENERGY, 34).add(Aspect.FIRE, 30).add(Aspect.AURA, 14),
                     famIn, FamiliarAugment.DAMAGE_INCREASE, 1,
                     wispyEssence, balancedShard, primalCharm, wispyEssence, voidSeed, amberBlock,
@@ -526,7 +526,7 @@ public class RegisteredRecipes {
             famIn = new ItemStack(etherealFamiliar);
             ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
             ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.DAMAGE_INCREASE, 2);
-            infusion = new EtherealFamiliarUpgradeRecipe(modid + "FAMILIAR_DAMAGE", 10,
+            infusion = new EtherealFamiliarUpgradeRecipe(modid + ".FAMILIAR_DAMAGE", 10,
                     new AspectList().add(a, 34).add(Aspect.WEAPON, 38).add(Aspect.ENERGY, 46).add(Aspect.FIRE, 58).add(Aspect.AURA, 38),
                     famIn, FamiliarAugment.DAMAGE_INCREASE, 2,
                     wispyEssence, blazePowder, voidSword, blazePowder, netherStar, blazePowder, alumentum, blazePowder,
@@ -539,7 +539,7 @@ public class RegisteredRecipes {
             //Range 0 -> 1
             famIn = new ItemStack(etherealFamiliar);
             ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            infusion = new EtherealFamiliarUpgradeRecipe(modid + "FAMILIAR_RANGE", 6,
+            infusion = new EtherealFamiliarUpgradeRecipe(modid + ".FAMILIAR_RANGE", 6,
                     new AspectList().add(a, 24).add(Aspect.AURA, 30).add(Aspect.ELDRITCH, 22).add(Aspect.WEAPON, 12),
                     famIn, FamiliarAugment.RANGE_INCREASE, 0,
                     wispyEssence, ordoShard, wispyEssence, primalCharm,
@@ -551,7 +551,7 @@ public class RegisteredRecipes {
             famIn = new ItemStack(etherealFamiliar);
             ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
             ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.RANGE_INCREASE, 1);
-            infusion = new EtherealFamiliarUpgradeRecipe(modid + "FAMILIAR_RANGE", 9,
+            infusion = new EtherealFamiliarUpgradeRecipe(modid + ".FAMILIAR_RANGE", 9,
                     new AspectList().add(a, 42).add(Aspect.AURA, 36).add(Aspect.ELDRITCH, 34).add(Aspect.WEAPON, 28).add(Aspect.AIR, 40),
                     famIn, FamiliarAugment.RANGE_INCREASE, 1,
                     wispyEssence, nitor, balancedShard, quicksilver, netherStar, alumentum, balancedShard, quicksilver,
@@ -564,7 +564,7 @@ public class RegisteredRecipes {
             //Speed 0 -> 1
             famIn = new ItemStack(etherealFamiliar);
             ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            infusion = new EtherealFamiliarUpgradeRecipe(modid + "FAMILIAR_SPEED", 6,
+            infusion = new EtherealFamiliarUpgradeRecipe(modid + ".FAMILIAR_SPEED", 6,
                     new AspectList().add(a, 30).add(Aspect.AURA, 28).add(Aspect.MOTION, 38).add(Aspect.ELDRITCH, 20).add(Aspect.AIR, 36),
                     famIn, FamiliarAugment.ATTACK_SPEED, 0,
                     elementalSword, balancedShard, wispyEssence, balancedShard,
@@ -579,7 +579,7 @@ public class RegisteredRecipes {
             famIn = new ItemStack(etherealFamiliar);
             ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
             ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.ATTACK_SPEED, 1);
-            infusion = new EtherealFamiliarUpgradeRecipe(modid + "FAMILIAR_SPEED", 9,
+            infusion = new EtherealFamiliarUpgradeRecipe(modid + ".FAMILIAR_SPEED", 9,
                     new AspectList().add(a, 46).add(Aspect.AURA, 38).add(Aspect.MOTION, 52).add(Aspect.ELDRITCH, 38).add(Aspect.AIR, 48).add(Aspect.WEAPON, 28),
                     famIn, FamiliarAugment.ATTACK_SPEED, 1,
                     wispyEssence, primalCharm, netherStar, salisMundis, wispyEssence, primalCharm, primordialPearl, salisMundis,
