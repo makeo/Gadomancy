@@ -1,0 +1,16 @@
+[
+{
+  "modid": "gadomancy",
+  "name": "Gadomancy",
+  "description": "An addon for Thaumcraft.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["makeo", "HellFirePvP"],
+  "credits": "To HellFirePvP and makeo for making this mod",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": ["Thaumcraft"]
+}
+]

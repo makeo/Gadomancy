@@ -1,0 +1,47 @@
+package makeo.gadomancy.client.events;
+
+import makeo.gadomancy.client.ClientProxy;
+import makeo.gadomancy.client.effect.EffectHandler;
+import makeo.gadomancy.client.util.FamiliarHandlerClient;
+import makeo.gadomancy.common.Gadomancy;
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+
+import java.util.List;
+
+/**
+ * This class is part of the Gadomancy Mod
+ * Gadomancy is Open Source and distributed under the
+ * GNU LESSER GENERAL PUBLIC LICENSE
+ * for more read the LICENSE file
+ *
+ * Created by HellFirePvP @ 01.11.2015 10:41
+ */
+public class ClientHandler {
+
+    public static int ticks;
+
+    @SubscribeEvent
+    public void onClientTick(TickEvent.ClientTickEvent event) {
+        if(event.phase.equals(TickEvent.Phase.END) && !Minecraft.getMinecraft().isGamePaused()) {
+            FamiliarHandlerClient.playerTickEvent();
+            ticks++;
+
+            EffectHandler.getInstance().tick();
+        }
+
+        List<Runnable> actions = ((ClientProxy) Gadomancy.proxy).clientActions;
+        while(actions.size() > 0) {
+            actions.get(0).run();
+            actions.remove(0);
+        }
+    }
+
+    @SubscribeEvent
+    public void onDc(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+        EffectHandler.getInstance().clear();
+    }
+
+}

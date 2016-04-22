@@ -1,0 +1,44 @@
+This mapping 'stable_20' was designed for MC 1.8.8! Use at your own peril.This mapping 'stable_20' was designed for MC 1.8.8! Use at your own peril.
+
+#################################################
+         ForgeGradle 2.1-SNAPSHOT-da90449        
+  https://github.com/MinecraftForge/ForgeGradle  
+#################################################
+               Powered by MCP unknown               
+             http://modcoderpack.com             
+         by: Searge, ProfMobius, Fesh0r,         
+         R4wk, ZeuX, IngisKahn, bspkrs           
+#################################################
+Found AccessTransformer: gadomancy_at.cfg
+:deobfCompileDummyTask
+:deobfProvidedDummyTask
+:getVersionJson
+:extractUserdev UP-TO-DATE
+:extractDependencyATs SKIPPED
+:extractMcpData SKIPPED
+:extractMcpMappings SKIPPED
+:genSrgs SKIPPED
+:downloadClient SKIPPED
+:downloadServer SKIPPED
+:splitServerJar SKIPPED
+:mergeJars SKIPPED
+:deobfMcSRG
+Applying SpecialSource...
+INFO: merging AccessMap net/minecraft/entity/EntityLiving/field_70714_bg from AccessChange(clear=16, set=0, vis=1) with AccessChange(clear=0, set=0, vis=1)
+INFO: merging AccessMap net/minecraft/entity/EntityLiving/field_70715_bh from AccessChange(clear=16, set=0, vis=1) with AccessChange(clear=0, set=0, vis=1)
+INFO: merging AccessMap net/minecraft/item/ItemBlock/field_150939_a from AccessChange(clear=16, set=0, vis=1) with AccessChange(clear=0, set=0, vis=1)
+Applying Exceptor...
+:decompileMc
+:fixMcSources
+:applySourcePatches
+:remapMcSources
+:recompileMc
+:extractNatives SKIPPED
+:getAssetIndex UP-TO-DATE
+:getAssets
+:makeStart
+:setupDecompWorkspace
+
+BUILD SUCCESSFUL
+
+Total time: 2 mins 12.87 secs
