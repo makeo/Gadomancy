@@ -23,6 +23,7 @@ hs_err_pid*
 /gradlew
 /gradlew.bat
 /gradle
+/.gradle
 
 # maven
 /build.xml
