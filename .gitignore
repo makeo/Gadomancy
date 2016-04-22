@@ -39,6 +39,7 @@ hs_err_pid*
 /run
 /libs
 /eclipse
+/classes
 
 # Mac filesystem dust
 /.DS_Store
