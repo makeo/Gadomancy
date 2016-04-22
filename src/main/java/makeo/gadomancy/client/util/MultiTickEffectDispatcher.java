@@ -2,6 +2,7 @@ package makeo.gadomancy.client.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
 import thaumcraft.client.fx.ParticleEngine;
 import thaumcraft.client.fx.particles.FXBubble;
@@ -66,6 +67,7 @@ public class MultiTickEffectDispatcher {
     }
 
     private static void handleWispyLineEffects(World currentRenderWorld, float partialTicks) {
+        Tessellator tessellator;
         Iterator<FloatyLineInfo> it = floatyLineInfos.iterator();
         while(it.hasNext()) {
             FloatyLineInfo info = it.next();

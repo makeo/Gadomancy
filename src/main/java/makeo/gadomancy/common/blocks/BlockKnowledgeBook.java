@@ -18,6 +18,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
+import thaumcraft.common.config.ConfigItems;
 
 import java.util.ArrayList;
 
@@ -33,7 +34,7 @@ public class BlockKnowledgeBook extends BlockContainer implements IBlockTranspar
 
     public BlockKnowledgeBook() {
         super(Material.circuits);
-        setBlockBounds(0.0625F, 0.1875F, 0.0625F, 0.9375F, 0.75F, 0.9375F);
+        setBlockBounds(0.0625F, 0.125F, 0.0625F, 0.9375F, 0.5F, 0.9375F);
         setCreativeTab(RegisteredItems.creativeTab);
     }
 
@@ -55,14 +56,16 @@ public class BlockKnowledgeBook extends BlockContainer implements IBlockTranspar
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
-        if(world.isRemote) {
+        ItemStack thaumonomicon = new ItemStack(ConfigItems.itemThaumonomicon);
+        ConfigItems.itemThaumonomicon.onItemRightClick(thaumonomicon, world, player);
+        /*if(world.isRemote) {
             try {
                 player.openGui(Thaumcraft.instance, 12, world, x, y, z);
                 Minecraft.getMinecraft().theWorld.playSound(Minecraft.getMinecraft().thePlayer.posX, Minecraft.getMinecraft().thePlayer.posY, Minecraft.getMinecraft().thePlayer.posZ, "thaumcraft:page", 0.66F, 1.0F, false);
             } catch (Throwable tr) {
                 Gadomancy.log.warn("Error on opening Thaumcraft Thaumonomicon via KnowledgeBook at world " + world.getWorldInfo().getWorldName() + ", x=" + x + ", y=" + y + ", z=" + z);
             }
-        }
+        }*/
         return true;
     }
 

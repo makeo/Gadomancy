@@ -93,7 +93,7 @@ public class RegisteredRecipes {
                 7, new AspectList().add(Aspect.MOTION, 16).add(Aspect.MAGIC, 16).add(Aspect.MAN, 16).add(Aspect.SENSES, 16),
                 new ItemStack(ConfigBlocks.blockMagicalLog, 1, 1), new ItemStack[]{ new ItemStack(ConfigItems.itemResource, 1, 15), new ItemStack(ConfigItems.itemResource, 1, 14), new ItemStack(ConfigItems.itemResource, 1, 9), new ItemStack(ConfigItems.itemResource, 1, 3), new ItemStack(ConfigItems.itemResource, 1, 14), new ItemStack(ConfigItems.itemResource, 1, 9), new ItemStack(ConfigItems.itemResource, 1, 3)});
 
-        recipesGolemRunicShield = InfusionUpgradeRecipe.createRecipes(SimpleResearchItem.getFullName("GOLEMSILVERWOOD"), RegisteredGolemStuff.upgradeRunicShield, 5,
+        recipesGolemRunicShield = InfusionUpgradeRecipe.createRecipes(SimpleResearchItem.getFullName("GOLEMRUNICSHIELD"), RegisteredGolemStuff.upgradeRunicShield, 5,
                 new AspectList().add(Aspect.MAGIC, 16).add(Aspect.ENERGY, 16).add(Aspect.ARMOR, 8).add(Aspect.AURA, 4),
                 new ItemStack[]{new ItemStack(ConfigItems.itemGirdleRunic, 1, 0), new ItemStack(ConfigItems.itemResource, 1, 14), new ItemStack(ConfigItems.itemResource, 1, 14)});
         ThaumcraftApi.getCraftingRecipes().addAll(Arrays.asList(recipesGolemRunicShield));
@@ -109,7 +109,7 @@ public class RegisteredRecipes {
                 3, new AspectList().add(Aspect.ENTROPY, 16).add(Aspect.TOOL, 24).add(Aspect.MECHANISM, 16),
                 new ItemStack(ConfigItems.itemGolemCore, 1, 3), new ItemStack[] {new ItemStack(ConfigItems.itemShovelElemental), new ItemStack(ConfigItems.itemPickElemental), new ItemStack(ConfigItems.itemAxeElemental)});
 
-        recipeInfusionClaw = ThaumcraftApi.addInfusionCraftingRecipe(SimpleResearchItem.getFullName("GOLEMCOREBREAK"),
+        recipeInfusionClaw = ThaumcraftApi.addInfusionCraftingRecipe(SimpleResearchItem.getFullName("INFUSIONCLAW"),
                 new ItemStack(RegisteredBlocks.blockInfusionClaw),
                 10, new AspectList().add(Aspect.ELDRITCH, 25).add(Aspect.MECHANISM, 20).add(Aspect.MAGIC, 16).add(Aspect.ORDER, 20).add(Aspect.DARKNESS, 12),
                 new ItemStack(ConfigBlocks.blockStoneDevice, 1, 5), new ItemStack[]{new ItemStack(ConfigItems.itemFocusPrimal), /*new ItemStack(Items.redstone),*/ new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6), new ItemStack(ConfigItems.itemGolemCore, 1, 8), new ItemStack(ConfigItems.itemResource, 1, 16), new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6), new ItemStack(ConfigItems.itemResource, 1, 15), /*new ItemStack(Items.redstone),*/ new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6), new ItemStack(ConfigItems.itemZombieBrain), new ItemStack(ConfigItems.itemResource, 1, 16), new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6)});
@@ -247,7 +247,7 @@ public class RegisteredRecipes {
 
         ThaumcraftApi.getCraftingRecipes().add(new InfusionDisguiseArmor());
 
-        recipeRevealer = ThaumcraftApi.addInfusionEnchantmentRecipe("", RegisteredEnchantments.revealer, 4, new AspectList().add(Aspect.SENSES, 16).add(Aspect.MAGIC, 8), new ItemStack[]{new ItemStack(ConfigItems.itemGoggles), new ItemStack(ConfigItems.itemResource, 1, 14), new ItemStack(ConfigItems.itemResource, 1, 14)});
+        recipeRevealer = ThaumcraftApi.addInfusionEnchantmentRecipe(Gadomancy.MODID.toUpperCase() + ".REVEALER", RegisteredEnchantments.revealer, 4, new AspectList().add(Aspect.SENSES, 16).add(Aspect.MAGIC, 8), new ItemStack[]{new ItemStack(ConfigItems.itemGoggles), new ItemStack(ConfigItems.itemResource, 1, 14), new ItemStack(ConfigItems.itemResource, 1, 14)});
 
         CraftingManager.getInstance().getRecipeList().add(new FamiliarUndoRecipe());
     }

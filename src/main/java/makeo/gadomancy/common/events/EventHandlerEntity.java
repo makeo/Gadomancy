@@ -73,12 +73,12 @@ public class EventHandlerEntity {
         }
     }
 
-    @SubscribeEvent
+    /*@SubscribeEvent
     public void on(LivingSetAttackTargetEvent targetEvent) {
         if (targetEvent.target instanceof EntityPlayer) {
             FamiliarAIController_Old.notifyTargetEvent(targetEvent.entityLiving, (EntityPlayer) targetEvent.target);
         }
-    }
+    }*/
 
     @SubscribeEvent
     public void on(LivingDeathEvent event) {
