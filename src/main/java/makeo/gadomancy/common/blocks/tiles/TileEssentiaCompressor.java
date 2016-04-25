@@ -105,6 +105,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
         }
     }
 
+    //only call from master tile.
     private boolean searchForEssentia(List<WorldCoordinates> coordinates) {
         if(ticksExisted % 10 != 0) return prevFound;
         for (Aspect a : Aspect.aspects.values()) {
@@ -118,6 +119,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
         return false;
     }
 
+    //only call from master tile.
     private boolean doDrain(Aspect a, List<WorldCoordinates> coordinates) {
         for (WorldCoordinates coordinate : coordinates) {
             TileEntity sourceTile = worldObj.getTileEntity(coordinate.x, coordinate.y, coordinate.z);
@@ -126,6 +128,8 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
             }
             if(sourceTile instanceof TileEssentiaCompressor) continue;
             IAspectSource as = (IAspectSource)sourceTile;
+            AspectList contains = as.getAspects();
+            if(contains.visSize() > al.visSize()) continue;
             if (as.takeFromContainer(a, 1)) {
                 PacketHandler.INSTANCE.sendToAllAround(new PacketFXEssentiaSource(xCoord, yCoord + 1, zCoord,
                         (byte)(xCoord - coordinate.x), (byte)(yCoord - coordinate.y + 1), (byte)(zCoord - coordinate.z),
@@ -441,11 +445,19 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
 
     @Override
     public boolean doesContainerAccept(Aspect aspect) {
-        return false;
+        return isMultiblockFormed() && multiblockYIndex == 1;
     }
 
     @Override
     public int addToContainer(Aspect aspect, int i) {
+        if(doesContainerAccept(aspect)) {
+            TileEssentiaCompressor master = tryFindMasterTile();
+            if(master == null) return 0;
+            master.al.add(aspect, i);
+            worldObj.markBlockForUpdate(master.xCoord, master.yCoord, master.zCoord);
+            markDirty();
+            return i;
+        }
         return 0;
     }
 
@@ -465,6 +477,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
     }
 
     @Override
+    @Deprecated
     public boolean takeFromContainer(AspectList list) {
         return false;
     }
@@ -480,6 +493,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
     }
 
     @Override
+    @Deprecated
     public boolean doesContainerContain(AspectList list) {
         return false;
     }
@@ -503,6 +517,12 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
 
     @Override
     public boolean canInputFrom(ForgeDirection direction) {
+        if(isMultiblockFormed() && multiblockYIndex == 1) { //The middle one
+            return direction == ForgeDirection.SOUTH ||
+                    direction == ForgeDirection.NORTH ||
+                    direction == ForgeDirection.EAST ||
+                    direction == ForgeDirection.WEST;
+        }
         return false;
     }
 
@@ -522,11 +542,18 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
 
     @Override
     public Aspect getSuctionType(ForgeDirection direction) {
+        /*if(isMultiblockFormed() && multiblockYIndex == 1) { //The middle one
+            List<Aspect> copyList = new ArrayList<Aspect>(Aspect.aspects.values());
+            return copyList.get((int) ((System.currentTimeMillis() / 20) % copyList.size()));
+        }*/
         return null;
     }
 
     @Override
     public int getSuctionAmount(ForgeDirection direction) {
+        if(canInputFrom(direction)) {
+            return 16;
+        }
         return 0;
     }
 
@@ -547,6 +574,14 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
 
     @Override
     public int addEssentia(Aspect aspect, int i, ForgeDirection direction) {
+        if(canInputFrom(direction)) {
+            TileEssentiaCompressor master = tryFindMasterTile();
+            if(master == null) return 0;
+            master.al.add(aspect, i);
+            worldObj.markBlockForUpdate(master.xCoord, master.yCoord, master.zCoord);
+            markDirty();
+            return i;
+        }
         return 0;
     }
 
