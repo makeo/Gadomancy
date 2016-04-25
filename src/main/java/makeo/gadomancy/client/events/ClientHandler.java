@@ -10,6 +10,7 @@ import makeo.gadomancy.common.Gadomancy;
 import net.minecraft.client.Minecraft;
 
 import java.util.List;
+import java.util.Queue;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -32,10 +33,9 @@ public class ClientHandler {
             EffectHandler.getInstance().tick();
         }
 
-        List<Runnable> actions = ((ClientProxy)Gadomancy.proxy).clientActions;
-        while(actions.size() > 0) {
-            actions.get(0).run();
-            actions.remove(0);
+        Queue<Runnable> actions = ((ClientProxy)Gadomancy.proxy).clientActions;
+        while(actions.peek() != null) {
+            actions.poll().run();
         }
     }
 

@@ -56,6 +56,7 @@ public class RegisteredItems {
     public static ItemArcanePackage itemPackage;
     public static ItemFakeLootbag itemFakeLootbag;
     public static ItemAuraCore itemAuraCore;
+    public static ItemElement itemElement;
 
     public static void preInit() {
         creativeTab = new CreativeTabs(Gadomancy.MODID) {
@@ -83,6 +84,7 @@ public class RegisteredItems {
         itemFamiliar_old = registerItem(new ItemFamiliar_Old(), "ItemFamiliar");
         itemEtherealFamiliar = registerItem(new ItemEtherealFamiliar());
         itemAuraCore = registerItem(new ItemAuraCore());
+        itemElement = registerItem(new ItemElement());
 
         itemCreativeNode = registerItem(new ItemCreativeNode());
         itemPackage = registerItem(new ItemArcanePackage());

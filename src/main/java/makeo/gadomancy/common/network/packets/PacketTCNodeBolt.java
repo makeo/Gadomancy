@@ -47,6 +47,17 @@ public class PacketTCNodeBolt implements IMessage, IMessageHandler<PacketTCNodeB
         this.mightGetLong = mightGetLong;
     }
 
+    public PacketTCNodeBolt(double posX, double posY, double posZ, double targetX, double targetY, double targetZ, int type, boolean mightGetLong) {
+        this.x = (float) posX;
+        this.y = (float) posY;
+        this.z = (float) posZ;
+        this.targetX = (float) targetX;
+        this.targetY = (float) targetY;
+        this.targetZ = (float) targetZ;
+        this.type = type;
+        this.mightGetLong = mightGetLong;
+    }
+
     @Override
     public void fromBytes(ByteBuf buf) {
         this.x = buf.readFloat();

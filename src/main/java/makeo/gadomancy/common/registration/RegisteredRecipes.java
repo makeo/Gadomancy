@@ -11,6 +11,7 @@ import makeo.gadomancy.common.crafting.RecipeStickyJar;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.familiar.FamiliarAugment;
 import makeo.gadomancy.common.items.ItemAuraCore;
+import makeo.gadomancy.common.items.ItemElement;
 import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
 import makeo.gadomancy.common.research.SimpleResearchItem;
 import makeo.gadomancy.common.utils.RandomizedAspectList;
@@ -47,11 +48,13 @@ public class RegisteredRecipes {
     public static AspectList costsNodeManipulatorMultiblock = new AspectList().add(Aspect.FIRE, 100).add(Aspect.WATER, 100).add(Aspect.EARTH, 100).add(Aspect.AIR, 100).add(Aspect.ORDER, 100).add(Aspect.ENTROPY, 100);
     public static AspectList costsEldritchPortalCreatorMultiblock = new AspectList().add(Aspect.FIRE, 150).add(Aspect.WATER, 150).add(Aspect.EARTH, 150).add(Aspect.AIR, 150).add(Aspect.ORDER, 150).add(Aspect.ENTROPY, 150);
     public static AspectList costsAuraPylonMultiblock = new AspectList().add(Aspect.FIRE, 150).add(Aspect.WATER, 150).add(Aspect.EARTH, 150).add(Aspect.AIR, 150).add(Aspect.ORDER, 150).add(Aspect.ENTROPY, 150);
+    public static AspectList costsCompressorMultiblock = new AspectList().add(Aspect.WATER, 140).add(Aspect.EARTH, 80).add(Aspect.AIR, 150).add(Aspect.ORDER, 20).add(Aspect.ENTROPY, 140);
     //public static AspectList costsAuraCoreStart = new AspectList().add(Aspect.FIRE, 70).add(Aspect.WATER, 70).add(Aspect.EARTH, 70).add(Aspect.AIR, 70).add(Aspect.ORDER, 70).add(Aspect.ENTROPY, 70);
 
     public static List multiblockNodeManipulator;
     public static List multiblockEldritchPortalCreator;
     public static List multiblockAuraPylon;
+    public static List multiblockEssentiaCompressor;
     public static List[] auraCoreRecipes;
 
     public static InfusionRecipe recipeGolemSilverwood;
@@ -63,6 +66,7 @@ public class RegisteredRecipes {
     public static InfusionRecipe[] recipesFamiliar;
     public static InfusionRecipe recipeGolemCoreBodyguard;
     public static InfusionRecipe recipePortalFocus;
+    public static InfusionRecipe recipeElementVoid;
 
     //For indexing, look below...
     public static InfusionRecipe[][] recipesFamiliarAugmentation;
@@ -83,6 +87,7 @@ public class RegisteredRecipes {
     public static IArcaneRecipe recipeAuraPylonPeak;
     public static IArcaneRecipe recipeArcanePackager;
     public static IArcaneRecipe recipeKnowledgeBook;
+    public static IArcaneRecipe recipeEssentiaCompressor;
 
     public static InfusionEnchantmentRecipe recipeRevealer;
 
@@ -242,6 +247,34 @@ public class RegisteredRecipes {
                 'S', new ItemStack(ConfigItems.itemInkwell), 'T', new ItemStack(ConfigItems.itemThaumonomicon),
                 'B', new ItemStack(Items.book), 'O', ordoCore,
                 'M', new ItemStack(ConfigBlocks.blockMetalDevice, 1, 12), 'G', new ItemStack(ConfigItems.itemGoggles));
+
+        ItemStack voidMetalIngot = new ItemStack(ConfigItems.itemResource, 1, 16);
+        ItemStack salisMundus = new ItemStack(ConfigItems.itemResource, 1, 14);
+        ItemStack alumentum = new ItemStack(ConfigItems.itemResource);
+        recipeElementVoid = ThaumcraftApi.addInfusionCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".ESSENTIA_COMPRESSOR", new ItemStack(RegisteredItems.itemElement, 1, ItemElement.EnumElementType.DARKNESS.ordinal()), 6,
+                new RandomizedAspectList().setHalfCap(true).addAspectRandomBase(Aspect.VOID, 22).addAspectRandomBase(Aspect.DARKNESS, 18).addAspectRandomBase(Aspect.ELDRITCH, 20).addAspectRandomBase(Aspect.AURA, 10),
+                new ItemStack(ConfigItems.itemResource, 1, 17),
+                new ItemStack[] { alumentum, voidMetalIngot, voidMetalIngot, salisMundus, alumentum, voidMetalIngot, voidMetalIngot, salisMundus });
+
+        ItemStack waterCore = new ItemStack(RegisteredItems.itemAuraCore);
+        RegisteredItems.itemAuraCore.setCoreType(waterCore, ItemAuraCore.AuraCoreType.WATER);
+
+        recipeEssentiaCompressor = ThaumcraftApi.addArcaneCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".ESSENTIA_COMPRESSOR", new ItemStack(RegisteredBlocks.blockEssentiaCompressor, 3),
+                new AspectList().add(Aspect.WATER, 190).add(Aspect.ORDER, 150).add(Aspect.ENTROPY, 120).add(Aspect.FIRE, 100).add(Aspect.AIR, 160).add(Aspect.EARTH, 60),
+                "LRL", "TET", "LCL",
+                'L', new ItemStack(ConfigBlocks.blockMagicalLog),
+                'R', new ItemStack(ConfigBlocks.blockEssentiaReservoir),
+                'T', new ItemStack(ConfigBlocks.blockTube, 1, 6),
+                'E', new ItemStack(RegisteredItems.itemElement, 1, ItemElement.EnumElementType.DARKNESS.ordinal()),
+                'C', waterCore);
+
+        multiblockEssentiaCompressor = Arrays.asList(costsCompressorMultiblock, 1, 3, 1,
+                Arrays.asList(
+                        new ItemStack(RegisteredBlocks.blockEssentiaCompressor),
+                        new ItemStack(RegisteredBlocks.blockEssentiaCompressor),
+                        new ItemStack(RegisteredBlocks.blockEssentiaCompressor)
+                ));
+
 
         auraCoreRecipes = createAuraCoreRecipes();
 

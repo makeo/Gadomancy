@@ -30,12 +30,14 @@ import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
 import makeo.gadomancy.common.CommonProxy;
 import makeo.gadomancy.common.blocks.tiles.*;
 import makeo.gadomancy.common.entities.EntityAuraCore;
+import makeo.gadomancy.common.entities.EntityItemElement;
 import makeo.gadomancy.common.entities.EntityPermNoClipItem;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.SimpleReloadableResourceManager;
 import net.minecraft.entity.Entity;
@@ -56,8 +58,11 @@ import thaumcraft.common.tiles.TileEldritchAltar;
 import thaumcraft.common.tiles.TileEldritchCap;
 import thaumcraft.common.tiles.TileEldritchObelisk;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -108,6 +113,8 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEldritchObelisk.class, new RenderTileObelisk());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEldritchAltar.class, new RenderTileCapEldritch("textures/models/obelisk_cap_altar.png"));
         ClientRegistry.bindTileEntitySpecialRenderer(TileEldritchCap.class, new RenderTileCapEldritch("textures/models/obelisk_cap.png"));
+        RenderTileEssentiaCompressor renderTileEssentiaCompressor = new RenderTileEssentiaCompressor();
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEssentiaCompressor.class, renderTileEssentiaCompressor);
 
         RenderTileAuraPylon renderTileAuraPylon = new RenderTileAuraPylon();
         ClientRegistry.bindTileEntitySpecialRenderer(TileAuraPylon.class, renderTileAuraPylon);
@@ -128,6 +135,8 @@ public class ClientProxy extends CommonProxy {
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockArcaneDropper), new ItemRenderTileEntity<TileArcaneDropper>(renderTileArcaneDropper, fakeTile));
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockInfusionClaw), new ItemRenderTileEntity<TileInfusionClaw>(renderTileInfusionClaw, new TileInfusionClaw()));
+
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegisteredBlocks.blockEssentiaCompressor), new ItemRenderTileEntity<TileEssentiaCompressor>(renderTileEssentiaCompressor, new TileEssentiaCompressor()));
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ConfigBlocks.blockAiry), new ItemExNodeRenderer());
 
@@ -240,7 +249,7 @@ public class ClientProxy extends CommonProxy {
         return null;
     }
 
-    public final List<Runnable> clientActions = new ArrayList<Runnable>();
+    public final Queue<Runnable> clientActions = new ArrayDeque<Runnable>();
 
     @Override
     public void runDelayedClientSide(Runnable run) {

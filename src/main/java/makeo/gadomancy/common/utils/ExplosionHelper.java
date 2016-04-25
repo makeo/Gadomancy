@@ -36,12 +36,16 @@ import java.util.List;
 public class ExplosionHelper {
 
     public static void taintplosion(World world, int x, int y, int z, boolean taintBiome, int chanceToTaint) {
+        taintplosion(world, x, y, z, taintBiome, chanceToTaint, 3.0F, 10, 80);
+    }
+
+    public static void taintplosion(World world, int x, int y, int z, boolean taintBiome, int chanceToTaint, float str, int size, int blocksAffected) {
         if(chanceToTaint < 1) chanceToTaint = 1;
-        world.createExplosion(null, x + 0.5D, y + 0.5D, z + 0.5D, 3.0F, false);
-        for (int a = 0; a < 80; a++) {
-            int xx = x + world.rand.nextInt(10) - world.rand.nextInt(10);
-            int yy = y + world.rand.nextInt(10) - world.rand.nextInt(10);
-            int zz = z + world.rand.nextInt(10) - world.rand.nextInt(10);
+        world.createExplosion(null, x + 0.5D, y + 0.5D, z + 0.5D, str, false);
+        for (int a = 0; a < blocksAffected; a++) {
+            int xx = x + world.rand.nextInt(size) - world.rand.nextInt(size);
+            int yy = y + world.rand.nextInt(size) - world.rand.nextInt(size);
+            int zz = z + world.rand.nextInt(size) - world.rand.nextInt(size);
             if (world.isAirBlock(xx, yy, zz)) {
                 if (yy < y) {
                     world.setBlock(xx, yy, zz, ConfigBlocks.blockFluxGoo, 8, 3);

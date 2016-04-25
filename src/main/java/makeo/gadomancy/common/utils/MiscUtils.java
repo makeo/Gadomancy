@@ -44,6 +44,13 @@ public final class MiscUtils {
         }
         return roman;
     }
+
+    public static Vector3 interpolateEntityPosition(Entity entity, float partialTicks) {
+        double iPx = entity.prevPosX + (entity.posX - entity.prevPosX) * partialTicks;
+        double iPy = entity.prevPosY + (entity.posY - entity.prevPosY) * partialTicks;
+        double iPz = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * partialTicks;
+        return new Vector3(iPx, iPy, iPz);
+    }
     
     public static int ticksForDays(int days) {
         return ticksForHours(days * 24);

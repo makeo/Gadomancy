@@ -123,29 +123,19 @@ public final class Orbital {
     }
 
     public static void sheduleRenders(List<Orbital> orbitals, float partialTicks) {
-        EffectHandler.orbitalsRWLock.lock();
-        try {
-            for(Orbital orbital : orbitals) {
-                orbital.doRender(partialTicks);
-            }
-        } finally {
-            EffectHandler.orbitalsRWLock.unlock();
+        for(Orbital orbital : orbitals) {
+            orbital.doRender(partialTicks);
         }
     }
 
     public static void tickOrbitals(List<Orbital> orbitals) {
-        EffectHandler.orbitalsRWLock.lock();
-        try {
-            for(Orbital orbital : orbitals) {
-                if((System.currentTimeMillis() - orbital.lastRenderCall) > 1000L) {
-                    orbital.clearOrbitals();
-                    EffectHandler.getInstance().unregisterOrbital(orbital);
-                } else {
-                    orbital.orbitalCounter++;
-                }
+        for(Orbital orbital : orbitals) {
+            if((System.currentTimeMillis() - orbital.lastRenderCall) > 1000L) {
+                orbital.clearOrbitals();
+                EffectHandler.getInstance().unregisterOrbital(orbital);
+            } else {
+                orbital.orbitalCounter++;
             }
-        } finally {
-            EffectHandler.orbitalsRWLock.unlock();
         }
     }
 

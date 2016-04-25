@@ -5,6 +5,7 @@ import makeo.gadomancy.api.ClickBehavior;
 import makeo.gadomancy.common.blocks.BlockAdditionalEldritchPortal;
 import makeo.gadomancy.common.blocks.BlockArcaneDropper;
 import makeo.gadomancy.common.blocks.BlockAuraPylon;
+import makeo.gadomancy.common.blocks.BlockEssentiaCompressor;
 import makeo.gadomancy.common.blocks.BlockExtendedNodeJar;
 import makeo.gadomancy.common.blocks.BlockInfusionClaw;
 import makeo.gadomancy.common.blocks.BlockKnowledgeBook;
@@ -17,6 +18,7 @@ import makeo.gadomancy.common.blocks.tiles.*;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.items.ItemBlockAdditionalEldritchPortal;
 import makeo.gadomancy.common.items.ItemBlockAuraPylon;
+import makeo.gadomancy.common.items.ItemBlockEssentiaCompressor;
 import makeo.gadomancy.common.items.ItemBlockKnowledgeBook;
 import makeo.gadomancy.common.items.ItemBlockRemoteJar;
 import makeo.gadomancy.common.items.ItemBlockStoneMachine;
@@ -59,6 +61,7 @@ public class RegisteredBlocks {
     public static BlockAdditionalEldritchPortal blockAdditionalEldrichPortal;
     public static BlockAuraPylon blockAuraPylon;
     public static BlockKnowledgeBook blockKnowledgeBook;
+    public static BlockEssentiaCompressor blockEssentiaCompressor;
 
     public static void init() {
         registerBlocks();
@@ -82,6 +85,7 @@ public class RegisteredBlocks {
         blockAdditionalEldrichPortal = registerBlock(new BlockAdditionalEldritchPortal(), ItemBlockAdditionalEldritchPortal.class);
         blockAuraPylon = registerBlock(new BlockAuraPylon(), ItemBlockAuraPylon.class);
         blockKnowledgeBook = registerBlock(new BlockKnowledgeBook(), ItemBlockKnowledgeBook.class);
+        blockEssentiaCompressor = registerBlock(new BlockEssentiaCompressor(), ItemBlockEssentiaCompressor.class);
     }
 
     private static <T extends Block> T registerBlock(String name, T block) {
@@ -123,6 +127,7 @@ public class RegisteredBlocks {
         registerTile(TileAuraPylonTop.class);
         registerTile(TileArcanePackager.class);
         registerTile(TileKnowledgeBook.class);
+        registerTile(TileEssentiaCompressor.class);
     }
 
     private static void registerTile(Class<? extends TileEntity> tile, String name) {

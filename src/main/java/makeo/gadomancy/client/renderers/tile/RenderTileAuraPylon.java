@@ -12,6 +12,7 @@ import makeo.gadomancy.common.utils.Vector3;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -45,12 +46,21 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
         GL11.glTranslated(x + 0.5, y - 0.5, z + 0.5);
 
         GL11.glPushMatrix();
+        ResourceLocation textureToBind;
+        if(tile instanceof TileAuraPylonTop) {
+            textureToBind = PYLON_TEXTURE_TOP;
+        } else if(((TileAuraPylon) tile).isInputTile() || ((TileAuraPylon) tile).isLowestTile()) {
+            textureToBind = PYLON_TEXTURE_BOTTOM;
+        } else {
+            textureToBind = PYLON_TEXTURE;
+        }
+        bindTexture(textureToBind);
         for(int i = 0; i < 4; i++) {
             if(tile instanceof TileAuraPylonTop) {
                 GL11.glPushMatrix();
                 GL11.glRotatef(180, 1, 0, 0);
                 GL11.glTranslatef(0, -2F, 0);
-                bindTexture(PYLON_TEXTURE_TOP);
+                //bindTexture(PYLON_TEXTURE_TOP);
                 MODEL_AURA_PYLON_TOP.render(null, 0, 0, 0, 0, 0, 0.0625f);
                 GL11.glPopMatrix();
             } else {
@@ -58,11 +68,11 @@ public class RenderTileAuraPylon extends TileEntitySpecialRenderer {
                     GL11.glPushMatrix();
                     GL11.glRotatef(180, 1, 0, 0);
                     GL11.glTranslatef(0, -2F, 0);
-                    bindTexture(PYLON_TEXTURE_BOTTOM);
+                    //bindTexture(PYLON_TEXTURE_BOTTOM);
                     MODEL_AURA_PYLON_BOTTOM.render(null, 0, 0, 0, 0, 0, 0.0625f);
                     GL11.glPopMatrix();
                 } else {
-                    bindTexture(PYLON_TEXTURE);
+                    //bindTexture(PYLON_TEXTURE);
                     MODEL_AURA_PYLON.render(null, 0, 0, 0, 0, 0, 0.0625f);
                 }
             }

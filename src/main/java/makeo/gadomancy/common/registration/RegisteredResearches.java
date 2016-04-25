@@ -51,6 +51,7 @@ public class RegisteredResearches {
     public static ResearchItem researchNodeManipulator;
     public static ResearchItem researchEldritchPortalCreator;
     public static ResearchItem researchBlockProtector;
+    public static ResearchItem researchEssentiaCompressor;
 
     //Enchantment stuff
     public static ResearchItem researchRevealer;
@@ -317,6 +318,18 @@ public class RegisteredResearches {
                 .setItemTriggers(new ItemStack(RegisteredItems.itemAuraCore, 1, ItemAuraCore.AuraCoreType.ORDER.ordinal()))
                 .setPages(new ResearchPage("gadomancy.research_page.KNOWLEDGE_BOOK.1"), new ResearchPage(RegisteredRecipes.recipeKnowledgeBook)).registerResearchItem();
 
+        ResearchItem researchVReservoir = PseudoResearchItem.create("ESSENTIARESERVOIR", -5, 9).registerResearchItem();
+
+        researchEssentiaCompressor = new SimpleResearchItem("ESSENTIA_COMPRESSOR",
+                -4, 7, 2, new ItemStack(RegisteredBlocks.blockEssentiaCompressor),
+                new AspectList().add(Aspect.VOID, 12).add(Aspect.WATER, 10).add(Aspect.ENTROPY, 12).add(Aspect.MAGIC, 6).add(Aspect.MECHANISM, 12))
+                .setHidden()
+                .setParents(researchAuraCore.key, researchVReservoir.key)
+                .setItemTriggers(new ItemStack(RegisteredItems.itemAuraCore, 1, ItemAuraCore.AuraCoreType.WATER.ordinal()))
+                .setPages(new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.1"), new ResearchPage(RegisteredRecipes.recipeElementVoid),
+                        new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.3"), new ResearchPage(RegisteredRecipes.recipeEssentiaCompressor),
+                        new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.5"), new ResearchPage(RegisteredRecipes.multiblockEssentiaCompressor)).registerResearchItem();
+
         String[] packagerParents = Config.wardedStone ? new String[] { researchAuraCore.key, "WARDEDARCANA" } : new String[] { researchAuraCore.key };
                 researchArcanePackager = new SimpleResearchItem("ARCANE_PACKAGER",
                 2, 7, 2, new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 4),
@@ -343,7 +356,8 @@ public class RegisteredResearches {
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".NODE_MANIPULATOR", 4);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTHCLUE", 3);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".E_PORTAL_CREATOR", 4);
-        ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".KNOWLEDGE_BOOK", 2);
+        ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".KNOWLEDGE_BOOK", 1);
+        ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".ESSENTIA_COMPRESSOR", 2);
     }
 
     public static void postInit() {

@@ -259,16 +259,13 @@ public class FXFlow {
     }
 
     public static void tickFlows(List<FXFlow> fxFlows) {
-        EffectHandler.flowRWLock.lock();
-        try {
+        synchronized (EffectHandler.lockEffects) {
             for(FXFlow flow : fxFlows) {
                 if((System.currentTimeMillis() - flow.lastUpdateCall) > 1000L) {
                     EffectHandler.getInstance().unregisterFlow(flow);
                 }
                 flow.tick();
             }
-        } finally {
-            EffectHandler.flowRWLock.unlock();
         }
     }
 

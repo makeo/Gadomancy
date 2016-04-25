@@ -5,6 +5,9 @@ item.ItemFamiliar.name=Ethereal Familiar (Deprecated)
 item.ItemEtherealFamiliar.name=Ethereal Familiar
 item.ItemAuraCore.name=Aura Core
 item.ItemArcanePackage.name=Arcane Package
+item.ItemElement.0.name=Element of Darkness
+item.ItemElement.1.name=[WIP] Element of Light
+item.ItemElement.2.name=[WIP] Element of Fire
 
 gadomancy.lore.deprecation.back=Put in a crafting grid to get your items back!
 
@@ -82,6 +85,12 @@ gadomancy.research_page.FAMILIAR_SPEED.1=TEXT
 tc.research_name.GADOMANCY.KNOWLEDGE_BOOK=Book of Knowledge
 tc.research_text.GADOMANCY.KNOWLEDGE_BOOK=Knowledge is power
 gadomancy.research_page.KNOWLEDGE_BOOK.1=TEXT
+
+tc.research_name.GADOMANCY.ESSENTIA_COMPRESSOR=Essentia Condenser
+tc.research_text.GADOMANCY.ESSENTIA_COMPRESSOR=ugh.
+gadomancy.research_page.ESSENTIA_COMPRESSOR.1=TEXT
+gadomancy.research_page.ESSENTIA_COMPRESSOR.3=TEXT
+gadomancy.research_page.ESSENTIA_COMPRESSOR.5=TEXT
 
 tc.research_name.GADOMANCY.NODE_MANIPULATOR=Node Manipulator
 tc.research_text.GADOMANCY.NODE_MANIPULATOR=Almost like roulette
@@ -200,6 +209,7 @@ tile.BlockStoneMachine.15.name=Manipulation Pillar
 tile.BlockAuraPylon.0.name=Aura Pylon
 tile.BlockAuraPylon.1.name=Aura Pylon Peak
 tile.BlockKnowledgeBook.name=Book of Knowledge
+tile.BlockEssentiaCompressor.name=Essentia Condenser
 
 gadomancy.nodes.GROWING=Growing
 gadomancy.nodes.STARVING=Starving

@@ -75,8 +75,8 @@ public class GadomancyTransformer extends AccessTransformer {
                 }
             }
         } else if(name.equalsIgnoreCase(NAME_NODE_RENDERER)) {
-            for(MethodNode mn : node.methods) {
-                if(mn.name.equals("renderTileEntityAt")) {
+            for (MethodNode mn : node.methods) {
+                if (mn.name.equals("renderTileEntityAt")) {
                     InsnList setBefore = new InsnList();
                     setBefore.add(new VarInsnNode(Opcodes.ALOAD, 1));
                     setBefore.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "makeo/gadomancy/common/events/EventHandlerRedirect",
@@ -85,11 +85,11 @@ public class GadomancyTransformer extends AccessTransformer {
                     mn.instructions.insertBefore(mn.instructions.get(0), setBefore);
 
                     AbstractInsnNode next = mn.instructions.get(0);
-                    while(next != null) {
+                    while (next != null) {
                         AbstractInsnNode insnNode = next;
                         next = insnNode.getNext();
 
-                        if(insnNode.getOpcode() == Opcodes.RETURN) {
+                        if (insnNode.getOpcode() == Opcodes.RETURN) {
                             InsnList setAfter = new InsnList();
                             setAfter.add(new VarInsnNode(Opcodes.ALOAD, 1));
                             setAfter.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "makeo/gadomancy/common/events/EventHandlerRedirect",
