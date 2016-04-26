@@ -263,7 +263,7 @@ public class RegisteredRecipes {
                 new AspectList().add(Aspect.WATER, 190).add(Aspect.ORDER, 150).add(Aspect.ENTROPY, 120).add(Aspect.FIRE, 100).add(Aspect.AIR, 160).add(Aspect.EARTH, 60),
                 "LRL", "TET", "LCL",
                 'L', new ItemStack(ConfigBlocks.blockMagicalLog),
-                'R', new ItemStack(ConfigBlocks.blockEssentiaReservoir),
+                'R', new ItemStack(ConfigBlocks.blockCrystal, 1, 4),
                 'T', new ItemStack(ConfigBlocks.blockTube, 1, 6),
                 'E', new ItemStack(RegisteredItems.itemElement, 1, ItemElement.EnumElementType.DARKNESS.ordinal()),
                 'C', waterCore);

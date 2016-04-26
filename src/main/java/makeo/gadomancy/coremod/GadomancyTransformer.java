@@ -34,7 +34,7 @@ public class GadomancyTransformer extends AccessTransformer {
                 || name.equalsIgnoreCase(NAME_RENDER_EVENT_HANDLER);
         if(!needsTransform) return super.transform(name, transformedName, bytes);
 
-        FMLLog.info("[GadomancyTransformer] Transforming " + name + " : " + transformedName);
+        FMLLog.info("[GadomancyTransformer] Transforming " + name + ": " + transformedName);
 
         ClassNode node = new ClassNode();
         ClassReader reader = new ClassReader(bytes);

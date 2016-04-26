@@ -326,9 +326,12 @@ public class RegisteredResearches {
                 .setHidden()
                 .setParents(researchAuraCore.key, researchVReservoir.key)
                 .setItemTriggers(new ItemStack(RegisteredItems.itemAuraCore, 1, ItemAuraCore.AuraCoreType.WATER.ordinal()))
-                .setPages(new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.1"), new ResearchPage(RegisteredRecipes.recipeElementVoid),
-                        new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.3"), new ResearchPage(RegisteredRecipes.recipeEssentiaCompressor),
-                        new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.5"), new ResearchPage(RegisteredRecipes.multiblockEssentiaCompressor)).registerResearchItem();
+                .setPages(new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.1"), new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.2"),
+                        new ResearchPage(RegisteredRecipes.recipeElementVoid), new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.4"),
+                        new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.5"), new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.6"),
+                        new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.7"), new ResearchPage(RegisteredRecipes.recipeEssentiaCompressor),
+                        new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.9"), new ResearchPage(RegisteredRecipes.multiblockEssentiaCompressor),
+                        new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.10"), new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.11")).registerResearchItem();
 
         String[] packagerParents = Config.wardedStone ? new String[] { researchAuraCore.key, "WARDEDARCANA" } : new String[] { researchAuraCore.key };
                 researchArcanePackager = new SimpleResearchItem("ARCANE_PACKAGER",
@@ -357,7 +360,7 @@ public class RegisteredResearches {
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".GROWING_GROWTHCLUE", 3);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".E_PORTAL_CREATOR", 4);
         ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".KNOWLEDGE_BOOK", 1);
-        ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".ESSENTIA_COMPRESSOR", 2);
+        ThaumcraftApi.addWarpToResearch(Gadomancy.MODID.toUpperCase() + ".ESSENTIA_COMPRESSOR", 3);
     }
 
     public static void postInit() {
