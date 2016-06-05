@@ -68,7 +68,8 @@ public class RenderTileEssentiaCompressor extends TileEntitySpecialRenderer {
 
             GL11.glPushMatrix();
             if(yOffset == 1) { //The middle one. - well. the one where the blackhole is.
-                renderBlackHoleEffect(tileEntity.xCoord + 0.5, tileEntity.yCoord + 0.5, tileEntity.zCoord + 0.5);
+                renderBlackHoleEffect(tileEntity.xCoord + 0.5, tileEntity.yCoord + 0.5, tileEntity.zCoord + 0.5,
+                        (TileEssentiaCompressor) tileEntity.getWorldObj().getTileEntity(tileEntity.xCoord, tileEntity.yCoord - 1, tileEntity.zCoord));
             }
             GL11.glPopMatrix();
         } else {
@@ -78,7 +79,7 @@ public class RenderTileEssentiaCompressor extends TileEntitySpecialRenderer {
             if(isRenderedAsItem) {
                 GL11.glTranslatef(0, -2.9F, 0);
             } else {
-                GL11.glTranslatef(0, -2.877F, 0); //Magic number FeelsBadMan
+                GL11.glTranslatef(0, -2.877F, 0);
             }
             bindTexture(PACKED_COMPRESSOR_TEXTURE);
             MODEL_PACKED_COMPRESSOR.render(null, 0, 0, 0, 0, 0, 0.0625f);
@@ -87,15 +88,15 @@ public class RenderTileEssentiaCompressor extends TileEntitySpecialRenderer {
 
     }
 
-    private Map<ChunkCoordinates, FXVortex> ownedVortex = new HashMap<ChunkCoordinates, FXVortex>();
+    public static Map<ChunkCoordinates, FXVortex> ownedVortex = new HashMap<ChunkCoordinates, FXVortex>();
 
-    private void renderBlackHoleEffect(double x, double y, double z) {
+    private void renderBlackHoleEffect(double x, double y, double z, TileEssentiaCompressor te) {
         ChunkCoordinates cc = new ChunkCoordinates((int) x, (int) y, (int) z);
         FXVortex v;
         if (ownedVortex.containsKey(cc)) {
             v = ownedVortex.get(cc);
         } else {
-            v = new FXVortex(x, y, z);
+            v = new FXVortex(x, y, z, te);
             ownedVortex.put(cc, v);
             v.registered = true;
             EffectHandler.getInstance().registerVortex(v);

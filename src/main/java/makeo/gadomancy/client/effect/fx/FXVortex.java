@@ -2,6 +2,7 @@ package makeo.gadomancy.client.effect.fx;
 
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.client.events.ClientHandler;
+import makeo.gadomancy.common.blocks.tiles.TileEssentiaCompressor;
 import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.Vector3;
 import net.minecraft.client.Minecraft;
@@ -14,6 +15,7 @@ import thaumcraft.client.lib.QuadHelper;
 import thaumcraft.client.lib.UtilsFX;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * HellFirePvP@Admin
@@ -23,9 +25,11 @@ import java.util.List;
  */
 public class FXVortex {
 
+    private static final Random RAND = new Random();
     public static final ResourceLocation TC_VORTEX_TEXTURE = new ResourceLocation("thaumcraft", "textures/misc/vortex.png");
     private static final float RAD = (float) (Math.PI * 2);
 
+    private TileEssentiaCompressor parent = null;
     private long lastUpdateCall;
     private double x, y, z;
     public boolean registered = false;
@@ -37,6 +41,14 @@ public class FXVortex {
         this.z = z;
     }
 
+    public FXVortex(double x, double y, double z, TileEssentiaCompressor parent) {
+        this.lastUpdateCall = System.currentTimeMillis();
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.parent = parent;
+    }
+
     private void render(Tessellator tessellator, float pTicks) {
         float arX = ActiveRenderInfo.rotationX;
         float arXZ = ActiveRenderInfo.rotationXZ;
@@ -45,7 +57,6 @@ public class FXVortex {
         float arXY = ActiveRenderInfo.rotationXY;
 
         GL11.glPushMatrix();
-        //GL11.glDepthMask(true);
         GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -53,11 +64,22 @@ public class FXVortex {
         float agescale = (float) (ClientHandler.ticks % 800) / 400F;
         if(agescale >= 1.0F) agescale = 2 - agescale;
         float size = 0.2F + 0.1F * agescale;
+        if(parent != null) {
+            size += size * (((float) parent.getSizeStage()) * 0.1F);
+        }
 
         float anglePerc = (float) (ClientHandler.ticks % 300) / 300F;
         float angle = RAD - RAD * anglePerc;
 
         Vector3 iV = MiscUtils.interpolateEntityPosition(Minecraft.getMinecraft().renderViewEntity, pTicks);
+        if(parent != null && parent.getSizeStage() > 4) {
+            float mult = 0.001F * (parent.getSizeStage() - 4F);
+            Vector3 shake = new Vector3(
+                    RAND.nextFloat() * mult * (RAND.nextBoolean() ? 1 : -1),
+                    RAND.nextFloat() * mult * (RAND.nextBoolean() ? 1 : -1),
+                    RAND.nextFloat() * mult * (RAND.nextBoolean() ? 1 : -1));
+            iV.add(shake);
+        }
 
         GL11.glTranslated(-iV.getX(), -iV.getY(), -iV.getZ());
 
@@ -89,7 +111,6 @@ public class FXVortex {
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
-        //GL11.glDepthMask(false);
         GL11.glPopMatrix();
     }
 

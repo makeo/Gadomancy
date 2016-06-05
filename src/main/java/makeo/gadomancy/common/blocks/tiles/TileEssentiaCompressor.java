@@ -3,18 +3,18 @@ package makeo.gadomancy.common.blocks.tiles;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.client.effect.fx.FXVortex;
 import makeo.gadomancy.client.events.ClientHandler;
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.data.config.ModConfig;
-import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
+import makeo.gadomancy.common.network.packets.PacketAnimationAbsorb;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
+import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.ExplosionHelper;
 import makeo.gadomancy.common.utils.Injector;
+import makeo.gadomancy.common.utils.Vector3;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -27,22 +27,20 @@ import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.WorldCoordinates;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.aspects.IAspectSource;
-import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.client.fx.ParticleEngine;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
 import thaumcraft.client.fx.particles.FXEssentiaTrail;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.config.ConfigBlocks;
+import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.lib.events.EssentiaHandler;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXEssentiaSource;
-import thaumcraft.common.tiles.TileJarFillable;
-import thaumcraft.common.tiles.TileMirrorEssentia;
+import thaumcraft.common.tiles.TilePedestal;
 
 import java.awt.*;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -57,6 +55,9 @@ import java.util.Map;
  */
 public class TileEssentiaCompressor extends SynchronizedTileEntity implements IAspectSource, IEssentiaTransport {
 
+    public static final int MAX_SIZE = 8;
+    public static final int MAX_ASPECT_STORAGE = 3000, STD_ASPECT_STORAGE = 200;
+
     private static Injector injEssentiaHandler = new Injector(EssentiaHandler.class);
     private static int multiblockIDCounter = 0;
 
@@ -65,6 +66,10 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
     private int multiblockYIndex = -1, multiblockId = -1;
 
     private boolean isMultiblockPresent = false;
+
+    private int incSize = 0;
+    private Vector3 coordPedestal = null;
+    private int consumeTick = 0;
 
     private AspectList al = new AspectList();
     private int ticksExisted = 0;
@@ -90,6 +95,10 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
                     prevFound = searchForEssentia(coords);
                 }
             }
+
+            if(isMasterTile() && ((incSize < MAX_SIZE && (ticksExisted % 40) == 0) || (coordPedestal != null))) {
+                consumeVoidmetal();
+            }
         } else {
             if(isMasterTile() && isMultiblockFormed()) {
                 playLightningEffects();
@@ -103,6 +112,65 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
         if(isMasterTile() && isMultiblockFormed()) {
             vortexEntities();
         }
+    }
+
+    private void consumeVoidmetal() {
+        if(coordPedestal != null) {
+            if(!checkPedestal(coordPedestal)) {
+                consumeTick = 0;
+                coordPedestal = null;
+                return;
+            }
+            consumeTick++;
+            if(consumeTick <= 400) {
+                PacketAnimationAbsorb absorb = new PacketAnimationAbsorb(
+                        xCoord, yCoord + 1, zCoord,
+                        coordPedestal.getBlockX(), coordPedestal.getBlockY() + 1, coordPedestal.getBlockZ(),
+                        5, Block.getIdFromBlock(ConfigBlocks.blockCosmeticSolid), 1);
+                makeo.gadomancy.common.network.PacketHandler.INSTANCE.sendToAllAround(absorb, new NetworkRegistry.TargetPoint(
+                        getWorldObj().provider.dimensionId,
+                        xCoord, yCoord, zCoord, 16));
+            } else {
+                TilePedestal te = (TilePedestal) worldObj.getTileEntity(
+                        coordPedestal.getBlockX(), coordPedestal.getBlockY(), coordPedestal.getBlockZ());
+                te.setInventorySlotContents(0, null);
+                te.markDirty();
+                worldObj.markBlockForUpdate(
+                        coordPedestal.getBlockX(), coordPedestal.getBlockY(), coordPedestal.getBlockZ());
+                consumeTick = 0;
+                coordPedestal = null;
+                incSize += 1;
+                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                markDirty();
+            }
+        } else {
+            for (int xx = -3; xx <= 3; xx++) {
+                for (int zz = -3; zz <= 3; zz++) {
+                    Vector3 offset = new Vector3(xCoord + xx, yCoord, zCoord + zz);
+                    if(checkPedestal(offset)) {
+                        this.coordPedestal = offset;
+                        this.consumeTick = 0;
+                        return;
+                    }
+                }
+            }
+            this.coordPedestal = null;
+            this.consumeTick = 0;
+        }
+    }
+
+    private boolean checkPedestal(Vector3 coordPedestal) {
+        Block at = worldObj.getBlock(
+                coordPedestal.getBlockX(), coordPedestal.getBlockY(), coordPedestal.getBlockZ());
+        int md = worldObj.getBlockMetadata(
+                coordPedestal.getBlockX(), coordPedestal.getBlockY(), coordPedestal.getBlockZ());
+        TileEntity te = worldObj.getTileEntity(
+                coordPedestal.getBlockX(), coordPedestal.getBlockY(), coordPedestal.getBlockZ());
+        if(at == null || te == null || md != 1) return false;
+        if(!at.equals(RegisteredBlocks.blockStoneMachine) || !(te instanceof TilePedestal)) return false;
+        ItemStack st = ((TilePedestal) te).getStackInSlot(0);
+        if(st == null || st.getItem() == null) return false;
+        return st.getItem().equals(RegisteredItems.itemElement) && st.getItemDamage() == 0;
     }
 
     //only call from master tile.
@@ -130,6 +198,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
             IAspectSource as = (IAspectSource)sourceTile;
             AspectList contains = as.getAspects();
             if(contains.visSize() > al.visSize()) continue;
+            if(!canAccept(a)) continue;
             if (as.takeFromContainer(a, 1)) {
                 PacketHandler.INSTANCE.sendToAllAround(new PacketFXEssentiaSource(xCoord, yCoord + 1, zCoord,
                         (byte)(xCoord - coordinate.x), (byte)(yCoord - coordinate.y + 1), (byte)(zCoord - coordinate.z),
@@ -138,6 +207,16 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
             }
         }
         return false;
+    }
+
+    private boolean canAccept(Aspect a) {
+        int current = al.getAmount(a);
+        int max = STD_ASPECT_STORAGE + incSize * ((MAX_ASPECT_STORAGE - STD_ASPECT_STORAGE) / MAX_SIZE);
+        return current < max;
+    }
+
+    public int getSizeStage() {
+        return incSize;
     }
 
     float tr = 1.0F;
@@ -260,7 +339,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
 
     @SideOnly(Side.CLIENT)
     private void playLightningEffects() {
-        if(worldObj.rand.nextBoolean()) {
+        if(incSize > 5 || worldObj.rand.nextBoolean()) {
             double originX = xCoord + 0.5;
             double originY = yCoord + 1.5;
             double originZ = zCoord + 0.5;
@@ -400,6 +479,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
         this.isMasterTile = compound.getBoolean("isMasterTile");
         this.multiblockId = compound.getInteger("multiblockId");
         this.isMultiblockPresent = compound.getBoolean("multiblockPresent");
+        this.incSize = compound.getInteger("sizeInc");
         AspectList al = new AspectList();
         NBTTagCompound cmp = compound.getCompoundTag("aspects");
         for (Object tag : cmp.func_150296_c()) {
@@ -418,6 +498,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
         compound.setInteger("multiblockId", this.multiblockId);
         compound.setInteger("multiblockYIndex", this.multiblockYIndex);
         compound.setBoolean("multiblockPresent", this.isMasterTile);
+        compound.setInteger("sizeInc", this.incSize);
         NBTTagCompound aspects = new NBTTagCompound();
         for (Aspect a : al.aspects.keySet()) {
             aspects.setInteger(a.getTag(), al.aspects.get(a));

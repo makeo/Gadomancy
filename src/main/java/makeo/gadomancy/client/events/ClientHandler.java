@@ -5,6 +5,7 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import makeo.gadomancy.client.ClientProxy;
 import makeo.gadomancy.client.effect.EffectHandler;
+import makeo.gadomancy.client.renderers.tile.RenderTileEssentiaCompressor;
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
 import makeo.gadomancy.common.Gadomancy;
 import net.minecraft.client.Minecraft;
@@ -42,6 +43,7 @@ public class ClientHandler {
     @SubscribeEvent
     public void onDc(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
         EffectHandler.getInstance().clear();
+        RenderTileEssentiaCompressor.ownedVortex.clear();
     }
 
 }

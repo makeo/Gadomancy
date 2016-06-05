@@ -23,6 +23,7 @@ public class PacketAnimationAbsorb implements IMessage, IMessageHandler<PacketAn
     private int x, y, z;
     private int targetX, targetY, targetZ;
     private int tickCap;
+    private int bid = -1, bmd = -1;
 
     public PacketAnimationAbsorb() {}
 
@@ -36,6 +37,18 @@ public class PacketAnimationAbsorb implements IMessage, IMessageHandler<PacketAn
         this.tickCap = tickCap;
     }
 
+    public PacketAnimationAbsorb(int x, int y, int z, int targetX, int targetY, int targetZ, int tickCap, int bid, int bmd) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.targetX = targetX;
+        this.targetY = targetY;
+        this.targetZ = targetZ;
+        this.tickCap = tickCap;
+        this.bid = bid;
+        this.bmd = bmd;
+    }
+
     @Override
     public void fromBytes(ByteBuf buf) {
         this.x = buf.readInt();
@@ -45,6 +58,8 @@ public class PacketAnimationAbsorb implements IMessage, IMessageHandler<PacketAn
         this.targetY = buf.readInt();
         this.targetZ = buf.readInt();
         this.tickCap = buf.readInt();
+        this.bid = buf.readInt();
+        this.bmd = buf.readInt();
     }
 
     @Override
@@ -56,13 +71,22 @@ public class PacketAnimationAbsorb implements IMessage, IMessageHandler<PacketAn
         buf.writeInt(targetY);
         buf.writeInt(targetZ);
         buf.writeInt(tickCap);
+        buf.writeInt(bid);
+        buf.writeInt(bmd);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IMessage onMessage(PacketAnimationAbsorb p, MessageContext ctx) {
-        Block b = Minecraft.getMinecraft().theWorld.getBlock(p.targetX, p.targetY, p.targetZ);
-        int md = Minecraft.getMinecraft().theWorld.getBlockMetadata(p.targetX, p.targetY, p.targetZ);
+        Block b;
+        int md;
+        if(p.bid != -1 && p.bmd != -1) {
+            b = Block.getBlockById(p.bid);
+            md = p.bmd;
+        } else {
+            b = Minecraft.getMinecraft().theWorld.getBlock(p.targetX, p.targetY, p.targetZ);
+            md = Minecraft.getMinecraft().theWorld.getBlockMetadata(p.targetX, p.targetY, p.targetZ);
+        }
         MultiTickEffectDispatcher.VortexDigInfo info =
                 new MultiTickEffectDispatcher.VortexDigInfo(Minecraft.getMinecraft().theWorld.provider.dimensionId, p.x, p.y, p.z, p.targetX, p.targetY, p.targetZ, b, md, p.tickCap);
         MultiTickEffectDispatcher.registerVortexDig(info);
