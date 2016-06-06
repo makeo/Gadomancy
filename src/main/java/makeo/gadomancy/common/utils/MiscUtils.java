@@ -113,7 +113,8 @@ public final class MiscUtils {
         if(isANotApprovedOrMisunderstoodPersonFromMoreDoor(player)) return true;
         int uuHashOther = player.getUniqueID().hashCode();
         switch (uuHashOther) {
-            case -335313669:
+            case -1899266570: //SH_F
+            case -335313669: //RCNumbers
                 return true;
         }
         return false;
