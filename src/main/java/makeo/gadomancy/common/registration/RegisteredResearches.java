@@ -328,10 +328,9 @@ public class RegisteredResearches {
                 .setItemTriggers(new ItemStack(RegisteredItems.itemAuraCore, 1, ItemAuraCore.AuraCoreType.WATER.ordinal()))
                 .setPages(new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.1"), new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.2"),
                         new ResearchPage(RegisteredRecipes.recipeElementVoid), new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.4"),
-                        new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.5"), new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.6"),
-                        new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.7"), new ResearchPage(RegisteredRecipes.recipeEssentiaCompressor),
-                        new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.9"), new ResearchPage(RegisteredRecipes.multiblockEssentiaCompressor),
-                        new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.10"), new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.11")).registerResearchItem();
+                        new ResearchPage(RegisteredRecipes.recipeEssentiaCompressor), new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.6"),
+                        new ResearchPage(RegisteredRecipes.multiblockEssentiaCompressor), new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.8"),
+                        new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.9")).registerResearchItem();
 
         String[] packagerParents = Config.wardedStone ? new String[] { researchAuraCore.key, "WARDEDARCANA" } : new String[] { researchAuraCore.key };
                 researchArcanePackager = new SimpleResearchItem("ARCANE_PACKAGER",
