@@ -1,6 +1,8 @@
 package makeo.gadomancy.common.blocks.tiles;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import makeo.gadomancy.client.util.UtilsFX;
 import makeo.gadomancy.common.entities.EntityPermNoClipItem;
 import makeo.gadomancy.common.network.PacketHandler;
@@ -212,6 +214,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity implements EntityP
         }
     }
 
+    @SideOnly(Side.CLIENT)
     private void doResearchEffects() {
         if((ticksExisted & 15) == 0) {
             UtilsFX.doRuneEffects(Minecraft.getMinecraft().theWorld, xCoord, yCoord - 1, zCoord, 0);

@@ -2,7 +2,6 @@ package makeo.gadomancy.client.util;
 
 import makeo.gadomancy.common.utils.MiscUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;

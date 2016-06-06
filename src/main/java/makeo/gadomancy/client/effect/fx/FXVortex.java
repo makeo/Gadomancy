@@ -65,7 +65,7 @@ public class FXVortex {
         if(agescale >= 1.0F) agescale = 2 - agescale;
         float size = 0.2F + 0.1F * agescale;
         if(parent != null) {
-            size += size * (((float) parent.getSizeStage()) * 0.1F);
+            size += size * (((float) parent.getSizeStage()) * 0.04F);
         }
 
         float anglePerc = (float) (ClientHandler.ticks % 300) / 300F;

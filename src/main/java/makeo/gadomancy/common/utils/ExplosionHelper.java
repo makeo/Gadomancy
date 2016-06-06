@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
@@ -53,6 +54,8 @@ public class ExplosionHelper {
                     world.setBlock(xx, yy, zz, ConfigBlocks.blockFluxGas, 8, 3);
                 }
             }
+            if(!Config.genTaint) continue;
+
             if(taintBiome && world.rand.nextInt(chanceToTaint) == 0) {
                 Utils.setBiomeAt(world, xx, zz, ThaumcraftWorldGenerator.biomeTaint);
             }

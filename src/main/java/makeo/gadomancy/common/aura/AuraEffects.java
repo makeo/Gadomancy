@@ -179,6 +179,7 @@ public class AuraEffects {
 
         @Override
         public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
+            if(!Config.genTaint) return;
             int x = selectedBlock.posX;
             int y = selectedBlock.posY;
             int z = selectedBlock.posZ;

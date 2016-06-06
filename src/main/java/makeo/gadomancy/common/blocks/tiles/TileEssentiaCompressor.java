@@ -62,7 +62,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
     private static int multiblockIDCounter = 0;
 
     //Standard multiblock stuff
-    private boolean isMasterTile = true; //For debugging
+    private boolean isMasterTile = false; //For debugging
     private int multiblockYIndex = -1, multiblockId = -1;
 
     private boolean isMultiblockPresent = false;
@@ -252,9 +252,9 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
             this.cb -= this.tbi;
         }
         int count = 1;
-        if(cr < 0) cr = 0;
-        if(cg < 0) cg = 0;
-        if(cb < 0) cb = 0;
+        cr = Math.min(1.0F, Math.max(0.0F, cr));
+        cg = Math.min(1.0F, Math.max(0.0F, cg));
+        cb = Math.min(1.0F, Math.max(0.0F, cb));
         FXEssentiaTrail essentiaTrail = new FXEssentiaTrail(worldObj, xCoord + 0.5, yCoord + 0.4, zCoord + 0.5, xCoord + 0.5, yCoord + 1.5, zCoord + 0.5, count, new Color(cr, cg, cb).getRGB(), 0.8F);
         essentiaTrail.noClip = true;
         essentiaTrail.motionY = (0.01F + MathHelper.sin(count / 3.0F) * 0.001F);
@@ -339,22 +339,28 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
 
     @SideOnly(Side.CLIENT)
     private void playLightningEffects() {
-        if(incSize > 5 || worldObj.rand.nextBoolean()) {
-            double originX = xCoord + 0.5;
-            double originY = yCoord + 1.5;
-            double originZ = zCoord + 0.5;
-            double targetX = xCoord + 0.4 + worldObj.rand.nextFloat() * 0.2;
-            double targetY = yCoord + 0.4 + (worldObj.rand.nextBoolean() ? 2.2 : 0);
-            double targetZ = zCoord + 0.4 + worldObj.rand.nextFloat() * 0.2;
-            FXLightningBolt bolt = new FXLightningBolt(Minecraft.getMinecraft().theWorld, originX, originY, originZ,
-                    targetX, targetY, targetZ, Minecraft.getMinecraft().theWorld.rand.nextLong(), 10, 4.0F, 5);
-            bolt.defaultFractal();
-            bolt.setType(5);
-            bolt.finalizeBolt();
+        if(incSize < 6) {
+            if(incSize < 2) {
+                if(worldObj.rand.nextInt(6) != 0) return;
+            } else {
+                if(worldObj.rand.nextBoolean()) return;
+            }
         }
+        double originX = xCoord + 0.5;
+        double originY = yCoord + 1.5;
+        double originZ = zCoord + 0.5;
+        double targetX = xCoord + 0.4 + worldObj.rand.nextFloat() * 0.2;
+        double targetY = yCoord + 0.4 + (worldObj.rand.nextBoolean() ? 2.2 : 0);
+        double targetZ = zCoord + 0.4 + worldObj.rand.nextFloat() * 0.2;
+        FXLightningBolt bolt = new FXLightningBolt(Minecraft.getMinecraft().theWorld, originX, originY, originZ,
+                targetX, targetY, targetZ, Minecraft.getMinecraft().theWorld.rand.nextLong(), 10, 4.0F, 5);
+        bolt.defaultFractal();
+        bolt.setType(5);
+        bolt.finalizeBolt();
     }
 
     private void vortexEntities() {
+        if(incSize <= 0) return;
         List entities = worldObj.getEntitiesWithinAABB(Entity.class,
                 AxisAlignedBB.getBoundingBox(xCoord - 0.5, yCoord - 0.5, zCoord - 0.5,
                         xCoord + 0.5, yCoord + 0.5, zCoord + 0.5).expand(4, 4, 4));
@@ -367,6 +373,8 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
     }
 
     private void applyMovementVectors(Entity entity) {
+        double mult = incSize * (1D / ((double) MAX_SIZE));
+
         double var3 = (xCoord + 0.5D - entity.posX) / 8.0D;
         double var5 = (yCoord + 1.5D - entity.posY) / 8.0D;
         double var7 = (zCoord + 0.5D - entity.posZ) / 8.0D;
@@ -374,9 +382,9 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
         double var11 = 1.0D - var9;
         if (var11 > 0.0D) {
             var11 *= var11;
-            entity.motionX += var3 / var9 * var11 * 0.05D;
-            entity.motionY += var5 / var9 * var11 * 0.08D;
-            entity.motionZ += var7 / var9 * var11 * 0.05D;
+            entity.motionX += var3 / var9 * var11 * (0.08D * mult);
+            entity.motionY += var5 / var9 * var11 * (0.11D * mult);
+            entity.motionZ += var7 / var9 * var11 * (0.08D * mult);
         }
     }
 
@@ -526,12 +534,12 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
 
     @Override
     public boolean doesContainerAccept(Aspect aspect) {
-        return isMultiblockFormed() && multiblockYIndex == 1;
+        return isMultiblockFormed() && multiblockYIndex == 1 && canAccept(aspect);
     }
 
     @Override
     public int addToContainer(Aspect aspect, int i) {
-        if(doesContainerAccept(aspect)) {
+        if(doesContainerAccept(aspect) && canAccept(aspect)) {
             TileEssentiaCompressor master = tryFindMasterTile();
             if(master == null) return 0;
             master.al.add(aspect, i);
@@ -655,7 +663,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
 
     @Override
     public int addEssentia(Aspect aspect, int i, ForgeDirection direction) {
-        if(canInputFrom(direction)) {
+        if(canInputFrom(direction) && canAccept(aspect)) {
             TileEssentiaCompressor master = tryFindMasterTile();
             if(master == null) return 0;
             master.al.add(aspect, i);
