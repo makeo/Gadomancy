@@ -24,6 +24,7 @@ public class GadomancyTransformer extends AccessTransformer {
     public static final String NAME_WANDMANAGER = "thaumcraft.common.items.wands.WandManager";
     public static final String NAME_NODE_RENDERER = "thaumcraft.client.renderers.tile.TileNodeRenderer";
     public static final String NAME_RENDER_EVENT_HANDLER = "thaumcraft.client.lib.RenderEventHandler";
+    public static final String NAME_NEI_ITEMPANEL = "codechicken.nei.ItemPanel";
 
     public GadomancyTransformer() throws IOException {}
 
@@ -31,7 +32,7 @@ public class GadomancyTransformer extends AccessTransformer {
     public byte[] transform(String name, String transformedName, byte[] bytes) {
         boolean needsTransform = transformedName.equalsIgnoreCase(NAME_ENCHANTMENT_HELPER) ||
                 name.equalsIgnoreCase(NAME_WANDMANAGER) || name.equalsIgnoreCase(NAME_NODE_RENDERER)
-                || name.equalsIgnoreCase(NAME_RENDER_EVENT_HANDLER);
+                || name.equalsIgnoreCase(NAME_RENDER_EVENT_HANDLER) || name.equals(NAME_NEI_ITEMPANEL);
         if(!needsTransform) return super.transform(name, transformedName, bytes);
 
         FMLLog.info("[GadomancyTransformer] Transforming " + name + ": " + transformedName);
@@ -122,6 +123,17 @@ public class GadomancyTransformer extends AccessTransformer {
                             mn.instructions.insertBefore(insnNode, setAfter);
                         }
                     }
+                }
+            }
+        } else if(name.equalsIgnoreCase(NAME_NEI_ITEMPANEL)) {
+            for (MethodNode mn : node.methods) {
+                if(mn.name.equals("updateItemList")) {
+                    InsnList newInstructions = new InsnList();
+                    newInstructions.add(new VarInsnNode(Opcodes.ALOAD, 0));
+                    newInstructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "makeo/gadomancy/common/integration/IntegrationNEI",
+                            "checkItems", "(Ljava/util/ArrayList;)V", false));
+                    newInstructions.add(mn.instructions);
+                    mn.instructions = newInstructions;
                 }
             }
         }

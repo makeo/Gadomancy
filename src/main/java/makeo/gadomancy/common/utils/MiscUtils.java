@@ -92,16 +92,6 @@ public final class MiscUtils {
         return new NetworkRegistry.TargetPoint(world.provider.dimensionId, target.getX(), target.getY(), target.getZ(), range);
     }
 
-    public static EntityPlayer getOnlinePlayerByUUIDClient(UUID playerUUID) {
-        List<EntityPlayerMP> players = Minecraft.getMinecraft().getIntegratedServer().getConfigurationManager().playerEntityList;
-        for(EntityPlayerMP player : players) {
-            if(player.getGameProfile().getId().equals(playerUUID)) {
-                return player;
-            }
-        }
-        return null;
-    }
-
     //Nothing to see here. Please move on.
     public static boolean isANotApprovedOrMisunderstoodPersonFromMoreDoor(EntityPlayer player) {
         int uuHash = player.getUniqueID().hashCode();
