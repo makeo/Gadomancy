@@ -47,8 +47,8 @@ public class RegisteredMultiblocks {
 
     static {
         for (int xx = -3; xx <= 3; xx++) {
-            for (int zz = -3; zz <= -3; zz++) {
-                aiShutdownPattern.addBlock(xx, 1, zz, Blocks.grass, 0);
+            for (int zz = -3; zz <= 3; zz++) {
+                aiShutdownPattern.addBlock(xx, -1, zz, Blocks.grass, 0);
             }
         }
     }

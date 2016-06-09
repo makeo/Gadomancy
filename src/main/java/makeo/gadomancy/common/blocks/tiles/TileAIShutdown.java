@@ -2,6 +2,7 @@ package makeo.gadomancy.common.blocks.tiles;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import makeo.gadomancy.client.effect.fx.Orbital;
 import makeo.gadomancy.common.registration.AIShutdownWhitelist;
 import makeo.gadomancy.common.registration.RegisteredMultiblocks;
 import makeo.gadomancy.common.utils.Injector;
@@ -12,10 +13,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -37,11 +41,15 @@ import java.util.UUID;
  */
 public class TileAIShutdown extends SynchronizedTileEntity implements IAspectContainer, IEssentiaTransport {
 
+    private static final Random RAND = new Random();
+
     private static Map<ChunkCoordinates, List<AffectedEntity>> trackedEntities = Maps.newHashMap();
-    private static AxisAlignedBB BOX = AxisAlignedBB.getBoundingBox(-3, 1, -3, 4, 3, 4);
+    private static AxisAlignedBB BOX = AxisAlignedBB.getBoundingBox(-3, -1, -3, 4, 2, 4);
     private static Injector injEntityLivingBase = new Injector(EntityLivingBase.class);
 
     public static final int MAX_AMT = 16;
+
+    public Orbital orbital;
 
     private int ticksExisted = 0;
     private int storedAmount = 0;
@@ -76,12 +84,31 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
             if((ticksExisted & 15) == 0) {
                 killAI();
             }
+            if(((ticksExisted & 7) == 0)) {
+                handleIO();
+            }
         } else {
-            if(foundMultiblock) {
+            if(foundMultiblock && storedAmount > 0) {
                 //Effects?
             }
         }
 
+    }
+
+    private void handleIO() {
+        if (storedAmount < MAX_AMT) {
+            TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.UP);
+            if (te != null) {
+                IEssentiaTransport ic = (IEssentiaTransport) te;
+                if (!ic.canOutputTo(ForgeDirection.DOWN)) {
+                    return;
+                }
+
+                if (ic.getSuctionAmount(ForgeDirection.DOWN) < getSuctionAmount(ForgeDirection.UP)) {
+                    addToContainer(Aspect.ENTROPY, ic.takeEssentia(Aspect.ENTROPY, 1, ForgeDirection.DOWN));
+                }
+            }
+        }
     }
 
     private void killAI() {
@@ -91,6 +118,7 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
             if(o != null && o instanceof EntityLiving &&
                     !((EntityLiving) o).isDead && canAffect((EntityLiving) o)) {
                 EntityLiving el = (EntityLiving) o;
+                if(storedAmount <= 0) return;
                 AffectedEntity affected = removeAI(el);
                 trackedEntities.get(cc).add(affected);
             }
@@ -98,6 +126,12 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
     }
 
     private AffectedEntity removeAI(EntityLiving el) {
+        if(RAND.nextInt(4) == 0) {
+            storedAmount = Math.max(0, storedAmount - 1);
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            markDirty();
+        }
+
         UUID uu = el.getUniqueID();
         List<EntityAITasks.EntityAITaskEntry> tasks =
                 new ArrayList<EntityAITasks.EntityAITaskEntry>(el.tasks.taskEntries);
@@ -143,6 +177,17 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
             markDirty();
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
+        if(!foundMultiblock) {
+            storedAmount = 0;
+        }
+    }
+
+    public boolean hasMultiblock() {
+        return foundMultiblock;
+    }
+
+    public int getStoredEssentia() {
+        return storedAmount;
     }
 
     public boolean canAffect(EntityLiving el) {
@@ -156,7 +201,8 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
     }
 
     private boolean checkGrassBlocks() {
-        return MultiblockHelper.isMultiblockPresent(worldObj, xCoord, yCoord, zCoord, RegisteredMultiblocks.aiShutdownPattern);
+        boolean mbPresent = MultiblockHelper.isMultiblockPresent(worldObj, xCoord, yCoord, zCoord, RegisteredMultiblocks.aiShutdownPattern);
+        return mbPresent;
     }
 
     @Override
@@ -187,7 +233,7 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
 
     @Override
     public boolean doesContainerAccept(Aspect aspect) {
-        return false;
+        return aspect == Aspect.ENTROPY;
     }
 
     @Override
@@ -237,7 +283,7 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
 
     @Override
     public boolean isConnectable(ForgeDirection direction) {
-        return direction != null && direction.equals(ForgeDirection.DOWN);
+        return direction != null && direction.equals(ForgeDirection.UP);
     }
 
     @Override
@@ -247,7 +293,7 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
 
     @Override
     public boolean canOutputTo(ForgeDirection direction) {
-        return false;
+        return isConnectable(direction);
     }
 
     @Override
@@ -262,7 +308,7 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
     @Override
     public int getSuctionAmount(ForgeDirection direction) {
         if(!isConnectable(direction)) return 0;
-        return 64;
+        return getMinimumSuction();
     }
 
     @Override
@@ -277,13 +323,13 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
 
     @Override
     public Aspect getEssentiaType(ForgeDirection direction) {
-        if(!isConnectable(direction)) return null;
         return Aspect.ENTROPY;
     }
 
     @Override
     public int getEssentiaAmount(ForgeDirection direction) {
-        return 0;
+        if(!isConnectable(direction)) return 0;
+        return storedAmount;
     }
 
     @Override

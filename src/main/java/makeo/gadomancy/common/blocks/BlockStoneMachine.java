@@ -278,6 +278,8 @@ public class BlockStoneMachine extends Block {
             setBlockBounds(0, 0, 0, 1, 3/16f, 1);
         } else if(metadata == 4) {
              setBlockBounds(0, 0, 0, 1, 12/16f, 1);
+        } else if(metadata == 5) {
+            setBlockBounds(0, 0, 0, 1, 1, 1);
         }
         super.setBlockBoundsBasedOnState(world, x, y, z);
     }
