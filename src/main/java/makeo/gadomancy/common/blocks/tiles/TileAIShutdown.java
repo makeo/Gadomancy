@@ -53,7 +53,6 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
 
     private int ticksExisted = 0;
     private int storedAmount = 0;
-    private boolean foundMultiblock = false;
 
     @Override
     public boolean canUpdate() {
@@ -67,32 +66,25 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
 
         if(!worldObj.isRemote) {
             ChunkCoordinates cc = getCoords();
-            if(!trackedEntities.containsKey(cc)) trackedEntities.put(cc, Lists.<AffectedEntity>newLinkedList());
+            if (!trackedEntities.containsKey(cc)) trackedEntities.put(cc, Lists.<AffectedEntity>newLinkedList());
 
-            if((ticksExisted & 7) == 0) {
-                if(!foundMultiblock) {
-                    setMultiblock(checkGrassBlocks());
-                } else {
-                    if(!checkGrassBlocks()) {
-                        setMultiblock(false);
-                    }
-                }
-            }
-
-            if(!foundMultiblock) return;
-
-            if((ticksExisted & 15) == 0) {
+            if ((ticksExisted & 15) == 0) {
                 killAI();
             }
-            if(((ticksExisted & 7) == 0)) {
+            if (((ticksExisted & 7) == 0)) {
                 handleIO();
             }
-        } else {
-            if(foundMultiblock && storedAmount > 0) {
-                //Effects?
+            if (((ticksExisted & 31) == 0)) {
+                drainDefaultEssentia();
             }
         }
 
+    }
+
+    private void drainDefaultEssentia() {
+        storedAmount = Math.max(0, storedAmount - 1);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        markDirty();
     }
 
     private void handleIO() {
@@ -171,21 +163,6 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
         return new AffectedEntity(uu, tasks, targetTasks);
     }
 
-    public void setMultiblock(boolean state) {
-        if(foundMultiblock != state) {
-            this.foundMultiblock = state;
-            markDirty();
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        }
-        if(!foundMultiblock) {
-            storedAmount = 0;
-        }
-    }
-
-    public boolean hasMultiblock() {
-        return foundMultiblock;
-    }
-
     public int getStoredEssentia() {
         return storedAmount;
     }
@@ -200,21 +177,14 @@ public class TileAIShutdown extends SynchronizedTileEntity implements IAspectCon
         return true;
     }
 
-    private boolean checkGrassBlocks() {
-        boolean mbPresent = MultiblockHelper.isMultiblockPresent(worldObj, xCoord, yCoord, zCoord, RegisteredMultiblocks.aiShutdownPattern);
-        return mbPresent;
-    }
-
     @Override
     public void readCustomNBT(NBTTagCompound compound) {
         this.storedAmount = compound.getInteger("amount");
-        this.foundMultiblock = compound.getBoolean("multiblock");
     }
 
     @Override
     public void writeCustomNBT(NBTTagCompound compound) {
         compound.setInteger("amount", storedAmount);
-        compound.setBoolean("multiblock", foundMultiblock);
     }
 
 

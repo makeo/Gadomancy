@@ -67,6 +67,7 @@ public class RegisteredRecipes {
     public static InfusionRecipe recipeGolemCoreBodyguard;
     public static InfusionRecipe recipePortalFocus;
     public static InfusionRecipe recipeElementVoid;
+    public static InfusionRecipe recipeAiShutdown;
 
     //For indexing, look below...
     public static InfusionRecipe[][] recipesFamiliarAugmentation;
@@ -274,6 +275,20 @@ public class RegisteredRecipes {
                         new ItemStack(RegisteredBlocks.blockEssentiaCompressor),
                         new ItemStack(RegisteredBlocks.blockEssentiaCompressor)
                 ));
+
+        ItemStack earthCore = new ItemStack(RegisteredItems.itemAuraCore);
+        RegisteredItems.itemAuraCore.setCoreType(earthCore, ItemAuraCore.AuraCoreType.EARTH);
+
+        recipeAiShutdown = ThaumcraftApi.addInfusionCraftingRecipe(Gadomancy.MODID.toUpperCase() + ".AI_SHUTDOWN", new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 5), 9,
+                new AspectList().add(Aspect.ENTROPY, 16).add(Aspect.BEAST, 23).add(Aspect.EARTH, 22).add(Aspect.AURA, 12).add(Aspect.MIND, 17),
+                earthCore, new ItemStack[] {
+                        new ItemStack(ConfigItems.itemZombieBrain), new ItemStack(ConfigBlocks.blockTube),
+                        new ItemStack(ConfigItems.itemWandRod), new ItemStack(ConfigItems.itemShard, 1, 5),
+                        new ItemStack(ConfigBlocks.blockJar), new ItemStack(ConfigBlocks.blockTube),
+                        new ItemStack(ConfigItems.itemZombieBrain), new ItemStack(ConfigBlocks.blockTube),
+                        new ItemStack(ConfigBlocks.blockJar), new ItemStack(ConfigItems.itemShard, 1, 5),
+                        new ItemStack(ConfigItems.itemWandRod), new ItemStack(ConfigBlocks.blockTube)
+                });
 
 
         auraCoreRecipes = createAuraCoreRecipes();

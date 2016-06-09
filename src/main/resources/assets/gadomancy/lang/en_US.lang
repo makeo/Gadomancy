@@ -86,6 +86,10 @@ tc.research_name.GADOMANCY.KNOWLEDGE_BOOK=Book of Knowledge
 tc.research_text.GADOMANCY.KNOWLEDGE_BOOK=Knowledge is power
 gadomancy.research_page.KNOWLEDGE_BOOK.1=TEXT
 
+tc.research_name.GADOMANCY.AI_SHUTDOWN=NULL
+tc.research_text.GADOMANCY.AI_SHUTDOWN=NULL
+gadomancy.research_page.AI_SHUTDOWN.1=NULL
+
 tc.research_name.GADOMANCY.ESSENTIA_COMPRESSOR=Essentia Condenser
 tc.research_text.GADOMANCY.ESSENTIA_COMPRESSOR=NON-noisy Essentia Storage
 gadomancy.research_page.ESSENTIA_COMPRESSOR.1= While experimenting with void materials, you discovered an odd reaction between void seeds and liquid essentia.  When a void seed is left in close proximity with a warded jar for an extended period of time, the energy it releases has the odd tendency to make the essentia in the jar condense into a slightly more dense state, freeing up a small amount of space in the jar without actually destroying any essentia. After some further testing, you found that the seed alone was not powerful enough to make any major difference, but with enhancements to increase the potency of the energy released by the seed, a device that can compress essentia into a super dense state could be made.
@@ -207,6 +211,7 @@ tile.BlockStoneMachine.1.name=Ancient Pedestal
 tile.BlockStoneMachine.2.name=Arcane Enervation Emitter
 tile.BlockStoneMachine.3.name=Redirection Focus
 tile.BlockStoneMachine.4.name=Arcane Packager
+tile.BlockStoneMachine.5.name=Ai Shutdown (WIP)
 tile.BlockStoneMachine.11.name=Manipulation Pillar
 tile.BlockStoneMachine.15.name=Manipulation Pillar
 tile.BlockAuraPylon.0.name=Aura Pylon

@@ -51,7 +51,6 @@ public class RegisteredResearches {
     public static ResearchItem researchNodeManipulator;
     public static ResearchItem researchEldritchPortalCreator;
     public static ResearchItem researchBlockProtector;
-    public static ResearchItem researchEssentiaCompressor;
 
     //Enchantment stuff
     public static ResearchItem researchRevealer;
@@ -64,6 +63,8 @@ public class RegisteredResearches {
     public static ResearchItem researchAuraPylon;
     public static ResearchItem researchAuraEffects;
     public static ResearchItem researchKnowledgeBook;
+    public static ResearchItem researchEssentiaCompressor;
+    public static ResearchItem researchAiShutdown;
 
     //Skyblock Helper
     public static ResearchItem researchAncientStones;
@@ -331,6 +332,15 @@ public class RegisteredResearches {
                         new ResearchPage(RegisteredRecipes.recipeEssentiaCompressor), new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.6"),
                         new ResearchPage(RegisteredRecipes.multiblockEssentiaCompressor), new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.8"),
                         new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.9")).registerResearchItem();
+
+        researchAiShutdown = new SimpleResearchItem("AI_SHUTDOWN",
+                -3, 5, 2, new ItemStack(RegisteredBlocks.blockStoneMachine, 1, 5),
+                new AspectList().add(Aspect.MIND, 10).add(Aspect.ENTROPY, 20).add(Aspect.AURA, 12).add(Aspect.BEAST, 16).add(Aspect.MECHANISM, 12))
+                .setHidden()
+                .setParents(researchAuraCore.key, "ROD_greatwood")
+                .setItemTriggers(new ItemStack(RegisteredItems.itemAuraCore, 1, ItemAuraCore.AuraCoreType.EARTH.ordinal()))
+                .setPages(new ResearchPage("gadomancy.research_page.AI_SHUTDOWN.1"), new ResearchPage(RegisteredRecipes.recipeAiShutdown))
+                .registerResearchItem();
 
         String[] packagerParents = Config.wardedStone ? new String[] { researchAuraCore.key, "WARDEDARCANA" } : new String[] { researchAuraCore.key };
                 researchArcanePackager = new SimpleResearchItem("ARCANE_PACKAGER",

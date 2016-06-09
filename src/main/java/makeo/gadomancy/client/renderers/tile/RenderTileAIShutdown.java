@@ -29,7 +29,7 @@ public class RenderTileAIShutdown extends TileEntitySpecialRenderer {
         if(tileEntity == null || !(tileEntity instanceof TileAIShutdown)) return;
         TileAIShutdown ta = (TileAIShutdown) tileEntity;
 
-        if(ta.hasMultiblock() && ta.getStoredEssentia() > 0) {
+        if(ta.getStoredEssentia() > 0) {
             handleOrbital(ta);
         }
     }
@@ -45,7 +45,7 @@ public class RenderTileAIShutdown extends TileEntitySpecialRenderer {
 
         if(ta.orbital != null) ta.orbital.lastRenderCall = System.currentTimeMillis();
 
-        if(ta.hasMultiblock() && ta.getStoredEssentia() > 0) {
+        if(ta.getStoredEssentia() > 0) {
             if(ta.orbital != null && ta.orbital.orbitalsSize() == 0) {
                 fillOrbital(ta.orbital);
             }

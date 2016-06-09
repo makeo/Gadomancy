@@ -43,14 +43,4 @@ public class RegisteredMultiblocks {
             .addBlock(0, -2, 0, RegisteredBlocks.blockAuraPylon, 0)
             .addBlock(0, -3, 0, RegisteredBlocks.blockAuraPylon, 0);
 
-    public static final MultiblockHelper.MultiblockPattern aiShutdownPattern = new MultiblockHelper.MultiblockPattern(RegisteredBlocks.blockStoneMachine, 5);
-
-    static {
-        for (int xx = -3; xx <= 3; xx++) {
-            for (int zz = -3; zz <= 3; zz++) {
-                aiShutdownPattern.addBlock(xx, -1, zz, Blocks.grass, 0);
-            }
-        }
-    }
-
 }
