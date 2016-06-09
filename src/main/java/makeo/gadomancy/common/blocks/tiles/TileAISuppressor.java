@@ -17,6 +17,7 @@ import java.util.Map;
  * Created by makeo @ 05.06.2016 15:35
  */
 public class TileAISuppressor extends SynchronizedTileEntity {
+
     private static final AxisAlignedBB PART_RANGE = AxisAlignedBB.getBoundingBox(0, 0, 0, 10, 10, 10);
 
     private Map<Entity, Float> tracked = new HashMap<Entity, Float>();

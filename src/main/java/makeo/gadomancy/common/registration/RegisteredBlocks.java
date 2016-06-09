@@ -128,6 +128,7 @@ public class RegisteredBlocks {
         registerTile(TileArcanePackager.class);
         registerTile(TileKnowledgeBook.class);
         registerTile(TileEssentiaCompressor.class);
+        registerTile(TileAIShutdown.class);
     }
 
     private static void registerTile(Class<? extends TileEntity> tile, String name) {

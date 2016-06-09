@@ -4,6 +4,7 @@ import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.blocks.tiles.TileAIShutdown;
 import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
 import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
@@ -226,6 +227,9 @@ public class EventHandlerWorld {
                     if (((TileNodeManipulator) te).isInMultiblock())
                         ((TileNodeManipulator) te).breakMultiblock();
                 }
+            }
+            if (event.block == RegisteredBlocks.blockStoneMachine && event.blockMetadata == 5) {
+                TileAIShutdown.removeTrackedEntities(event.world, event.x, event.y, event.z);
             }
             if (event.world.provider.dimensionId == ModConfig.dimOuterId) {
                 if(event.block == ConfigBlocks.blockEldritchNothing) {

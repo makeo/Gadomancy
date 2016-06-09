@@ -48,10 +48,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * HellFirePvP@Admin
- * Date: 22.04.2016 / 21:42
- * on Gadomancy
- * TileEssentiaCompressor
+ * This class is part of the Gadomancy Mod
+ * Gadomancy is Open Source and distributed under the
+ * GNU LESSER GENERAL PUBLIC LICENSE
+ * for more read the LICENSE file
+ *
+ * Created by HellFirePvP @ 22.04.2016 21:42
  */
 public class TileEssentiaCompressor extends SynchronizedTileEntity implements IAspectSource, IEssentiaTransport {
 

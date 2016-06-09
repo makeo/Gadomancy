@@ -592,7 +592,7 @@ public class TileAuraPylon extends SynchronizedTileEntity implements IAspectCont
 
     @Override
     public int getMinimumSuction() {
-        return 128;
+        return 64;
     }
 
     //Individual.

@@ -88,16 +88,14 @@ public class BlockStoneMachine extends Block {
 
     @Override
     public boolean hasTileEntity(int metadata) {
-        return metadata == 15 || metadata == 0 || metadata == 1 || metadata == 2 || metadata == 3 || metadata == 4;
+        return metadata == 15 || metadata == 0 || metadata == 1 || metadata == 2 || metadata == 3 || metadata == 4 || metadata == 5;
     }
 
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-        list.add(new ItemStack(item, 1, 0));
-        list.add(new ItemStack(item, 1, 1));
-        list.add(new ItemStack(item, 1, 2));
-        list.add(new ItemStack(item, 1, 3));
-        list.add(new ItemStack(item, 1, 4));
+        for (int i = 0; i < 6; i++) {
+            list.add(new ItemStack(item, 1, i));
+        }
     }
 
     @Override
@@ -124,6 +122,8 @@ public class BlockStoneMachine extends Block {
             return new TileManipulationFocus();
         } else if(metadata == 4) {
             return new TileArcanePackager();
+        } else if(metadata == 5) {
+            return new TileAIShutdown();
         }
         return null;
     }

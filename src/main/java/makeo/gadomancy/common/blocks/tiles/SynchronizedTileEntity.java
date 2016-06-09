@@ -5,6 +5,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -15,6 +16,10 @@ import net.minecraft.tileentity.TileEntity;
  * Created by makeo @ 07.10.2015 18:39
  */
 public class SynchronizedTileEntity extends TileEntity {
+
+    public ChunkCoordinates getCoords() {
+        return new ChunkCoordinates(xCoord, yCoord, zCoord);
+    }
 
     public final void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
