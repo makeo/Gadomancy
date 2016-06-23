@@ -3,7 +3,6 @@ package makeo.gadomancy.common.blocks.tiles;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import makeo.gadomancy.client.effect.fx.FXVortex;
 import makeo.gadomancy.client.events.ClientHandler;
 import makeo.gadomancy.common.network.packets.PacketAnimationAbsorb;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
@@ -34,7 +33,6 @@ import thaumcraft.client.fx.bolt.FXLightningBolt;
 import thaumcraft.client.fx.particles.FXEssentiaTrail;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.lib.events.EssentiaHandler;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXEssentiaSource;
@@ -99,7 +97,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
             }
 
             if(isMasterTile() && ((incSize < MAX_SIZE && (ticksExisted % 40) == 0) || (coordPedestal != null))) {
-                consumeVoidmetal();
+                consumeElements();
             }
         } else {
             if(isMasterTile() && isMultiblockFormed()) {
@@ -116,7 +114,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
         }
     }
 
-    private void consumeVoidmetal() {
+    private void consumeElements() {
         if(coordPedestal != null) {
             if(!checkPedestal(coordPedestal)) {
                 consumeTick = 0;

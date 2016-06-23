@@ -116,7 +116,7 @@ public class ClientProxy extends CommonProxy {
         RenderTileEssentiaCompressor renderTileEssentiaCompressor = new RenderTileEssentiaCompressor();
         ClientRegistry.bindTileEntitySpecialRenderer(TileEssentiaCompressor.class, renderTileEssentiaCompressor);
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TileAIShutdown.class, new RenderTileAIShutdown());
+        //ClientRegistry.bindTileEntitySpecialRenderer(TileAIShutdown.class, new RenderTileAIShutdown());
 
         RenderTileAuraPylon renderTileAuraPylon = new RenderTileAuraPylon();
         ClientRegistry.bindTileEntitySpecialRenderer(TileAuraPylon.class, renderTileAuraPylon);

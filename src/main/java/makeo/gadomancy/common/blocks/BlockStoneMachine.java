@@ -93,7 +93,7 @@ public class BlockStoneMachine extends Block {
 
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 5; i++) {
             list.add(new ItemStack(item, 1, i));
         }
     }
@@ -122,9 +122,9 @@ public class BlockStoneMachine extends Block {
             return new TileManipulationFocus();
         } else if(metadata == 4) {
             return new TileArcanePackager();
-        } else if(metadata == 5) {
+        }/* else if(metadata == 5) {
             return new TileAIShutdown();
-        }
+        }*/
         return null;
     }
 
@@ -278,9 +278,9 @@ public class BlockStoneMachine extends Block {
             setBlockBounds(0, 0, 0, 1, 3/16f, 1);
         } else if(metadata == 4) {
              setBlockBounds(0, 0, 0, 1, 12/16f, 1);
-        } else if(metadata == 5) {
+        }/* else if(metadata == 5) {
             setBlockBounds(0, 0, 0, 1, 1, 1);
-        }
+        }*/
         super.setBlockBoundsBasedOnState(world, x, y, z);
     }
 

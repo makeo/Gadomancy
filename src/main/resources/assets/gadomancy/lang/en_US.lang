@@ -53,42 +53,43 @@ tc.research_text.GADOMANCY.ETHEREAL_FAMILIAR=A arcane follower
 gadomancy.research_page.ETHEREAL_FAMILIAR.1=Wisps have intrigued you for some time now. Many of these sentient bits of ethereal magic seem to be  passive, but when attacked, they retaliate with surprising speed and efficiency. Not only that, but sometimes just approaching a wisp too quickly will provoke an attack.<LINE>This behavior gave you an unexpected inspiration. By exploiting the unusually responsive nature of a wisp, it may be possible to bend its defensive instincts to act as a personal protector. Unfortunately, wild wisps have proven to be far to unpredictable to capture.
 gadomancy.research_page.ETHEREAL_FAMILIAR.3=By infusing large amounts of magic and a few binding agents into a sample of ethereal essence, an artificial wisp can be created. This Ethereal "Familiar" will anchor to its wearer's aura and act similarly to a turret when it is held in the amulet slot, shooting sparks any hostile entities that attack its wearer. It is considerably weaker and slower than its wild counterparts, however you feel that there are definitely methods of strengthening it.
 
-
-tc.research_name.GADOMANCY.FAMILIAR_SHOCK=Familiar-Upgrade-Lightning
-tc.research_text.GADOMANCY.FAMILIAR_SHOCK=Conflicts with: Fire, Poison, Weakness
-gadomancy.research_page.FAMILIAR_SHOCK.1=TEXT
-
-tc.research_name.GADOMANCY.FAMILIAR_FIRE=Familiar-Upgrade-Fire
-tc.research_text.GADOMANCY.FAMILIAR_FIRE=Conflicts with: Lightning, Poison, Weakness
-gadomancy.research_page.FAMILIAR_FIRE.1=TEXT
-
-tc.research_name.GADOMANCY.FAMILIAR_POISON=Familiar-Upgrade-Poison
-tc.research_text.GADOMANCY.FAMILIAR_POISON=Conflicts with: Fire, Lightning, Weakness
-gadomancy.research_page.FAMILIAR_POISON.1=TEXT
-
-tc.research_name.GADOMANCY.FAMILIAR_WEAKNESS=Familiar-Upgrade-Enervation
-tc.research_text.GADOMANCY.FAMILIAR_WEAKNESS=Conflicts with: Fire, Poison, Lightning
-gadomancy.research_page.FAMILIAR_WEAKNESS.1=TEXT
-
-tc.research_name.GADOMANCY.FAMILIAR_DAMAGE=Familiar-Upgrade-Damage
-tc.research_text.GADOMANCY.FAMILIAR_DAMAGE=Conflicts with: Range, Speed
-gadomancy.research_page.FAMILIAR_DAMAGE.1=TEXT
-
-tc.research_name.GADOMANCY.FAMILIAR_RANGE=Familiar-Upgrade-Range
-tc.research_text.GADOMANCY.FAMILIAR_RANGE=Conflicts with: Damage, Speed
-gadomancy.research_page.FAMILIAR_RANGE.1=TEXT
-
-tc.research_name.GADOMANCY.FAMILIAR_SPEED=Familiar-Upgrade-Speed
-tc.research_text.GADOMANCY.FAMILIAR_SPEED=Can attack multiple enemys; Conflicts with: Range, Damage
-gadomancy.research_page.FAMILIAR_SPEED.1=TEXT
-
-tc.research_name.GADOMANCY.KNOWLEDGE_BOOK=Book of Knowledge
-tc.research_text.GADOMANCY.KNOWLEDGE_BOOK=Knowledge is power
-gadomancy.research_page.KNOWLEDGE_BOOK.1=TEXT
-
 tc.research_name.GADOMANCY.AI_SHUTDOWN=NULL
 tc.research_text.GADOMANCY.AI_SHUTDOWN=NULL
 gadomancy.research_page.AI_SHUTDOWN.1=NULL
+
+tc.research_name.GADOMANCY.FAMILIAR_SHOCK=Lightning Impact
+tc.research_text.GADOMANCY.FAMILIAR_SHOCK=A shocking experience
+gadomancy.research_page.FAMILIAR_SHOCK.1=A Familiar with this upgrade will have a significantly more powerful arc when attacking, dealing more damage and a reasonable amount of knockback.
+
+tc.research_name.GADOMANCY.FAMILIAR_FIRE=Flash Burn
+tc.research_text.GADOMANCY.FAMILIAR_FIRE=Light it up
+gadomancy.research_page.FAMILIAR_FIRE.1=When upgraded with Flash burn, a familiar's energy is repurposed to generate a ridiculous amount of heat on attacking rather than dealing damage, lighting its foes on fire and leaving them scorched and weak to the light of the sun.
+
+tc.research_name.GADOMANCY.FAMILIAR_POISON=Corrosive Venom
+tc.research_text.GADOMANCY.FAMILIAR_POISON=Somebody call the doctor
+gadomancy.research_page.FAMILIAR_POISON.1=A Familiar with this upgrade will inject a large dose of highly concentrated venom into its victims rather than doing damage, inflicting them with severe poisoning. Familiars with this upgrade seem to be able to detect which foes can be poisoned, and as such, it will only attack those that can be poisoned.
+
+tc.research_name.GADOMANCY.FAMILIAR_WEAKNESS=Enervation
+tc.research_text.GADOMANCY.FAMILIAR_WEAKNESS=Where is your strength now?
+gadomancy.research_page.FAMILIAR_WEAKNESS.1=This upgrade removes the familiars damaging capabilities altogether and replaces them with the ability to suddenly drain large amounts energy from targets. Enemies that are struck by Enervation familiars will become weak, lethargic, and very, very managable with a plain old sword.
+
+tc.research_name.GADOMANCY.FAMILIAR_DAMAGE=Arc Amplification
+tc.research_text.GADOMANCY.FAMILIAR_DAMAGE=What does the scouter say about its power level?
+gadomancy.research_page.FAMILIAR_DAMAGE.1=By concentrating more arcane energy into the wisp, its attack power is effectively doubled.
+
+tc.research_name.GADOMANCY.FAMILIAR_RANGE=Sensitivity Boost
+tc.research_text.GADOMANCY.FAMILIAR_RANGE=Attacking even further
+gadomancy.research_page.FAMILIAR_RANGE.1=By enhancing the wisps sensitivity to external influence, you can slightly increasing its range.
+
+tc.research_name.GADOMANCY.FAMILIAR_SPEED=Frequency Emission Overdrive
+tc.research_text.GADOMANCY.FAMILIAR_SPEED=A certain scientific Railgun
+gadomancy.research_page.FAMILIAR_SPEED.1=The resonance of the primordial pearl has proven useful in more than one way. Combining the pearl and a primal wand focus with the wisp seems to change its frequencies drastically. The enhanced wisp attacks twice as fast as before, and can hit multiple enemies.
+
+tc.research_name.GADOMANCY.KNOWLEDGE_BOOK=Book of Knowledge
+tc.research_text.GADOMANCY.KNOWLEDGE_BOOK=Knowledge is power
+gadomancy.research_page.KNOWLEDGE_BOOK.1=Research and discovery make up the very essence of Thaumaturgy, yet sometimes the sheer amount of paperwork is enough to make even the toughest thaumaturge want to jump off a giant cliff WITHOUT a Thaumostatic Harness. The solution to this problem seems relatively simple. Animating a book to do the writing for you will be easy, right?..............Well, no.<BR>Making a book able to store knowledge is relatively simple since that is what books do by default (obviously). Making it able to compile its knowledge into useable and comprehensible research is another ordeal entirely.
+gadomancy.research_page.KNOWLEDGE_BOOK.3=In order to make the book able to do anything, it must be animated so it can open, close, and turn its pages on its own. After the book of knowledge itself is assembled, it needs to be placed on a flat surface that conducts magic in order to activate, a role which an arcane pedestal serves perfectly.<BR>Once it is placed on a pedestal, the book of knowledge can be used for research. Simply dropping a research page on the ground near the book and supplying it with Cognitio essentia will start the research process. From that point on, the waiting game begins.
+gadomancy.research_page.KNOWLEDGE_BOOK.4=You have found that placing any form of booster that can affect an enchantment table nearby will speed up the process, albeit not in any significant way.<BR> The Book of Knowlege has one more use other than performing research. It can be opened and used like any other Thaumonomicon, removing the need to constantly lug around a Thaumonomicon wherever you go.
 
 tc.research_name.GADOMANCY.ESSENTIA_COMPRESSOR=Essentia Condenser
 tc.research_text.GADOMANCY.ESSENTIA_COMPRESSOR=NON-noisy Essentia Storage
@@ -97,7 +98,7 @@ gadomancy.research_page.ESSENTIA_COMPRESSOR.2=By condensing large amounts of voi
 gadomancy.research_page.ESSENTIA_COMPRESSOR.4=By assembling a reinforced shell around the Element of Darkness and stabilizing essentia flow with an aqua aura core, a device that is capable of storing massive amounts of essentia can be created. In order to assemble the machine, place all three blocks on top of each other, and right click with a wand. The Essentia Condenser can store all types of essentia inside one construct, with no major limits on the amount of essentia that can be stored. The device does have some mechanical limitations though.
 gadomancy.research_page.ESSENTIA_COMPRESSOR.6=Due to the incredible amount of energy in the core of the Essentia Condenser, it cannot safely interact with pipes, nor can essentia be directly placed into the device by hand. Golems have to be used to insert specific aspects into the central block of the machine in order for it to start accepting essentia of that type. Once essentia is stored however, the Condenser will actively pull in essentia from every available jar, reservoir, and mirror within 5 blocks of he device, however it only seems to pull from containers that have less essentia inside them than the main condenser. Although direct physical interaction with the Essentia Condenser is limited to golems, infusion altars as well any device that can pull from an essentia mirror can supply themselves.
 gadomancy.research_page.ESSENTIA_COMPRESSOR.8=The Essentia Condenser, like most things that contain large amounts of liquid essentia, does not deal with large amounts of physical stress very well. If any of the blocks in the structure are broken while any essentia is contained inside, the entire device will violently explode, leaving a large amount of flux and taint behind. Unlike its slightly more tame counterpart, the essentia reservoir, if the Essentia Condenser has any essentia within, it will release enough destabilized flux to immediately taint the land.
-gadomancy.research_page.ESSENTIA_COMPRESSOR.9=You noticed while standing near the structure, that the pull of the Element of Darkness in the Condensers core is enough to gradually pull you closer. Could it be getting bigger? You don’t think so...hopefully...
+gadomancy.research_page.ESSENTIA_COMPRESSOR.9=If an element of darkness is placed on an ancient pedestal near the condenser, the core of the condenser will consume it, allowing the condenser to increase its internal capacity.<LINE>You noticed while standing near the structure, that the pull of the Element of Darkness in the Condensers core is enough to gradually pull you closer. Could it be getting bigger? You don’t think so...hopefully...
 
 tc.research_name.GADOMANCY.NODE_MANIPULATOR=Node Manipulator
 tc.research_text.GADOMANCY.NODE_MANIPULATOR=Almost like roulette
@@ -309,13 +310,13 @@ gadomancy.info.RemoteJar.new=Created new jar network
 gadomancy.info.RemoteJar.clear=Disconnected from current jar network
 gadomancy.info.RemoteJar.connected=Connected to existing jar network
 
-familiar.augment.shock.name=Shock Impact
-familiar.augment.poison.name=Venomous Rot
-familiar.augment.fire.name=Scorching Heat
+familiar.augment.shock.name=Lightning Impact
+familiar.augment.poison.name=Corrosive Venom
+familiar.augment.fire.name=Flash Burn
 familiar.augment.weakness.name=Enervation Impulse
-familiar.augment.damage.name=Emission Resonance Boost
-familiar.augment.speed.name=Internal Frequency Boost
-familiar.augment.range.name=Aura Detection
+familiar.augment.damage.name=Arc Amplification
+familiar.augment.speed.name=Sensitivity Boost
+familiar.augment.range.name=Frequency Emission Overdrive
 
 potion.luck=Increased Luck
 potion.buffGolem=Golem Buff
