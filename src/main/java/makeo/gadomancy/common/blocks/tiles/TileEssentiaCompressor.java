@@ -197,7 +197,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IA
             if(sourceTile instanceof TileEssentiaCompressor) continue;
             IAspectSource as = (IAspectSource)sourceTile;
             AspectList contains = as.getAspects();
-            if(contains.visSize() > al.visSize()) continue;
+            if(contains == null || contains.visSize() > al.visSize()) continue;
             if(!canAccept(a)) continue;
             if (as.takeFromContainer(a, 1)) {
                 PacketHandler.INSTANCE.sendToAllAround(new PacketFXEssentiaSource(xCoord, yCoord + 1, zCoord,

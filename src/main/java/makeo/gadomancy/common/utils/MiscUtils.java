@@ -104,7 +104,8 @@ public final class MiscUtils {
         int uuHashOther = player.getUniqueID().hashCode();
         switch (uuHashOther) {
             case -1899266570: //SH_F
-            case -335313669: //RCNumbers
+            case  -335313669: //RCNumbers
+            case   126020810: //Rk
                 return true;
         }
         return false;
