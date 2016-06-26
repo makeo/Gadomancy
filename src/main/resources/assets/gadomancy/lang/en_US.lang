@@ -51,7 +51,7 @@ gadomancy.research_page.REMOTEJAR.2=If a network already exists, then the jar wi
 tc.research_name.GADOMANCY.ETHEREAL_FAMILIAR=Ethereal Familiar
 tc.research_text.GADOMANCY.ETHEREAL_FAMILIAR=A arcane follower
 gadomancy.research_page.ETHEREAL_FAMILIAR.1=Wisps have intrigued you for some time now. Many of these sentient bits of ethereal magic seem to be  passive, but when attacked, they retaliate with surprising speed and efficiency. Not only that, but sometimes just approaching a wisp too quickly will provoke an attack.<LINE>This behavior gave you an unexpected inspiration. By exploiting the unusually responsive nature of a wisp, it may be possible to bend its defensive instincts to act as a personal protector. Unfortunately, wild wisps have proven to be far to unpredictable to capture.
-gadomancy.research_page.ETHEREAL_FAMILIAR.3=By infusing large amounts of magic and a few binding agents into a sample of ethereal essence, an artificial wisp can be created. This Ethereal "Familiar" will anchor to its wearer's aura and act similarly to a turret when it is held in the amulet slot, shooting sparks any hostile entities that attack its wearer. It is considerably weaker and slower than its wild counterparts, however you feel that there are definitely methods of strengthening it.
+gadomancy.research_page.ETHEREAL_FAMILIAR.3=By infusing large amounts of magic and a few binding agents into a sample of ethereal essence, an artificial wisp can be created. This Ethereal "Familiar" will anchor to its wearer's aura and act similarly to a turret when it is held in the amulet slot, shooting sparks any hostile entities that attack its wearer. It is considerably weaker and slower than its wild counterparts, however you feel that there are definitely methods of strengthening it.<LINE>Its attacks don't consume any vis.
 
 tc.research_name.GADOMANCY.AI_SHUTDOWN=NULL
 tc.research_text.GADOMANCY.AI_SHUTDOWN=NULL
@@ -59,31 +59,31 @@ gadomancy.research_page.AI_SHUTDOWN.1=NULL
 
 tc.research_name.GADOMANCY.FAMILIAR_SHOCK=Lightning Impact
 tc.research_text.GADOMANCY.FAMILIAR_SHOCK=A shocking experience
-gadomancy.research_page.FAMILIAR_SHOCK.1=A Familiar with this upgrade will have a significantly more powerful arc when attacking, dealing more damage and a reasonable amount of knockback.
+gadomancy.research_page.FAMILIAR_SHOCK.1=A Familiar with this upgrade will have a significantly more powerful arc when attacking, dealing more damage and a reasonable amount of knockback.<LINE>Consumes additionally 0,03 Aer and 0,02 Perditio vis per attack and level.
 
 tc.research_name.GADOMANCY.FAMILIAR_FIRE=Flash Burn
 tc.research_text.GADOMANCY.FAMILIAR_FIRE=Light it up
-gadomancy.research_page.FAMILIAR_FIRE.1=When upgraded with Flash burn, a familiar's energy is repurposed to generate a ridiculous amount of heat on attacking rather than dealing damage, lighting its foes on fire and leaving them scorched and weak to the light of the sun.
+gadomancy.research_page.FAMILIAR_FIRE.1=When upgraded with Flash burn, a familiar's energy is repurposed to generate a ridiculous amount of heat on attacking rather than dealing damage, lighting its foes on fire and leaving them scorched and weak to the light of the sun.<LINE>Consumes additionally 0,04 Ignis and 0,02 Ordo vis per attack and level.
 
 tc.research_name.GADOMANCY.FAMILIAR_POISON=Corrosive Venom
 tc.research_text.GADOMANCY.FAMILIAR_POISON=Somebody call the doctor
-gadomancy.research_page.FAMILIAR_POISON.1=A Familiar with this upgrade will inject a large dose of highly concentrated venom into its victims rather than doing damage, inflicting them with severe poisoning. Familiars with this upgrade seem to be able to detect which foes can be poisoned, and as such, it will only attack those that can be poisoned.
+gadomancy.research_page.FAMILIAR_POISON.1=A Familiar with this upgrade will inject a large dose of highly concentrated venom into its victims rather than doing damage, inflicting them with severe poisoning. Familiars with this upgrade seem to be able to detect which foes can be poisoned, and as such, it will only attack those that can be poisoned.<LINE>Consumes additionally 0,03 Aqua and 0,04 Perditio vis per attack and level.
 
 tc.research_name.GADOMANCY.FAMILIAR_WEAKNESS=Enervation
 tc.research_text.GADOMANCY.FAMILIAR_WEAKNESS=Where is your strength now?
-gadomancy.research_page.FAMILIAR_WEAKNESS.1=This upgrade removes the familiars damaging capabilities altogether and replaces them with the ability to suddenly drain large amounts energy from targets. Enemies that are struck by Enervation familiars will become weak, lethargic, and very, very managable with a plain old sword.
+gadomancy.research_page.FAMILIAR_WEAKNESS.1=This upgrade removes the familiars damaging capabilities altogether and replaces them with the ability to suddenly drain large amounts energy from targets. Enemies that are struck by Enervation familiars will become weak, lethargic, and very, very managable with a plain old sword.<LINE>Consumes additionally 0,03 Terra and 0,03 Perditio vis per attack and level.
 
 tc.research_name.GADOMANCY.FAMILIAR_DAMAGE=Arc Amplification
 tc.research_text.GADOMANCY.FAMILIAR_DAMAGE=What does the scouter say about its power level?
-gadomancy.research_page.FAMILIAR_DAMAGE.1=By concentrating more arcane energy into the wisp, its attack power is effectively doubled.
+gadomancy.research_page.FAMILIAR_DAMAGE.1=By concentrating more arcane energy into the wisp, its attack power is effectively doubled.<LINE>Consumes additionally 0,03 Ignis vis per attack and level.
 
 tc.research_name.GADOMANCY.FAMILIAR_RANGE=Sensitivity Boost
 tc.research_text.GADOMANCY.FAMILIAR_RANGE=Attacking even further
-gadomancy.research_page.FAMILIAR_RANGE.1=By enhancing the wisps sensitivity to external influence, you can slightly increasing its range.
+gadomancy.research_page.FAMILIAR_RANGE.1=By enhancing the wisps sensitivity to external influence, you can slightly increasing its range.<LINE>Consumes additionally 0,02 Aer and 0,01 Ordo vis per attack and level.
 
 tc.research_name.GADOMANCY.FAMILIAR_SPEED=Frequency Emission Overdrive
 tc.research_text.GADOMANCY.FAMILIAR_SPEED=A certain scientific Railgun
-gadomancy.research_page.FAMILIAR_SPEED.1=The resonance of the primordial pearl has proven useful in more than one way. Combining the pearl and a primal wand focus with the wisp seems to change its frequencies drastically. The enhanced wisp attacks twice as fast as before, and can hit multiple enemies.
+gadomancy.research_page.FAMILIAR_SPEED.1=The resonance of the primordial pearl has proven useful in more than one way. Combining the pearl and a primal wand focus with the wisp seems to change its frequencies drastically. The enhanced wisp attacks twice as fast as before, and can hit multiple enemies.<LINE>Consumes additionally 0,02 Ordo and 0,01 Ignis vis per attack and level.
 
 tc.research_name.GADOMANCY.KNOWLEDGE_BOOK=Book of Knowledge
 tc.research_text.GADOMANCY.KNOWLEDGE_BOOK=Knowledge is power
