@@ -88,16 +88,14 @@ public class BlockStoneMachine extends Block {
 
     @Override
     public boolean hasTileEntity(int metadata) {
-        return metadata == 15 || metadata == 0 || metadata == 1 || metadata == 2 || metadata == 3 || metadata == 4;
+        return metadata == 15 || metadata == 0 || metadata == 1 || metadata == 2 || metadata == 3 || metadata == 4 || metadata == 5;
     }
 
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-        list.add(new ItemStack(item, 1, 0));
-        list.add(new ItemStack(item, 1, 1));
-        list.add(new ItemStack(item, 1, 2));
-        list.add(new ItemStack(item, 1, 3));
-        list.add(new ItemStack(item, 1, 4));
+        for (int i = 0; i < 5; i++) {
+            list.add(new ItemStack(item, 1, i));
+        }
     }
 
     @Override
@@ -124,7 +122,9 @@ public class BlockStoneMachine extends Block {
             return new TileManipulationFocus();
         } else if(metadata == 4) {
             return new TileArcanePackager();
-        }
+        }/* else if(metadata == 5) {
+            return new TileAIShutdown();
+        }*/
         return null;
     }
 
@@ -205,6 +205,10 @@ public class BlockStoneMachine extends Block {
                 dropBlockAsItem(world, x, y, z, metadata, 0);
                 world.setBlockToAir(x, y, z);
             }
+        } else if(metadata == 1) {
+            if (!world.isAirBlock(x, y + 1, z)) {
+                InventoryUtils.dropItems(world, x, y, z);
+            }
         } else if(metadata == 4) {
             if(!world.isRemote) {
                 TileArcanePackager tile = (TileArcanePackager) world.getTileEntity(x, y, z);
@@ -247,7 +251,10 @@ public class BlockStoneMachine extends Block {
                 return world.getBlock(x, y - 1, z).onBlockActivated(world, x, y - 1, z, player, side, hitX, hitY, hitZ);
             }
         } else if (metadata == 1) {
-            return ConfigBlocks.blockStoneDevice.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
+            if(world.isAirBlock(x, y + 1, z)) {
+                return ConfigBlocks.blockStoneDevice.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
+            }
+            return true;
         } else if(metadata == 4) {
             player.openGui(Gadomancy.instance, 2, world, x, y, z);
             return true;
@@ -271,7 +278,9 @@ public class BlockStoneMachine extends Block {
             setBlockBounds(0, 0, 0, 1, 3/16f, 1);
         } else if(metadata == 4) {
              setBlockBounds(0, 0, 0, 1, 12/16f, 1);
-        }
+        }/* else if(metadata == 5) {
+            setBlockBounds(0, 0, 0, 1, 1, 1);
+        }*/
         super.setBlockBoundsBasedOnState(world, x, y, z);
     }
 

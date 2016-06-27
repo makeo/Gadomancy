@@ -44,21 +44,12 @@ public class ItemFamiliar_Old extends Item implements IBauble {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
-        ItemStack stack = new ItemStack(item);
-        setAspect(stack, Aspect.MAGIC);
-        list.add(stack);
-
-        stack = new ItemStack(item);
-        setAspect(stack, Aspect.MAGIC);
-        for(FamiliarUpgrade upgrade : FamiliarUpgrade.values()) {
-            addUpgrade(stack, upgrade);
-        }
-        list.add(stack);
-    }
+    public void getSubItems(Item item, CreativeTabs tab, List list) {}
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List lore, boolean flag) {
+        lore.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("gadomancy.lore.deprecation.back"));
+
         if(stack.hasTagCompound()) {
             if(hasAspect(stack)) {
                 lore.add(getAspect(stack).getName());
@@ -98,7 +89,7 @@ public class ItemFamiliar_Old extends Item implements IBauble {
 
     @Override
     public EnumRarity getRarity(ItemStack stack) {
-        return RegisteredItems.raritySacred;
+        return EnumRarity.common;
     }
 
     @Override
@@ -125,7 +116,7 @@ public class ItemFamiliar_Old extends Item implements IBauble {
     }
 
     @Override
-    public void onWornTick(ItemStack itemStack, EntityLivingBase entity) {
+    public void onWornTick(ItemStack itemStack, EntityLivingBase entity) {/*
         if(itemStack == null) return;
         if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar_Old) {
             DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
@@ -145,11 +136,11 @@ public class ItemFamiliar_Old extends Item implements IBauble {
                     Thaumcraft.addWarpToPlayer((EntityPlayer) entity, 1 + itemRand.nextInt(4), true);
                 }
             }
-        }
+        }*/
     }
 
     @Override
-    public void onEquipped(ItemStack itemStack, EntityLivingBase entity) {
+    public void onEquipped(ItemStack itemStack, EntityLivingBase entity) {/*
         if(itemStack == null) return;
         if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar_Old) {
             DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
@@ -157,11 +148,11 @@ public class ItemFamiliar_Old extends Item implements IBauble {
             if(a != null) {
                 familiarData.handleEquip(((EntityPlayer) entity).worldObj, (EntityPlayer) entity, a);
             }
-        }
+        }*/
     }
 
     @Override
-    public void onUnequipped(ItemStack itemStack, EntityLivingBase entity) {
+    public void onUnequipped(ItemStack itemStack, EntityLivingBase entity) {/*
         if(itemStack == null) return;
         if(entity instanceof EntityPlayer && itemStack.getItem() instanceof ItemFamiliar_Old) {
             DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
@@ -169,12 +160,12 @@ public class ItemFamiliar_Old extends Item implements IBauble {
             if(a != null) {
                 familiarData.handleUnequip(((EntityPlayer) entity).worldObj, (EntityPlayer) entity, a);
             }
-        }
+        }*/
     }
 
     @Override
     public boolean canEquip(ItemStack itemStack, EntityLivingBase entity) {
-        return true;
+        return false;
     }
 
     @Override

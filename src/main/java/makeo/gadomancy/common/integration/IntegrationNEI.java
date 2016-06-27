@@ -1,11 +1,15 @@
 package makeo.gadomancy.common.integration;
 
+import makeo.gadomancy.common.items.ItemFakeGolemPlacer;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.Injector;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -33,8 +37,20 @@ public class IntegrationNEI extends IntegrationMod {
         hideItem(new ItemStack(RegisteredItems.itemFakeLootbag, 1, Short.MAX_VALUE));
         hideItem(new ItemStack(RegisteredBlocks.blockExtendedNodeJar, 1, Short.MAX_VALUE));
         hideItem(new ItemStack(RegisteredItems.itemExtendedNodeJar, 1, Short.MAX_VALUE));
-        hideItem(new ItemStack(RegisteredItems.itemFakeGolemPlacer, 1, Short.MAX_VALUE));
+        hideItem(new ItemStack(RegisteredItems.itemFakeGolemPlacer, 1, Short.MAX_VALUE)); //This does... nothing? ffs.
         hideItem(new ItemStack(RegisteredItems.itemTransformationFocus, 1, Short.MAX_VALUE));
+        hideItem(new ItemStack(RegisteredItems.itemFamiliar_old, 1, Short.MAX_VALUE));
+    }
+
+    public static void checkItems(ArrayList items) {
+        Iterator iterator = items.iterator();
+        while (iterator.hasNext()) {
+            Object item = iterator.next();
+            if (item != null && item instanceof ItemStack && ((ItemStack) item).getItem() != null &&
+                    ((ItemStack) item).getItem() instanceof ItemFakeGolemPlacer) {
+                iterator.remove();
+            }
+        }
     }
 
     private void hideItem(ItemStack item) {

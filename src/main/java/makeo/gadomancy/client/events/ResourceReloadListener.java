@@ -23,6 +23,7 @@ import java.util.Map;
  * Created by makeo @ 03.10.2015 12:09
  */
 public class ResourceReloadListener implements IResourceManagerReloadListener {
+
     public static final ResourceReloadListener instance = new ResourceReloadListener();
     public static ResourceReloadListener getInstance() {
         return instance;

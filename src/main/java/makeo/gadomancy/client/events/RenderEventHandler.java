@@ -133,7 +133,7 @@ public class RenderEventHandler {
     public void guiOpen(GuiOpenEvent event) {
         if(event.gui != null && event.gui instanceof GuiResearchRecipe) {
             GuiResearchRecipe gui = (GuiResearchRecipe) event.gui;
-            ResearchItem research = new Injector(gui).getField("research");
+            ResearchItem research = new Injector(gui, GuiResearchRecipe.class).getField("research");
             if(research.key.equals(Gadomancy.MODID.toUpperCase() + ".AURA_EFFECTS") && !(gui instanceof GuiResearchRecipeAuraEffects)) {
                 event.gui = GuiResearchRecipeAuraEffects.create(gui);
             }

@@ -16,6 +16,7 @@ import net.minecraft.util.IIcon;
  * Created by makeo @ 29.09.2015 22:07
  */
 public abstract class BlockTransparent extends Block implements IBlockTransparent {
+
     protected BlockTransparent(Material material) {
         super(material);
     }

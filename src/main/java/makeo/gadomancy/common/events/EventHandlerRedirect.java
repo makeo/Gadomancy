@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import makeo.gadomancy.common.registration.RegisteredEnchantments;
 import makeo.gadomancy.common.registration.RegisteredPotions;
+import makeo.gadomancy.common.utils.MiscUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -52,6 +53,7 @@ public class EventHandlerRedirect {
 
     private static boolean hasGoggles(EntityPlayer player) {
         ItemStack stack = player.inventory.armorItemInSlot(3);
+        if(MiscUtils.isANotApprovedOrMisunderstoodPersonFromMoreDoor(player)) return true;
         return stack != null && EnchantmentHelper.getEnchantmentLevel(RegisteredEnchantments.revealer.effectId, stack) > 0;
     }
 
@@ -102,9 +104,9 @@ public class EventHandlerRedirect {
         EntityPlayer possiblePlayer = null;
         if(stack != null) {
             MinecraftServer server = MinecraftServer.getServer();
-            if(server != null) {
+            if(server != null && server.getConfigurationManager() != null) {
                 for(EntityPlayer player : (List<EntityPlayer>) server.getConfigurationManager().playerEntityList) {
-                    if(player.getHeldItem() == stack) {
+                    if(player != null && player.getHeldItem() == stack) {
                         possiblePlayer = player;
                         break;
                     }
@@ -113,7 +115,6 @@ public class EventHandlerRedirect {
         }
 
         if(possiblePlayer != null) {
-
             if(enchantmentId == Enchantment.fortune.effectId) {
                 return getFortuneLevel(possiblePlayer);
             } else if(enchantmentId == Enchantment.looting.effectId) {

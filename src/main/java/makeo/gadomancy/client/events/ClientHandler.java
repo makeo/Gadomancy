@@ -5,11 +5,13 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import makeo.gadomancy.client.ClientProxy;
 import makeo.gadomancy.client.effect.EffectHandler;
+import makeo.gadomancy.client.renderers.tile.RenderTileEssentiaCompressor;
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
 import makeo.gadomancy.common.Gadomancy;
 import net.minecraft.client.Minecraft;
 
 import java.util.List;
+import java.util.Queue;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -32,16 +34,16 @@ public class ClientHandler {
             EffectHandler.getInstance().tick();
         }
 
-        List<Runnable> actions = ((ClientProxy)Gadomancy.proxy).clientActions;
-        while(actions.size() > 0) {
-            actions.get(0).run();
-            actions.remove(0);
+        Queue<Runnable> actions = ((ClientProxy)Gadomancy.proxy).clientActions;
+        while(actions.peek() != null) {
+            actions.poll().run();
         }
     }
 
     @SubscribeEvent
     public void onDc(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
         EffectHandler.getInstance().clear();
+        RenderTileEssentiaCompressor.ownedVortex.clear();
     }
 
 }

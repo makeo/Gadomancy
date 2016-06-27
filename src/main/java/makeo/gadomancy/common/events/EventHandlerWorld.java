@@ -4,11 +4,14 @@ import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.blocks.tiles.TileAIShutdown;
 import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
 import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
 import makeo.gadomancy.common.data.SyncDataHolder;
 import makeo.gadomancy.common.data.config.ModConfig;
+import makeo.gadomancy.common.entities.EntityItemElement;
+import makeo.gadomancy.common.items.ItemElement;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.GolemEnumHelper;
@@ -59,10 +62,23 @@ public class EventHandlerWorld {
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void on(EntityJoinWorldEvent event) {
-        if(!event.world.isRemote && event.entity instanceof EntityItem
-                && isDisguised(((EntityItem) event.entity).getEntityItem())) {
-            long time = event.world.getTotalWorldTime() + event.world.rand.nextInt(60) + 40;
-            trackedItems.put((EntityItem) event.entity, time);
+        if(!event.world.isRemote && event.entity instanceof EntityItem) {
+            ItemStack stack = ((EntityItem) event.entity).getEntityItem();
+            if(isDisguised(stack)) {
+                long time = event.world.getTotalWorldTime() + event.world.rand.nextInt(60) + 40;
+                trackedItems.put((EntityItem) event.entity, time);
+            }
+            if(stack.getItem() instanceof ItemElement && !(event.entity instanceof EntityItemElement)) {
+                event.setCanceled(true);
+                EntityItem newItem = new EntityItemElement(event.world,
+                        event.entity.posX, event.entity.posY, event.entity.posZ,
+                        ((EntityItem) event.entity).getEntityItem());
+                newItem.delayBeforeCanPickup = ((EntityItem) event.entity).delayBeforeCanPickup;
+                newItem.motionX = event.entity.motionX;
+                newItem.motionY = event.entity.motionY;
+                newItem.motionZ = event.entity.motionZ;
+                event.world.spawnEntityInWorld(newItem);
+            }
         }
     }
 
@@ -211,6 +227,9 @@ public class EventHandlerWorld {
                     if (((TileNodeManipulator) te).isInMultiblock())
                         ((TileNodeManipulator) te).breakMultiblock();
                 }
+            }
+            if (event.block == RegisteredBlocks.blockStoneMachine && event.blockMetadata == 5) {
+                TileAIShutdown.removeTrackedEntities(event.world, event.x, event.y, event.z);
             }
             if (event.world.provider.dimensionId == ModConfig.dimOuterId) {
                 if(event.block == ConfigBlocks.blockEldritchNothing) {

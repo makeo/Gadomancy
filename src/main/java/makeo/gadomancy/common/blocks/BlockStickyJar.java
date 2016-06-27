@@ -39,6 +39,7 @@ import java.util.Map;
  * Created by makeo @ 13.07.2015 15:42
  */
 public class BlockStickyJar extends BlockJar implements IBlockTransparent {
+
     public BlockStickyJar() {
         setCreativeTab(null);
     }
@@ -208,8 +209,15 @@ public class BlockStickyJar extends BlockJar implements IBlockTransparent {
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         TileEntity tile = world.getTileEntity(x, y, z);
         if (tile != null && tile instanceof TileStickyJar && ((TileStickyJar) tile).isValid()) {
+
+            ((TileStickyJar) tile).getParent().validate(); //Ugh...
+            world.setTileEntity(x, y, z, ((TileStickyJar) tile).getParent()); //Ugh. that fix...
+
             ArrayList<ItemStack> drops = ((TileStickyJar) tile).getParentBlock()
-                    .getDrops(world, x, y, z, world.getBlockMetadata(x, y, z), fortune);
+                    .getDrops(world, x, y, z, ((TileStickyJar) tile).getParentMetadata(), fortune);
+
+            ((TileStickyJar) tile).getParent().invalidate(); //Uhm...
+            world.setTileEntity(x, y, z, tile); //Revert. xD
 
             boolean found = false;
             for (ItemStack drop : drops) {

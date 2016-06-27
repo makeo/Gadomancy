@@ -1,10 +1,15 @@
 item.ItemGolemPlacer.silverwood.name=Silverwood Golem
 item.ItemGolemPlacer.obsidian.name=Obsidian Golem
 item.ItemTransformationFocus.name=[WIP] Wand Focus: Transformation
-item.ItemFamiliar.name=Ethereal Familiar
+item.ItemFamiliar.name=Ethereal Familiar (Deprecated)
 item.ItemEtherealFamiliar.name=Ethereal Familiar
 item.ItemAuraCore.name=Aura Core
 item.ItemArcanePackage.name=Arcane Package
+item.ItemElement.0.name=Element of Darkness
+item.ItemElement.1.name=[WIP] Element of Light
+item.ItemElement.2.name=[WIP] Element of Fire
+
+gadomancy.lore.deprecation.back=Put in a crafting grid to get your items back!
 
 itemGroup.gadomancy=Gadomancy
 tc.research_category.gadomancy=Gadomancy
@@ -43,30 +48,58 @@ tc.research_text.GADOMANCY.REMOTEJAR=Mirrored transportation
 gadomancy.research_page.REMOTEJAR.1=The essentia mirror is excellent for moving essentia around for infusions, but you have the uncanny feeling that it has some untapped potential. Two essentia mirrors, when linked, effectively allow essentia to move between two points in space. By placing an essentia mirror inside of a specially altered warded jar, the space inside of one jar can be effectively linked to another. In order to link two jars, simply place one in the world and right click it with another mirrored jar.
 gadomancy.research_page.REMOTEJAR.2=If a network already exists, then the jar will be added to the current network. Unlike essentia mirrors, mirrored jar networks can have more than two jars. The space inside of a network is shared and balanced between the jars it contains. To put it simply, a two jar network will hold two jars of essentia, a three jar network will hold three, etc. Also, when one mirrored jar is filled, it will attempt to evenly distribute its contents between the other jars in its network.
 
-tc.research_name.GADOMANCY.FAMILIAR=Ethereal Familiar
-tc.research_text.GADOMANCY.FAMILIAR=A arcane follower
-gadomancy.research_page.FAMILIAR.1=Wisps have intrigued you for some time now. Many of these sentient bits of ethereal magic seem to be  passive, but when attacked, they retaliate with surprising speed and efficiency. Not only that, but sometimes just approaching a wisp too quickly will provoke an attack.<LINE>This behavior gave you an unexpected inspiration. By exploiting the unusually responsive nature of a wisp, it may be possible to bend its defensive instincts to act as a personal protector. Unfortunately, wild wisps have proven to be far to unpredictable to capture.
-gadomancy.research_page.FAMILIAR.3=By infusing large amounts of magic and a few binding agents into a sample of ethereal essence, an artificial wisp can be created. This Ethereal "Familiar" will anchor to its wearer's aura and act similarly to a turret when it is held in the amulet slot, shooting sparks any hostile entities that attack its wearer. It is considerably weaker and slower than its wild counterparts, however you feel that there are definitely methods of strengthening it.
+tc.research_name.GADOMANCY.ETHEREAL_FAMILIAR=Ethereal Familiar
+tc.research_text.GADOMANCY.ETHEREAL_FAMILIAR=A arcane follower
+gadomancy.research_page.ETHEREAL_FAMILIAR.1=Wisps have intrigued you for some time now. Many of these sentient bits of ethereal magic seem to be  passive, but when attacked, they retaliate with surprising speed and efficiency. Not only that, but sometimes just approaching a wisp too quickly will provoke an attack.<LINE>This behavior gave you an unexpected inspiration. By exploiting the unusually responsive nature of a wisp, it may be possible to bend its defensive instincts to act as a personal protector. Unfortunately, wild wisps have proven to be far to unpredictable to capture.
+gadomancy.research_page.ETHEREAL_FAMILIAR.3=By infusing large amounts of magic and a few binding agents into a sample of ethereal essence, an artificial wisp can be created. This Ethereal "Familiar" will anchor to its wearer's aura and act similarly to a turret when it is held in the amulet slot, shooting sparks any hostile entities that attack its wearer. It is considerably weaker and slower than its wild counterparts, however you feel that there are definitely methods of strengthening it.
+gadomancy.research_page.ETHEREAL_FAMILIAR.4=Its attacks don't consume any vis until an elemental upgrade is applied. It should be noted that the familiar is also not strong enough to survive any power range or speed modifications until it has an elemental upgrade to bolster its strength.
 
-tc.research_name.GADOMANCY.FAM_ATTACK_1=Attack Enhancement
-tc.research_text.GADOMANCY.FAM_ATTACK_1=Increasing the damage
-gadomancy.research_page.FAM_ATTACK_1.1=By concentrating more magic into the wisp, its attack power is effectively doubled.
+tc.research_name.GADOMANCY.AI_SHUTDOWN=NULL
+tc.research_text.GADOMANCY.AI_SHUTDOWN=NULL
+gadomancy.research_page.AI_SHUTDOWN.1=NULL
 
-tc.research_name.GADOMANCY.FAM_ATTACK_2=Further Attack Enhancement
-tc.research_text.GADOMANCY.FAM_ATTACK_2=What does the scouter say about its power level?
-gadomancy.research_page.FAM_ATTACK_2.1=By adding eldritch energies and further concentrating the wisps internal magic, a further doubling of power can be achieved. You occasionally hear strange whispering coming from the familiar, but the sound is so quiet that you don't think it will be an issue.
+tc.research_name.GADOMANCY.FAMILIAR_SHOCK=Lightning Impact
+tc.research_text.GADOMANCY.FAMILIAR_SHOCK=A shocking experience
+gadomancy.research_page.FAMILIAR_SHOCK.1=A Familiar with this upgrade will have a significantly more powerful arc when attacking, dealing more damage and a reasonable amount of knockback.<LINE>Consumes 0.03 Aer and 0.02 Perditio vis per attack and level.
 
-tc.research_name.GADOMANCY.FAM_ATTACK_3=Maximized Damage
-tc.research_text.GADOMANCY.FAM_ATTACK_3=ITS OVER 9000!
-gadomancy.research_page.FAM_ATTACK_3.1=After observing the primordial pearl for some time, you found a way to use it to enhance the familiar even further. By infusing the resonating energies of the pearl with the familiar, you found a way to double its power yet again. The nearly inaudible whispering has become far more pronounced. You have an uneasy feeling that you are being monitored...
+tc.research_name.GADOMANCY.FAMILIAR_FIRE=Flash Burn
+tc.research_text.GADOMANCY.FAMILIAR_FIRE=Light it up
+gadomancy.research_page.FAMILIAR_FIRE.1=When upgraded with Flash burn, a familiar's energy is repurposed to generate a ridiculous amount of heat on attacking rather than dealing damage, lighting its foes on fire and leaving them scorched and weak to the light of the sun.<LINE>Consumes 0.04 Ignis and 0.02 Ordo vis per attack and level.
 
-tc.research_name.GADOMANCY.FAM_RANGE_1=Range Enhancement
-tc.research_text.GADOMANCY.FAM_RANGE_1=Attacking even further
-gadomancy.research_page.FAM_RANGE_1.1=By enhancing the wisps sensitivity to external influence, you can slightly increasing its range.
+tc.research_name.GADOMANCY.FAMILIAR_POISON=Corrosive Venom
+tc.research_text.GADOMANCY.FAMILIAR_POISON=Somebody call the doctor
+gadomancy.research_page.FAMILIAR_POISON.1=A Familiar with this upgrade will inject a large dose of highly concentrated venom into its victims rather than doing damage, inflicting them with severe poisoning. Familiars with this upgrade seem to be able to detect which foes can be poisoned, and as such, it will only attack those that can be poisoned.<LINE>Consumes additionally 0.03 Aqua and 0.04 Perditio vis per attack and level.
 
-tc.research_name.GADOMANCY.FAM_COOLDOWN_1=Attack-Speed Enhancement
-tc.research_text.GADOMANCY.FAM_COOLDOWN_1=A scientific Railgun
-gadomancy.research_page.FAM_COOLDOWN_1.1=The resonance of the primordial pearl has proven useful in more than one way. Combining the pearl and a primal wand focus with the wisp seems to change its frequencies drastically. The enhanced wisp attacks twice as fast as before.
+tc.research_name.GADOMANCY.FAMILIAR_WEAKNESS=Enervation
+tc.research_text.GADOMANCY.FAMILIAR_WEAKNESS=Where is your strength now?
+gadomancy.research_page.FAMILIAR_WEAKNESS.1=This upgrade removes the familiars damaging capabilities altogether and replaces them with the ability to suddenly drain large amounts energy from targets. Enemies that are struck by Enervation familiars will become weak, lethargic, and very, very managable with a plain old sword.<LINE>Consumes 0.03 Terra and 0.03 Perditio vis per attack and level.
+
+tc.research_name.GADOMANCY.FAMILIAR_DAMAGE=Arc Amplification
+tc.research_text.GADOMANCY.FAMILIAR_DAMAGE=What does the scouter say about its power level?
+gadomancy.research_page.FAMILIAR_DAMAGE.1=By concentrating more arcane energy into the wisp, its attack power is effectively doubled.<LINE>Consumes 0.03 Ignis vis per attack and level.
+
+tc.research_name.GADOMANCY.FAMILIAR_RANGE=Sensitivity Boost
+tc.research_text.GADOMANCY.FAMILIAR_RANGE=Attacking even further
+gadomancy.research_page.FAMILIAR_RANGE.1=By enhancing the wisps sensitivity to external influence, you can slightly increasing its range.<LINE>Consumes additionally 0.02 Aer vis and 0.01 Ordo vis per attack and level.
+
+tc.research_name.GADOMANCY.FAMILIAR_SPEED=Frequency Emission Overdrive
+tc.research_text.GADOMANCY.FAMILIAR_SPEED=A certain scientific Railgun
+gadomancy.research_page.FAMILIAR_SPEED.1=Some variants of familiars can have a considerable amount of difficulty dealing with large numbers of foes at once. This upgrade enhances an Ethereal Familiar so that it can attack twice as fast as before. The second stage both increases its attack speed and allows it to hit multiple enemies in a single strike.<LINE>Consumes 0.02 Ordo and 0.01 Ignis vis per attack and level.
+
+tc.research_name.GADOMANCY.KNOWLEDGE_BOOK=Book of Knowledge
+tc.research_text.GADOMANCY.KNOWLEDGE_BOOK=Knowledge is power
+gadomancy.research_page.KNOWLEDGE_BOOK.1=Research and discovery make up the very essence of Thaumaturgy, yet sometimes the sheer amount of paperwork is enough to make even the toughest thaumaturge want to jump off a giant cliff WITHOUT a Thaumostatic Harness. The solution to this problem seems relatively simple. Animating a book to do the writing for you will be easy, right?..............Well, no.<BR>Making a book able to store knowledge is relatively simple since that is what books do by default (obviously). Making it able to compile its knowledge into useable and comprehensible research is another ordeal entirely.
+gadomancy.research_page.KNOWLEDGE_BOOK.3=In order to make the book able to do anything, it must be animated so it can open, close, and turn its pages on its own. After the book of knowledge itself is assembled, it needs to be placed on a flat surface that conducts magic in order to activate, a role which an arcane pedestal serves perfectly.<BR>Once it is placed on a pedestal, the book of knowledge can be used for research. Simply dropping a research page on the ground near the book and supplying it with Cognitio essentia will start the research process. From that point on, the waiting game begins.
+gadomancy.research_page.KNOWLEDGE_BOOK.4=You have found that placing any form of booster that can affect an enchantment table nearby will speed up the process, albeit not in any significant way.<BR> The Book of Knowlege has one more use other than performing research. It can be opened and used like any other Thaumonomicon, removing the need to constantly lug around a Thaumonomicon wherever you go.
+
+tc.research_name.GADOMANCY.ESSENTIA_COMPRESSOR=Essentia Condenser
+tc.research_text.GADOMANCY.ESSENTIA_COMPRESSOR=NON-noisy Essentia Storage
+gadomancy.research_page.ESSENTIA_COMPRESSOR.1= While experimenting with void materials, you discovered an odd reaction between void seeds and liquid essentia.  When a void seed is left in close proximity with a warded jar for an extended period of time, the energy it releases has the odd tendency to make the essentia in the jar condense into a slightly more dense state, freeing up a small amount of space in the jar without actually destroying any essentia. After some further testing, you found that the seed alone was not powerful enough to make any major difference, but with enhancements to increase the potency of the energy released by the seed, a device that can compress essentia into a super dense state could be made.
+gadomancy.research_page.ESSENTIA_COMPRESSOR.2=By condensing large amounts of void materials,  infusing the resulting mass into void seed to create a small cross dimensional rift, and freezing the resulting anomaly inside a crystal shell, it is possible to increase the potency the void energy the seed can release by several thousand times. Despite the fact that this new “Element of Darkness” seems to be incredibly stable, its effects are far to potent for a normal warded jar to handle. It also has the unfortunate side effect of sucking all of the light out of any space it is dropped in, blinding anything that holds it or stands near it when it is dropped on the ground.
+gadomancy.research_page.ESSENTIA_COMPRESSOR.4=By assembling a reinforced shell around the Element of Darkness and stabilizing essentia flow with an aqua aura core, a device that is capable of storing massive amounts of essentia can be created. In order to assemble the machine, place all three blocks on top of each other, and right click with a wand. The Essentia Condenser can store all types of essentia inside one construct, with a base capacity of 200 essentia that can be stored. The device does have some mechanical limitations though.
+gadomancy.research_page.ESSENTIA_COMPRESSOR.6=Due to the incredible amount of energy in the core of the Essentia Condenser, it cannot safely interact with pipes, nor can essentia be directly placed into the device by hand. Golems have to be used to insert the first bit of essentia into the condenser for it to start accepting on its own. Once essentia is stored however, the Condenser will actively pull in essentia from every available jar, reservoir, and mirror within 5 blocks of he device, however it only seems to pull from containers that have less essentia inside them than the main condenser. Although direct physical interaction with the Essentia Condenser is limited to golems, infusion altars as well any device that can pull from an essentia mirror can supply themselves.
+gadomancy.research_page.ESSENTIA_COMPRESSOR.8=The Essentia Condenser, like most things that contain large amounts of liquid essentia, does not deal with large amounts of physical stress very well. If any of the blocks in the structure are broken while any essentia is contained inside, the entire device will violently explode, leaving a large amount of flux and taint behind. Unlike its slightly more tame counterpart, the essentia reservoir, if the Essentia Condenser has any essentia within, it will release enough destabilized flux to immediately taint the land.
+gadomancy.research_page.ESSENTIA_COMPRESSOR.9=If an element of darkness is placed on an ancient pedestal near the condenser, the core of the condenser will consume it, allowing the condenser to increase its internal capacity by a reasonable amount. The highest point the capacity of the condenser can be pushed to with this method is 3000 per aspect.<LINE>You noticed while standing near the structure, that the pull of the Element of Darkness in the Condensers core is enough to gradually pull you closer. Could it be getting bigger? You don’t think so...hopefully...
 
 tc.research_name.GADOMANCY.NODE_MANIPULATOR=Node Manipulator
 tc.research_text.GADOMANCY.NODE_MANIPULATOR=Almost like roulette
@@ -126,7 +159,8 @@ gadomancy.research_page.CLEAN_AURA_CORE.1=Returning an Aura Core to it's origina
 
 tc.research_name.GADOMANCY.AURA_PYLON=Aura Pylon
 tc.research_text.GADOMANCY.AURA_PYLON=Diffusing essentia
-gadomancy.research_page.AURA_PYLON.1=The aura pylon is a device that exploits the properties of an Aura Core tuned to Ignis. This device is able to be able to destabilize and evaporate essentia into the local aura. This process is a bit slow, and the essentia needs time to reach full concentration. When it does, the aura concentration should be enough to physically influence the environment.<BR>As for discovering what each different type of essentia does, the only way you think you think you can find out is to test them.
+gadomancy.research_page.AURA_PYLON.1=The aura pylon is a device that exploits the properties of an Aura Core tuned to Ignis. This device is able to be able to destabilize and evaporate essentia into the local aura. This process is a bit slow, and the essentia needs time to reach full concentration. When it does, the aura concentration should be enough to physically influence the environment.
+gadomancy.research_page.AURA_PYLON.4=After assembling the aura pylon, dropping a piece of crystalized essentia of the desired aspect on the ground nearby will allow the pylon to tune itself. Once the pylon pulls in the crystal and the flame on top changes color, liquid essentia can be fed into the bottom. Removing the crystal is as simple as getting close enough to pick it up.<BR>As for discovering what each different type of essentia does, the only way you think you think you can find out is to test them.
 
 tc.research_name.GADOMANCY.AURA_EFFECTS=Aura Effects
 tc.research_text.GADOMANCY.AURA_EFFECTS=What diffusing essentia actually does
@@ -179,10 +213,13 @@ tile.BlockStoneMachine.1.name=Ancient Pedestal
 tile.BlockStoneMachine.2.name=Arcane Enervation Emitter
 tile.BlockStoneMachine.3.name=Redirection Focus
 tile.BlockStoneMachine.4.name=Arcane Packager
+tile.BlockStoneMachine.5.name=Ai Shutdown (WIP)
 tile.BlockStoneMachine.11.name=Manipulation Pillar
 tile.BlockStoneMachine.15.name=Manipulation Pillar
 tile.BlockAuraPylon.0.name=Aura Pylon
 tile.BlockAuraPylon.1.name=Aura Pylon Peak
+tile.BlockKnowledgeBook.name=Book of Knowledge
+tile.BlockEssentiaCompressor.name=Essentia Condenser
 
 gadomancy.nodes.GROWING=Growing
 gadomancy.nodes.STARVING=Starving
@@ -274,13 +311,13 @@ gadomancy.info.RemoteJar.new=Created new jar network
 gadomancy.info.RemoteJar.clear=Disconnected from current jar network
 gadomancy.info.RemoteJar.connected=Connected to existing jar network
 
-familiar.augment.shock.name=Shock Impact
-familiar.augment.poison.name=Venomous Rot
-familiar.augment.fire.name=Scorching Heat
+familiar.augment.shock.name=Lightning Impact
+familiar.augment.poison.name=Corrosive Venom
+familiar.augment.fire.name=Flash Burn
 familiar.augment.weakness.name=Enervation Impulse
-familiar.augment.damage.name=Emission Resonance Boost
-familiar.augment.speed.name=Internal Frequency Boost
-familiar.augment.range.name=Aura Detection
+familiar.augment.damage.name=Arc Amplification
+familiar.augment.speed.name=Sensitivity Boost
+familiar.augment.range.name=Frequency Emission Overdrive
 
 potion.luck=Increased Luck
 potion.buffGolem=Golem Buff

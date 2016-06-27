@@ -72,7 +72,7 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
         stack = new ItemStack(item);
         setFamiliarAspect(stack, Aspect.WEAPON);
         addAugmentUnsafe(stack, FamiliarAugment.WEAKNESS, 3);
-        addAugmentUnsafe(stack, FamiliarAugment.DAMAGE_INCREASE, 3);
+        addAugmentUnsafe(stack, FamiliarAugment.RANGE_INCREASE, 2);
         list.add(stack);
     }
 
@@ -145,19 +145,28 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
         return augmentList;
     }
 
-    public static boolean doesAcceptAugment(ItemStack stack, FamiliarAugment augment, int level) {
+    /*public static boolean doesAcceptAugment(ItemStack stack, FamiliarAugment augment, int level) {
         if(stack == null || !(stack.getItem() instanceof ItemEtherealFamiliar)) return false;
         FamiliarAugment.FamiliarAugmentList currentAugments = getAugments(stack);
         for(FamiliarAugment.FamiliarAugmentPair pair : currentAugments) {
             if(pair.augment.equals(augment)) return false;
         }
         return augment.checkConditions(currentAugments, level);
+    }*/
+
+    public static boolean incrementAugmentLevel(ItemStack stack, FamiliarAugment toAdd) {
+        if(!hasAugment(stack, toAdd)) {
+            return addAugmentUnsafe(stack, toAdd, 1);
+        } else {
+            int current = getAugments(stack).getLevel(toAdd);
+            return addAugmentUnsafe(stack, toAdd, current + 1);
+        }
     }
 
-    public static boolean addAugment(ItemStack stack, FamiliarAugment augment, int level) {
+    /*public static boolean addAugment(ItemStack stack, FamiliarAugment augment, int level) {
         if(stack == null || !(stack.getItem() instanceof ItemEtherealFamiliar) || level <= 0) return false;
         return doesAcceptAugment(stack, augment, level) && addAugmentUnsafe(stack, augment, level);
-    }
+    }*/
 
     public static boolean addAugmentUnsafe(ItemStack stack, FamiliarAugment augment, int level) {
         if(stack == null || !(stack.getItem() instanceof ItemEtherealFamiliar) || level <= 0) return false;
@@ -209,7 +218,7 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
     @Override
     public boolean canEquip(ItemStack itemStack, EntityLivingBase entityLivingBase) {
         if(!(entityLivingBase instanceof EntityPlayer)) return false;
-        return ResearchManager.isResearchComplete(entityLivingBase.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".FAMILIAR");
+        return ResearchManager.isResearchComplete(entityLivingBase.getCommandSenderName(), Gadomancy.MODID.toUpperCase() + ".ETHEREAL_FAMILIAR");
     }
 
     @Override

@@ -2,6 +2,7 @@ package makeo.gadomancy.common.aura;
 
 import makeo.gadomancy.api.AuraEffect;
 import makeo.gadomancy.common.events.EventHandlerEntity;
+import makeo.gadomancy.common.integration.IntegrationThaumicTinkerer;
 import makeo.gadomancy.common.registration.RegisteredIntegrations;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.registration.RegisteredPotions;
@@ -178,6 +179,7 @@ public class AuraEffects {
 
         @Override
         public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
+            if(!Config.genTaint) return;
             int x = selectedBlock.posX;
             int y = selectedBlock.posY;
             int z = selectedBlock.posZ;
@@ -364,7 +366,7 @@ public class AuraEffects {
     public static final AuraEffect HERBA = new AuraEffect.BlockAuraEffect() {
         @Override
         public int getBlockCount(Random random) {
-            return 140;
+            return 180;
         }
 
         @Override
@@ -380,7 +382,7 @@ public class AuraEffects {
     public static final AuraEffect ARBOR = new AuraEffect.BlockAuraEffect() {
         @Override
         public int getBlockCount(Random random) {
-            return 80;
+            return 120;
         }
 
         @Override
@@ -594,7 +596,15 @@ public class AuraEffects {
     private static void waterLocation(ChunkCoordinates coordinates, World world) {
         Block block = world.getBlock(coordinates.posX, coordinates.posY, coordinates.posZ);
         if (block.getTickRandomly()) {
-            world.scheduleBlockUpdate(coordinates.posX, coordinates.posY, coordinates.posZ, block, world.rand.nextInt(10) + 5);
+            world.scheduleBlockUpdate(coordinates.posX, coordinates.posY, coordinates.posZ, block, world.rand.nextInt(8) + 2);
+        }
+        if(IntegrationThaumicTinkerer.isCropBlock(block)) {
+            TileEntity te = world.getTileEntity(coordinates.posX, coordinates.posY, coordinates.posZ);
+            if(te != null && IntegrationThaumicTinkerer.isCropTile(te)) {
+                for (int i = 0; i < 10; i++) {
+                    te.updateEntity(); //Badumm tss..
+                }
+            }
         }
     }
 

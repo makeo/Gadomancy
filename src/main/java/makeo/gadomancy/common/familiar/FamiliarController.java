@@ -166,9 +166,9 @@ public class FamiliarController {
         }
         if (augment.equals(FamiliarAugment.SHOCK)) {
             for (EntityLivingBase entity : toAttack) {
-                if (RAND.nextInt(3) == 0) {
+                if (RAND.nextBoolean()) {
                     Vector3 vel = MiscUtils.getPositionVector(entity).subtract(MiscUtils.getPositionVector(owningPlayer))
-                            .normalize().divide(2).multiply(0.5 * effectLevel);
+                            .normalize().divide(2).multiply(0.8 * effectLevel);
                     if (vel.getY() < 0) vel.setY(-vel.getY());
                     entity.motionX += vel.getX();
                     entity.motionY += vel.getY();

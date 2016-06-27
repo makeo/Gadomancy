@@ -2,6 +2,7 @@ package makeo.gadomancy.client.util;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.client.renderers.item.ItemRenderFamiliar;
 import makeo.gadomancy.common.data.DataFamiliar;
 import makeo.gadomancy.common.network.packets.PacketFamiliarBolt;
 import makeo.gadomancy.common.utils.world.fake.FakeWorld;
@@ -33,7 +34,7 @@ import java.util.Map;
  */
 public class FamiliarHandlerClient {
 
-    private static final EntityWisp ENTITY_WISP;
+    private static EntityWisp ENTITY_WISP = null;
 
     private static RenderWisp fallbackRenderer;
 
@@ -66,6 +67,7 @@ public class FamiliarHandlerClient {
 
         Aspect aspect = Aspect.getAspect(data.data.aspectTag);
 
+        if(ENTITY_WISP == null) ENTITY_WISP = new EntityWisp(new FakeWorld());
         ENTITY_WISP.setType(aspect.getTag());
         ENTITY_WISP.ticksExisted = fam.dummyEntity.ticksExisted;
         GL11.glPushMatrix();
@@ -89,7 +91,7 @@ public class FamiliarHandlerClient {
             diffZ -= ((entity.posZ - entity.lastTickPosZ) * partialTicks);
         }
 
-        fallbackRenderer.doRender(ENTITY_WISP, diffX, diffY, diffZ, 0, partialTicks);
+        ItemRenderFamiliar.renderEntityWispFor(fam.owner.get(), ENTITY_WISP, diffX, diffY, diffZ, 0, partialTicks);
         GL11.glPopMatrix();
     }
 
@@ -105,7 +107,6 @@ public class FamiliarHandlerClient {
     static {
         fallbackRenderer = new RenderWisp();
         fallbackRenderer.setRenderManager(RenderManager.instance);
-        ENTITY_WISP = new EntityWisp(new FakeWorld());
     }
 
     public static void handleAdditions(List<DataFamiliar.FamiliarData> toAdd) {

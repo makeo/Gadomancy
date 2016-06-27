@@ -1,6 +1,7 @@
 package makeo.gadomancy.common.utils;
 
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.Vec3;
 
 import java.util.Formatter;
 import java.util.Locale;
@@ -46,6 +47,12 @@ public class Vector3 {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public Vector3(Vec3 vec3) {
+        this.x = vec3.xCoord;
+        this.y = vec3.yCoord;
+        this.z = vec3.zCoord;
     }
 
     public Vector3 add(Vector3 vec) {

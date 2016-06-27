@@ -14,6 +14,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.common.tiles.TileJarFillable;
+import thaumcraft.common.tiles.TileJarFillableVoid;
 
 import java.lang.reflect.Field;
 
@@ -26,6 +27,7 @@ import java.lang.reflect.Field;
  * Created by makeo @ 13.07.2015 15:48
  */
 public class TileStickyJar extends TileJarFillable {
+
     private Block parentBlock;
     private Integer parentMetadata = 0;
 
@@ -54,6 +56,7 @@ public class TileStickyJar extends TileJarFillable {
     }
 
     private boolean needsRenderUpdate = false;
+
     public void init(TileJarFillable parent, Block parentBlock, int parentMetadata, ForgeDirection placedOn) {
         this.parent = parent;
 
@@ -92,6 +95,10 @@ public class TileStickyJar extends TileJarFillable {
         sync(parent, this);
     }
 
+    public Integer getParentMetadata() {
+        return parentMetadata;
+    }
+
     private int count;
 
     @Override
@@ -110,7 +117,10 @@ public class TileStickyJar extends TileJarFillable {
 
         syncToParent();
 
-        if ((!this.worldObj.isRemote) && (++this.count % 5 == 0) && (this.amount < this.maxAmount)) {
+        boolean canTakeEssentia = this.amount < this.maxAmount;
+        if(parent instanceof TileJarFillableVoid) canTakeEssentia = true;
+
+        if ((!this.worldObj.isRemote) && (++this.count % 5 == 0) && canTakeEssentia) {
             fillJar();
         }
 

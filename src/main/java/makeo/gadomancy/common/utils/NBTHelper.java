@@ -5,6 +5,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
 
 import java.util.UUID;
 
@@ -78,6 +80,33 @@ public class NBTHelper {
         NBTTagCompound stackCompound = new NBTTagCompound();
         stack.writeToNBT(stackCompound);
         compound.setTag(tag, stackCompound);
+    }
+
+    public static void setAspectList(NBTTagCompound compound, String tag, AspectList list) {
+        NBTTagCompound listTag = new NBTTagCompound();
+        for (Aspect a : list.aspects.keySet()) {
+            int amt = list.aspects.get(a);
+            listTag.setInteger(a.getTag(), amt);
+        }
+        compound.setTag(tag, listTag);
+    }
+
+    public static AspectList getAspectList(NBTTagCompound compound, String tag) {
+        return getAspectList(compound, tag, null);
+    }
+
+    public static AspectList getAspectList(NBTTagCompound compound, String tag, AspectList defaultValue) {
+        if(!compound.hasKey(tag)) return defaultValue;
+        NBTTagCompound cmp = compound.getCompoundTag(tag);
+        AspectList out = new AspectList();
+        for (Object key : cmp.func_150296_c()) {
+            String strKey = (String) key;
+            Aspect a = Aspect.getAspect(strKey);
+            if(a != null) {
+                out.add(a, cmp.getInteger(strKey));
+            }
+        }
+        return out;
     }
 
     public static void setUUID(NBTTagCompound compound, String tag, UUID uuid) {

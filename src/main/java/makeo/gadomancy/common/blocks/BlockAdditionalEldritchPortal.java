@@ -17,6 +17,7 @@ import thaumcraft.common.config.ConfigBlocks;
  * Created by makeo @ 06.11.2015 23:23
  */
 public class BlockAdditionalEldritchPortal extends BlockEldritchPortal {
+
     public BlockAdditionalEldritchPortal() {
         setCreativeTab(RegisteredItems.creativeTab);
     }
@@ -32,7 +33,5 @@ public class BlockAdditionalEldritchPortal extends BlockEldritchPortal {
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
-
-    }
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {}
 }

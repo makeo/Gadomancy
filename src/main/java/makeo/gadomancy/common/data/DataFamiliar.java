@@ -30,8 +30,7 @@ import java.util.Map;
 public class DataFamiliar extends AbstractData {
 
     private List<FamiliarData> playersWithFamiliar = new ArrayList<FamiliarData>();
-    private Map<EntityPlayer, FamiliarAIController_Old> familiarAI = new HashMap<EntityPlayer, FamiliarAIController_Old>();
-    //private Map<EntityPlayer, FamiliarController> familiarControllers = new HashMap<EntityPlayer, FamiliarController>();
+    private Map<EntityPlayer, FamiliarController> familiarControllers = new HashMap<EntityPlayer, FamiliarController>();
 
     private List<FamiliarData> addClientQueue = new ArrayList<FamiliarData>();
     private List<FamiliarData> removeClientQueue = new ArrayList<FamiliarData>();
@@ -53,15 +52,10 @@ public class DataFamiliar extends AbstractData {
         if(!playersWithFamiliar.contains(data)) playersWithFamiliar.add(data);
         markDirty();
 
-        if(!familiarAI.containsKey(player)) {
-            FamiliarAIController_Old controller = new FamiliarAIController_Old(player);
-            controller.registerDefaultTasks();
-            familiarAI.put(player, controller);
-        }
-        /*if(!familiarControllers.containsKey(player)) {
+        if(!familiarControllers.containsKey(player)) {
             FamiliarController controller = new FamiliarController(player);
             familiarControllers.put(player, controller);
-        }*/
+        }
     }
 
     public void handleUnequip(World world, EntityPlayer player, Aspect aspect) {
@@ -74,7 +68,7 @@ public class DataFamiliar extends AbstractData {
         if(playersWithFamiliar.contains(data)) playersWithFamiliar.remove(data);
         markDirty();
 
-        familiarAI.remove(player);
+        familiarControllers.remove(player);
     }
 
     public void equipTick(World world, EntityPlayer player, Aspect aspect) {
@@ -88,25 +82,17 @@ public class DataFamiliar extends AbstractData {
             return;
         }
 
-        if(familiarAI.get(player) == null || !playersWithFamiliar.contains(data)) {
+        if(familiarControllers.get(player) == null || !playersWithFamiliar.contains(data)) {
             handleEquip(world, player, aspect);
         }
 
-        familiarAI.get(player).scheduleTick();
+        familiarControllers.get(player).tick();
     }
 
-    //TODO adjust to new itemClass!
     public void checkPlayerEquipment(EntityPlayer p) {
         IInventory baublesInv = BaublesApi.getBaubles(p);
         if(baublesInv.getStackInSlot(0) != null) {
             ItemStack amulet = baublesInv.getStackInSlot(0);
-            if(amulet.getItem() != null && amulet.getItem() instanceof ItemFamiliar_Old) {
-                ItemFamiliar_Old fam = (ItemFamiliar_Old) amulet.getItem();
-                Aspect a = fam.getAspect(amulet);
-                if(a != null) {
-                    handleEquip(p.worldObj, p, a);
-                }
-            }
             if(amulet.getItem() != null && amulet.getItem() instanceof ItemEtherealFamiliar) {
                 Aspect a = ItemEtherealFamiliar.getFamiliarAspect(amulet);
                 if(a != null) {

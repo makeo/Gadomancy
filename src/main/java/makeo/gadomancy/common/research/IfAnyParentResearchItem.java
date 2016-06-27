@@ -1,5 +1,7 @@
 package makeo.gadomancy.common.research;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -22,26 +24,34 @@ public class IfAnyParentResearchItem extends SimpleResearchItem {
 
     public IfAnyParentResearchItem(String key, int col, int row, int complex, ItemStack icon, AspectList tags) {
         super(key, col, row, complex, icon, tags);
+        setHidden();
     }
 
     public IfAnyParentResearchItem(String key, int col, int row, int complex, ResourceLocation icon, AspectList tags) {
         super(key, col, row, complex, icon, tags);
+        setHidden();
     }
 
     @Override
-    public boolean isConcealed() {
+    @SideOnly(Side.CLIENT)
+    public boolean isHidden() {
         if(anyParents != null) {
+            boolean hasFoundAny = false;
+            boolean doesAnyExist = false;
             for(String res : anyParents) {
                 ResearchItem ri = ResearchCategories.getResearch(res);
                 if(ri != null) {
+                    doesAnyExist = true;
                     if(GuiResearchBrowser.completedResearch.get(Minecraft.getMinecraft().thePlayer.getCommandSenderName()).contains(ri.key)) {
-                        return super.isConcealed();
+                        hasFoundAny = true;
                     }
                 }
             }
-            return true;
+            if(doesAnyExist) {
+                return !hasFoundAny;
+            }
         }
-        return super.isConcealed();
+        return super.isHidden();
     }
 
     public IfAnyParentResearchItem setAnyParents(String... parents) {

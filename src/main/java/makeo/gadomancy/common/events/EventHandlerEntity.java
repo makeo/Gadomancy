@@ -3,6 +3,7 @@ package makeo.gadomancy.common.events;
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import makeo.gadomancy.common.aura.AuraEffects;
+import makeo.gadomancy.common.blocks.tiles.TileAIShutdown;
 import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
 import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
 import makeo.gadomancy.common.data.config.ModConfig;
@@ -11,6 +12,7 @@ import makeo.gadomancy.common.familiar.FamiliarAIController_Old;
 import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.Vector3;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -73,17 +75,22 @@ public class EventHandlerEntity {
         }
     }
 
-    @SubscribeEvent
+    /*@SubscribeEvent
     public void on(LivingSetAttackTargetEvent targetEvent) {
         if (targetEvent.target instanceof EntityPlayer) {
             FamiliarAIController_Old.notifyTargetEvent(targetEvent.entityLiving, (EntityPlayer) targetEvent.target);
         }
-    }
+    }*/
 
     @SubscribeEvent
     public void on(LivingDeathEvent event) {
-        if (!event.entity.worldObj.isRemote && event.entityLiving instanceof EntityPlayer) {
-            TCMazeHandler.closeSession((EntityPlayer) event.entityLiving, false);
+        if (!event.entity.worldObj.isRemote) {
+            if(event.entityLiving instanceof EntityPlayer) {
+                TCMazeHandler.closeSession((EntityPlayer) event.entityLiving, false);
+            }
+            if(event.entityLiving instanceof EntityLiving) {
+                TileAIShutdown.removeTrackedEntity((EntityLiving) event.entityLiving);
+            }
         }
     }
 
@@ -94,8 +101,8 @@ public class EventHandlerEntity {
                 EntityPermNoClipItem item = (EntityPermNoClipItem) event.item;
                 ChunkCoordinates master = (ChunkCoordinates) item.getDataWatcher().getWatchedObject(ModConfig.entityNoClipItemDatawatcherMasterId).getObject();
                 TileEntity te = event.entityPlayer.worldObj.getTileEntity(master.posX, master.posY, master.posZ);
-                if (te == null || !(te instanceof TileAuraPylon)) return;
-                ((TileAuraPylon) te).informItemPickup();
+                if (te == null || !(te instanceof EntityPermNoClipItem.IItemMasterTile)) return;
+                ((EntityPermNoClipItem.IItemMasterTile) te).informItemRemoval();
             }
         }
     }

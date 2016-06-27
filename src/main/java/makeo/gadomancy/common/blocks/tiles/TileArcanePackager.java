@@ -48,8 +48,6 @@ public class TileArcanePackager extends TileJarFillable implements IInventory, I
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
 
-        redstoneState = compound.getBoolean("");
-
         contents = new ItemStack[getSizeInventory()];
         NBTTagList list = compound.getTagList("Items", 10);
 

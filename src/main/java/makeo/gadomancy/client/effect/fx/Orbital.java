@@ -56,6 +56,7 @@ public final class Orbital {
 
     public void doRender(float partialTicks) {
         if(MiscUtils.getPositionVector(Minecraft.getMinecraft().renderViewEntity).distance(center) > ModConfig.renderParticleDistance) return;
+        if(Minecraft.getMinecraft().isGamePaused()) return;
 
         for(OrbitalRenderProperties orbitalNode : orbitals) {
             Axis axis = orbitalNode.getAxis();
@@ -68,8 +69,10 @@ public final class Orbital {
             Vector3 point = axis.getAxis().clone().perpendicular().normalize().multiply(orbitalNode.getOffset()).rotate(currentRad, axis.getAxis()).add(center);
 
             if(orbitalNode.getRunnable() != null) {
-                orbitalNode.getRunnable().onRender(point, orbitalNode, orbitalCounter, partialTicks);
+                orbitalNode.getRunnable().onRender(world, point, orbitalNode, orbitalCounter, partialTicks);
             }
+
+            if(orbitalNode.getParticleSize() <= 0) continue;
 
             FXFlow.FXFlowBase flow = new FXFlow.FXFlowBase(world, point.getX(), point.getY(), point.getZ(),
                     orbitalNode.getColor(), orbitalNode.getParticleSize(), orbitalNode.getMultiplier(), orbitalNode.getBrightness());
@@ -123,29 +126,19 @@ public final class Orbital {
     }
 
     public static void sheduleRenders(List<Orbital> orbitals, float partialTicks) {
-        EffectHandler.orbitalsRWLock.lock();
-        try {
-            for(Orbital orbital : orbitals) {
-                orbital.doRender(partialTicks);
-            }
-        } finally {
-            EffectHandler.orbitalsRWLock.unlock();
+        for(Orbital orbital : orbitals) {
+            orbital.doRender(partialTicks);
         }
     }
 
     public static void tickOrbitals(List<Orbital> orbitals) {
-        EffectHandler.orbitalsRWLock.lock();
-        try {
-            for(Orbital orbital : orbitals) {
-                if((System.currentTimeMillis() - orbital.lastRenderCall) > 1000L) {
-                    orbital.clearOrbitals();
-                    EffectHandler.getInstance().unregisterOrbital(orbital);
-                } else {
-                    orbital.orbitalCounter++;
-                }
+        for(Orbital orbital : orbitals) {
+            if((System.currentTimeMillis() - orbital.lastRenderCall) > 1000L) {
+                orbital.clearOrbitals();
+                EffectHandler.getInstance().unregisterOrbital(orbital);
+            } else {
+                orbital.orbitalCounter++;
             }
-        } finally {
-            EffectHandler.orbitalsRWLock.unlock();
         }
     }
 
@@ -278,7 +271,7 @@ public final class Orbital {
     }
 
     public static abstract class OrbitalRenderRunnable {
-        public abstract void onRender(Vector3 selectedPosition, OrbitalRenderProperties properties, int orbitalExisted, float partialTicks);
+        public abstract void onRender(World world, Vector3 selectedPosition, OrbitalRenderProperties properties, int orbitalExisted, float partialTicks);
     }
 
     public static class Axis {
