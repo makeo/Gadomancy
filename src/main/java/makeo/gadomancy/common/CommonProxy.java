@@ -43,6 +43,9 @@ import java.util.List;
  * Created by makeo @ 29.11.2014 14:18
  */
 public class CommonProxy implements IGuiHandler {
+
+    public static boolean serverOnlineState = false;
+
     public static final EventHandlerGolem EVENT_HANDLER_GOLEM = new EventHandlerGolem();
 
     public void onConstruct() { }

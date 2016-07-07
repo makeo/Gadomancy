@@ -1,19 +1,14 @@
 package makeo.gadomancy.client.events;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufInputStream;
-import io.netty.buffer.ByteBufOutputStream;
-import io.netty.buffer.Unpooled;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.client.gui.GuiResearchRecipeAuraEffects;
 import makeo.gadomancy.client.util.ExtendedTypeDisplayManager;
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
 import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
+import makeo.gadomancy.common.CommonProxy;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
@@ -27,20 +22,15 @@ import makeo.gadomancy.common.utils.Vector3;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.texture.SimpleTexture;
-import net.minecraft.client.resources.SimpleResource;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.*;
-import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.client.model.obj.WavefrontObject;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -56,12 +46,6 @@ import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.items.relics.ItemThaumometer;
 import thaumcraft.common.items.wands.ItemWandCasting;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.zip.GZIPInputStream;
@@ -251,8 +235,8 @@ public class RenderEventHandler {
     @SubscribeEvent
     public void onRender(RenderPlayerEvent.Specials.Post event) {
         if(event.entityPlayer == null) return;
-        if(!FMLCommonHandler.instance().getMinecraftServerInstance().isServerInOnlineMode()) return;
         if(obj == null) return;
+        if(!CommonProxy.serverOnlineState) return;
         if(!MiscUtils.isMisunderstood(event.entityPlayer)) return;
 
         GL11.glColor4f(1f, 1f, 1f, 1f);

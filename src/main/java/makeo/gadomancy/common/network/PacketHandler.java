@@ -36,5 +36,6 @@ public class PacketHandler {
         //Sync data
         INSTANCE.registerMessage(PacketSyncConfigs.class, PacketSyncConfigs.class, id++, Side.CLIENT);
         INSTANCE.registerMessage(PacketSyncData.class, PacketSyncData.class, id++, Side.CLIENT);
+        INSTANCE.registerMessage(PacketUpdateOnlineState.class, PacketUpdateOnlineState.class, id++, Side.CLIENT);
     }
 }

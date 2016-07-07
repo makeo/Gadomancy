@@ -8,10 +8,12 @@ import makeo.gadomancy.common.data.SyncDataHolder;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketSyncConfigs;
 import makeo.gadomancy.common.network.packets.PacketUpdateGolemTypeOrder;
+import makeo.gadomancy.common.network.packets.PacketUpdateOnlineState;
 import makeo.gadomancy.common.utils.GolemEnumHelper;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -29,6 +31,7 @@ public class EventHandlerNetwork {
         EntityPlayerMP p = (EntityPlayerMP) e.player;
         PacketHandler.INSTANCE.sendTo(new PacketUpdateGolemTypeOrder(GolemEnumHelper.getCurrentMapping()), p);
         PacketHandler.INSTANCE.sendTo(new PacketSyncConfigs(), p);
+        PacketHandler.INSTANCE.sendTo(new PacketUpdateOnlineState(MinecraftServer.getServer().isServerInOnlineMode()), p);
         ((DataFamiliar) SyncDataHolder.getDataServer("FamiliarData")).checkPlayerEquipment(p);
         ((DataAchromatic) SyncDataHolder.getDataServer("AchromaticData")).checkPotionEffect(p);
         SyncDataHolder.syncAllDataTo(p);
