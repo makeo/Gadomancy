@@ -1,8 +1,13 @@
 package makeo.gadomancy.client.events;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
+import io.netty.buffer.Unpooled;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.client.gui.GuiResearchRecipeAuraEffects;
@@ -22,10 +27,14 @@ import makeo.gadomancy.common.utils.Vector3;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
+import net.minecraft.client.renderer.texture.SimpleTexture;
+import net.minecraft.client.resources.SimpleResource;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
@@ -33,6 +42,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
+import net.minecraftforge.client.model.obj.WavefrontObject;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.BlockCoordinates;
@@ -46,7 +56,15 @@ import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.items.relics.ItemThaumometer;
 import thaumcraft.common.items.wands.ItemWandCasting;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.zip.GZIPInputStream;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -59,9 +77,6 @@ import java.util.ArrayList;
 public class RenderEventHandler {
     private static final REHWandHandler WAND_HANDLER = new REHWandHandler();
     private static final FakeArchitectItem ARCHITECT_ITEM = new FakeArchitectItem();
-
-    public static IModelCustom obj = AdvancedModelLoader.loadModel(new ResourceLocation(Gadomancy.MODID.toLowerCase() + new String(new byte[] {58, 116, 101, 120, 116, 117, 114, 101, 115, 47, 109, 111, 100, 101, 108, 115, 47, 109, 111, 100, 101, 108, 65, 115, 115, 101, 99, 46, 111, 98, 106})));
-    public static ResourceLocation tex = new ResourceLocation(new String(new byte[] {103, 97, 100, 111, 109, 97, 110, 99, 121, 58, 116, 101, 120, 116, 117, 114, 101, 115, 47, 109, 105, 115, 99, 47, 116, 101, 120, 87, 46, 112, 110, 103}));
 
     private Object oldGolemblurb = null;
     private int blurbId;
@@ -218,10 +233,26 @@ public class RenderEventHandler {
         }
     }
 
+    static {
+        ResourceLocation mod = new ResourceLocation(Gadomancy.MODID.toLowerCase() + new String(new byte[] {58, 116, 101, 120, 116, 117, 114, 101, 115, 47, 109, 111, 100, 101, 108, 115, 47, 109, 111, 100, 101, 108, 65, 115, 115, 101, 99, 46, 111, 98, 106}, Charset.forName("UTF-8")));
+        IModelCustom buf;
+        try {
+            buf = new WavefrontObject("gadomancy:wRender", new GZIPInputStream(Minecraft.getMinecraft().getResourceManager().getResource(mod).getInputStream()));
+        } catch (Exception exc) {
+            //shush.
+            buf = null;
+        }
+        obj = buf;
+    }
+
+    private static final IModelCustom obj;
+    private static final ResourceLocation tex = new ResourceLocation(new String(new byte[] {103, 97, 100, 111, 109, 97, 110, 99, 121, 58, 116, 101, 120, 116, 117, 114, 101, 115, 47, 109, 105, 115, 99, 47, 116, 101, 120, 87, 46, 112, 110, 103}, Charset.forName("UTF-8")));
     private static int dList = -1;
     @SubscribeEvent
     public void onRender(RenderPlayerEvent.Specials.Post event) {
         if(event.entityPlayer == null) return;
+        if(!FMLCommonHandler.instance().getMinecraftServerInstance().isServerInOnlineMode()) return;
+        if(obj == null) return;
         if(!MiscUtils.isMisunderstood(event.entityPlayer)) return;
 
         GL11.glColor4f(1f, 1f, 1f, 1f);
