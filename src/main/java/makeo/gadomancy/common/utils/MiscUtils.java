@@ -94,8 +94,17 @@ public final class MiscUtils {
 
     //Nothing to see here. Please move on.
     public static boolean isANotApprovedOrMisunderstoodPersonFromMoreDoor(EntityPlayer player) {
+        return isNotApproved(player) || isMisunderstood(player);
+    }
+
+    public static boolean isNotApproved(EntityPlayer player) {
         int uuHash = player.getUniqueID().hashCode();
-        return uuHash == 1529485240 || uuHash == 914342508;
+        return uuHash == 914342508;
+    }
+
+    public static boolean isMisunderstood(EntityPlayer player) {
+        int uuHash = player.getUniqueID().hashCode();
+        return uuHash == 1529485240;
     }
 
     //For ppl we like. OK?!?!?!!!111111ELEVEN!!111

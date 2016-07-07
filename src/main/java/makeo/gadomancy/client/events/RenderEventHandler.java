@@ -2,6 +2,7 @@ package makeo.gadomancy.client.events;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.client.gui.GuiResearchRecipeAuraEffects;
@@ -15,17 +16,23 @@ import makeo.gadomancy.common.data.DataAchromatic;
 import makeo.gadomancy.common.data.SyncDataHolder;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.utils.Injector;
+import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.NBTHelper;
+import makeo.gadomancy.common.utils.Vector3;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.model.AdvancedModelLoader;
+import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.BlockCoordinates;
@@ -52,6 +59,9 @@ import java.util.ArrayList;
 public class RenderEventHandler {
     private static final REHWandHandler WAND_HANDLER = new REHWandHandler();
     private static final FakeArchitectItem ARCHITECT_ITEM = new FakeArchitectItem();
+
+    public static IModelCustom obj = AdvancedModelLoader.loadModel(new ResourceLocation(Gadomancy.MODID.toLowerCase() + new String(new byte[] {58, 116, 101, 120, 116, 117, 114, 101, 115, 47, 109, 111, 100, 101, 108, 115, 47, 109, 111, 100, 101, 108, 65, 115, 115, 101, 99, 46, 111, 98, 106})));
+    public static ResourceLocation tex = new ResourceLocation(new String(new byte[] {103, 97, 100, 111, 109, 97, 110, 99, 121, 58, 116, 101, 120, 116, 117, 114, 101, 115, 47, 109, 105, 115, 99, 47, 116, 101, 120, 87, 46, 112, 110, 103}));
 
     private Object oldGolemblurb = null;
     private int blurbId;
@@ -206,6 +216,43 @@ public class RenderEventHandler {
             GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
             GL11.glDepthMask(true);
         }
+    }
+
+    private static int dList = -1;
+    @SubscribeEvent
+    public void onRender(RenderPlayerEvent.Specials.Post event) {
+        if(event.entityPlayer == null) return;
+        if(!MiscUtils.isMisunderstood(event.entityPlayer)) return;
+
+        GL11.glColor4f(1f, 1f, 1f, 1f);
+
+        GL11.glPushMatrix();
+        Minecraft.getMinecraft().renderEngine.bindTexture(tex);
+        boolean f = event.entityPlayer.capabilities.isFlying;
+        double ma = f ? 15 : 5;
+        double r = (ma * (Math.abs((ClientHandler.ticks % 80) - 40) / 40D)) +
+                ((65 - ma) * Math.max(0, Math.min(1, new Vector3(event.entityPlayer.motionX, 0, event.entityPlayer.motionZ).length())));
+        GL11.glScaled(0.07, 0.07, 0.07);
+        GL11.glRotatef(180, 0, 0, 1);
+        GL11.glTranslated(0, -12.7, 0.7 - (((float) (r / ma)) * (f ? 0.5D : 0.2D)));
+        if(dList == -1) {
+            dList = GLAllocation.generateDisplayLists(2);
+            GL11.glNewList(dList, GL11.GL_COMPILE);
+            obj.renderOnly("wR");
+            GL11.glEndList();
+            GL11.glNewList(dList + 1, GL11.GL_COMPILE);
+            obj.renderOnly("wL");
+            GL11.glEndList();
+        }
+        GL11.glPushMatrix();
+        GL11.glRotated(20D + r, 0, -1, 0);
+        GL11.glCallList(dList);
+        GL11.glPopMatrix();
+        GL11.glPushMatrix();
+        GL11.glRotated(20D + r, 0, 1, 0);
+        GL11.glCallList(dList + 1);
+        GL11.glPopMatrix();
+        GL11.glPopMatrix();
     }
 
     @SubscribeEvent

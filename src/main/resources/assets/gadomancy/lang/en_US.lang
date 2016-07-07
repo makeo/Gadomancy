@@ -316,8 +316,8 @@ familiar.augment.poison.name=Corrosive Venom
 familiar.augment.fire.name=Flash Burn
 familiar.augment.weakness.name=Enervation Impulse
 familiar.augment.damage.name=Arc Amplification
-familiar.augment.speed.name=Sensitivity Boost
-familiar.augment.range.name=Frequency Emission Overdrive
+familiar.augment.speed.name=Frequency Emission Overdrive
+familiar.augment.range.name=Sensitivity Boost
 
 potion.luck=Increased Luck
 potion.buffGolem=Golem Buff

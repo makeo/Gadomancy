@@ -4,9 +4,7 @@ import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.asm.transformers.AccessTransformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.*;
 
 import java.io.IOException;
@@ -26,7 +24,7 @@ public class GadomancyTransformer extends AccessTransformer {
     public static final String NAME_NODE_RENDERER = "thaumcraft.client.renderers.tile.TileNodeRenderer";
     public static final String NAME_RENDER_EVENT_HANDLER = "thaumcraft.client.lib.RenderEventHandler";
     public static final String NAME_NEI_ITEMPANEL = "codechicken.nei.ItemPanel";
-    //public static final String NAME_ENTITY_LIVING_BASE = "net.minecraft.entity.EntityLivingBase";
+    public static final String NAME_ENTITY_LIVING_BASE = "net.minecraft.entity.EntityLivingBase";
 
     public GadomancyTransformer() throws IOException {}
 
@@ -34,8 +32,8 @@ public class GadomancyTransformer extends AccessTransformer {
     public byte[] transform(String name, String transformedName, byte[] bytes) {
         boolean needsTransform = transformedName.equalsIgnoreCase(NAME_ENCHANTMENT_HELPER) ||
                 transformedName.equalsIgnoreCase(NAME_WANDMANAGER) || transformedName.equalsIgnoreCase(NAME_NODE_RENDERER)
-                || transformedName.equalsIgnoreCase(NAME_RENDER_EVENT_HANDLER) || transformedName.equals(NAME_NEI_ITEMPANEL)/* ||
-                transformedName.equalsIgnoreCase(NAME_ENTITY_LIVING_BASE)*/;
+                || transformedName.equalsIgnoreCase(NAME_RENDER_EVENT_HANDLER) || transformedName.equals(NAME_NEI_ITEMPANEL) ||
+                transformedName.equalsIgnoreCase(NAME_ENTITY_LIVING_BASE);
         if(!needsTransform) return super.transform(name, transformedName, bytes);
 
         FMLLog.info("[GadomancyTransformer] Transforming " + name + ": " + transformedName);
@@ -139,7 +137,11 @@ public class GadomancyTransformer extends AccessTransformer {
                     mn.instructions = newInstructions;
                 }
             }
-        }/* else if(transformedName.equalsIgnoreCase(NAME_ENTITY_LIVING_BASE)) {
+        }
+
+
+
+        /* else if(transformedName.equalsIgnoreCase(NAME_ENTITY_LIVING_BASE)) {
             FieldNode fn = new FieldNode(Opcodes.ACC_PUBLIC, "ignoreCollisions", Type.BOOLEAN_TYPE.getDescriptor(), null, true);
             node.fields.add(fn);
 
