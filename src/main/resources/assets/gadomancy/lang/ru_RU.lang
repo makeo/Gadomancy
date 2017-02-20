@@ -1,0 +1,80 @@
+item.ItemGolemPlacer.silverwood.name=Серебрянодревесный голем
+item.ItemTransformationFocus.name=[WIP] Набалдашник: Преобразование
+item.ItemExtendedNodeJar.name=Банка с узлом ауры
+
+itemGroup.gadomancy=Gadomancy
+tc.research_category.gadomancy=Gadomancy
+
+tc.research_name.GADOMANCY.GOLEMSILVERWOOD=Серебрянодревесные големы
+tc.research_text.GADOMANCY.GOLEMSILVERWOOD=Not a part of golemancy...
+gadomancy.research_page.GOLEMSILVERWOOD.1=
+
+tc.research_name.GADOMANCY.GOLEMRUNICSHIELD=Големическая защита
+tc.research_text.GADOMANCY.GOLEMRUNICSHIELD=Сейчас доступны для ваших крошечных друзей!
+gadomancy.research_page.GOLEMRUNICSHIELD.1=
+
+tc.research_name.GADOMANCY.STICKYJAR=Липкие банки
+tc.research_text.GADOMANCY.STICKYJAR=Почему бы не повернуть банки?
+gadomancy.research_page.STICKYJAR.1=
+
+tc.research_name.GADOMANCY.ARCANEDROPPER=Магический выбрасыватель
+tc.research_text.GADOMANCY.ARCANEDROPPER=Грабеж стива
+gadomancy.research_page.ARCANEDROPPER.1=
+
+tc.research_name.GADOMANCY.GOLEMCOREBREAK=Сердце голема: Ломание
+tc.research_text.GADOMANCY.GOLEMCOREBREAK=Bone-breaking news!
+gadomancy.research_page.GOLEMCOREBREAK.1=
+
+tc.research_name.GADOMANCY.INFUSIONCLAW=Автоматическое наполнение
+tc.research_text.GADOMANCY.INFUSIONCLAW=Плавающий материал!
+gadomancy.research_page.INFUSIONCLAW.1=
+
+tc.research_name.GADOMANCY.REMOTEJAR=Зеркальный банки
+tc.research_text.GADOMANCY.REMOTEJAR=Зеркальная транспортировка
+gadomancy.research_page.REMOTEJAR.1=
+
+tc.research_name.GADOMANCY.GROWING=Растущие узлы
+tc.research_text.GADOMANCY.GROWING=Голодные узлы v2.0
+gadomancy.research_page.GROWING.1=This node is something... different. <BR>You did expect an Energized Node to be the only stable connection between us and the source of all Vis, but this Aura Node seems very stable too. Energizing an Aura Node channels Vis from its source to our end and breaks it down to the purest primal Aspects. <BR>But... this node behaves so different from the other nodes. It seems to search for something... It seems... restless...
+gadomancy.research_page.GROWING.2=What is it searching for? Judging from my knowledge so far it can be compared to a hungry Aura Node, but still... You should keep an Eye on this.
+
+tc.research_name.GADOMANCY.GROWING_AGGRESSION=Агрессивное поведение
+tc.research_text.GADOMANCY.GROWING_AGGRESSION=Делая шаг назад
+gadomancy.research_page.GROWING_AGGRESSION.1=Интересно... Этот узел только что выпустил молнию.. Почему это происходит? <BR>Это может быть большое количество Вис, протекающее через узел ауры, который извергает огромное количество энергии в виде молнии. Это кажется, привлекает живые организмы. <BR>Может быть, я должен держаться на безопасном расстоянии от узла в ходе исследований?
+
+tc.research_name.GADOMANCY.GROWING_GROWTH=Growing Behavior
+tc.research_text.GADOMANCY.GROWING_GROWTH=A picky one.
+gadomancy.research_page.GROWING_GROWTH.1=Я был прав! Этот узел имеет сходство с голодным узлом! Он стал больше, чем раньше! <BR>Но, похоже, свет узла привлекает то, что содержит Вис в чистом виде. Таким образом, узел должен привлечь сущест, таких как Виспы и Эфирные сущности. <LINE>Хм... Что касается моего исследования, кажется, что чем чище аспект, тем больше вероятность слития с узлом. It seems that the node attracts Aspect Orbs and Wisps the most as they are the most pure.
+gadomancy.research_page.GROWING_GROWTH.2=Materialized or solid vis in forms of essentia like Mana Beans, Ethereal Essence or Crystallized Essentia may work too, but may have bad outcome in the end... <BR>Still it is by far more fascinating than a hungry node. In contrast to its hungry brother, this node seems to keep the complexity of its gained compound aspects instead of breaking them down to primal aspects. After all it does seem that this node does not like primal aspects at all..?
+
+tc.research_name.GADOMANCY.GROWING_GROWTHCLUE=Секреты роста
+tc.research_text.GADOMANCY.GROWING_GROWTHCLUE=Объяснение теории роста
+gadomancy.research_page.GROWING_GROWTHCLUE.1=Это оно! Я думаю, что я решил загадку роста и опасности растущего узла! <LINE>It looks so simple: Just don't feed it the same aspects. Это то, что наш узел ненавидит. Он просто хочет разнообразия и новых аспектов. Когда вы кормите его снова и снова он злится и перестает расти, в том случае если он слишком насыщенный. Он принимает только чистые аспекты, хотя. Эфирный сущности, кристаллизированные сущности и мана бобы являются слабыми формами материализированной Вис. Кажется, узлу не нравится это...
+gadomancy.research_page.GROWING_GROWTHCLUE.2=In contrast to that it seems that it really likes Wisps or Aspect Orbs. Still one of the best and most expensive things might be offering other Aura Nodes to the growing node. <BR>But there are high risks too. The more saturated the node gets, the harder and more often the node does attack its surroundings. Интересно, что происходит, когда узел полностью насыщен..?
+
+gadomancy.golemblurb.default=??
+gadomancy.golemblurb.breakcore=Хозяин, я должен ломать всё, или что-то конкретное?
+gadomancy.golem.breakcore=Ломание
+
+gadomancy.upgrades.runicshield=Рунический щит
+
+gadomancy.lore.stickyjar=Липкая
+gadomancy.lore.remotejar=§7Сеть: %s
+
+tile.BlockStickyJar.name=Липкая банка
+tile.BlockArcaneDropper.name=Магический выбрасыватель
+tile.BlockInfusionClaw.name=Коготь наполнения
+tile.BlockRemoteJar.name=[WIP] Зеркальная банка
+tile.BlockNode.name=Узел ауры
+tile.BlockExtendedNodeJar.name=Банка с узлом ауры
+
+gadomancy.nodes.GROWING=Growing
+gadomancy.nodes.STARVING=Starving
+
+gadomancy.info.InfusionClaw.owner=В настоящее время вы владелец.
+gadomancy.info.InfusionClaw.waila=§7Владелец:
+gadomancy.info.InfusionClaw.lock=Keep useable wand
+
+gadomancy.info.RemoteJar.new=Создана новая сеть банок
+gadomancy.info.RemoteJar.clear=Отключение от текущей сети банок
+gadomancy.info.RemoteJar.connected=Подключение к текущей сети банок
