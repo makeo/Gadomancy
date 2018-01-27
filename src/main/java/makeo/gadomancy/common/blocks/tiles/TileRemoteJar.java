@@ -26,14 +26,17 @@ public class TileRemoteJar extends TileJarFillable {
 
     private int count = 0;
 
+    private boolean registered_to_network = false;
+
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if (count % 3 == 0 && !getWorldObj().isRemote && networkId != null && amount < maxAmount) {
+        if (count % 3 == 0 && !getWorldObj().isRemote && networkId != null && (!registered_to_network || amount < maxAmount)) {
             count = 0;
 
             JarNetwork network = getNetwork(networkId);
 
+            registered_to_network = true;
             if(!network.jars.contains(this)) {
                 network.jars.add((TileJarFillable) worldObj.getTileEntity(xCoord, yCoord, zCoord));
             }
